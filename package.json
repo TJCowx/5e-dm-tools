@@ -10,7 +10,8 @@
   },
   "dependencies": {
     "electron-serve": "^1.1.0",
-    "electron-store": "^8.1.0"
+    "electron-store": "^8.1.0",
+    "mongoose": "^6.8.1"
   },
   "devDependencies": {
     "@types/node": "^16.11.7",
