@@ -1,10 +1,7 @@
 import React from 'react';
 import Head from 'next/head';
-import Link from 'next/link';
-import { GetStaticProps } from 'next';
-import dbConnect from '../db/dbConnect';
-import Monster, { IMonster } from '../models/Monster';
-import { ObjectId } from 'mongoose';
+import dbConnect from 'db/dbConnect';
+import Monster, { IMonster } from 'models/Monster';
 
 interface Props {
   monsters: IMonster[];
@@ -12,8 +9,8 @@ interface Props {
 
 function Home({ monsters }: Props) {
   return (
-    <React.Fragment>
-      <Head children={<title>Home - Nextron (with-typescript)</title>} />
+    <>
+      <Head children={<title>Home</title>} />
       <h1>Monsters</h1>
       <button
         onClick={() => {
@@ -33,7 +30,7 @@ function Home({ monsters }: Props) {
           <li>{m.name}</li>
         ))}
       </ul>
-    </React.Fragment>
+    </>
   );
 }
 
