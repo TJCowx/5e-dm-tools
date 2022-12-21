@@ -13,17 +13,17 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         const monsters = await Monster.find({});
         res.status(200).json({ success: true, data: monsters });
       } catch (e) {
-        console.error(e);
         res.status(400).json({ success: false });
       }
+      break;
     case 'POST':
-      console.log(req.body);
       try {
         const monster = await Monster.create(req.body);
         res.status(201).json({ success: true, data: monster });
       } catch (e) {
-        console.error(e);
+        res.status(400).json({ success: false });
       }
+      break;
     default:
       res.status(400).json({ success: false });
   }

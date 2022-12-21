@@ -1,38 +1,36 @@
-import React from 'react';
-import Head from 'next/head';
 import dbConnect from 'db/dbConnect';
 import Monster, { IMonster } from 'models/Monster';
+import Button from '@mui/material/Button';
+import Layout from 'components/Layout/Layout';
 
 interface Props {
   monsters: IMonster[];
 }
 
-function Home({ monsters }: Props) {
-  return (
-    <>
-      <Head children={<title>Home</title>} />
-      <h1>Monsters</h1>
-      <button
-        onClick={() => {
-          fetch('/api/monsters', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ name: 'New Monster' }),
-          });
-        }}
-      >
-        Create Monster
-      </button>
-      <ul>
-        {(monsters ?? []).map((m) => (
-          <li>{m.name}</li>
-        ))}
-      </ul>
-    </>
-  );
-}
+const Home = ({ monsters }: Props) => (
+  <Layout title="Home">
+    <h1>Monsters</h1>
+    <Button
+      variant="contained"
+      onClick={() => {
+        fetch('/api/monsters', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ name: 'New Monster' }),
+        });
+      }}
+    >
+      Create Monster
+    </Button>
+    <ul>
+      {(monsters ?? []).map((m) => (
+        <li key={m.id}>{m.name}</li>
+      ))}
+    </ul>
+  </Layout>
+);
 
 export const getServerSideProps = async () => {
   await dbConnect();
@@ -40,10 +38,10 @@ export const getServerSideProps = async () => {
   const res = await Monster.find();
 
   const monsters = res.map((doc) => {
-    const monster = doc.toObject();
+    const { _id: id, name } = doc.toObject();
     return {
-      id: monster._id.toString(),
-      name: monster.name,
+      id: id.toString(),
+      name,
     };
   });
 

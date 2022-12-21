@@ -8,6 +8,7 @@ import { connect } from 'mongoose';
 let cached = global.mongoose;
 
 if (!cached) {
+  // eslint-disable-next-line no-multi-assign
   cached = global.mongoose = { conn: null, promise: null };
 }
 
@@ -22,10 +23,8 @@ async function dbConnect() {
     };
 
     // TODO: Don't hardcode this
-    cached.promise = connect('mongodb://0.0.0.0:27017', opts).then(
-      (mongoose) => {
-        return mongoose;
-      }
+    cached.promise = connect('mongodb://0.0.0.0:27017/5e-dm-tools', opts).then(
+      (mongoose) => mongoose
     );
   }
 
