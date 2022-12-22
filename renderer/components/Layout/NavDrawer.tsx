@@ -28,10 +28,6 @@ const Buffer = styled('div')(() => ({
   minWidth: '56px',
 }));
 
-//   listItem: { padding: 0 },
-//   listItemButton: { padding: '6px 16px' },
-//   listItemIcon: { minWidth: 0 },
-
 const StyledDrawer = styled(Drawer)(() => ({
   '& .MuiPaper-root': { top: '28px' },
   '& .MuiListItem-root': { padding: 0 },

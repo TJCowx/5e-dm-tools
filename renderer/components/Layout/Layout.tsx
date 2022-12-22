@@ -25,7 +25,8 @@ const Root = styled('div')(({ theme }) => ({
     display: 'flex',
   },
   '& main': {
-    margin: '8px',
+    margin: '12px',
+    flexGrow: 1,
   },
 }));
 
