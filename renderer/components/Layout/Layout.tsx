@@ -34,8 +34,11 @@ const Layout: FC<Props> = ({ title, children }) => {
   const formattedTitle = `${title} | 5e DM Tools`;
 
   return (
-    <Root onDoubleClick={() => ipcRenderer.send('toggle-maximize-window')}>
-      <div className="title-bar">
+    <Root>
+      <div
+        className="title-bar"
+        onDoubleClick={() => ipcRenderer.send('toggle-maximize-window')}
+      >
         <Typography variant="caption">{formattedTitle}</Typography>
       </div>
       <div className="content-wrapper">
