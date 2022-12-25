@@ -11,13 +11,17 @@ type Props<T> = {
   control: Control<T>;
   fieldName: Path<UnPackAsyncDefaultValues<T>>;
   label: string;
+  isRequired?: boolean;
 };
 
-function TextField<T>({ control, fieldName, label }: Props<T>) {
+function TextField<T>({ control, fieldName, label, isRequired }: Props<T>) {
+  const rules = isRequired ? { required: 'This field is required' } : undefined;
+
   return (
     <Controller
       name={fieldName}
       control={control}
+      rules={rules}
       render={({ field, fieldState }) => (
         <MuiTextField
           {...field}
@@ -30,5 +34,9 @@ function TextField<T>({ control, fieldName, label }: Props<T>) {
     />
   );
 }
+
+TextField.defaultProps = {
+  isRequired: false,
+};
 
 export default TextField;

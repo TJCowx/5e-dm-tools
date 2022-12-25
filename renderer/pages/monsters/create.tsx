@@ -2,6 +2,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { Button, Divider, IconButton, styled, Typography } from '@mui/material';
 import AttributeField from 'components/Fields/AttributeField';
 import CheckboxField from 'components/Fields/CheckboxField';
+import IntegerField from 'components/Fields/IntegerField';
 import SelectField from 'components/Fields/SelectField';
 import TextField from 'components/Fields/TextField';
 import Layout from 'components/Layout/Layout';
@@ -11,12 +12,28 @@ import MonsterType, { AllMonsterTypes } from 'models/monster/MonsterType';
 import Link from 'next/link';
 import { useForm } from 'react-hook-form';
 
+// TODO: Monster omit the id
 type FormFields = {
   name: string;
 
   size: MonsterSize;
   type: MonsterType;
   alignment: Alignment;
+
+  armourClass: number;
+  hitPoints: number;
+  hitDie: string;
+
+  landSpeed?: number;
+  flySpeed?: number;
+  burrowSpeed?: number;
+  climbSpeed?: number;
+  hoverSpeed?: number;
+
+  blindsight?: number;
+  darkvision?: number;
+  tremorsense?: number;
+  truesight?: number;
 
   strength: number;
   dexterity: number;
@@ -25,6 +42,7 @@ type FormFields = {
   wisdom: number;
   charisma: number;
   profBonus: number;
+
   isLegendary: boolean;
   hasLair: boolean;
 };
@@ -34,6 +52,22 @@ const DefaultValues: FormFields = {
   size: undefined,
   type: undefined,
   alignment: undefined,
+
+  armourClass: undefined,
+  hitPoints: undefined,
+  hitDie: '',
+
+  landSpeed: undefined,
+  flySpeed: undefined,
+  burrowSpeed: undefined,
+  climbSpeed: undefined,
+  hoverSpeed: undefined,
+
+  blindsight: undefined,
+  darkvision: undefined,
+  tremorsense: undefined,
+  truesight: undefined,
+
   strength: 10,
   dexterity: 10,
   intelligence: 10,
@@ -41,6 +75,7 @@ const DefaultValues: FormFields = {
   wisdom: 10,
   charisma: 10,
   profBonus: 0,
+
   isLegendary: false,
   hasLair: false,
 };
@@ -69,9 +104,8 @@ const StyledForm = styled('form')(() => ({
     columnGap: '12px',
     rowGap: '12px',
     '& > *': { flexShrink: 0 },
-    '& .form-select': {
-      flexGrow: 1,
-    },
+    '& .form-select': { flexGrow: 1 },
+    '& .integer-field': { width: '120px' },
   },
   '& .grid-3-col': {
     display: 'grid',
@@ -82,11 +116,6 @@ const StyledForm = styled('form')(() => ({
   '& > section': {
     '& hr': { margin: '8px 0 12px' },
     marginBottom: '32px',
-  },
-  '& .attributes-container': {
-    '& .attribute-field': {
-      flexShrink: 0,
-    },
   },
 }));
 
@@ -150,17 +179,81 @@ const CreateMonster = () => {
         <section>
           <Typography variant="h6">Movement</Typography>
           <Divider />
-          <div className="speed-container">TODO Movement Here</div>
+          <div className="row-of-fields">
+            <IntegerField
+              control={control}
+              label="Land Speed"
+              fieldName="landSpeed"
+            />
+            <IntegerField
+              control={control}
+              label="Fly Speed"
+              fieldName="flySpeed"
+            />
+            <IntegerField
+              control={control}
+              label="Burrow Speed"
+              fieldName="burrowSpeed"
+            />
+            <IntegerField
+              control={control}
+              label="Climb Speed"
+              fieldName="climbSpeed"
+            />
+            <IntegerField
+              control={control}
+              label="Hover Speed"
+              fieldName="hoverSpeed"
+            />
+          </div>
         </section>
         <section>
           <Typography variant="h6">Senses</Typography>
           <Divider />
-          <div className="senses-container">TODO Senses Here</div>
+          <div className="row-of-fields">
+            <IntegerField
+              control={control}
+              label="Blindsight"
+              fieldName="blindsight"
+            />
+            <IntegerField
+              control={control}
+              label="Darkvision"
+              fieldName="darkvision"
+            />
+            <IntegerField
+              control={control}
+              label="Tremorsense"
+              fieldName="tremorsense"
+            />
+            <IntegerField
+              control={control}
+              label="Truesight"
+              fieldName="truesight"
+            />
+          </div>
         </section>
         <section>
           <Typography variant="h6">Stats</Typography>
           <Divider />
-          <div className="row-of-fields attributes-container">
+          <div className="grid-3-col">
+            <IntegerField
+              fieldName="armourClass"
+              label="Armour Class"
+              control={control}
+              min={0}
+              isRequired
+            />
+            <IntegerField
+              fieldName="hitPoints"
+              label="Hit Points"
+              control={control}
+              min={0}
+              isRequired
+            />
+            <TextField fieldName="hitDie" label="Hit Die" control={control} />
+          </div>
+          <div className="row-of-fields">
             <AttributeField
               fieldName="strength"
               label="Strength"

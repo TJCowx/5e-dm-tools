@@ -15,15 +15,22 @@ type Props<T> = {
   label: string;
   min?: number;
   max?: number;
+  isRequired?: boolean;
 };
 
-const createRules = (min: number | null, max: number | null) => {
+const createRules = (
+  min: number | null,
+  max: number | null,
+  isRequired: boolean
+) => {
   const rules: RegisterOptions = {
     pattern: {
       value: /[0-9]*/,
       message: 'Must be a whole value',
     },
   };
+
+  if (isRequired) rules.required = 'This field is required';
 
   if (min != null) {
     rules.min = {
@@ -42,8 +49,18 @@ const createRules = (min: number | null, max: number | null) => {
   return rules;
 };
 
-function IntegerField<T>({ control, fieldName, label, min, max }: Props<T>) {
-  const rules = useMemo(() => createRules(min, max), [min, max]);
+function IntegerField<T>({
+  control,
+  fieldName,
+  label,
+  min,
+  max,
+  isRequired = false,
+}: Props<T>) {
+  const rules = useMemo(
+    () => createRules(min, max, isRequired),
+    [min, max, isRequired]
+  );
 
   const inputProps = useMemo(() => {
     if (min != null && max != null) return { inputProps: { min, max } };
@@ -62,11 +79,13 @@ function IntegerField<T>({ control, fieldName, label, min, max }: Props<T>) {
         <TextField
           {...field}
           type="number"
+          className="integer-field"
           label={label}
           InputProps={inputProps}
           error={fieldState.error != null}
           helperText={fieldState.error?.message}
           InputLabelProps={{ shrink: true }}
+          size="small"
         />
       )}
     />
@@ -76,6 +95,7 @@ function IntegerField<T>({ control, fieldName, label, min, max }: Props<T>) {
 IntegerField.defaultProps = {
   min: null,
   max: null,
+  isRequired: false,
 };
 
 export default IntegerField;
