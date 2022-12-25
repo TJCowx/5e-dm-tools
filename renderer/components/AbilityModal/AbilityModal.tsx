@@ -1,20 +1,17 @@
+import AddIcon from '@mui/icons-material/Add';
 import {
-  Box,
   Button,
-  IconButton,
   ListItem,
   ListItemButton,
   ListItemIcon,
   ListItemText,
-  Typography,
 } from '@mui/material';
-import Ability from 'models/monster/Ability';
-import { useState } from 'react';
-import AddIcon from '@mui/icons-material/Add';
-import TextField from 'components/Fields/TextField';
-import { useForm } from 'react-hook-form';
 import { styled } from '@mui/system';
+import TextField from 'components/Fields/TextField';
 import Modal from 'components/Modal/Modal';
+import Ability from 'models/monster/Ability';
+import { FC, useState } from 'react';
+import { useForm } from 'react-hook-form';
 
 type Props = {
   onSave: (ability: Ability) => void;
@@ -29,7 +26,7 @@ const StyledForm = styled('form')(() => ({
   },
 }));
 
-const AbilityModal = ({ onSave }: Props) => {
+const AbilityModal: FC<Props> = ({ onSave }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const { handleSubmit, control, reset } = useForm<Ability>({

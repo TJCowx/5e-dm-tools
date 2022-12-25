@@ -10,6 +10,7 @@ import {
   Typography,
 } from '@mui/material';
 import AbilityModal from 'components/AbilityModal/AbilityModal';
+import ActionModal from 'components/ActionModal.tsx/ActionModal';
 import AttributeField from 'components/Fields/AttributeField';
 import CheckboxField from 'components/Fields/CheckboxField';
 import IntegerField from 'components/Fields/IntegerField';
@@ -481,9 +482,10 @@ const CreateMonster = () => {
         </section>
         <section>
           <Typography variant="h6">Actions</Typography>
-
           <Divider />
-          <div>TODO: Actions</div>
+          <List className="item-list" dense>
+            <ActionModal onSave={() => console.log('saved')} />
+          </List>
         </section>
         <Button type="submit">Save</Button>
       </StyledForm>
