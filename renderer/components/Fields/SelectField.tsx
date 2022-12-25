@@ -6,6 +6,7 @@ import {
   MenuItem,
   Select,
 } from '@mui/material';
+import { useMemo } from 'react';
 import {
   Control,
   Controller,
@@ -19,13 +20,27 @@ type Props<T> = {
   fieldName: Path<UnPackAsyncDefaultValues<T>>;
   label: string;
   options: { value: string | number; text: string }[];
+  isRequired?: boolean;
 };
 
-function SelectField<T>({ id, control, fieldName, label, options }: Props<T>) {
+function SelectField<T>({
+  id,
+  control,
+  fieldName,
+  label,
+  options,
+  isRequired,
+}: Props<T>) {
+  const rules = useMemo(
+    () => (isRequired ? { required: 'This field is required' } : undefined),
+    [isRequired]
+  );
+
   return (
     <Controller
       control={control}
       name={fieldName}
+      rules={rules}
       render={({ field, fieldState }) => (
         <FormControl className="form-select" size="small">
           <InputLabel id={id}>{label}</InputLabel>
@@ -50,5 +65,9 @@ function SelectField<T>({ id, control, fieldName, label, options }: Props<T>) {
     />
   );
 }
+
+SelectField.defaultProps = {
+  isRequired: false,
+};
 
 export default SelectField;

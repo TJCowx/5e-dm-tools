@@ -12,6 +12,7 @@ import {
 } from '@mui/material';
 import IntegerField from 'components/Fields/IntegerField';
 import SelectField from 'components/Fields/SelectField';
+import SwitchField from 'components/Fields/SwitchField';
 import TextField from 'components/Fields/TextField';
 import Modal from 'components/Modal/Modal';
 import Action from 'models/monster/Action';
@@ -40,7 +41,7 @@ const StyledForm = styled('form')(() => ({
 const ActionModal: FC<Props> = ({ onSave }) => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const { control, handleSubmit, reset } = useForm<Action>({});
+  const { control, handleSubmit, reset, watch } = useForm<Action>({});
 
   const {
     fields: damageFields,
@@ -50,6 +51,8 @@ const ActionModal: FC<Props> = ({ onSave }) => {
     control,
     name: 'damage',
   });
+
+  const isAttack = watch('isAttack');
 
   const handleClose = () => {
     setIsOpen(false);
@@ -73,12 +76,18 @@ const ActionModal: FC<Props> = ({ onSave }) => {
       {isOpen && (
         <Modal title="Add Action" isOpen={isOpen} onClose={handleClose}>
           <StyledForm onSubmit={handleSubmit(onSubmit)}>
-            <TextField fieldName="name" label="Name" control={control} />
+            <TextField
+              fieldName="name"
+              label="Name"
+              control={control}
+              isRequired
+            />
             <TextField
               fieldName="description"
               label="Description"
               control={control}
               isMultiline
+              isRequired
             />
             <SelectField
               id="action-type-field"
@@ -86,59 +95,86 @@ const ActionModal: FC<Props> = ({ onSave }) => {
               fieldName="actionType"
               label="Action Type"
               options={ActionTypeSelectOptions}
+              isRequired
             />
-
-            <SelectField
-              id="attack-delivery-field"
+            <SwitchField
               control={control}
-              fieldName="attackDelivery"
-              label="Attack Delivery"
-              options={AttackDeliverySelectOptions}
+              fieldName="isAttack"
+              label="Is Attack"
             />
-            <SelectField
-              id="attack-type-field"
-              control={control}
-              fieldName="attackType"
-              label="Attack Type"
-              options={AttackTypeSelectOptions}
-            />
-            <IntegerField control={control} fieldName="toHit" label="To Hit" />
-            <IntegerField control={control} fieldName="reach" label="Reach" />
-            <List dense>
-              {damageFields.map((damage, i) => (
-                <ListItem
-                  key={damage.id}
-                  secondaryAction={
-                    <IconButton onClick={() => remove(i)}>
-                      <DeleteIcon />
-                    </IconButton>
-                  }
-                >
-                  <TextField
-                    fieldName={`damage.${i}.damage`}
-                    label="Damage"
-                    control={control}
-                  />
-                  <SelectField
-                    id={`damage-${i}-type`}
-                    control={control}
-                    fieldName={`damage.${i}.type`}
-                    label="Damage Type"
-                    options={DamageTypeSelectOptions}
-                  />
-                </ListItem>
-              ))}
-              <ListItem>
-                <ListItemButton
-                  onClick={() => append({ damage: '', type: 'Non-Magical' })}
-                >
-                  <ListItemIcon>
-                    <AddIcon />
-                  </ListItemIcon>
-                  <ListItemText>Add damage</ListItemText>
-                </ListItemButton>
-              </ListItem>
-            </List>
+            {isAttack && (
+              <>
+                <SelectField
+                  id="attack-delivery-field"
+                  control={control}
+                  fieldName="attackDelivery"
+                  label="Attack Delivery"
+                  options={AttackDeliverySelectOptions}
+                  isRequired={isAttack}
+                />
+                <SelectField
+                  id="attack-type-field"
+                  control={control}
+                  fieldName="attackType"
+                  label="Attack Type"
+                  options={AttackTypeSelectOptions}
+                  isRequired={isAttack}
+                />
+                <IntegerField
+                  control={control}
+                  fieldName="toHit"
+                  label="To Hit"
+                  min={0}
+                  isRequired={isAttack}
+                />
+                <IntegerField
+                  control={control}
+                  fieldName="reach"
+                  label="Reach"
+                  min={0}
+                  isRequired={isAttack}
+                />
+                <List dense>
+                  {damageFields.map((damage, i) => (
+                    <ListItem
+                      key={damage.id}
+                      secondaryAction={
+                        <IconButton onClick={() => remove(i)}>
+                          <DeleteIcon />
+                        </IconButton>
+                      }
+                    >
+                      <TextField
+                        fieldName={`damage.${i}.damage`}
+                        label="Damage"
+                        control={control}
+                        isRequired={isAttack}
+                      />
+                      <SelectField
+                        id={`damage-${i}-type`}
+                        control={control}
+                        fieldName={`damage.${i}.type`}
+                        label="Damage Type"
+                        options={DamageTypeSelectOptions}
+                        isRequired={isAttack}
+                      />
+                    </ListItem>
+                  ))}
+                  <ListItem>
+                    <ListItemButton
+                      onClick={() =>
+                        append({ damage: '', type: 'Non-Magical' })
+                      }
+                    >
+                      <ListItemIcon>
+                        <AddIcon />
+                      </ListItemIcon>
+                      <ListItemText>Add damage</ListItemText>
+                    </ListItemButton>
+                  </ListItem>
+                </List>
+              </>
+            )}
             <div className="actions-container">
               <Button onClick={handleClose}>Cancel</Button>
               <Button variant="contained" disableElevation type="submit">
