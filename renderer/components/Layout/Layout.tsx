@@ -4,10 +4,10 @@ import { ipcRenderer } from 'electron';
 import Typography from '@mui/material/Typography';
 import NavDrawer from './NavDrawer';
 
-interface Props {
+type Props = {
   title: string;
   children: ReactNode;
-}
+};
 
 const Root = styled('div')(({ theme }) => ({
   '& .title-bar': {
@@ -19,7 +19,7 @@ const Root = styled('div')(({ theme }) => ({
     height: '28px',
     userSelect: 'none',
     appRegion: 'drag',
-    '-webkit-app-region': 'drag',
+    webkitAppRegion: 'drag',
   },
   '& .content-wrapper': {
     display: 'flex',

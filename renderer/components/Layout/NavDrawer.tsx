@@ -12,11 +12,11 @@ import HomeIcon from '@mui/icons-material/Home';
 import Link from 'next/link';
 import styled from '@mui/system/styled';
 
-interface NavItem {
+type NavItem = {
   text: string;
   icon: ReactNode;
   href: string;
-}
+};
 
 const NavItems: NavItem[] = [
   { text: 'Home', icon: <HomeIcon />, href: '/' },

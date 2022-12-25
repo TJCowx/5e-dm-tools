@@ -4,19 +4,17 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import SearchIcon from '@mui/icons-material/Search';
 import {
   Divider,
-  FormControl,
   IconButton,
   InputAdornment,
-  InputLabel,
   ListItem,
   ListItemText,
-  OutlinedInput,
   TextField,
 } from '@mui/material';
 import List from '@mui/material/List';
 import Layout from 'components/Layout/Layout';
 import dbConnect from 'db/dbConnect';
-import Monster, { IMonster } from 'models/Monster';
+import Monster, { MonsterModel } from 'models/monster/Monster';
+import Link from 'next/link';
 import { FC, Fragment, useEffect, useState } from 'react';
 
 const ActionContainer = styled('div')(() => ({
@@ -28,7 +26,7 @@ const ActionContainer = styled('div')(() => ({
 }));
 
 const Monsters: FC = () => {
-  const [monsters, setMonsters] = useState<IMonster[]>([]);
+  const [monsters, setMonsters] = useState<MonsterModel[]>([]);
 
   useEffect(() => {
     fetch('/api/monsters')
@@ -57,9 +55,11 @@ const Monsters: FC = () => {
             ),
           }}
         />
-        <IconButton>
-          <AddIcon />
-        </IconButton>
+        <Link href="/monsters/create" passHref>
+          <IconButton aria-label="Create new monster">
+            <AddIcon />
+          </IconButton>
+        </Link>
       </ActionContainer>
       <List dense>
         {monsters.map(({ id, name }) => (

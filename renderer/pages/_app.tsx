@@ -26,7 +26,6 @@ const App = (props: AppProps) => {
       <CacheProvider value={muiCache}>
         <ThemeProvider theme={theme}>
           <CssBaseline />
-          {/* eslint-disable-next-line react/jsx-props-no-spreading */}
           <Component {...pageProps} />
         </ThemeProvider>
       </CacheProvider>

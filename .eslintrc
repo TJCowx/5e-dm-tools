@@ -28,6 +28,7 @@
       { "namedComponents": "arrow-function" }
     ],
     "import/no-extraneous-dependencies": "off",
-    "react/react-in-jsx-scope": "off"
+    "react/react-in-jsx-scope": "off",
+    "react/jsx-props-no-spreading": "off"
   }
 }

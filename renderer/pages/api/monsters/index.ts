@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import dbConnect from '../../../db/dbConnect';
-import Monster from '../../../models/Monster';
+import dbConnect from 'db/dbConnect';
+import Monster from 'models/monster/Monster';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const { method } = req;
