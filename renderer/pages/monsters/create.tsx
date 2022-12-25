@@ -3,12 +3,18 @@ import { Button, Divider, IconButton, styled, Typography } from '@mui/material';
 import AttributeField from 'components/Fields/AttributeField';
 import CheckboxField from 'components/Fields/CheckboxField';
 import IntegerField from 'components/Fields/IntegerField';
+import MultiselectField from 'components/Fields/MultiselectField';
 import SelectField from 'components/Fields/SelectField';
 import TextField from 'components/Fields/TextField';
 import Layout from 'components/Layout/Layout';
 import Alignment, { AllAlignments } from 'models/monster/Alignment';
+import Attribute, { AllAttributes } from 'models/monster/Attribute';
+import ConditionType, { AllConditionTypes } from 'models/monster/ConditionType';
+import DamageType, { AllDamageTypes } from 'models/monster/DamageType';
+import Language, { AllLanguages } from 'models/monster/Language';
 import MonsterSize, { AllMonsterSizes } from 'models/monster/MonsterSize';
 import MonsterType, { AllMonsterTypes } from 'models/monster/MonsterType';
+import Proficiency, { AllProficiencies } from 'models/monster/Proficiency';
 import Link from 'next/link';
 import { useForm } from 'react-hook-form';
 
@@ -43,6 +49,17 @@ type FormFields = {
   charisma: number;
   profBonus: number;
 
+  proficiencies: Proficiency[];
+  savingThrows: Attribute[];
+  immunities: DamageType[];
+  condImmunities: ConditionType[];
+  resistances: DamageType[];
+  weaknesses: DamageType[];
+  languages: Language[];
+
+  challengeRating: number;
+  rewardXP: number;
+
   isLegendary: boolean;
   hasLair: boolean;
 };
@@ -76,6 +93,17 @@ const DefaultValues: FormFields = {
   charisma: 10,
   profBonus: 0,
 
+  challengeRating: 0,
+  rewardXP: 0,
+
+  proficiencies: [],
+  savingThrows: [],
+  immunities: [],
+  condImmunities: [],
+  resistances: [],
+  weaknesses: [],
+  languages: [],
+
   isLegendary: false,
   hasLair: false,
 };
@@ -95,6 +123,31 @@ const AlignmentOptions = AllAlignments.map((alignment) => ({
   text: alignment,
 }));
 
+const ProficiencyOptions = AllProficiencies.map((prof) => ({
+  value: prof,
+  text: prof,
+}));
+
+const SavingThrowOptions = AllAttributes.map((att) => ({
+  value: att,
+  text: att,
+}));
+
+const DamageTypeOptions = AllDamageTypes.map((dt) => ({
+  value: dt,
+  text: dt,
+}));
+
+const ConditionTypeOptions = AllConditionTypes.map((ct) => ({
+  value: ct,
+  text: ct,
+}));
+
+const LanguageOptions = AllLanguages.map((lang) => ({
+  value: lang,
+  text: lang,
+}));
+
 const StyledForm = styled('form')(() => ({
   maxWidth: '1200px',
   margin: '16px auto 0',
@@ -102,19 +155,21 @@ const StyledForm = styled('form')(() => ({
     display: 'flex',
     flexWrap: 'wrap',
     columnGap: '12px',
-    rowGap: '12px',
+    rowGap: '16px',
     '& > *': { flexShrink: 0 },
     '& .form-select': { flexGrow: 1 },
     '& .integer-field': { width: '120px' },
   },
-  '& .grid-3-col': {
+  '& .mb-16': { marginBottom: '16px' },
+  '& .right-align': { marginLeft: 'auto' },
+  '& .grid': {
     display: 'grid',
     gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-    rowGap: '12px',
+    rowGap: '16px',
     columnGap: '12px',
   },
   '& > section': {
-    '& hr': { margin: '8px 0 12px' },
+    '& hr': { margin: '8px 0 16px' },
     marginBottom: '32px',
   },
 }));
@@ -139,20 +194,23 @@ const CreateMonster = () => {
         <section>
           <Typography variant="h6">Description</Typography>
           <Divider />
-          <TextField fieldName="name" label="Name" control={control} />
-          <div className="row-of-fields">
-            <CheckboxField
-              fieldName="isLegendary"
-              label="Is Legendary"
-              control={control}
-            />
-            <CheckboxField
-              fieldName="hasLair"
-              label="Has Lair"
-              control={control}
-            />
+          <div className="grid mb-16">
+            <TextField fieldName="name" label="Name" control={control} />
+            <div className="row-of-fields">
+              <CheckboxField
+                fieldName="isLegendary"
+                label="Is Legendary"
+                control={control}
+              />
+              <CheckboxField
+                fieldName="hasLair"
+                label="Has Lair"
+                control={control}
+              />
+            </div>
           </div>
-          <div className="grid-3-col">
+
+          <div className="grid mb-16">
             <SelectField
               id="size"
               fieldName="size"
@@ -173,6 +231,29 @@ const CreateMonster = () => {
               control={control}
               label="Alignment"
               options={AlignmentOptions}
+            />
+          </div>
+          <div className="grid">
+            <MultiselectField
+              id="languages-field"
+              fieldName="languages"
+              control={control}
+              label="Languages"
+              options={LanguageOptions}
+            />
+            <IntegerField
+              control={control}
+              fieldName="challengeRating"
+              label="Challenge Rating"
+              min={0}
+              isRequired
+            />
+            <IntegerField
+              control={control}
+              fieldName="rewardXP"
+              label="Reward XP"
+              min={0}
+              isRequired
             />
           </div>
         </section>
@@ -236,24 +317,7 @@ const CreateMonster = () => {
         <section>
           <Typography variant="h6">Stats</Typography>
           <Divider />
-          <div className="grid-3-col">
-            <IntegerField
-              fieldName="armourClass"
-              label="Armour Class"
-              control={control}
-              min={0}
-              isRequired
-            />
-            <IntegerField
-              fieldName="hitPoints"
-              label="Hit Points"
-              control={control}
-              min={0}
-              isRequired
-            />
-            <TextField fieldName="hitDie" label="Hit Die" control={control} />
-          </div>
-          <div className="row-of-fields">
+          <div className="row-of-fields mb-16">
             <AttributeField
               fieldName="strength"
               label="Strength"
@@ -285,17 +349,77 @@ const CreateMonster = () => {
               control={control}
             />
           </div>
+          <div className="grid">
+            <IntegerField
+              fieldName="armourClass"
+              label="Armour Class"
+              control={control}
+              min={0}
+              isRequired
+            />
+            <IntegerField
+              fieldName="hitPoints"
+              label="Hit Points"
+              control={control}
+              min={0}
+              isRequired
+            />
+            <TextField fieldName="hitDie" label="Hit Die" control={control} />
+          </div>
         </section>
         <section>
           <Typography variant="h6">Proficiencies</Typography>
           <Divider />
-          <div>TODO Proficiencies, Saving Throws Here</div>
+          <div className="grid">
+            <MultiselectField
+              id="prof-field"
+              control={control}
+              label="Proficiencies"
+              fieldName="proficiencies"
+              options={ProficiencyOptions}
+            />
+            <MultiselectField
+              id="saving-throw-field"
+              control={control}
+              label="Saving Throws"
+              fieldName="savingThrows"
+              options={SavingThrowOptions}
+            />
+          </div>
         </section>
         <section>
           <Typography variant="h6">Damage Properties</Typography>
-
           <Divider />
-          <div>TODO Damage Immunities, Weaknesses Here</div>
+          <div className="grid">
+            <MultiselectField
+              id="immunities-field"
+              control={control}
+              label="Immunities"
+              fieldName="immunities"
+              options={DamageTypeOptions}
+            />
+            <MultiselectField
+              id="cond-immunities-field"
+              control={control}
+              label="Condition Immunities"
+              fieldName="condImmunities"
+              options={ConditionTypeOptions}
+            />
+            <MultiselectField
+              id="resistances-field"
+              control={control}
+              label="Resistances"
+              fieldName="resistances"
+              options={DamageTypeOptions}
+            />
+            <MultiselectField
+              id="weaknesses-field"
+              control={control}
+              label="Weaknesses"
+              fieldName="weaknesses"
+              options={DamageTypeOptions}
+            />
+          </div>
         </section>
         <section>
           <Typography variant="h6">Abilities</Typography>

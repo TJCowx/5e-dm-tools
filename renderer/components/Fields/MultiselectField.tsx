@@ -1,8 +1,10 @@
 /* eslint-disable react/function-component-definition */
 import {
+  Checkbox,
   FormControl,
   FormHelperText,
   InputLabel,
+  ListItemText,
   MenuItem,
   Select,
 } from '@mui/material';
@@ -21,13 +23,19 @@ type Props<T> = {
   options: { value: string | number; text: string }[];
 };
 
-function SelectField<T>({ id, control, fieldName, label, options }: Props<T>) {
+function MultiselectField<T>({
+  id,
+  control,
+  fieldName,
+  label,
+  options,
+}: Props<T>) {
   return (
     <Controller
       control={control}
       name={fieldName}
       render={({ field, fieldState }) => (
-        <FormControl className="form-select" size="small">
+        <FormControl className="form-multiselect" size="small">
           <InputLabel id={id}>{label}</InputLabel>
           <Select
             {...field}
@@ -35,10 +43,19 @@ function SelectField<T>({ id, control, fieldName, label, options }: Props<T>) {
             label={label}
             error={fieldState.error != null}
             autoWidth={false}
+            renderValue={(selected: Array<string | number>) =>
+              selected.join(', ')
+            }
+            multiple
           >
             {options.map(({ value, text }) => (
-              <MenuItem key={value} value={value}>
-                {text}
+              <MenuItem key={value} value={value} dense>
+                <Checkbox
+                  checked={
+                    (field.value as Array<string | number>).indexOf(value) > -1
+                  }
+                />
+                <ListItemText primary={text} />
               </MenuItem>
             ))}
           </Select>
@@ -51,4 +68,4 @@ function SelectField<T>({ id, control, fieldName, label, options }: Props<T>) {
   );
 }
 
-export default SelectField;
+export default MultiselectField;
