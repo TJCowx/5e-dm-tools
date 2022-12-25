@@ -17,6 +17,11 @@ export const AllLanguages = [
   'Undercommon',
 ] as const;
 
+export const LanguageSelectOptions = AllLanguages.map((lang) => ({
+  value: lang,
+  text: lang,
+}));
+
 type Language = typeof AllLanguages[number];
 
 export default Language;

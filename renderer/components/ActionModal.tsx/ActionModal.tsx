@@ -22,10 +22,12 @@ import {
   AttackTypeSelectOptions,
 } from 'models/monster/AttackType';
 import { DamageTypeSelectOptions } from 'models/monster/DamageType';
-import { FC, useState } from 'react';
+import { FC, useMemo, useState } from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
 
 type Props = {
+  isLegendary: boolean;
+  hasLair: boolean;
   onSave: (action: Action) => void;
 };
 
@@ -38,7 +40,7 @@ const StyledForm = styled('form')(() => ({
   },
 }));
 
-const ActionModal: FC<Props> = ({ onSave }) => {
+const ActionModal: FC<Props> = ({ isLegendary, hasLair, onSave }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const { control, handleSubmit, reset, watch } = useForm<Action>({});
@@ -54,13 +56,26 @@ const ActionModal: FC<Props> = ({ onSave }) => {
 
   const isAttack = watch('isAttack');
 
+  const actionTypeOptions = useMemo(
+    () =>
+      ActionTypeSelectOptions.filter((type) => {
+        if (type.value === 'Legendary' && !isLegendary) return false;
+        if (type.value === 'Lair' && !hasLair) return false;
+
+        return true;
+      }),
+    [isLegendary, hasLair]
+  );
+
   const handleClose = () => {
     setIsOpen(false);
     reset();
   };
 
   const onSubmit = (data: Action) => {
-    console.log(data);
+    onSave(data);
+    setIsOpen(false);
+    reset();
   };
 
   return (
@@ -94,7 +109,7 @@ const ActionModal: FC<Props> = ({ onSave }) => {
               control={control}
               fieldName="actionType"
               label="Action Type"
-              options={ActionTypeSelectOptions}
+              options={actionTypeOptions}
               isRequired
             />
             <SwitchField

@@ -15,6 +15,11 @@ export const AllConditionTypes = [
   'Unconscious',
 ];
 
+export const ConditionTypeSelectOptions = AllConditionTypes.map((ct) => ({
+  value: ct,
+  text: ct,
+}));
+
 type ConditionType = typeof AllConditionTypes[number];
 
 export default ConditionType;

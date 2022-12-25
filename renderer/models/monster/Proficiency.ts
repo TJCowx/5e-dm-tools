@@ -19,6 +19,11 @@ export const AllProficiencies = [
   'Persuasion',
 ] as const;
 
+export const ProficiencySelectOptions = AllProficiencies.map((prof) => ({
+  value: prof,
+  text: prof,
+}));
+
 type Proficiency = typeof AllProficiencies[number];
 
 export default Proficiency;

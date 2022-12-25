@@ -10,6 +10,11 @@ export const AllAlignments = [
   'Chaotic Evil',
 ] as const;
 
+export const AlignmentSelectOptions = AllAlignments.map((alignment) => ({
+  value: alignment,
+  text: alignment,
+}));
+
 type Alignment = typeof AllAlignments[number];
 
 export default Alignment;

@@ -1,5 +1,6 @@
 import mongoose, { Model, model, Schema } from 'mongoose';
 import Ability from './Ability';
+import Action from './Action';
 import Alignment from './Alignment';
 import Attribute from './Attribute';
 import ConditionType from './ConditionType';
@@ -51,7 +52,7 @@ export type MonsterModel = {
   languages: Language[];
 
   abilities: Ability[];
-  actions: any[]; // TODO: Array of actions
+  actions: Action[];
 
   isLegendary: boolean;
   hasLair: boolean;

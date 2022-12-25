@@ -18,67 +18,20 @@ import MultiselectField from 'components/Fields/MultiselectField';
 import SelectField from 'components/Fields/SelectField';
 import TextField from 'components/Fields/TextField';
 import Layout from 'components/Layout/Layout';
-import Ability from 'models/monster/Ability';
-import Alignment, { AllAlignments } from 'models/monster/Alignment';
-import Attribute, { AllAttributes } from 'models/monster/Attribute';
-import ConditionType, { AllConditionTypes } from 'models/monster/ConditionType';
-import DamageType, { AllDamageTypes } from 'models/monster/DamageType';
-import Language, { AllLanguages } from 'models/monster/Language';
-import MonsterSize, { AllMonsterSizes } from 'models/monster/MonsterSize';
-import MonsterType, { AllMonsterTypes } from 'models/monster/MonsterType';
-import Proficiency, { AllProficiencies } from 'models/monster/Proficiency';
+import { AlignmentSelectOptions } from 'models/monster/Alignment';
+import { AttributeSelectOptions } from 'models/monster/Attribute';
+import { ConditionTypeSelectOptions } from 'models/monster/ConditionType';
+import { DamageTypeSelectOptions } from 'models/monster/DamageType';
+import { LanguageSelectOptions } from 'models/monster/Language';
+import { MonsterModel } from 'models/monster/Monster';
+import { MonsterSizeSelectOptions } from 'models/monster/MonsterSize';
+import { MonsterTypeSelectOptions } from 'models/monster/MonsterType';
+import { ProficiencySelectOptions } from 'models/monster/Proficiency';
 import Link from 'next/link';
-import { abort } from 'process';
 import { Fragment } from 'react';
 import { useForm } from 'react-hook-form';
 
-// TODO: Monster omit the id
-type FormFields = {
-  name: string;
-
-  size: MonsterSize;
-  type: MonsterType;
-  alignment: Alignment;
-
-  armourClass: number;
-  hitPoints: number;
-  hitDie: string;
-
-  landSpeed?: number;
-  flySpeed?: number;
-  burrowSpeed?: number;
-  climbSpeed?: number;
-  hoverSpeed?: number;
-
-  blindsight?: number;
-  darkvision?: number;
-  tremorsense?: number;
-  truesight?: number;
-
-  strength: number;
-  dexterity: number;
-  intelligence: number;
-  constitution: number;
-  wisdom: number;
-  charisma: number;
-  profBonus: number;
-
-  proficiencies: Proficiency[];
-  savingThrows: Attribute[];
-  immunities: DamageType[];
-  condImmunities: ConditionType[];
-  resistances: DamageType[];
-  weaknesses: DamageType[];
-  languages: Language[];
-
-  challengeRating: number;
-  rewardXP: number;
-
-  abilities: Ability[];
-
-  isLegendary: boolean;
-  hasLair: boolean;
-};
+type FormFields = Omit<MonsterModel, 'id'>;
 
 const DefaultValues: FormFields = {
   name: '',
@@ -121,50 +74,11 @@ const DefaultValues: FormFields = {
   languages: [],
 
   abilities: [],
+  actions: [],
 
   isLegendary: false,
   hasLair: false,
 };
-
-const MonsterSizeOptions = AllMonsterSizes.map((size) => ({
-  value: size,
-  text: size,
-}));
-
-const MonsterTypeOptions = AllMonsterTypes.map((type) => ({
-  value: type,
-  text: type,
-}));
-
-const AlignmentOptions = AllAlignments.map((alignment) => ({
-  value: alignment,
-  text: alignment,
-}));
-
-const ProficiencyOptions = AllProficiencies.map((prof) => ({
-  value: prof,
-  text: prof,
-}));
-
-const SavingThrowOptions = AllAttributes.map((att) => ({
-  value: att,
-  text: att,
-}));
-
-const DamageTypeOptions = AllDamageTypes.map((dt) => ({
-  value: dt,
-  text: dt,
-}));
-
-const ConditionTypeOptions = AllConditionTypes.map((ct) => ({
-  value: ct,
-  text: ct,
-}));
-
-const LanguageOptions = AllLanguages.map((lang) => ({
-  value: lang,
-  text: lang,
-}));
 
 const StyledForm = styled('form')(() => ({
   maxWidth: '1200px',
@@ -212,6 +126,9 @@ const CreateMonster = () => {
   };
 
   const abilities = watch('abilities');
+  const actions = watch('actions');
+  const isLegendary = watch('isLegendary');
+  const hasLair = watch('hasLair');
 
   return (
     <Layout title="Create Monster">
@@ -245,21 +162,21 @@ const CreateMonster = () => {
               fieldName="size"
               control={control}
               label="Size"
-              options={MonsterSizeOptions}
+              options={MonsterSizeSelectOptions}
             />
             <SelectField
               id="type"
               fieldName="type"
               control={control}
               label="Type"
-              options={MonsterTypeOptions}
+              options={MonsterTypeSelectOptions}
             />
             <SelectField
               id="alignment"
               fieldName="alignment"
               control={control}
               label="Alignment"
-              options={AlignmentOptions}
+              options={AlignmentSelectOptions}
             />
           </div>
           <div className="grid">
@@ -268,7 +185,7 @@ const CreateMonster = () => {
               fieldName="languages"
               control={control}
               label="Languages"
-              options={LanguageOptions}
+              options={LanguageSelectOptions}
             />
             <IntegerField
               control={control}
@@ -412,14 +329,14 @@ const CreateMonster = () => {
               control={control}
               label="Proficiencies"
               fieldName="proficiencies"
-              options={ProficiencyOptions}
+              options={ProficiencySelectOptions}
             />
             <MultiselectField
               id="saving-throw-field"
               control={control}
               label="Saving Throws"
               fieldName="savingThrows"
-              options={SavingThrowOptions}
+              options={AttributeSelectOptions}
             />
           </div>
         </section>
@@ -432,28 +349,28 @@ const CreateMonster = () => {
               control={control}
               label="Immunities"
               fieldName="immunities"
-              options={DamageTypeOptions}
+              options={DamageTypeSelectOptions}
             />
             <MultiselectField
               id="cond-immunities-field"
               control={control}
               label="Condition Immunities"
               fieldName="condImmunities"
-              options={ConditionTypeOptions}
+              options={ConditionTypeSelectOptions}
             />
             <MultiselectField
               id="resistances-field"
               control={control}
               label="Resistances"
               fieldName="resistances"
-              options={DamageTypeOptions}
+              options={DamageTypeSelectOptions}
             />
             <MultiselectField
               id="weaknesses-field"
               control={control}
               label="Weaknesses"
               fieldName="weaknesses"
-              options={DamageTypeOptions}
+              options={DamageTypeSelectOptions}
             />
           </div>
         </section>
@@ -484,7 +401,13 @@ const CreateMonster = () => {
           <Typography variant="h6">Actions</Typography>
           <Divider />
           <List className="item-list" dense>
-            <ActionModal onSave={() => console.log('saved')} />
+            <ActionModal
+              isLegendary={isLegendary}
+              hasLair={hasLair}
+              onSave={(newAction) =>
+                setValue('actions', [...actions, newAction])
+              }
+            />
           </List>
         </section>
         <Button type="submit">Save</Button>
