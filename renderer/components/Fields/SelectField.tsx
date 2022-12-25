@@ -27,7 +27,7 @@ function SelectField<T>({ id, control, fieldName, label, options }: Props<T>) {
       control={control}
       name={fieldName}
       render={({ field, fieldState }) => (
-        <FormControl>
+        <FormControl className="form-select">
           <InputLabel id={id}>{label}</InputLabel>
           <Select {...field} label={label} error={fieldState.error != null}>
             {options.map(({ value, text }) => (

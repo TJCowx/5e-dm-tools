@@ -53,7 +53,7 @@ export type MonsterModel = {
   actions: any[]; // TODO: Array of actions
 
   isLegendary: boolean;
-  hasLairActions: boolean;
+  hasLair: boolean;
 };
 
 export const MonsterSchema = new Schema<MonsterModel>({
