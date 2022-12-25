@@ -37,6 +37,7 @@ function AttributeField<T>({ control, fieldName, label }: Props<T>) {
           error={fieldState.error != null}
           helperText={fieldState.error?.message}
           InputLabelProps={{ shrink: true }}
+          size="small"
         />
       )}
     />

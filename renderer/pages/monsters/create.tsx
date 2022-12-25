@@ -1,27 +1,15 @@
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import {
-  Button,
-  Checkbox,
-  Divider,
-  FormControl,
-  FormControlLabel,
-  FormHelperText,
-  IconButton,
-  InputLabel,
-  MenuItem,
-  Select,
-  styled,
-  TextField,
-  Typography,
-} from '@mui/material';
+import { Button, Divider, IconButton, styled, Typography } from '@mui/material';
 import AttributeField from 'components/Fields/AttributeField';
+import CheckboxField from 'components/Fields/CheckboxField';
 import SelectField from 'components/Fields/SelectField';
+import TextField from 'components/Fields/TextField';
 import Layout from 'components/Layout/Layout';
+import Alignment, { AllAlignments } from 'models/monster/Alignment';
 import MonsterSize, { AllMonsterSizes } from 'models/monster/MonsterSize';
 import MonsterType, { AllMonsterTypes } from 'models/monster/MonsterType';
-import Alignment, { AllAlignments } from 'models/monster/Alignment';
 import Link from 'next/link';
-import { Controller, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 
 type FormFields = {
   name: string;
@@ -74,7 +62,7 @@ const AlignmentOptions = AllAlignments.map((alignment) => ({
 
 const StyledForm = styled('form')(() => ({
   maxWidth: '1200px',
-  margin: '24px auto 0',
+  margin: '16px auto 0',
   '& .row-of-fields': {
     display: 'flex',
     flexWrap: 'wrap',
@@ -85,8 +73,14 @@ const StyledForm = styled('form')(() => ({
       flexGrow: 1,
     },
   },
+  '& .grid-3-col': {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+    rowGap: '12px',
+    columnGap: '12px',
+  },
   '& > section': {
-    '& hr': { margin: '8px 0' },
+    '& hr': { margin: '8px 0 12px' },
     marginBottom: '32px',
   },
   '& .attributes-container': {
@@ -116,53 +110,20 @@ const CreateMonster = () => {
         <section>
           <Typography variant="h6">Description</Typography>
           <Divider />
-          <Controller
-            name="name"
-            control={control}
-            render={({ field, fieldState }) => (
-              <TextField
-                {...field}
-                label="Name"
-                error={fieldState.error != null}
-                helperText={fieldState.error?.message}
-              />
-            )}
-          />
+          <TextField fieldName="name" label="Name" control={control} />
           <div className="row-of-fields">
-            <Controller
-              name="isLegendary"
+            <CheckboxField
+              fieldName="isLegendary"
+              label="Is Legendary"
               control={control}
-              render={({ field }) => (
-                <FormControlLabel
-                  label="Is Legendary"
-                  control={
-                    <Checkbox
-                      {...field}
-                      checked={field.value}
-                      onChange={(e) => field.onChange(e.target.checked)}
-                    />
-                  }
-                />
-              )}
             />
-            <Controller
-              name="hasLair"
+            <CheckboxField
+              fieldName="hasLair"
+              label="Has Lair"
               control={control}
-              render={({ field }) => (
-                <FormControlLabel
-                  label="Has Lair"
-                  control={
-                    <Checkbox
-                      {...field}
-                      checked={field.value}
-                      onChange={(e) => field.onChange(e.target.checked)}
-                    />
-                  }
-                />
-              )}
             />
           </div>
-          <div className="row-of-fields property-container">
+          <div className="grid-3-col">
             <SelectField
               id="size"
               fieldName="size"

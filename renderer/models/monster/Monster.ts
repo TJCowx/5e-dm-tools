@@ -25,10 +25,10 @@ export type MonsterModel = {
   climbSpeed: number;
   hoverSpeed: number;
 
-  blindsight: string;
-  darkvision: string;
-  tremorsense: string;
-  truesight: string;
+  blindsight: number;
+  darkvision: number;
+  tremorsense: number;
+  truesight: number;
 
   strength: number;
   dexterity: number;

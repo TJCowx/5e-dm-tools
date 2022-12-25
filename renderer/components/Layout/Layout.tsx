@@ -1,7 +1,9 @@
-import { FC, ReactNode } from 'react';
 import { styled } from '@mui/material/styles';
-import { ipcRenderer } from 'electron';
 import Typography from '@mui/material/Typography';
+import { Container } from '@mui/system';
+import { ipcRenderer } from 'electron';
+import { FC, ReactNode } from 'react';
+
 import NavDrawer from './NavDrawer';
 
 type Props = {
@@ -22,13 +24,12 @@ const Root = styled('div')(({ theme }) => ({
     webkitAppRegion: 'drag',
     position: 'sticky',
     top: 0,
+    zIndex: 1,
   },
   '& .content-wrapper': {
     display: 'flex',
   },
   '& main': {
-    margin: '12px 16px',
-    flexGrow: 1,
     maxWidth: '1200px',
   },
 }));
@@ -46,7 +47,7 @@ const Layout: FC<Props> = ({ title, children }) => {
       </div>
       <div className="content-wrapper">
         <NavDrawer />
-        <main>{children}</main>
+        <Container component="main">{children}</Container>
       </div>
     </Root>
   );
