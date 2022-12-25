@@ -20,6 +20,8 @@ const Root = styled('div')(({ theme }) => ({
     userSelect: 'none',
     appRegion: 'drag',
     webkitAppRegion: 'drag',
+    position: 'sticky',
+    top: 0,
   },
   '& .content-wrapper': {
     display: 'flex',
