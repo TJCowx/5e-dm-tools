@@ -16,6 +16,11 @@ export const AllDamageTypes = [
   'Piercing',
 ] as const;
 
+export const DamageTypeSelectOptions = AllDamageTypes.map((dt) => ({
+  value: dt,
+  text: dt,
+}));
+
 type DamageType = typeof AllDamageTypes[number];
 
 export default DamageType;

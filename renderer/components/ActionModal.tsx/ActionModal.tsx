@@ -1,6 +1,9 @@
 import AddIcon from '@mui/icons-material/Add';
+import DeleteIcon from '@mui/icons-material/Delete';
 import {
   Button,
+  IconButton,
+  List,
   ListItem,
   ListItemButton,
   ListItemIcon,
@@ -17,8 +20,9 @@ import {
   AttackDeliverySelectOptions,
   AttackTypeSelectOptions,
 } from 'models/monster/AttackType';
+import { DamageTypeSelectOptions } from 'models/monster/DamageType';
 import { FC, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { useFieldArray, useForm } from 'react-hook-form';
 
 type Props = {
   onSave: (action: Action) => void;
@@ -37,6 +41,15 @@ const ActionModal: FC<Props> = ({ onSave }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const { control, handleSubmit, reset } = useForm<Action>({});
+
+  const {
+    fields: damageFields,
+    append,
+    remove,
+  } = useFieldArray({
+    control,
+    name: 'damage',
+  });
 
   const handleClose = () => {
     setIsOpen(false);
@@ -74,6 +87,7 @@ const ActionModal: FC<Props> = ({ onSave }) => {
               label="Action Type"
               options={ActionTypeSelectOptions}
             />
+
             <SelectField
               id="attack-delivery-field"
               control={control}
@@ -85,11 +99,46 @@ const ActionModal: FC<Props> = ({ onSave }) => {
               id="attack-type-field"
               control={control}
               fieldName="attackType"
-              label="Action Type"
+              label="Attack Type"
               options={AttackTypeSelectOptions}
             />
             <IntegerField control={control} fieldName="toHit" label="To Hit" />
             <IntegerField control={control} fieldName="reach" label="Reach" />
+            <List dense>
+              {damageFields.map((damage, i) => (
+                <ListItem
+                  key={damage.id}
+                  secondaryAction={
+                    <IconButton onClick={() => remove(i)}>
+                      <DeleteIcon />
+                    </IconButton>
+                  }
+                >
+                  <TextField
+                    fieldName={`damage.${i}.damage`}
+                    label="Damage"
+                    control={control}
+                  />
+                  <SelectField
+                    id={`damage-${i}-type`}
+                    control={control}
+                    fieldName={`damage.${i}.type`}
+                    label="Damage Type"
+                    options={DamageTypeSelectOptions}
+                  />
+                </ListItem>
+              ))}
+              <ListItem>
+                <ListItemButton
+                  onClick={() => append({ damage: '', type: 'Non-Magical' })}
+                >
+                  <ListItemIcon>
+                    <AddIcon />
+                  </ListItemIcon>
+                  <ListItemText>Add damage</ListItemText>
+                </ListItemButton>
+              </ListItem>
+            </List>
             <div className="actions-container">
               <Button onClick={handleClose}>Cancel</Button>
               <Button variant="contained" disableElevation type="submit">

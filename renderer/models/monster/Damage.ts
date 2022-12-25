@@ -1,7 +1,7 @@
 import DamageType from './DamageType';
 
 type Damage = {
-  damage: number;
+  damage: string;
   type: DamageType;
 };
 
