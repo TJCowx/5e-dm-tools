@@ -12,9 +12,16 @@ type Props<T> = {
   fieldName: Path<UnPackAsyncDefaultValues<T>>;
   label: string;
   isRequired?: boolean;
+  isMultiline?: boolean;
 };
 
-function TextField<T>({ control, fieldName, label, isRequired }: Props<T>) {
+function TextField<T>({
+  control,
+  fieldName,
+  label,
+  isRequired,
+  isMultiline,
+}: Props<T>) {
   const rules = isRequired ? { required: 'This field is required' } : undefined;
 
   return (
@@ -29,6 +36,7 @@ function TextField<T>({ control, fieldName, label, isRequired }: Props<T>) {
           error={fieldState.error != null}
           helperText={fieldState.error?.message}
           size="small"
+          multiline={isMultiline}
         />
       )}
     />
@@ -37,6 +45,7 @@ function TextField<T>({ control, fieldName, label, isRequired }: Props<T>) {
 
 TextField.defaultProps = {
   isRequired: false,
+  isMultiline: false,
 };
 
 export default TextField;

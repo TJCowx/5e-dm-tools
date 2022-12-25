@@ -1,4 +1,5 @@
 import mongoose, { Model, model, Schema } from 'mongoose';
+import Ability from './Ability';
 import Alignment from './Alignment';
 import Attribute from './Attribute';
 import ConditionType from './ConditionType';
@@ -49,7 +50,7 @@ export type MonsterModel = {
   weaknesses: DamageType[];
   languages: Language[];
 
-  abilities: any[]; // TODO: Array of abilities
+  abilities: Ability[];
   actions: any[]; // TODO: Array of actions
 
   isLegendary: boolean;

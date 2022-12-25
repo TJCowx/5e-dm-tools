@@ -1,5 +1,15 @@
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import { Button, Divider, IconButton, styled, Typography } from '@mui/material';
+import {
+  Button,
+  Divider,
+  IconButton,
+  List,
+  ListItem,
+  ListItemText,
+  styled,
+  Typography,
+} from '@mui/material';
+import AbilityModal from 'components/AbilityModal/AbilityModal';
 import AttributeField from 'components/Fields/AttributeField';
 import CheckboxField from 'components/Fields/CheckboxField';
 import IntegerField from 'components/Fields/IntegerField';
@@ -7,6 +17,7 @@ import MultiselectField from 'components/Fields/MultiselectField';
 import SelectField from 'components/Fields/SelectField';
 import TextField from 'components/Fields/TextField';
 import Layout from 'components/Layout/Layout';
+import Ability from 'models/monster/Ability';
 import Alignment, { AllAlignments } from 'models/monster/Alignment';
 import Attribute, { AllAttributes } from 'models/monster/Attribute';
 import ConditionType, { AllConditionTypes } from 'models/monster/ConditionType';
@@ -16,6 +27,8 @@ import MonsterSize, { AllMonsterSizes } from 'models/monster/MonsterSize';
 import MonsterType, { AllMonsterTypes } from 'models/monster/MonsterType';
 import Proficiency, { AllProficiencies } from 'models/monster/Proficiency';
 import Link from 'next/link';
+import { abort } from 'process';
+import { Fragment } from 'react';
 import { useForm } from 'react-hook-form';
 
 // TODO: Monster omit the id
@@ -60,6 +73,8 @@ type FormFields = {
   challengeRating: number;
   rewardXP: number;
 
+  abilities: Ability[];
+
   isLegendary: boolean;
   hasLair: boolean;
 };
@@ -103,6 +118,8 @@ const DefaultValues: FormFields = {
   resistances: [],
   weaknesses: [],
   languages: [],
+
+  abilities: [],
 
   isLegendary: false,
   hasLair: false,
@@ -168,20 +185,32 @@ const StyledForm = styled('form')(() => ({
     rowGap: '16px',
     columnGap: '12px',
   },
-  '& > section': {
+  '& section': {
     '& hr': { margin: '8px 0 16px' },
     marginBottom: '32px',
+  },
+  '& .item-list': {
+    padding: '0 16px',
+    '& hr': { margin: '0' },
+    '& > .MuiListItem-root:first-of-type': {
+      paddingTop: '0',
+      '& .MuiListItemText-root': {
+        marginTop: 0,
+      },
+    },
   },
 }));
 
 const CreateMonster = () => {
-  const { handleSubmit, control } = useForm<FormFields>({
+  const { handleSubmit, control, setValue, watch } = useForm<FormFields>({
     defaultValues: DefaultValues,
   });
 
   const onSubmit = (data: FormFields) => {
     console.log(data);
   };
+
+  const abilities = watch('abilities');
 
   return (
     <Layout title="Create Monster">
@@ -209,7 +238,6 @@ const CreateMonster = () => {
               />
             </div>
           </div>
-
           <div className="grid mb-16">
             <SelectField
               id="size"
@@ -351,6 +379,13 @@ const CreateMonster = () => {
           </div>
           <div className="grid">
             <IntegerField
+              fieldName="profBonus"
+              label="Proficiency Bonus"
+              control={control}
+              min={0}
+              isRequired
+            />
+            <IntegerField
               fieldName="armourClass"
               label="Armour Class"
               control={control}
@@ -423,15 +458,32 @@ const CreateMonster = () => {
         </section>
         <section>
           <Typography variant="h6">Abilities</Typography>
-
           <Divider />
-          <div>TODO Abilities Here</div>
+          <List className="item-list" dense>
+            {abilities.map((ability) => (
+              <Fragment key={ability.name}>
+                <ListItem>
+                  <ListItemText
+                    primary={ability.name}
+                    secondary={ability.description}
+                    primaryTypographyProps={{ variant: 'subtitle1' }}
+                  />
+                </ListItem>
+                <Divider />
+              </Fragment>
+            ))}
+            <AbilityModal
+              onSave={(newAbility) =>
+                setValue('abilities', [...abilities, newAbility])
+              }
+            />
+          </List>
         </section>
         <section>
           <Typography variant="h6">Actions</Typography>
 
           <Divider />
-          <div>TODO Actions Here</div>
+          <div>TODO: Actions</div>
         </section>
         <Button type="submit">Save</Button>
       </StyledForm>
