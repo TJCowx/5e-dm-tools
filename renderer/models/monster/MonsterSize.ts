@@ -1,4 +1,4 @@
-const AllMonsterSizes = [
+export const AllMonsterSizes = [
   'Tiny',
   'Small',
   'Medium',
