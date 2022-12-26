@@ -53,8 +53,16 @@ const Monsters: FC = () => {
   };
 
   const handleDelete = (id: string) => {
-    console.log('DELETE', id);
-    setDeleteMonsterActionId(null);
+    fetch(`/api/monsters/${id}`, { method: 'DELETE' })
+      .then(() => {
+        setMonsters((prev) => prev.filter(({ id: mId }) => mId !== id));
+        setDeleteMonsterActionId(null);
+      })
+      .catch((e) => {
+        // TODO: Handle Error
+        console.error(e);
+        setDeleteMonsterActionId(null);
+      });
   };
 
   return (

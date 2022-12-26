@@ -25,7 +25,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       }
       break;
     default:
-      res.status(400).json({ success: false });
+      res.status(404);
   }
 };
 
