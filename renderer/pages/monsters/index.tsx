@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 import SearchIcon from '@mui/icons-material/Search';
+import EditIcon from '@mui/icons-material/Edit';
 import {
   Button,
   Dialog,
@@ -18,9 +19,13 @@ import {
 import List from '@mui/material/List';
 import Layout from 'components/Layout/Layout';
 import ListItemText from 'components/List/ListItemText';
-import Monster, { MonsterModel } from 'models/monster/Monster';
+import { MonsterModel } from 'models/monster/Monster';
 import Link from 'next/link';
 import { FC, Fragment, useEffect, useState } from 'react';
+
+const ListItemTwoSecondaryActions = styled(ListItem)(() => ({
+  paddingRight: 96,
+}));
 
 const ActionContainer = styled('div')(() => ({
   display: 'flex',
@@ -93,16 +98,23 @@ const Monsters: FC = () => {
       <List dense>
         {monsters.map(({ id, name, type, size, challengeRating }) => (
           <Fragment key={id}>
-            <ListItem
+            <ListItemTwoSecondaryActions
               secondaryAction={
-                <IconButton
-                  edge="end"
-                  aria-label={`Delete ${name}`}
-                  color="warning"
-                  onClick={() => openDialog(id)}
-                >
-                  <DeleteIcon />
-                </IconButton>
+                <>
+                  <Link href={`/monsters/edit/${id}`} passHref>
+                    <IconButton aria-label={`Edit ${name}`}>
+                      <EditIcon />
+                    </IconButton>
+                  </Link>
+                  <IconButton
+                    edge="end"
+                    aria-label={`Delete ${name}`}
+                    color="warning"
+                    onClick={() => openDialog(id)}
+                  >
+                    <DeleteIcon />
+                  </IconButton>
+                </>
               }
             >
               <ListItemText
@@ -116,7 +128,7 @@ const Monsters: FC = () => {
                   </>
                 }
               />
-            </ListItem>
+            </ListItemTwoSecondaryActions>
             <Divider component="li" />
           </Fragment>
         ))}
