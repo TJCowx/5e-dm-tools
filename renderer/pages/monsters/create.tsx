@@ -139,11 +139,11 @@ const CreateMonster = () => {
 
   return (
     <Layout title="Create Monster">
-      <Link href="/monsters" passHref>
+      <StyledLink href="/monsters" passHref>
         <IconButton aria-label="Go to monsters list">
           <ArrowBackIcon />
         </IconButton>
-      </Link>
+      </StyledLink>
       <StyledForm onSubmit={handleSubmit(onSubmit)}>
         <section>
           <Typography variant="h6">Description</Typography>

@@ -3,6 +3,12 @@ import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 import SearchIcon from '@mui/icons-material/Search';
 import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
   Divider,
   IconButton,
   InputAdornment,
@@ -27,6 +33,8 @@ const ActionContainer = styled('div')(() => ({
 
 const Monsters: FC = () => {
   const [monsters, setMonsters] = useState<MonsterModel[]>([]);
+  const [deleteMonsterActionId, setDeleteMonsterActionId] =
+    useState<string>(null);
 
   useEffect(() => {
     fetch('/api/monsters')
@@ -39,6 +47,15 @@ const Monsters: FC = () => {
         console.error(e);
       });
   }, []);
+
+  const openDialog = (id: string) => {
+    setDeleteMonsterActionId(id);
+  };
+
+  const handleDelete = (id: string) => {
+    console.log('DELETE', id);
+    setDeleteMonsterActionId(null);
+  };
 
   return (
     <Layout title="Monsters">
@@ -66,7 +83,12 @@ const Monsters: FC = () => {
           <Fragment key={id}>
             <ListItem
               secondaryAction={
-                <IconButton edge="end" aria-label={`Delete ${name}`}>
+                <IconButton
+                  edge="end"
+                  aria-label={`Delete ${name}`}
+                  color="warning"
+                  onClick={() => openDialog(id)}
+                >
                   <DeleteIcon />
                 </IconButton>
               }
@@ -77,6 +99,30 @@ const Monsters: FC = () => {
           </Fragment>
         ))}
       </List>
+      {deleteMonsterActionId != null && (
+        <Dialog open onClose={() => setDeleteMonsterActionId(null)}>
+          <DialogTitle>Confirm Delete Monster</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              This will <strong>permanently</strong> delete the monster. Do you
+              want to continue?
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => setDeleteMonsterActionId(null)}>
+              Cancel
+            </Button>
+            <Button
+              variant="contained"
+              color="warning"
+              disableElevation
+              onClick={() => handleDelete(deleteMonsterActionId)}
+            >
+              Delete
+            </Button>
+          </DialogActions>
+        </Dialog>
+      )}
     </Layout>
   );
 };
