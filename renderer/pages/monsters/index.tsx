@@ -22,6 +22,7 @@ import ListItemText from 'components/List/ListItemText';
 import { MonsterModel } from 'models/monster/Monster';
 import Link from 'next/link';
 import { FC, Fragment, useEffect, useState } from 'react';
+import DebouncedInput from 'components/Fields/DebouncedInput';
 
 const ListItemTwoSecondaryActions = styled(ListItem)(() => ({
   paddingRight: 96,
@@ -37,6 +38,7 @@ const ActionContainer = styled('div')(() => ({
 
 const Monsters: FC = () => {
   const [monsters, setMonsters] = useState<MonsterModel[]>([]);
+  const [filteredMonsters, setFilteredMonsters] = useState<MonsterModel[]>([]);
   const [deleteMonsterActionId, setDeleteMonsterActionId] =
     useState<string>(null);
 
@@ -44,18 +46,32 @@ const Monsters: FC = () => {
     fetch('/api/monsters')
       .then(async (res) => {
         const { data } = await res.json();
-        setMonsters(
-          data.map(({ _id: mId, ...monsterProps }) => ({
-            id: mId,
-            ...monsterProps,
-          }))
-        );
+        const resMonsters = data.map(({ _id: mId, ...monsterProps }) => ({
+          id: mId,
+          ...monsterProps,
+        }));
+        setMonsters(resMonsters);
+        setFilteredMonsters(resMonsters);
       })
       .catch((e) => {
         // TODO: Handle error
         console.error(e);
       });
   }, []);
+
+  const filterMonster = (filterText: string) => {
+    setFilteredMonsters(
+      monsters.filter(
+        ({ name, challengeRating, size, type }) =>
+          name.toLowerCase().includes(filterText.toLowerCase()) ||
+          `${challengeRating}`
+            .toLowerCase()
+            .includes(filterText.toLowerCase()) ||
+          size.toLowerCase().includes(filterText.toLowerCase()) ||
+          type.toLowerCase().includes(filterText.toLowerCase())
+      )
+    );
+  };
 
   const openDialog = (id: string) => {
     setDeleteMonsterActionId(id);
@@ -77,18 +93,7 @@ const Monsters: FC = () => {
   return (
     <Layout title="Monsters">
       <ActionContainer>
-        <TextField
-          label="Search"
-          variant="outlined"
-          size="small"
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <SearchIcon />
-              </InputAdornment>
-            ),
-          }}
-        />
+        <DebouncedInput value="" label="Search" onChange={filterMonster} />
         <Link href="/monsters/create" passHref>
           <IconButton aria-label="Create new monster">
             <AddIcon />
@@ -96,7 +101,7 @@ const Monsters: FC = () => {
         </Link>
       </ActionContainer>
       <List dense>
-        {monsters.map(({ id, name, type, size, challengeRating }) => (
+        {filteredMonsters.map(({ id, name, type, size, challengeRating }) => (
           <Fragment key={id}>
             <ListItemTwoSecondaryActions
               secondaryAction={
