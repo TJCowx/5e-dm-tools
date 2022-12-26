@@ -29,8 +29,10 @@ import { MonsterSizeSelectOptions } from 'models/monster/MonsterSize';
 import { MonsterTypeSelectOptions } from 'models/monster/MonsterType';
 import { ProficiencySelectOptions } from 'models/monster/Proficiency';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { Fragment } from 'react';
 import { useForm } from 'react-hook-form';
+import { convertMonsterFormToDB } from 'utils/monsterUtils';
 
 type FormFields = Omit<MonsterModel, 'id'>;
 
@@ -124,12 +126,27 @@ const StyledLink = styled(Link)(() => ({
 }));
 
 const CreateMonster = () => {
+  const router = useRouter();
+
   const { handleSubmit, control, setValue, watch } = useForm<FormFields>({
     defaultValues: DefaultValues,
   });
 
   const onSubmit = (data: FormFields) => {
-    console.log(data);
+    fetch('/api/monsters', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(convertMonsterFormToDB(data)),
+    })
+      .then(() => {
+        router.push('/monsters');
+      })
+      .catch((e) => {
+        // TODO: Handle error
+        console.error(e);
+      });
   };
 
   const abilities = watch('abilities');

@@ -1,3 +1,5 @@
+import { Schema } from 'mongoose';
+
 export const AllProficiencies = [
   'Athletics',
   'Acrobatics',
