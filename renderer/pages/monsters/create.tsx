@@ -401,6 +401,11 @@ const CreateMonster = () => {
           <Typography variant="h6">Actions</Typography>
           <Divider />
           <List className="item-list" dense>
+            {actions.map((action) => (
+              <ListItem key={action.name}>
+                <ListItemText>{action.name}</ListItemText>
+              </ListItem>
+            ))}
             <ActionModal
               isLegendary={isLegendary}
               hasLair={hasLair}

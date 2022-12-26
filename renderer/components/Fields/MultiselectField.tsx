@@ -8,6 +8,7 @@ import {
   MenuItem,
   Select,
 } from '@mui/material';
+import clsx from 'clsx';
 import {
   Control,
   Controller,
@@ -17,6 +18,7 @@ import {
 
 type Props<T> = {
   id: string;
+  className?: string;
   control: Control<T>;
   fieldName: Path<UnPackAsyncDefaultValues<T>>;
   label: string;
@@ -25,6 +27,7 @@ type Props<T> = {
 
 function MultiselectField<T>({
   id,
+  className,
   control,
   fieldName,
   label,
@@ -35,8 +38,16 @@ function MultiselectField<T>({
       control={control}
       name={fieldName}
       render={({ field, fieldState }) => (
-        <FormControl className="form-multiselect" size="small">
-          <InputLabel id={id}>{label}</InputLabel>
+        <FormControl
+          className={clsx({
+            'form-multiselect': true,
+            [`${className}`]: className,
+          })}
+          size="small"
+        >
+          <InputLabel id={id} shrink>
+            {label}
+          </InputLabel>
           <Select
             {...field}
             labelId={id}
@@ -47,6 +58,7 @@ function MultiselectField<T>({
               selected.join(', ')
             }
             multiple
+            notched
           >
             {options.map(({ value, text }) => (
               <MenuItem key={value} value={value} dense>
@@ -67,5 +79,9 @@ function MultiselectField<T>({
     />
   );
 }
+
+MultiselectField.defaultProps = {
+  className: undefined,
+};
 
 export default MultiselectField;

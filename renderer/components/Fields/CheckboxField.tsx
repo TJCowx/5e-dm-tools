@@ -1,5 +1,6 @@
 /* eslint-disable react/function-component-definition */
 import { Checkbox, FormControlLabel } from '@mui/material';
+import clsx from 'clsx';
 import {
   Control,
   Controller,
@@ -8,12 +9,13 @@ import {
 } from 'react-hook-form';
 
 type Props<T> = {
+  className?: string;
   control: Control<T>;
   fieldName: Path<UnPackAsyncDefaultValues<T>>;
   label: string;
 };
 
-function CheckboxField<T>({ control, fieldName, label }: Props<T>) {
+function CheckboxField<T>({ className, control, fieldName, label }: Props<T>) {
   return (
     <Controller
       name={fieldName}
@@ -21,6 +23,7 @@ function CheckboxField<T>({ control, fieldName, label }: Props<T>) {
       render={({ field }) => (
         <FormControlLabel
           label={label}
+          className={clsx({ [`${className}`]: className })}
           control={
             <Checkbox
               {...field}
@@ -33,5 +36,9 @@ function CheckboxField<T>({ control, fieldName, label }: Props<T>) {
     />
   );
 }
+
+CheckboxField.defaultProps = {
+  className: undefined,
+};
 
 export default CheckboxField;

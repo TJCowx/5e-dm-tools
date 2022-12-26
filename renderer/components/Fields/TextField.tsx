@@ -6,9 +6,11 @@ import {
   UnPackAsyncDefaultValues,
 } from 'react-hook-form';
 import { TextField as MuiTextField } from '@mui/material';
+import clsx from 'clsx';
 
 type Props<T> = {
   control: Control<T>;
+  className?: string;
   fieldName: Path<UnPackAsyncDefaultValues<T>>;
   label: string;
   isRequired?: boolean;
@@ -17,6 +19,7 @@ type Props<T> = {
 
 function TextField<T>({
   control,
+  className,
   fieldName,
   label,
   isRequired,
@@ -32,11 +35,13 @@ function TextField<T>({
       render={({ field, fieldState }) => (
         <MuiTextField
           {...field}
+          className={clsx({ [`${className}`]: className })}
           label={label}
           error={fieldState.error != null}
           helperText={fieldState.error?.message}
           size="small"
           multiline={isMultiline}
+          InputLabelProps={{ shrink: true }}
         />
       )}
     />
@@ -46,6 +51,7 @@ function TextField<T>({
 TextField.defaultProps = {
   isRequired: false,
   isMultiline: false,
+  className: undefined,
 };
 
 export default TextField;

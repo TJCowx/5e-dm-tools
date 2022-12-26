@@ -30,6 +30,26 @@ const StyledModal = styled(MuiModal)(() => ({
     justifyContent: 'space-between',
   },
   '& .content-container': { padding: '16px', overflowY: 'auto' },
+  '& .scroll-enabled': {
+    overflow: 'auto',
+    '&::-webkit-scrollbar': {
+      width: '16px',
+    },
+    '&::-webkit-scrollbar-corner': {
+      background: '#000',
+    },
+    '&::-webkit-scrollbar-thumb': {
+      backgroundColor: '#ccc',
+      borderRadius: '12px',
+      border: '4px solid transparent',
+      backgroundClip: 'content-box',
+      minWidth: '16px',
+      minHeigh: '16px',
+    },
+    '&::-webkit-scrollbar-track': {
+      backgroundColor: 'transparent',
+    },
+  },
 }));
 
 const Modal: FC<Props> = ({ title, isOpen, children, onClose }) => (
@@ -41,7 +61,7 @@ const Modal: FC<Props> = ({ title, isOpen, children, onClose }) => (
           <IconClose />
         </IconButton>
       </div>
-      <div className="content-container">{children}</div>
+      <div className="content-container scroll-enabled">{children}</div>
     </div>
   </StyledModal>
 );

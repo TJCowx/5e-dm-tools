@@ -6,6 +6,7 @@ import {
   MenuItem,
   Select,
 } from '@mui/material';
+import clsx from 'clsx';
 import { useMemo } from 'react';
 import {
   Control,
@@ -16,6 +17,7 @@ import {
 
 type Props<T> = {
   id: string;
+  className?: string;
   control: Control<T>;
   fieldName: Path<UnPackAsyncDefaultValues<T>>;
   label: string;
@@ -26,6 +28,7 @@ type Props<T> = {
 function SelectField<T>({
   id,
   control,
+  className,
   fieldName,
   label,
   options,
@@ -42,14 +45,20 @@ function SelectField<T>({
       name={fieldName}
       rules={rules}
       render={({ field, fieldState }) => (
-        <FormControl className="form-select" size="small">
-          <InputLabel id={id}>{label}</InputLabel>
+        <FormControl
+          className={clsx({ 'form-select': true, [`${className}`]: className })}
+          size="small"
+        >
+          <InputLabel id={id} shrink>
+            {label}
+          </InputLabel>
           <Select
             {...field}
             labelId={id}
             label={label}
             error={fieldState.error != null}
             autoWidth={false}
+            notched
           >
             {options.map(({ value, text }) => (
               <MenuItem key={value} value={value}>
@@ -68,6 +77,7 @@ function SelectField<T>({
 
 SelectField.defaultProps = {
   isRequired: false,
+  className: undefined,
 };
 
 export default SelectField;

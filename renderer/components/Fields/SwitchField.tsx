@@ -1,5 +1,6 @@
 /* eslint-disable react/function-component-definition */
-import { FormControlLabel, Slider, Switch } from '@mui/material';
+import { FormControlLabel, Switch } from '@mui/material';
+import clsx from 'clsx';
 import {
   Control,
   Controller,
@@ -8,12 +9,13 @@ import {
 } from 'react-hook-form';
 
 type Props<T> = {
+  className?: string;
   control: Control<T>;
   fieldName: Path<UnPackAsyncDefaultValues<T>>;
   label: string;
 };
 
-function SwitchField<T>({ control, fieldName, label }: Props<T>) {
+function SwitchField<T>({ className, control, fieldName, label }: Props<T>) {
   return (
     <Controller
       name={fieldName}
@@ -21,6 +23,7 @@ function SwitchField<T>({ control, fieldName, label }: Props<T>) {
       render={({ field }) => (
         <FormControlLabel
           label={label}
+          className={clsx({ [`${className}`]: className })}
           control={
             <Switch
               {...field}
@@ -33,5 +36,9 @@ function SwitchField<T>({ control, fieldName, label }: Props<T>) {
     />
   );
 }
+
+SwitchField.defaultProps = {
+  className: undefined,
+};
 
 export default SwitchField;

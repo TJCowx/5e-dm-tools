@@ -1,6 +1,6 @@
 import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
-import { Container } from '@mui/system';
+import { Box, Container } from '@mui/system';
 import { ipcRenderer } from 'electron';
 import { FC, ReactNode } from 'react';
 
@@ -26,8 +26,32 @@ const Root = styled('div')(({ theme }) => ({
     top: 0,
     zIndex: 1,
   },
-  '& .content-wrapper': {
+  '& .page-wrapper': {
     display: 'flex',
+  },
+  '& .content-wrapper': {
+    width: '100%',
+    maxHeight: 'calc(100vh - 28px)',
+  },
+  '& .scroll-enabled': {
+    overflow: 'auto',
+    '&::-webkit-scrollbar': {
+      width: '16px',
+    },
+    '&::-webkit-scrollbar-corner': {
+      background: '#000',
+    },
+    '&::-webkit-scrollbar-thumb': {
+      backgroundColor: '#ccc',
+      borderRadius: '12px',
+      border: '4px solid transparent',
+      backgroundClip: 'content-box',
+      minWidth: '16px',
+      minHeigh: '16px',
+    },
+    '&::-webkit-scrollbar-track': {
+      backgroundColor: 'transparent',
+    },
   },
   '& main': {
     maxWidth: '1200px',
@@ -45,9 +69,11 @@ const Layout: FC<Props> = ({ title, children }) => {
       >
         <Typography variant="caption">{formattedTitle}</Typography>
       </div>
-      <div className="content-wrapper">
+      <div className="page-wrapper">
         <NavDrawer />
-        <Container component="main">{children}</Container>
+        <Box className="content-wrapper scroll-enabled">
+          <Container component="main">{children}</Container>
+        </Box>
       </div>
     </Root>
   );

@@ -2,6 +2,7 @@ import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 import {
   Button,
+  Divider,
   IconButton,
   List,
   ListItem,
@@ -34,9 +35,30 @@ type Props = {
 const StyledForm = styled('form')(() => ({
   display: 'flex',
   flexDirection: 'column',
-  '& >:not(:last-of-type)': { marginBottom: '16px' },
+  '& .mb-16': { marginBottom: '16px' },
+  '& .mb-12': { marginBottom: '12px' },
   '& .actions-container > *:not(:last-of-type)': {
     marginRight: '16px',
+  },
+  '& .grid': {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+    rowGap: '16px',
+    columnGap: '12px',
+  },
+  '& .damage-list-item': {
+    display: 'flex',
+    '& .damage-field': {
+      width: '100px',
+      marginRight: '16px',
+    },
+    '& .damage-type-field': {
+      flex: 1,
+      marginRight: '16px',
+    },
+  },
+  '& .pl-0': {
+    paddingLeft: 0,
   },
 }));
 
@@ -93,12 +115,14 @@ const ActionModal: FC<Props> = ({ isLegendary, hasLair, onSave }) => {
           <StyledForm onSubmit={handleSubmit(onSubmit)}>
             <TextField
               fieldName="name"
+              className="mb-16"
               label="Name"
               control={control}
               isRequired
             />
             <TextField
               fieldName="description"
+              className="mb-16"
               label="Description"
               control={control}
               isMultiline
@@ -107,6 +131,7 @@ const ActionModal: FC<Props> = ({ isLegendary, hasLair, onSave }) => {
             <SelectField
               id="action-type-field"
               control={control}
+              className="mb-12"
               fieldName="actionType"
               label="Action Type"
               options={actionTypeOptions}
@@ -114,53 +139,61 @@ const ActionModal: FC<Props> = ({ isLegendary, hasLair, onSave }) => {
             />
             <SwitchField
               control={control}
+              className="mb-16"
               fieldName="isAttack"
               label="Is Attack"
             />
             {isAttack && (
               <>
-                <SelectField
-                  id="attack-delivery-field"
-                  control={control}
-                  fieldName="attackDelivery"
-                  label="Attack Delivery"
-                  options={AttackDeliverySelectOptions}
-                  isRequired={isAttack}
-                />
-                <SelectField
-                  id="attack-type-field"
-                  control={control}
-                  fieldName="attackType"
-                  label="Attack Type"
-                  options={AttackTypeSelectOptions}
-                  isRequired={isAttack}
-                />
-                <IntegerField
-                  control={control}
-                  fieldName="toHit"
-                  label="To Hit"
-                  min={0}
-                  isRequired={isAttack}
-                />
-                <IntegerField
-                  control={control}
-                  fieldName="reach"
-                  label="Reach"
-                  min={0}
-                  isRequired={isAttack}
-                />
+                <div className="grid mb-16">
+                  <SelectField
+                    id="attack-delivery-field"
+                    control={control}
+                    fieldName="attackDelivery"
+                    label="Attack Delivery"
+                    options={AttackDeliverySelectOptions}
+                    isRequired={isAttack}
+                  />
+                  <SelectField
+                    id="attack-type-field"
+                    control={control}
+                    fieldName="attackType"
+                    label="Attack Type"
+                    options={AttackTypeSelectOptions}
+                    isRequired={isAttack}
+                  />
+                </div>
+                <div className="grid mb-16">
+                  <IntegerField
+                    control={control}
+                    fieldName="toHit"
+                    label="To Hit"
+                    min={0}
+                    isRequired={isAttack}
+                  />
+                  <IntegerField
+                    control={control}
+                    fieldName="reach"
+                    label="Reach"
+                    min={0}
+                    isRequired={isAttack}
+                  />
+                </div>
+                <Divider />
                 <List dense>
                   {damageFields.map((damage, i) => (
                     <ListItem
                       key={damage.id}
+                      className="damage-list-item pl-0"
                       secondaryAction={
                         <IconButton onClick={() => remove(i)}>
-                          <DeleteIcon />
+                          <DeleteIcon color="warning" />
                         </IconButton>
                       }
                     >
                       <TextField
                         fieldName={`damage.${i}.damage`}
+                        className="damage-field"
                         label="Damage"
                         control={control}
                         isRequired={isAttack}
@@ -168,6 +201,7 @@ const ActionModal: FC<Props> = ({ isLegendary, hasLair, onSave }) => {
                       <SelectField
                         id={`damage-${i}-type`}
                         control={control}
+                        className="damage-type-field"
                         fieldName={`damage.${i}.type`}
                         label="Damage Type"
                         options={DamageTypeSelectOptions}
@@ -175,7 +209,7 @@ const ActionModal: FC<Props> = ({ isLegendary, hasLair, onSave }) => {
                       />
                     </ListItem>
                   ))}
-                  <ListItem>
+                  <ListItem className="pl-0">
                     <ListItemButton
                       onClick={() =>
                         append({ damage: '', type: 'Non-Magical' })

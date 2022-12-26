@@ -1,5 +1,6 @@
 /* eslint-disable react/function-component-definition */
 import { TextField } from '@mui/material';
+import clsx from 'clsx';
 import { useMemo } from 'react';
 import {
   Control,
@@ -10,6 +11,7 @@ import {
 } from 'react-hook-form';
 
 type Props<T> = {
+  className?: string;
   control: Control<T>;
   fieldName: Path<UnPackAsyncDefaultValues<T>>;
   label: string;
@@ -50,6 +52,7 @@ const createRules = (
 };
 
 function IntegerField<T>({
+  className,
   control,
   fieldName,
   label,
@@ -79,7 +82,10 @@ function IntegerField<T>({
         <TextField
           {...field}
           type="number"
-          className="integer-field"
+          className={clsx({
+            'integer-field': true,
+            [`${className}`]: className,
+          })}
           label={label}
           InputProps={inputProps}
           error={fieldState.error != null}
@@ -96,6 +102,7 @@ IntegerField.defaultProps = {
   min: null,
   max: null,
   isRequired: false,
+  className: undefined,
 };
 
 export default IntegerField;

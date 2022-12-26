@@ -1,17 +1,20 @@
 /* eslint-disable react/function-component-definition */
+import clsx from 'clsx';
 import { Control, Path, UnPackAsyncDefaultValues } from 'react-hook-form';
 
 import IntegerField from './IntegerField';
 
 type Props<T> = {
+  className?: string;
   control: Control<T>;
   fieldName: Path<UnPackAsyncDefaultValues<T>>;
   label: string;
 };
 
-function AttributeField<T>({ control, fieldName, label }: Props<T>) {
+function AttributeField<T>({ className, control, fieldName, label }: Props<T>) {
   return (
     <IntegerField
+      className={clsx({ [`${className}`]: className })}
       fieldName={fieldName}
       control={control}
       label={label}
@@ -21,5 +24,9 @@ function AttributeField<T>({ control, fieldName, label }: Props<T>) {
     />
   );
 }
+
+AttributeField.defaultProps = {
+  className: undefined,
+};
 
 export default AttributeField;
