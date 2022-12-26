@@ -1,8 +1,6 @@
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import {
   Button,
   Divider,
-  IconButton,
   List,
   ListItem,
   styled,
@@ -17,6 +15,7 @@ import MultiselectField from 'components/Fields/MultiselectField';
 import SelectField from 'components/Fields/SelectField';
 import TextField from 'components/Fields/TextField';
 import Layout from 'components/Layout/Layout';
+import NavBack from 'components/Links/NavBack';
 import ListItemText from 'components/List/ListItemText';
 import ActionListItem from 'components/Monster/ActionListItem';
 import { AlignmentSelectOptions } from 'models/monster/Alignment';
@@ -28,7 +27,6 @@ import { MonsterModel } from 'models/monster/Monster';
 import { MonsterSizeSelectOptions } from 'models/monster/MonsterSize';
 import { MonsterTypeSelectOptions } from 'models/monster/MonsterType';
 import { ProficiencySelectOptions } from 'models/monster/Proficiency';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { Fragment } from 'react';
 import { useForm } from 'react-hook-form';
@@ -119,12 +117,6 @@ const StyledForm = styled('form')(() => ({
   },
 }));
 
-const StyledLink = styled(Link)(() => ({
-  position: 'relative',
-  left: '-8px',
-  marginTop: '16px',
-}));
-
 const CreateMonster = () => {
   const router = useRouter();
 
@@ -156,11 +148,11 @@ const CreateMonster = () => {
 
   return (
     <Layout title="Create Monster">
-      <StyledLink href="/monsters" passHref>
-        <IconButton aria-label="Go to monsters list">
-          <ArrowBackIcon />
-        </IconButton>
-      </StyledLink>
+      <NavBack
+        href="/monsters"
+        ariaLabel="Go to monsters list"
+        tooltipText="Back to monsters list"
+      />
       <StyledForm onSubmit={handleSubmit(onSubmit)}>
         <section>
           <Typography variant="h6">Description</Typography>

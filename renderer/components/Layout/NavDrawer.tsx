@@ -19,7 +19,7 @@ type NavItem = {
 };
 
 const NavItems: NavItem[] = [
-  { text: 'Home', icon: <HomeIcon />, href: '/' },
+  { text: 'Home', icon: <HomeIcon />, href: '/home' },
   { text: 'Initiative', icon: <QueueIcon />, href: '/initiative' },
   { text: 'Monsters', icon: <PestControlRodentIcon />, href: '/monsters' },
 ];

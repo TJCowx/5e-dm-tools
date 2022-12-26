@@ -1,4 +1,5 @@
 import Layout from 'components/Layout/Layout';
+import NavBack from 'components/Links/NavBack';
 import dbConnect from 'db/dbConnect';
 import Monster, { MonsterModel } from 'models/monster/Monster';
 import { GetServerSideProps } from 'next/types';
@@ -15,8 +16,12 @@ const EditMonster: FC<Props> = ({ monster }) => {
   });
 
   return (
-    <Layout title="TODO">
-      <div>{JSON.stringify(monster)}</div>
+    <Layout title={`Edit ${monster.name}`}>
+      <NavBack
+        href="/monsters"
+        ariaLabel="Navigate to monsters list"
+        tooltipText="Back to monsters list"
+      />
     </Layout>
   );
 };
