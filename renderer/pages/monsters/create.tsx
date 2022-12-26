@@ -83,7 +83,7 @@ const DefaultValues: FormFields = {
 
 const StyledForm = styled('form')(() => ({
   maxWidth: '1200px',
-  margin: '16px auto 0',
+  margin: '16px auto 40px',
   '& .row-of-fields': {
     display: 'flex',
     flexWrap: 'wrap',
@@ -115,6 +115,12 @@ const StyledForm = styled('form')(() => ({
       },
     },
   },
+}));
+
+const StyledLink = styled(Link)(() => ({
+  position: 'relative',
+  left: '-8px',
+  marginTop: '16px',
 }));
 
 const CreateMonster = () => {

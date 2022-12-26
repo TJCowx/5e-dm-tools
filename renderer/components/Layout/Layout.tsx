@@ -32,6 +32,7 @@ const Root = styled('div')(({ theme }) => ({
   '& .content-wrapper': {
     width: '100%',
     maxHeight: 'calc(100vh - 28px)',
+    paddingTop: '20px',
   },
   '& .scroll-enabled': {
     overflow: 'auto',
