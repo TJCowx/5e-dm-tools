@@ -11,20 +11,20 @@ type Props = {
   tooltipText: string;
 };
 
-const StyledLink = styled(Link)(() => ({
+const StyledButton = styled(IconButton)(() => ({
   position: 'relative',
   left: '-8px',
-  marginTop: '16px',
+  marginBottom: '16px',
 }));
 
 const NavBack: FC<Props> = ({ href, ariaLabel, tooltipText }) => (
-  <StyledLink href={href}>
+  <Link href={href}>
     <Tooltip title={tooltipText}>
-      <IconButton aria-label={ariaLabel}>
+      <StyledButton aria-label={ariaLabel}>
         <ArrowBackIcon />
-      </IconButton>
+      </StyledButton>
     </Tooltip>
-  </StyledLink>
+  </Link>
 );
 
 export default NavBack;

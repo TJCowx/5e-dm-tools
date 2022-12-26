@@ -56,6 +56,7 @@ const Root = styled('div')(({ theme }) => ({
   },
   '& main': {
     maxWidth: '1200px',
+    marginBottom: '40px',
   },
 }));
 

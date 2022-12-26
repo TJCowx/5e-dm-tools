@@ -62,6 +62,10 @@ const StyledForm = styled('form')(() => ({
       },
     },
   },
+  '& .action-container': {
+    display: 'flex',
+    justifyContent: 'flex-end',
+  },
 }));
 
 const MonsterForm: FC<Props> = ({ control, onSubmit, setValue, watch }) => {
@@ -340,7 +344,16 @@ const MonsterForm: FC<Props> = ({ control, onSubmit, setValue, watch }) => {
           />
         </List>
       </section>
-      <Button type="submit">Save</Button>
+      <div className="action-container">
+        <Button
+          variant="contained"
+          disableElevation
+          type="submit"
+          className="right-align"
+        >
+          Save
+        </Button>
+      </div>
     </StyledForm>
   );
 };
