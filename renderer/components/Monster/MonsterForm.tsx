@@ -1,4 +1,3 @@
-/* eslint-disable react/function-component-definition */
 import styled from '@emotion/styled';
 import { Button, Divider, List, ListItem, Typography } from '@mui/material';
 import AbilityModal from 'components/AbilityModal/AbilityModal';
