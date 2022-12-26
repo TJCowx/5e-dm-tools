@@ -1,13 +1,15 @@
+import '@fontsource/roboto/300.css';
+import '@fontsource/roboto/400.css';
+import '@fontsource/roboto/500.css';
+import '@fontsource/roboto/700.css';
+import 'styles/global.css';
+
+import createCache from '@emotion/cache';
 import { CacheProvider, ThemeProvider } from '@emotion/react';
 import { CssBaseline } from '@mui/material';
 import useTheme from 'hooks/useTheme';
 import { AppProps } from 'next/app';
 import Head from 'next/head';
-import createCache from '@emotion/cache';
-import '@fontsource/roboto/300.css';
-import '@fontsource/roboto/400.css';
-import '@fontsource/roboto/500.css';
-import '@fontsource/roboto/700.css';
 
 const muiCache = createCache({
   key: 'mui',

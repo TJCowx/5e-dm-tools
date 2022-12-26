@@ -74,7 +74,7 @@ const MonsterForm: FC<Props> = ({ control, onSubmit, setValue, watch }) => {
   const hasLair = watch('hasLair');
 
   return (
-    <StyledForm onSubmit={onSubmit}>
+    <StyledForm className="pb-40" onSubmit={onSubmit}>
       <section>
         <Typography variant="h6">Description</Typography>
         <Divider />

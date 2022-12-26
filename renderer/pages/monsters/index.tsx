@@ -1,7 +1,6 @@
 import styled from '@emotion/styled';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
-import SearchIcon from '@mui/icons-material/Search';
 import EditIcon from '@mui/icons-material/Edit';
 import {
   Button,
@@ -12,17 +11,15 @@ import {
   DialogTitle,
   Divider,
   IconButton,
-  InputAdornment,
   ListItem,
-  TextField,
 } from '@mui/material';
 import List from '@mui/material/List';
+import DebouncedInput from 'components/Fields/DebouncedInput';
 import Layout from 'components/Layout/Layout';
 import ListItemText from 'components/List/ListItemText';
 import { MonsterModel } from 'models/monster/Monster';
 import Link from 'next/link';
 import { FC, Fragment, useEffect, useState } from 'react';
-import DebouncedInput from 'components/Fields/DebouncedInput';
 
 const ListItemTwoSecondaryActions = styled(ListItem)(() => ({
   paddingRight: 96,
