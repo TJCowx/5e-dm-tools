@@ -1,4 +1,5 @@
-import { ListItem, ListItemText, Typography } from '@mui/material';
+import { ListItem, Typography } from '@mui/material';
+import ListItemText from 'components/List/ListItemText';
 import Action from 'models/monster/Action';
 import { FC } from 'react';
 

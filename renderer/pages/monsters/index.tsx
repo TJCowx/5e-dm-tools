@@ -13,12 +13,11 @@ import {
   IconButton,
   InputAdornment,
   ListItem,
-  ListItemText,
   TextField,
 } from '@mui/material';
 import List from '@mui/material/List';
 import Layout from 'components/Layout/Layout';
-import dbConnect from 'db/dbConnect';
+import ListItemText from 'components/List/ListItemText';
 import Monster, { MonsterModel } from 'models/monster/Monster';
 import Link from 'next/link';
 import { FC, Fragment, useEffect, useState } from 'react';
@@ -40,7 +39,12 @@ const Monsters: FC = () => {
     fetch('/api/monsters')
       .then(async (res) => {
         const { data } = await res.json();
-        setMonsters(data.map(({ _id: mId, name }) => ({ id: mId, name })));
+        setMonsters(
+          data.map(({ _id: mId, ...monsterProps }) => ({
+            id: mId,
+            ...monsterProps,
+          }))
+        );
       })
       .catch((e) => {
         // TODO: Handle error
@@ -87,7 +91,7 @@ const Monsters: FC = () => {
         </Link>
       </ActionContainer>
       <List dense>
-        {monsters.map(({ id, name }) => (
+        {monsters.map(({ id, name, type, size, challengeRating }) => (
           <Fragment key={id}>
             <ListItem
               secondaryAction={
@@ -101,7 +105,17 @@ const Monsters: FC = () => {
                 </IconButton>
               }
             >
-              <ListItemText>{name}</ListItemText>
+              <ListItemText
+                primary={name}
+                secondary={
+                  <>
+                    CR: {challengeRating} |{' '}
+                    <i>
+                      {size} {type}
+                    </i>
+                  </>
+                }
+              />
             </ListItem>
             <Divider component="li" />
           </Fragment>
@@ -133,22 +147,6 @@ const Monsters: FC = () => {
       )}
     </Layout>
   );
-};
-
-export const getServerSideProps = async () => {
-  await dbConnect();
-
-  const res = await Monster.find({});
-
-  const monsters = res.map((doc) => {
-    const { _id: id, name } = doc.toObject();
-    return {
-      id: id.toString(),
-      name,
-    };
-  });
-
-  return { props: { monsters } };
 };
 
 export default Monsters;

@@ -10,7 +10,7 @@ import { MonsterModel } from 'models/monster/Monster';
  * @param monster The monster from the form
  * @returns the number fields parsed into numbers
  */
-export const convertMonsterFormToDB = (monster: MonsterModel) => {
+export const convertMonsterFormToDB = (monster: Partial<MonsterModel>) => {
   const {
     armourClass,
     hitPoints,

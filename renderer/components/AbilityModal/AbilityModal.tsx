@@ -1,13 +1,8 @@
 import AddIcon from '@mui/icons-material/Add';
-import {
-  Button,
-  ListItem,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-} from '@mui/material';
+import { Button, ListItem, ListItemButton, ListItemIcon } from '@mui/material';
 import { styled } from '@mui/system';
 import TextField from 'components/Fields/TextField';
+import ListItemText from 'components/List/ListItemText';
 import Modal from 'components/Modal/Modal';
 import Ability from 'models/monster/Ability';
 import { FC, useState } from 'react';
@@ -51,7 +46,7 @@ const AbilityModal: FC<Props> = ({ onSave }) => {
           <ListItemIcon>
             <AddIcon />
           </ListItemIcon>
-          <ListItemText>Add ability</ListItemText>
+          <ListItemText primary="Add ability" />
         </ListItemButton>
       </ListItem>
       {isModalOpen && (

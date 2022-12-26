@@ -8,13 +8,13 @@ import {
   ListItem,
   ListItemButton,
   ListItemIcon,
-  ListItemText,
   styled,
 } from '@mui/material';
 import IntegerField from 'components/Fields/IntegerField';
 import SelectField from 'components/Fields/SelectField';
 import SwitchField from 'components/Fields/SwitchField';
 import TextField from 'components/Fields/TextField';
+import ListItemText from 'components/List/ListItemText';
 import Modal from 'components/Modal/Modal';
 import Action from 'models/monster/Action';
 import { ActionTypeSelectOptions } from 'models/monster/ActionType';
@@ -119,7 +119,7 @@ const ActionModal: FC<Props> = ({ isLegendary, hasLair, onSave }) => {
           <ListItemIcon>
             <AddIcon />
           </ListItemIcon>
-          <ListItemText>Add action</ListItemText>
+          <ListItemText primary="Add action" />
         </ListItemButton>
       </ListItem>
       {isOpen && (
@@ -230,7 +230,7 @@ const ActionModal: FC<Props> = ({ isLegendary, hasLair, onSave }) => {
                       <ListItemIcon>
                         <AddIcon />
                       </ListItemIcon>
-                      <ListItemText>Add damage</ListItemText>
+                      <ListItemText primary="Add damage" />
                     </ListItemButton>
                   </ListItem>
                 </List>

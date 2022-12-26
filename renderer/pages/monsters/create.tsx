@@ -5,7 +5,6 @@ import {
   IconButton,
   List,
   ListItem,
-  ListItemText,
   styled,
   Typography,
 } from '@mui/material';
@@ -18,6 +17,7 @@ import MultiselectField from 'components/Fields/MultiselectField';
 import SelectField from 'components/Fields/SelectField';
 import TextField from 'components/Fields/TextField';
 import Layout from 'components/Layout/Layout';
+import ListItemText from 'components/List/ListItemText';
 import ActionListItem from 'components/Monster/ActionListItem';
 import { AlignmentSelectOptions } from 'models/monster/Alignment';
 import { AttributeSelectOptions } from 'models/monster/Attribute';
@@ -408,7 +408,6 @@ const CreateMonster = () => {
                   <ListItemText
                     primary={ability.name}
                     secondary={ability.description}
-                    primaryTypographyProps={{ variant: 'subtitle1' }}
                   />
                 </ListItem>
                 <Divider />
