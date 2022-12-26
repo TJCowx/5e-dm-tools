@@ -1,4 +1,3 @@
-import { styled } from '@mui/material';
 import Layout from 'components/Layout/Layout';
 import NavBack from 'components/Links/NavBack';
 import MonsterForm from 'components/Monster/MonsterForm';
@@ -8,9 +7,8 @@ import { Fragment } from 'react';
 import { useForm } from 'react-hook-form';
 import { convertMonsterFormToDB } from 'utils/monsterUtils';
 
-type FormFields = Partial<MonsterModel>;
-
-const DefaultValues: FormFields = {
+const DefaultValues: MonsterModel = {
+  id: undefined,
   name: '',
   size: undefined,
   type: undefined,
@@ -60,11 +58,11 @@ const DefaultValues: FormFields = {
 const CreateMonster = () => {
   const router = useRouter();
 
-  const { handleSubmit, control, setValue, watch } = useForm<FormFields>({
+  const { handleSubmit, control, setValue, watch } = useForm<MonsterModel>({
     defaultValues: DefaultValues,
   });
 
-  const onSubmit = (data: FormFields) => {
+  const onSubmit = (data: MonsterModel) => {
     fetch('/api/monsters', {
       method: 'POST',
       headers: {

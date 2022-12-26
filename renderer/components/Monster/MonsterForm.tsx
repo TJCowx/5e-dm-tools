@@ -24,10 +24,10 @@ import { Control, UseFormSetValue, UseFormWatch } from 'react-hook-form';
 import ActionListItem from './ActionListItem';
 
 type Props = {
-  control: Control<Partial<MonsterModel>>;
+  control: Control<MonsterModel>;
   onSubmit: FormEventHandler<HTMLFormElement>;
-  setValue: UseFormSetValue<Partial<MonsterModel>>;
-  watch: UseFormWatch<Partial<MonsterModel>>;
+  setValue: UseFormSetValue<MonsterModel>;
+  watch: UseFormWatch<MonsterModel>;
 };
 
 const StyledForm = styled('form')(() => ({
