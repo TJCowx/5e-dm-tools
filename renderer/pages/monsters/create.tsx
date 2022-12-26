@@ -18,6 +18,7 @@ import MultiselectField from 'components/Fields/MultiselectField';
 import SelectField from 'components/Fields/SelectField';
 import TextField from 'components/Fields/TextField';
 import Layout from 'components/Layout/Layout';
+import ActionListItem from 'components/Monster/ActionListItem';
 import { AlignmentSelectOptions } from 'models/monster/Alignment';
 import { AttributeSelectOptions } from 'models/monster/Attribute';
 import { ConditionTypeSelectOptions } from 'models/monster/ConditionType';
@@ -402,9 +403,7 @@ const CreateMonster = () => {
           <Divider />
           <List className="item-list" dense>
             {actions.map((action) => (
-              <ListItem key={action.name}>
-                <ListItemText>{action.name}</ListItemText>
-              </ListItem>
+              <ActionListItem key={action.name} action={action} />
             ))}
             <ActionModal
               isLegendary={isLegendary}

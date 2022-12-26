@@ -50,6 +50,7 @@ function MultiselectField<T>({
           </InputLabel>
           <Select
             {...field}
+            value={field.value || ''}
             labelId={id}
             label={label}
             error={fieldState.error != null}

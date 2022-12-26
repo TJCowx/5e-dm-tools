@@ -56,6 +56,7 @@ function SelectField<T>({
             {...field}
             labelId={id}
             label={label}
+            value={field.value || ''}
             error={fieldState.error != null}
             autoWidth={false}
             notched

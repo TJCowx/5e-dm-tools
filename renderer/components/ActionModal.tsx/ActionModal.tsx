@@ -65,7 +65,19 @@ const StyledForm = styled('form')(() => ({
 const ActionModal: FC<Props> = ({ isLegendary, hasLair, onSave }) => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const { control, handleSubmit, reset, watch } = useForm<Action>({});
+  const { control, handleSubmit, reset, watch } = useForm<Action>({
+    defaultValues: {
+      name: '',
+      description: '',
+      actionType: null,
+      isAttack: false,
+      attackDelivery: null,
+      attackType: null,
+      toHit: null,
+      damage: [],
+      reach: null,
+    },
+  });
 
   const {
     fields: damageFields,

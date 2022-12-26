@@ -27,7 +27,7 @@ function SwitchField<T>({ className, control, fieldName, label }: Props<T>) {
           control={
             <Switch
               {...field}
-              checked={field.value}
+              checked={field.value || false}
               onChange={(e) => field.onChange(e.target.checked)}
             />
           }
