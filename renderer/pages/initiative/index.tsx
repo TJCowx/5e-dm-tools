@@ -60,7 +60,9 @@ const findNextInitiative = (currentIndex: number, combatants: Combatant[]) => {
   while (nextIndex !== currentIndex && !foundAvailable) {
     const nextCombatant = combatants[nextIndex];
 
-    if (nextCombatant.isDead) {
+    if (!nextCombatant) {
+      nextIndex = 0;
+    } else if (nextCombatant.isDead) {
       nextIndex += 1;
     } else {
       foundAvailable = true;
@@ -75,7 +77,7 @@ const InitiativePage: FC = () => {
   const [players, setPlayers] = useState([]);
   const [activeMonsters, setActiveMonsters] = useState<MonsterModel[]>([]);
   const [combatants, setCombatants] = useState<Combatant[]>(testCombatants);
-  const [activeId, setActiveId] = useState<number>(2);
+  const [activeId, setActiveId] = useState<number>(null);
 
   const startInitiative = () => {
     setActiveId(combatants[0].id);
