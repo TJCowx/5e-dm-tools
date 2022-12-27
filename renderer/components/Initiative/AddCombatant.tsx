@@ -70,7 +70,10 @@ const AddCombatant: FC<Props> = ({ onAddCombatant }) => {
             hidden={activeTab !== 1}
             aria-labelledby="monster-tab"
           >
-            <AddMonsterCombatantForm />
+            <AddMonsterCombatantForm
+              onSubmit={() => console.log('SUBMIT')}
+              onCancel={() => setIsOpen(false)}
+            />
           </div>
         </Modal>
       )}

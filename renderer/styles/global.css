@@ -17,8 +17,15 @@ body,
 .mt-16 {
   margin-top: 16px;
 }
+.mb-16 {
+  margin-bottom: 16px;
+}
 .mr-16 {
   margin-right: 16px;
+}
+.my-16 {
+  margin-top: 16px;
+  margin-bottom: 16px;
 }
 /* #endregion ============= MARGINS ============= */
 

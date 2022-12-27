@@ -1,13 +1,21 @@
-import { Autocomplete, Button, TextField } from '@mui/material';
+import {
+  Autocomplete,
+  Button,
+  Divider,
+  TextField,
+  Typography,
+} from '@mui/material';
 import { styled } from '@mui/system';
 import IntegerField from 'components/Fields/IntegerField';
 import SwitchField from 'components/Fields/SwitchField';
+import FormattedStat from 'components/Monster/FormattedStat';
 import Combatant from 'models/initiative/Combatant';
 import { MonsterModel } from 'models/monster/Monster';
-import { FC, useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { FC, useEffect, useMemo, useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
 
 type FormInputs = {
+  monster: MonsterModel;
   groupInitiativeRoll: boolean;
   monsterCount: number;
 };
@@ -24,6 +32,10 @@ const StyledForm = styled('form')(() => ({
     display: 'flex',
     justifyContent: 'flex-end',
   },
+  '& .stats-container': {
+    display: 'flex',
+    columnGap: '12px',
+  },
 }));
 
 const AddMonsterCombatantForm: FC<Props> = ({
@@ -33,13 +45,16 @@ const AddMonsterCombatantForm: FC<Props> = ({
   const [availableMonsters, setAvailableMonsters] = useState<MonsterModel[]>(
     []
   );
-  const [selectedMonster, setSelectedMonster] = useState<MonsterModel | null>(
-    null
-  );
 
-  const { handleSubmit, reset, control } = useForm<FormInputs>({
-    defaultValues: { groupInitiativeRoll: true, monsterCount: 1 },
-  });
+  const { handleSubmit, reset, setValue, watch, control } = useForm<FormInputs>(
+    {
+      defaultValues: {
+        groupInitiativeRoll: true,
+        monsterCount: 1,
+        monster: null,
+      },
+    }
+  );
 
   useEffect(() => {
     fetch('/api/monsters', { method: 'GET' })
@@ -54,6 +69,13 @@ const AddMonsterCombatantForm: FC<Props> = ({
       });
   }, []);
 
+  const monsterId = watch('monster')?.id;
+
+  const selectedMonster = useMemo(
+    () => availableMonsters.find(({ id }) => id === monsterId),
+    [monsterId]
+  );
+
   const onSubmit = (data: FormInputs) => {
     console.log(data);
     reset();
@@ -65,7 +87,7 @@ const AddMonsterCombatantForm: FC<Props> = ({
   };
 
   const handleAutocompleteChange = (
-    val: (string | MonsterModel)[] | MonsterModel
+    val: (string | MonsterModel)[] | MonsterModel | string
   ) => {
     let newVal: MonsterModel;
 
@@ -75,29 +97,62 @@ const AddMonsterCombatantForm: FC<Props> = ({
       const firstVal = val[0];
       newVal =
         typeof firstVal === 'string'
-          ? availableMonsters.find(({ id }) => id === firstVal)
+          ? availableMonsters.find(({ id }) => firstVal === id)
           : firstVal;
+    } else if (typeof val === 'string') {
+      newVal = availableMonsters.find(({ id }) => val === id);
     } else {
       newVal = val;
     }
 
-    setSelectedMonster(newVal);
+    setValue('monster', newVal);
   };
 
   return (
     <StyledForm onSubmit={handleSubmit(onSubmit)}>
-      <Autocomplete<MonsterModel>
-        disablePortal
-        multiple={undefined}
-        options={availableMonsters}
-        getOptionLabel={(opt) => (typeof opt === 'string' ? opt : opt.name)}
-        size="small"
-        onChange={(_, val) => handleAutocompleteChange(val)}
-        renderInput={(params) => (
-          <TextField
-            {...params}
-            label="Monster"
-            InputLabelProps={{ shrink: true }}
+      <Controller
+        control={control}
+        name="monster"
+        rules={{ required: 'Monster is required' }}
+        render={({ field }) => (
+          <Autocomplete
+            value={field.value ?? null}
+            disablePortal
+            multiple={undefined}
+            options={availableMonsters}
+            getOptionLabel={(opt) => (typeof opt === 'string' ? opt : opt.name)}
+            size="small"
+            onChange={(_, val) => handleAutocompleteChange(val)}
+            isOptionEqualToValue={(
+              opt: MonsterModel,
+              val: string | MonsterModel
+            ) =>
+              val == null
+                ? false
+                : typeof val === 'string'
+                ? opt.id === val
+                : opt.id === val.id
+            }
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label="Monster"
+                InputLabelProps={{ shrink: true }}
+              />
+            )}
+            renderOption={(optProps, monsterOpt: MonsterModel) => (
+              <li {...optProps}>
+                <Typography variant="subtitle2">
+                  {monsterOpt.name}
+                  <Typography variant="body2">
+                    <i>
+                      CR: {monsterOpt.challengeRating} | {monsterOpt.size}{' '}
+                      {monsterOpt.type} | {monsterOpt.alignment}
+                    </i>
+                  </Typography>
+                </Typography>
+              </li>
+            )}
           />
         )}
       />
@@ -115,6 +170,54 @@ const AddMonsterCombatantForm: FC<Props> = ({
           label="Group Initiative Roll"
         />
       </div>
+      {selectedMonster != null && (
+        <div className="monster-container">
+          <Divider className="my-16" />
+          <div className="description-container mb-16">
+            <Typography variant="body2">
+              <i>
+                {selectedMonster.size} {selectedMonster.type} |{' '}
+                {selectedMonster.alignment}
+              </i>
+            </Typography>
+            <Typography variant="body2">
+              <Typography variant="subtitle2" component="span">
+                Challenge Rating:
+              </Typography>{' '}
+              {selectedMonster.challengeRating} ({selectedMonster.rewardXP}XP)
+            </Typography>
+            <Typography variant="body2">
+              <Typography variant="subtitle2" component="span">
+                Armour Class:
+              </Typography>{' '}
+              {selectedMonster.armourClass}
+            </Typography>
+            <Typography variant="body2">
+              <Typography variant="subtitle2" component="span">
+                Hit Points:
+              </Typography>{' '}
+              {selectedMonster.hitPoints} ({selectedMonster.hitDie})
+            </Typography>
+          </div>
+          <div className="stats-container">
+            <FormattedStat label="Strength" value={selectedMonster.strength} />
+            <FormattedStat
+              label="Dexterity"
+              value={selectedMonster.dexterity}
+            />
+            <FormattedStat
+              label="Constitution"
+              value={selectedMonster.constitution}
+            />
+            <FormattedStat
+              label="Intelligence"
+              value={selectedMonster.intelligence}
+            />
+            <FormattedStat label="Wisdom" value={selectedMonster.wisdom} />
+            <FormattedStat label="Charisma" value={selectedMonster.charisma} />
+          </div>
+        </div>
+      )}
       <div className="actions-container">
         <Button className="mr-16" onClick={handleClose}>
           Cancel
