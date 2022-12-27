@@ -6,6 +6,7 @@ import Layout from 'components/Layout/Layout';
 import orderBy from 'lodash.orderby';
 import Combatant from 'models/initiative/Combatant';
 import { FC, Fragment, useState } from 'react';
+import { getCombatantName } from 'utils/monsterUtils';
 
 const PageContainer = styled('div')(() => ({
   display: 'flex',
@@ -72,13 +73,32 @@ const InitiativePage: FC = () => {
 
   const addCombatants = (addedCombatants: Combatant[]) => {
     const newCombatants = [...combatants, ...addedCombatants];
+
+    const prevCombatants: Map<string, number> = new Map<string, number>();
+
     const orderedCombatants = orderBy(
       newCombatants,
       ['initiative', 'initiativeModifier', 'name'],
       ['desc', 'desc', 'asc']
     );
 
-    setCombatants(orderedCombatants);
+    const renamedCombatants = orderedCombatants.map((combatant) => {
+      if (combatant.isPlayer) return combatant;
+
+      if (!prevCombatants.has(combatant.monsterStats.id))
+        prevCombatants.set(combatant.monsterStats.id, 0);
+
+      const numPrev = prevCombatants.get(combatant.monsterStats.id);
+
+      prevCombatants.set(combatant.monsterStats.id, numPrev + 1);
+
+      return {
+        ...combatant,
+        name: getCombatantName(combatant.monsterStats.name, numPrev),
+      };
+    });
+
+    setCombatants(renamedCombatants);
   };
 
   const toggleAliveState = (id: string, newState: boolean) => {

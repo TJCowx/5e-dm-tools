@@ -66,3 +66,10 @@ export const convertMonsterFormToDB = (monster: Partial<MonsterModel>) => {
     })),
   };
 };
+
+/** Adds letter suffix to  */
+export const getCombatantName = (name: string, numPrevType: number) => {
+  const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
+  return `${name} ${alphabet.charAt(numPrevType)}`;
+};
