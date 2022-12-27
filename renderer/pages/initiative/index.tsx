@@ -1,12 +1,11 @@
 import AddIcon from '@mui/icons-material/Add';
 import { Button, Divider, Fab, List, ListSubheader } from '@mui/material';
-import { cyan, red } from '@mui/material/colors';
 import { styled } from '@mui/system';
 import InitiativeListItem from 'components/Initiative/InitiativeListItem';
 import Layout from 'components/Layout/Layout';
 import Combatant from 'models/initiative/Combatant';
 import { MonsterModel } from 'models/monster/Monster';
-import { FC, Fragment, useState } from 'react';
+import { FC, Fragment, useEffect, useState } from 'react';
 
 const PageContainer = styled('div')(() => ({
   display: 'flex',
@@ -20,9 +19,11 @@ const InitiativeContainer = styled('div')(() => ({
   maxWidth: '250px',
   display: 'flex',
   flexDirection: 'column',
+  '& .MuiList-root': { flexGrow: 1 },
   '& .action-container': {
     padding: '4px',
     borderTop: '1px solid rgba(0, 0, 0, 0.12)',
+    flexShrink: 1,
     '& button': {
       width: '100%',
     },
@@ -86,6 +87,19 @@ const InitiativePage: FC = () => {
     setActiveId(combatants[findNextInitiative(combatIndex, combatants)].id);
   };
 
+  const toggleAliveState = (id: number, newState: boolean) => {
+    setCombatants((prev) =>
+      prev.map((combatant) =>
+        combatant.id === id
+          ? {
+              ...combatant,
+              isDead: newState,
+            }
+          : combatant
+      )
+    );
+  };
+
   return (
     <Layout title="Initiative" disablePadding>
       <PageContainer>
@@ -100,6 +114,7 @@ const InitiativePage: FC = () => {
                 <InitiativeListItem
                   combatant={c}
                   isActive={c.id === activeId}
+                  onFlag={toggleAliveState}
                 />
                 <Divider />
               </Fragment>

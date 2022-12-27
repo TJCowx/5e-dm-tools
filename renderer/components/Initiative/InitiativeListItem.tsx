@@ -1,4 +1,4 @@
-import { ListItem, ListItemIcon } from '@mui/material';
+import { IconButton, ListItem, ListItemIcon } from '@mui/material';
 import { styled } from '@mui/system';
 import clsx from 'clsx';
 import ListItemText from 'components/List/ListItemText';
@@ -7,10 +7,13 @@ import { FC } from 'react';
 import DoubleArrowIcon from '@mui/icons-material/DoubleArrow';
 import { red, cyan, grey } from '@mui/material/colors';
 import DoNotDisturbIcon from '@mui/icons-material/DoNotDisturb';
+import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
+import CombatantOptions from './CombatantOptions';
 
 type Props = {
   combatant: Combatant;
   isActive: boolean;
+  onFlag: (id: number, isDead: boolean) => void;
 };
 
 const StyledListItem = styled(ListItem)(() => ({
@@ -25,8 +28,8 @@ const StyledListItem = styled(ListItem)(() => ({
   },
 }));
 
-const InitiativeListItem: FC<Props> = ({ combatant, isActive }) => {
-  const { name, isPlayer, initiative, isDead } = combatant;
+const InitiativeListItem: FC<Props> = ({ combatant, isActive, onFlag }) => {
+  const { id, name, isPlayer, initiative, isDead } = combatant;
 
   return (
     <StyledListItem
@@ -35,6 +38,9 @@ const InitiativeListItem: FC<Props> = ({ combatant, isActive }) => {
         'is-player': isPlayer,
         'is-dead': isDead,
       })}
+      secondaryAction={
+        <CombatantOptions isDead={isDead} onFlag={(flag) => onFlag(id, flag)} />
+      }
     >
       {isActive && (
         <ListItemIcon>
