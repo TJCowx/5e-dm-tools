@@ -3,6 +3,7 @@ type Combatant = {
   name: string;
   initiative: number;
   isPlayer: boolean;
+  isDead: boolean;
 };
 
 export default Combatant;
