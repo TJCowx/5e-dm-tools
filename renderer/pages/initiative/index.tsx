@@ -5,7 +5,6 @@ import InitiativeListItem from 'components/Initiative/InitiativeListItem';
 import Layout from 'components/Layout/Layout';
 import orderBy from 'lodash.orderby';
 import Combatant from 'models/initiative/Combatant';
-import { MonsterModel } from 'models/monster/Monster';
 import { FC, Fragment, useState } from 'react';
 
 const PageContainer = styled('div')(() => ({
@@ -71,8 +70,8 @@ const InitiativePage: FC = () => {
     setActiveId(combatants[findNextInitiative(combatIndex, combatants)].id);
   };
 
-  const addCombatant = (newCombatant: Combatant) => {
-    const newCombatants = [...combatants, newCombatant];
+  const addCombatants = (addedCombatants: Combatant[]) => {
+    const newCombatants = [...combatants, ...addedCombatants];
     const orderedCombatants = orderBy(
       newCombatants,
       ['initiative', 'initiativeModifier', 'name'],
@@ -125,7 +124,7 @@ const InitiativePage: FC = () => {
           </div>
         </InitiativeContainer>
         <MonsterContainer className="scroll-enabled">
-          <AddCombatant onAddCombatant={addCombatant} />
+          <AddCombatant onAddCombatants={addCombatants} />
         </MonsterContainer>
       </PageContainer>
     </Layout>

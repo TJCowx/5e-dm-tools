@@ -11,8 +11,11 @@ import SwitchField from 'components/Fields/SwitchField';
 import FormattedStat from 'components/Monster/FormattedStat';
 import Combatant from 'models/initiative/Combatant';
 import { MonsterModel } from 'models/monster/Monster';
-import { FC, useEffect, useMemo, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
+import { getModifier } from 'utils/modifierUtils';
+import { rollD20 } from 'utils/rollUtils';
+import { v4 } from 'uuid';
 
 type FormInputs = {
   monster: MonsterModel;
@@ -21,7 +24,7 @@ type FormInputs = {
 };
 
 type Props = {
-  onSubmit: (combatant: Combatant) => void;
+  onSubmit: (combatant: Combatant[]) => void;
   onCancel: () => void;
 };
 
@@ -38,10 +41,7 @@ const StyledForm = styled('form')(() => ({
   },
 }));
 
-const AddMonsterCombatantForm: FC<Props> = ({
-  onSubmit: emitSubmit,
-  onCancel,
-}) => {
+const AddMonsterCombatantForm: FC<Props> = ({ onSubmit, onCancel }) => {
   const [availableMonsters, setAvailableMonsters] = useState<MonsterModel[]>(
     []
   );
@@ -60,7 +60,6 @@ const AddMonsterCombatantForm: FC<Props> = ({
     fetch('/api/monsters', { method: 'GET' })
       .then(async (res) => {
         const { data } = await res.json();
-        console.log(data);
         setAvailableMonsters(data);
       })
       .catch((e) => {
@@ -69,15 +68,36 @@ const AddMonsterCombatantForm: FC<Props> = ({
       });
   }, []);
 
-  const monsterId = watch('monster')?.id;
+  const monster = watch('monster');
 
-  const selectedMonster = useMemo(
-    () => availableMonsters.find(({ id }) => id === monsterId),
-    [monsterId]
-  );
+  const handleMonsterSubmit = ({
+    monster: submittedMonster,
+    monsterCount,
+    groupInitiativeRoll,
+  }: FormInputs) => {
+    const initiativeModifier = getModifier(submittedMonster.dexterity);
+    const groupInitiative = rollD20(initiativeModifier);
 
-  const onSubmit = (data: FormInputs) => {
-    console.log(data);
+    const newCombatants: Combatant[] = [];
+
+    // eslint-disable-next-line no-plusplus
+    for (let i = 0; i < monsterCount; i++) {
+      newCombatants.push({
+        id: v4(),
+        name: submittedMonster.name, // TODO: Add (a/b/c/d)
+        initiative: groupInitiativeRoll
+          ? groupInitiative
+          : rollD20(initiativeModifier),
+        initiativeModifier,
+        isPlayer: false,
+        isDead: false,
+        maxHp: submittedMonster.hitPoints,
+        currentHp: submittedMonster.hitPoints,
+        monsterStats: submittedMonster,
+      });
+    }
+
+    onSubmit(newCombatants);
     reset();
   };
 
@@ -109,7 +129,7 @@ const AddMonsterCombatantForm: FC<Props> = ({
   };
 
   return (
-    <StyledForm onSubmit={handleSubmit(onSubmit)}>
+    <StyledForm onSubmit={handleSubmit(handleMonsterSubmit)}>
       <Controller
         control={control}
         name="monster"
@@ -170,51 +190,41 @@ const AddMonsterCombatantForm: FC<Props> = ({
           label="Group Initiative Roll"
         />
       </div>
-      {selectedMonster != null && (
+      {monster != null && (
         <div className="monster-container">
           <Divider className="my-16" />
           <div className="description-container mb-16">
             <Typography variant="body2">
               <i>
-                {selectedMonster.size} {selectedMonster.type} |{' '}
-                {selectedMonster.alignment}
+                {monster.size} {monster.type} | {monster.alignment}
               </i>
             </Typography>
             <Typography variant="body2">
               <Typography variant="subtitle2" component="span">
                 Challenge Rating:
               </Typography>{' '}
-              {selectedMonster.challengeRating} ({selectedMonster.rewardXP}XP)
+              {monster.challengeRating} ({monster.rewardXP}XP)
             </Typography>
             <Typography variant="body2">
               <Typography variant="subtitle2" component="span">
                 Armour Class:
               </Typography>{' '}
-              {selectedMonster.armourClass}
+              {monster.armourClass}
             </Typography>
             <Typography variant="body2">
               <Typography variant="subtitle2" component="span">
                 Hit Points:
               </Typography>{' '}
-              {selectedMonster.hitPoints} ({selectedMonster.hitDie})
+              {monster.hitPoints} ({monster.hitDie})
             </Typography>
           </div>
           <div className="stats-container">
-            <FormattedStat label="Strength" value={selectedMonster.strength} />
-            <FormattedStat
-              label="Dexterity"
-              value={selectedMonster.dexterity}
-            />
-            <FormattedStat
-              label="Constitution"
-              value={selectedMonster.constitution}
-            />
-            <FormattedStat
-              label="Intelligence"
-              value={selectedMonster.intelligence}
-            />
-            <FormattedStat label="Wisdom" value={selectedMonster.wisdom} />
-            <FormattedStat label="Charisma" value={selectedMonster.charisma} />
+            <FormattedStat label="Strength" value={monster.strength} />
+            <FormattedStat label="Dexterity" value={monster.dexterity} />
+            <FormattedStat label="Constitution" value={monster.constitution} />
+            <FormattedStat label="Intelligence" value={monster.intelligence} />
+            <FormattedStat label="Wisdom" value={monster.wisdom} />
+            <FormattedStat label="Charisma" value={monster.charisma} />
           </div>
         </div>
       )}

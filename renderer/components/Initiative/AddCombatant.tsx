@@ -8,7 +8,7 @@ import AddMonsterCombatantForm from './AddMonsterCombatantForm';
 import AddPlayerCombatantForm from './AddPlayerCombatantForm';
 
 type Props = {
-  onAddCombatant: (combatant: Combatant) => void;
+  onAddCombatants: (combatants: Combatant[]) => void;
 };
 
 const StyledTabs = styled(Tabs)(() => ({
@@ -21,7 +21,7 @@ const StyledFab = styled(Fab)(() => ({
   right: 16,
 }));
 
-const AddCombatant: FC<Props> = ({ onAddCombatant }) => {
+const AddCombatant: FC<Props> = ({ onAddCombatants }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [activeTab, setActiveTab] = useState(0);
 
@@ -60,7 +60,7 @@ const AddCombatant: FC<Props> = ({ onAddCombatant }) => {
             aria-labelledby="player-tab"
           >
             <AddPlayerCombatantForm
-              onSubmit={onAddCombatant}
+              onSubmit={(combatant) => onAddCombatants([combatant])}
               onCancel={() => setIsOpen(false)}
             />
           </div>
@@ -71,7 +71,7 @@ const AddCombatant: FC<Props> = ({ onAddCombatant }) => {
             aria-labelledby="monster-tab"
           >
             <AddMonsterCombatantForm
-              onSubmit={() => console.log('SUBMIT')}
+              onSubmit={onAddCombatants}
               onCancel={() => setIsOpen(false)}
             />
           </div>
