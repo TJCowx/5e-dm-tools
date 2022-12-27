@@ -11,7 +11,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     case 'GET':
       try {
         const monsters = await Monster.find({});
-        res.status(200).json({ success: true, data: monsters });
+        res.status(200).json({
+          success: true,
+          data: monsters.map((monster) => {
+            const { _id: id, ...restOfMonster } = monster.toObject();
+            return { ...restOfMonster, id };
+          }),
+        });
       } catch (e) {
         res.status(400).json({ success: false });
       }

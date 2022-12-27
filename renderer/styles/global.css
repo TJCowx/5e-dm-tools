@@ -13,6 +13,17 @@ body,
   max-height: 100%;
 }
 
+/* #region ============= MARGINS ============= */
+.mt-16 {
+  margin-top: 16px;
+}
+.mr-16 {
+  margin-right: 16px;
+}
+/* #endregion ============= MARGINS ============= */
+
+/* #region ============= PADDINGS ============= */
 .pb-40 {
   padding-bottom: 40px;
 }
+/* #endregion ============= PADDINGS ============= */

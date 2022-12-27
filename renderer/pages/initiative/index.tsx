@@ -1,11 +1,12 @@
-import AddIcon from '@mui/icons-material/Add';
-import { Button, Divider, Fab, List, ListSubheader } from '@mui/material';
+import { Button, Divider, List, ListSubheader } from '@mui/material';
 import { styled } from '@mui/system';
+import AddCombatant from 'components/Initiative/AddCombatant';
 import InitiativeListItem from 'components/Initiative/InitiativeListItem';
 import Layout from 'components/Layout/Layout';
+import orderBy from 'lodash.orderby';
 import Combatant from 'models/initiative/Combatant';
 import { MonsterModel } from 'models/monster/Monster';
-import { FC, Fragment, useEffect, useState } from 'react';
+import { FC, Fragment, useState } from 'react';
 
 const PageContainer = styled('div')(() => ({
   display: 'flex',
@@ -35,24 +36,6 @@ const MonsterContainer = styled('div')(() => ({
   flexGrow: 1,
 }));
 
-const StyledFab = styled(Fab)(() => ({
-  position: 'absolute',
-  bottom: 16,
-  right: 16,
-}));
-
-const testCombatants: Combatant[] = [
-  { id: 1, name: 'Player 1', initiative: 23, isPlayer: true, isDead: false },
-  { id: 2, name: 'Monster A', initiative: 20, isPlayer: false, isDead: false },
-  { id: 3, name: 'Player 2', initiative: 20, isPlayer: true, isDead: true },
-  { id: 4, name: 'Monster B', initiative: 19, isPlayer: false, isDead: true },
-  { id: 5, name: 'Player 3', initiative: 18, isPlayer: true, isDead: false },
-  { id: 6, name: 'Monster C', initiative: 15, isPlayer: false, isDead: false },
-  { id: 7, name: 'Player 4', initiative: 10, isPlayer: true, isDead: false },
-  { id: 8, name: 'Monster D', initiative: 5, isPlayer: false, isDead: false },
-  { id: 10, name: 'Monster E', initiative: 4, isPlayer: false, isDead: false },
-];
-
 const findNextInitiative = (currentIndex: number, combatants: Combatant[]) => {
   let nextIndex = currentIndex === combatants.length - 1 ? 0 : currentIndex + 1;
   let foundAvailable = false;
@@ -74,10 +57,9 @@ const findNextInitiative = (currentIndex: number, combatants: Combatant[]) => {
 
 const InitiativePage: FC = () => {
   const [hasStarted, setHasStarted] = useState(false);
-  const [players, setPlayers] = useState([]);
-  const [activeMonsters, setActiveMonsters] = useState<MonsterModel[]>([]);
-  const [combatants, setCombatants] = useState<Combatant[]>(testCombatants);
-  const [activeId, setActiveId] = useState<number>(null);
+  const [activeMonsters, setActiveMonsters] = useState<Combatant[]>([]);
+  const [combatants, setCombatants] = useState<Combatant[]>([]);
+  const [activeId, setActiveId] = useState<string>(null);
 
   const startInitiative = () => {
     setActiveId(combatants[0].id);
@@ -89,7 +71,18 @@ const InitiativePage: FC = () => {
     setActiveId(combatants[findNextInitiative(combatIndex, combatants)].id);
   };
 
-  const toggleAliveState = (id: number, newState: boolean) => {
+  const addCombatant = (newCombatant: Combatant) => {
+    const newCombatants = [...combatants, newCombatant];
+    const orderedCombatants = orderBy(
+      newCombatants,
+      ['initiative', 'initiativeModifier', 'name'],
+      ['desc', 'desc', 'asc']
+    );
+
+    setCombatants(orderedCombatants);
+  };
+
+  const toggleAliveState = (id: string, newState: boolean) => {
     setCombatants((prev) =>
       prev.map((combatant) =>
         combatant.id === id
@@ -132,9 +125,7 @@ const InitiativePage: FC = () => {
           </div>
         </InitiativeContainer>
         <MonsterContainer className="scroll-enabled">
-          <StyledFab color="primary" aria-label="Add Combatant" size="small">
-            <AddIcon />
-          </StyledFab>
+          <AddCombatant onAddCombatant={addCombatant} />
         </MonsterContainer>
       </PageContainer>
     </Layout>

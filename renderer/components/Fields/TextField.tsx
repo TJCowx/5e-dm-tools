@@ -9,6 +9,7 @@ import { TextField as MuiTextField } from '@mui/material';
 import clsx from 'clsx';
 
 type Props<T> = {
+  id?: string;
   control: Control<T>;
   className?: string;
   fieldName: Path<UnPackAsyncDefaultValues<T>>;
@@ -18,6 +19,7 @@ type Props<T> = {
 };
 
 function TextField<T>({
+  id,
   control,
   className,
   fieldName,
@@ -35,6 +37,7 @@ function TextField<T>({
       render={({ field, fieldState }) => (
         <MuiTextField
           {...field}
+          id={id}
           className={clsx({ [`${className}`]: className })}
           label={label}
           error={fieldState.error != null}
@@ -49,6 +52,7 @@ function TextField<T>({
 }
 
 TextField.defaultProps = {
+  id: undefined,
   isRequired: false,
   isMultiline: false,
   className: undefined,

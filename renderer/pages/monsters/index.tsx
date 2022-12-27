@@ -43,12 +43,9 @@ const Monsters: FC = () => {
     fetch('/api/monsters')
       .then(async (res) => {
         const { data } = await res.json();
-        const resMonsters = data.map(({ _id: mId, ...monsterProps }) => ({
-          id: mId,
-          ...monsterProps,
-        }));
-        setMonsters(resMonsters);
-        setFilteredMonsters(resMonsters);
+
+        setMonsters(data);
+        setFilteredMonsters(data);
       })
       .catch((e) => {
         // TODO: Handle error

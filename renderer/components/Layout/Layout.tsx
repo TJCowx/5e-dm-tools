@@ -33,6 +33,7 @@ const Root = styled('div')(({ theme }) => ({
     top: 0,
     zIndex: 1,
     flexGrow: 0,
+    flexShrink: 1,
   },
   '& .page-wrapper': {
     display: 'flex',

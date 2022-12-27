@@ -7,6 +7,7 @@ type Props = {
   title: string;
   isOpen: boolean;
   children: ReactNode;
+  contentContainerStyle?: object;
   onClose: () => void;
 };
 
@@ -52,7 +53,13 @@ const StyledModal = styled(MuiModal)(() => ({
   },
 }));
 
-const Modal: FC<Props> = ({ title, isOpen, children, onClose }) => (
+const Modal: FC<Props> = ({
+  title,
+  isOpen,
+  children,
+  contentContainerStyle,
+  onClose,
+}) => (
   <StyledModal open={isOpen} onClose={onClose}>
     <div className="modal-wrapper">
       <div className="header-container">
@@ -61,9 +68,18 @@ const Modal: FC<Props> = ({ title, isOpen, children, onClose }) => (
           <IconClose />
         </IconButton>
       </div>
-      <div className="content-container scroll-enabled">{children}</div>
+      <div
+        className="content-container scroll-enabled"
+        style={contentContainerStyle}
+      >
+        {children}
+      </div>
     </div>
   </StyledModal>
 );
+
+Modal.defaultProps = {
+  contentContainerStyle: undefined,
+};
 
 export default Modal;

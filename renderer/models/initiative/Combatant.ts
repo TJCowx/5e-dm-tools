@@ -1,7 +1,8 @@
 type Combatant = {
-  id: number;
+  id: string;
   name: string;
   initiative: number;
+  initiativeModifier: number;
   isPlayer: boolean;
   isDead: boolean;
 };

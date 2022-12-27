@@ -1,19 +1,19 @@
-import { IconButton, ListItem, ListItemIcon } from '@mui/material';
+import DoNotDisturbIcon from '@mui/icons-material/DoNotDisturb';
+import DoubleArrowIcon from '@mui/icons-material/DoubleArrow';
+import { ListItem, ListItemIcon } from '@mui/material';
+import { cyan, grey, red } from '@mui/material/colors';
 import { styled } from '@mui/system';
 import clsx from 'clsx';
 import ListItemText from 'components/List/ListItemText';
 import Combatant from 'models/initiative/Combatant';
 import { FC } from 'react';
-import DoubleArrowIcon from '@mui/icons-material/DoubleArrow';
-import { red, cyan, grey } from '@mui/material/colors';
-import DoNotDisturbIcon from '@mui/icons-material/DoNotDisturb';
-import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
+
 import CombatantOptions from './CombatantOptions';
 
 type Props = {
   combatant: Combatant;
   isActive: boolean;
-  onFlag: (id: number, isDead: boolean) => void;
+  onFlag: (id: string, isDead: boolean) => void;
 };
 
 const StyledListItem = styled(ListItem)(() => ({
@@ -29,7 +29,8 @@ const StyledListItem = styled(ListItem)(() => ({
 }));
 
 const InitiativeListItem: FC<Props> = ({ combatant, isActive, onFlag }) => {
-  const { id, name, isPlayer, initiative, isDead } = combatant;
+  const { id, name, isPlayer, initiative, initiativeModifier, isDead } =
+    combatant;
 
   return (
     <StyledListItem
@@ -52,7 +53,10 @@ const InitiativeListItem: FC<Props> = ({ combatant, isActive, onFlag }) => {
           <DoNotDisturbIcon />
         </ListItemIcon>
       )}
-      <ListItemText primary={name} secondary={`Initiative: ${initiative}`} />
+      <ListItemText
+        primary={name}
+        secondary={`Initiative: ${initiative} (${initiativeModifier})`}
+      />
     </StyledListItem>
   );
 };
