@@ -1,19 +1,22 @@
+import AddIcon from '@mui/icons-material/Add';
 import {
   Button,
   Divider,
+  Fab,
   List,
   ListItem,
   ListItemIcon,
   ListSubheader,
 } from '@mui/material';
+import { cyan, red } from '@mui/material/colors';
 import { styled } from '@mui/system';
+import clsx from 'clsx';
+import InitiativeListItem from 'components/Initiative/InitiativeListItem';
 import Layout from 'components/Layout/Layout';
 import ListItemText from 'components/List/ListItemText';
+import Combatant from 'models/initiative/Combatant';
 import { MonsterModel } from 'models/monster/Monster';
 import { FC, Fragment, useState } from 'react';
-import DoubleArrowIcon from '@mui/icons-material/DoubleArrow';
-import clsx from 'clsx';
-import { cyan, red } from '@mui/material/colors';
 
 const PageContainer = styled('div')(() => ({
   display: 'flex',
@@ -47,25 +50,25 @@ const InitiativeList = styled(List)(() => ({
 
 const MonsterContainer = styled('div')(() => ({
   padding: '12px',
+  flexGrow: 1,
 }));
 
-type Combatant = {
-  combatantId: number;
-  name: string;
-  initiative: number;
-  isPlayer: boolean;
-};
+const StyledFab = styled(Fab)(() => ({
+  position: 'absolute',
+  bottom: 16,
+  right: 16,
+}));
 
 const testCombatants: Combatant[] = [
-  { combatantId: 1, name: 'Player 1', initiative: 23, isPlayer: true },
-  { combatantId: 2, name: 'Monster A', initiative: 20, isPlayer: false },
-  { combatantId: 3, name: 'Player 2', initiative: 20, isPlayer: true },
-  { combatantId: 4, name: 'Monster B', initiative: 19, isPlayer: false },
-  { combatantId: 5, name: 'Player 3', initiative: 18, isPlayer: true },
-  { combatantId: 6, name: 'Monster C', initiative: 15, isPlayer: false },
-  { combatantId: 7, name: 'Player 4', initiative: 10, isPlayer: true },
-  { combatantId: 8, name: 'Monster D', initiative: 5, isPlayer: false },
-  { combatantId: 10, name: 'Monster E', initiative: 4, isPlayer: false },
+  { id: 1, name: 'Player 1', initiative: 23, isPlayer: true },
+  { id: 2, name: 'Monster A', initiative: 20, isPlayer: false },
+  { id: 3, name: 'Player 2', initiative: 20, isPlayer: true },
+  { id: 4, name: 'Monster B', initiative: 19, isPlayer: false },
+  { id: 5, name: 'Player 3', initiative: 18, isPlayer: true },
+  { id: 6, name: 'Monster C', initiative: 15, isPlayer: false },
+  { id: 7, name: 'Player 4', initiative: 10, isPlayer: true },
+  { id: 8, name: 'Monster D', initiative: 5, isPlayer: false },
+  { id: 10, name: 'Monster E', initiative: 4, isPlayer: false },
 ];
 
 const InitiativePage: FC = () => {
@@ -73,7 +76,7 @@ const InitiativePage: FC = () => {
   const [players, setPlayers] = useState([]);
   const [activeMonsters, setActiveMonsters] = useState<MonsterModel[]>([]);
   const [combatants, setCombatants] = useState<Combatant[]>([]);
-  const [activeCombatantId, setActiveCombatantId] = useState<number>(2);
+  const [activeId, setActiveId] = useState<number>(2);
 
   return (
     <Layout title="Initiative" disablePadding>
@@ -85,23 +88,11 @@ const InitiativePage: FC = () => {
             subheader={<ListSubheader>Initiative</ListSubheader>}
           >
             {testCombatants.map((c) => (
-              <Fragment key={c.combatantId}>
-                <ListItem
-                  className={clsx({
-                    active: c.combatantId === activeCombatantId,
-                    'is-monster': !c.isPlayer,
-                  })}
-                >
-                  {c.combatantId === activeCombatantId && (
-                    <ListItemIcon>
-                      <DoubleArrowIcon />
-                    </ListItemIcon>
-                  )}
-                  <ListItemText
-                    primary={c.name}
-                    secondary={`Initiative: ${c.initiative}`}
-                  />
-                </ListItem>
+              <Fragment key={c.id}>
+                <InitiativeListItem
+                  combatant={c}
+                  isActive={c.id === activeId}
+                />
                 <Divider />
               </Fragment>
             ))}
@@ -110,7 +101,11 @@ const InitiativePage: FC = () => {
             <Button variant="contained">Start</Button>
           </div>
         </InitiativeContainer>
-        <MonsterContainer className="scroll-enabled">Monster</MonsterContainer>
+        <MonsterContainer className="scroll-enabled">
+          <StyledFab color="primary" aria-label="Add Combatant" size="small">
+            <AddIcon />
+          </StyledFab>
+        </MonsterContainer>
       </PageContainer>
     </Layout>
   );
