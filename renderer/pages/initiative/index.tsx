@@ -1,6 +1,7 @@
 import { styled } from '@mui/system';
 import AddCombatant from 'components/Initiative/AddCombatant';
 import InitiativeList from 'components/Initiative/InitiativeList';
+import MonsterCombatantList from 'components/Initiative/MonsterCombatantList';
 import Layout from 'components/Layout/Layout';
 import Combatant from 'models/initiative/Combatant';
 import { FC, useState } from 'react';
@@ -10,11 +11,6 @@ const PageContainer = styled('div')(() => ({
   display: 'flex',
   maxHeight: '100%',
   height: '100%',
-}));
-
-const MonsterContainer = styled('div')(() => ({
-  padding: '12px',
-  flexGrow: 1,
 }));
 
 const InitiativePage: FC = () => {
@@ -78,10 +74,8 @@ const InitiativePage: FC = () => {
           combatants={combatants}
           onCombatantAliveToggle={toggleAliveState}
         />
-        <MonsterContainer className="scroll-enabled">
-          {monsterCombatants.join(', ')}
-          <AddCombatant onAddCombatants={addCombatants} />
-        </MonsterContainer>
+        <MonsterCombatantList combatants={combatants} />
+        <AddCombatant onAddCombatants={addCombatants} />
       </PageContainer>
     </Layout>
   );
