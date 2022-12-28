@@ -3,7 +3,9 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
+  InputAdornment,
   styled,
+  TextField,
   Typography,
 } from '@mui/material';
 import { grey } from '@mui/material/colors';
@@ -40,7 +42,7 @@ const MonsterCombatantItem: FC<Props> = ({ combatant }) => {
   const panelHeaderId = `panel-${id}-header`;
   const panelContentId = `panel-${id}-content`;
 
-  const [currentHp, setCurrentHp] = useState(monsterStats.hitPoints);
+  const [currentHp, setCurrentHp] = useState(`${monsterStats.hitPoints}`);
 
   return (
     <StyledAccordion disableGutters elevation={0} square>
@@ -63,12 +65,23 @@ const MonsterCombatantItem: FC<Props> = ({ combatant }) => {
         </SummaryContent>
       </StyledAccordionSummary>
       <StyledAccordionDetails id={panelContentId}>
-        Here is some info
-        <br />
-        <br />
-        <br />
-        <br />
-        Another thing
+        <div>
+          <TextField
+            label="Current HP"
+            type="number"
+            value={currentHp}
+            size="small"
+            onChange={(e) => setCurrentHp(e.target.value)}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  / {monsterStats.hitPoints}
+                </InputAdornment>
+              ),
+            }}
+            InputLabelProps={{ shrink: true }}
+          />
+        </div>
       </StyledAccordionDetails>
     </StyledAccordion>
   );
