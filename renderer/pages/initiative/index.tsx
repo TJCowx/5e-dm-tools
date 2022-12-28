@@ -14,7 +14,9 @@ const PageContainer = styled('div')(() => ({
 }));
 
 const InitiativePage: FC = () => {
-  const [monsterCombatants, setMonsterCombatants] = useState<string[]>([]);
+  const [monsterCombatants, setMonsterCombatants] = useState(
+    new Map<string, Combatant>([])
+  );
   const [combatants, setCombatants] = useState(new Map<string, Combatant>());
 
   const addCombatants = (addedCombatants: Combatant[]) => {
@@ -22,9 +24,12 @@ const InitiativePage: FC = () => {
 
     // Previous named combatants
     const updatedCombatants = new Map(combatants);
+    const updatedMonsterCombatants = new Map(monsterCombatants);
 
     // Count number of previously named combatants
-    Array.from(combatants.values()).forEach(({ monsterStats }) => {
+    Array.from(combatants.values()).forEach(({ isPlayer, monsterStats }) => {
+      if (isPlayer) return;
+
       if (!numCombatantsByMonsterType.has(monsterStats.id)) {
         numCombatantsByMonsterType.set(monsterStats.id, 0);
       }
@@ -33,16 +38,12 @@ const InitiativePage: FC = () => {
       numCombatantsByMonsterType.set(monsterStats.id, prev + 1);
     });
 
-    const newMonsterCombatants: string[] = [];
-
     // Rename any other previous combatants
     addedCombatants.forEach((combatant) => {
       const copyCombatant = combatant;
       const { id, monsterStats, isPlayer } = copyCombatant;
 
       if (!isPlayer) {
-        newMonsterCombatants.push(id);
-
         if (!numCombatantsByMonsterType.has(monsterStats.id)) {
           numCombatantsByMonsterType.set(monsterStats.id, 0);
         }
@@ -52,13 +53,15 @@ const InitiativePage: FC = () => {
         copyCombatant.name = getCombatantName(monsterStats.name, numPrev);
 
         numCombatantsByMonsterType.set(monsterStats.id, numPrev + 1);
+
+        updatedMonsterCombatants.set(id, copyCombatant);
       }
 
       updatedCombatants.set(id, copyCombatant);
     });
 
     setCombatants(updatedCombatants);
-    setMonsterCombatants((prev) => [...prev, ...newMonsterCombatants]);
+    setMonsterCombatants(updatedMonsterCombatants);
   };
 
   const toggleAliveState = (id: string, newState: boolean) => {
@@ -68,13 +71,13 @@ const InitiativePage: FC = () => {
   };
 
   return (
-    <Layout title="Initiative" disablePadding>
+    <Layout title="Initiative" disablePadding contentFillPage>
       <PageContainer>
         <InitiativeList
           combatants={combatants}
           onCombatantAliveToggle={toggleAliveState}
         />
-        <MonsterCombatantList combatants={combatants} />
+        <MonsterCombatantList combatants={monsterCombatants} />
         <AddCombatant onAddCombatants={addCombatants} />
       </PageContainer>
     </Layout>

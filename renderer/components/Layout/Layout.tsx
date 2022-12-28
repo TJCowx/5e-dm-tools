@@ -11,6 +11,7 @@ type Props = {
   title: string;
   children: ReactNode;
   disablePadding?: boolean;
+  contentFillPage?: boolean;
 };
 
 const Root = styled('div')(({ theme }) => ({
@@ -70,10 +71,16 @@ const Root = styled('div')(({ theme }) => ({
   '& main': {
     height: '100%',
     maxHeight: '100%',
+    '&.fill-page': { maxWidth: 'unset' },
   },
 }));
 
-const Layout: FC<Props> = ({ title, children, disablePadding }) => {
+const Layout: FC<Props> = ({
+  title,
+  children,
+  disablePadding,
+  contentFillPage,
+}) => {
   const formattedTitle = `${title} | 5e DM Tools`;
 
   return (
@@ -93,7 +100,12 @@ const Layout: FC<Props> = ({ title, children, disablePadding }) => {
             'no-padding': disablePadding,
           })}
         >
-          <Container component="main">{children}</Container>
+          <Container
+            component="main"
+            className={clsx({ 'fill-page': contentFillPage })}
+          >
+            {children}
+          </Container>
         </Box>
       </div>
     </Root>
@@ -102,6 +114,7 @@ const Layout: FC<Props> = ({ title, children, disablePadding }) => {
 
 Layout.defaultProps = {
   disablePadding: false,
+  contentFillPage: false,
 };
 
 export default Layout;

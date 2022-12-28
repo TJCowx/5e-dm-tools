@@ -1,5 +1,9 @@
 /* eslint-disable import/prefer-default-export */
+import ConditionType from 'models/monster/ConditionType';
+import DamageType from 'models/monster/DamageType';
 import { MonsterModel } from 'models/monster/Monster';
+import Proficiency from 'models/monster/Proficiency';
+import { getFormattedModifier, getSkillAttribute } from './modifierUtils';
 
 /**
  * Converts any number fields from strings to ints.
@@ -67,9 +71,96 @@ export const convertMonsterFormToDB = (monster: Partial<MonsterModel>) => {
   };
 };
 
-/** Adds letter suffix to  */
+/** Adds letter suffix to the combatant's name */
 export const getCombatantName = (name: string, numPrevType: number) => {
   const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
   return `${name} ${alphabet.charAt(numPrevType)}`;
+};
+
+/**
+ * Generates a string of speeds.
+ *
+ * @param monster the monster with the speed stats
+ * @returns the string that lists the speeds
+ */
+export const getSpeedString = (monster: MonsterModel) => {
+  const { landSpeed, flySpeed, burrowSpeed, climbSpeed, hoverSpeed } = monster;
+
+  const speedItems: string[] = [];
+
+  if (landSpeed) speedItems.push(`${landSpeed}ft`);
+  if (flySpeed) speedItems.push(`fly ${flySpeed}ft`);
+  if (burrowSpeed) speedItems.push(`burrow ${burrowSpeed}ft`);
+  if (climbSpeed) speedItems.push(`climb ${climbSpeed}ft`);
+  if (hoverSpeed) speedItems.push(`hover ${hoverSpeed}ft`);
+
+  return speedItems.join(' | ');
+};
+
+export const getSavingThrowsString = (monster: MonsterModel) => {
+  const {
+    strength,
+    dexterity,
+    constitution,
+    intelligence,
+    wisdom,
+    charisma,
+    savingThrows,
+    profBonus,
+  } = monster;
+
+  const proficientSavingThrows: string[] = [];
+
+  savingThrows.forEach((savingThrow) => {
+    switch (savingThrow) {
+      case 'Strength':
+        proficientSavingThrows.push(
+          `Str ${getFormattedModifier(strength, profBonus)}`
+        );
+        break;
+      case 'Dexterity':
+        proficientSavingThrows.push(
+          `Dex ${getFormattedModifier(dexterity, profBonus)}`
+        );
+        break;
+      case 'Constitution':
+        proficientSavingThrows.push(
+          `Con ${getFormattedModifier(constitution, profBonus)}`
+        );
+        break;
+      case 'Intelligence':
+        proficientSavingThrows.push(
+          `Int ${getFormattedModifier(intelligence, profBonus)}`
+        );
+        break;
+      case 'Wisdom':
+        proficientSavingThrows.push(
+          `Wis ${getFormattedModifier(wisdom, profBonus)}`
+        );
+        break;
+      case 'Charisma':
+        proficientSavingThrows.push(
+          `Cha ${getFormattedModifier(charisma, profBonus)}`
+        );
+        break;
+      default:
+    }
+  });
+
+  return proficientSavingThrows.join(' | ');
+};
+
+export const getProficienciesString = (monster: MonsterModel) => {
+  const { proficiencies, profBonus } = monster;
+
+  return proficiencies
+    .map(
+      (prof) =>
+        `${prof} ${getFormattedModifier(
+          getSkillAttribute(prof, monster),
+          profBonus
+        )}`
+    )
+    .join(' | ');
 };
