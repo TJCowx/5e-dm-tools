@@ -1,7 +1,7 @@
-import { Accordion, List, ListItem, ListSubheader } from '@mui/material';
 import { styled } from '@mui/system';
 import Combatant from 'models/initiative/Combatant';
 import { FC, useMemo, useState } from 'react';
+
 import MonsterCombatantItem from './MonsterCombatantItem';
 
 type Props = {

@@ -3,7 +3,6 @@ import NavBack from 'components/Links/NavBack';
 import MonsterForm from 'components/Monster/MonsterForm';
 import { MonsterModel } from 'models/monster/Monster';
 import { useRouter } from 'next/router';
-import { Fragment } from 'react';
 import { useForm } from 'react-hook-form';
 import { convertMonsterFormToDB } from 'utils/monsterUtils';
 

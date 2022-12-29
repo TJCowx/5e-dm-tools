@@ -1,8 +1,8 @@
 import { Typography } from '@mui/material';
-import { styled } from '@mui/system';
 import clsx from 'clsx';
 import Action from 'models/monster/Action';
 import { FC } from 'react';
+
 import ActionItem from './ActionItem';
 
 type Props = {
