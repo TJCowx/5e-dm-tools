@@ -27,6 +27,10 @@ const InitiativeContainer = styled('div')(() => ({
       width: '100%',
     },
   },
+  '& .MuiListItemIcon-root': {
+    minWidth: 0,
+    marginRight: '12px',
+  },
 }));
 
 const findNextCombatant = (
