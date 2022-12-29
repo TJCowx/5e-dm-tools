@@ -2,12 +2,14 @@ import Layout from 'components/Layout/Layout';
 import NavBack from 'components/Links/NavBack';
 import MonsterForm from 'components/Monster/MonsterForm';
 import dbConnect from 'db/dbConnect';
+import Ability from 'models/monster/Ability';
 import Monster, { MonsterModel } from 'models/monster/Monster';
+import { LeanDocument } from 'mongoose';
 import { useRouter } from 'next/router';
 import { GetServerSideProps } from 'next/types';
 import { FC } from 'react';
 import { useForm } from 'react-hook-form';
-import { convertMonsterFormToDB } from 'utils/monsterUtils';
+import { convertMonsterFormToDB, mapMonsterDoc } from 'utils/monsterUtils';
 
 type Props = {
   monster: MonsterModel;
@@ -60,15 +62,9 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   const res = await Monster.findById(query.monsterId);
 
   // TODO: Handle no monster error
+  // TODO: Handle other error
 
-  const { _id: id, ...restOfMonster } = res.toObject();
-
-  const monster: MonsterModel = {
-    id: id.toString(),
-    ...restOfMonster,
-  };
-
-  return { props: { monster } };
+  return { props: { monster: mapMonsterDoc(res.toObject()) } };
 };
 
 export default EditMonster;

@@ -1,4 +1,4 @@
-import { Schema } from 'mongoose';
+import { Schema, Types } from 'mongoose';
 import ActionType from './ActionType';
 import { AttackDelivery, AttackType } from './AttackType';
 import Damage, { DamageSchema } from './Damage';
@@ -13,6 +13,10 @@ type Action = {
   toHit: number;
   damage: Damage[];
   reach: number;
+};
+
+export type ActionDoc = Action & {
+  _id: Types.ObjectId;
 };
 
 export const ActionSchema = new Schema<Action>({

@@ -24,6 +24,7 @@ import {
 import { DamageTypeSelectOptions } from 'models/monster/DamageType';
 import { FC, useMemo, useState } from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
+import { stopPropagation } from 'utils/formUtils';
 
 type Props = {
   isLegendary: boolean;
@@ -123,7 +124,7 @@ const ActionModal: FC<Props> = ({ isLegendary, hasLair, onSave }) => {
       </ListItem>
       {isOpen && (
         <Modal title="Add Action" isOpen={isOpen} onClose={handleClose}>
-          <StyledForm onSubmit={handleSubmit(onSubmit)}>
+          <StyledForm onSubmit={stopPropagation(handleSubmit(onSubmit))}>
             <TextField
               fieldName="name"
               className="mb-16"

@@ -63,6 +63,7 @@ const CreateMonster = () => {
   });
 
   const onSubmit = (data: MonsterModel) => {
+    console.log(data);
     fetch('/api/monsters', {
       method: 'POST',
       headers: {

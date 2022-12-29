@@ -7,6 +7,7 @@ import Ability from 'models/monster/Ability';
 import { FC, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { MdAdd } from 'react-icons/md';
+import { stopPropagation } from 'utils/formUtils';
 
 type Props = {
   onSave: (ability: Ability) => void;
@@ -51,7 +52,7 @@ const AbilityModal: FC<Props> = ({ onSave }) => {
       </ListItem>
       {isModalOpen && (
         <Modal title="Add Ability" isOpen={isModalOpen} onClose={onCancel}>
-          <StyledForm onSubmit={handleSubmit(onSubmit)}>
+          <StyledForm onSubmit={stopPropagation(handleSubmit(onSubmit))}>
             <TextField fieldName="name" label="Name" control={control} />
             <TextField
               fieldName="description"

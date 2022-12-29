@@ -20,6 +20,7 @@ import {
   getSpeedString,
 } from 'utils/monsterUtils';
 import DeadIcon from 'components/Icons/DeadIcon';
+import AbilityFormat from 'components/LabelValue/AbilityFormat';
 
 type Props = {
   combatant: Combatant;
@@ -186,8 +187,19 @@ const MonsterCombatantItem: FC<Props> = ({
             />
           )}
         </div>
-        <Divider className="my-16" />
-        <div className="m-16">Abilities Here</div>
+        {!!monsterStats.abilities.length && (
+          <>
+            <Divider className="my-16" />
+            <div className="m-16">
+              {monsterStats.abilities.map((ability) => (
+                <AbilityFormat
+                  key={`${combatant.id}-${ability.name}`}
+                  ability={ability}
+                />
+              ))}
+            </div>
+          </>
+        )}
         <Divider className="my-16" />
         <div className="m-16">Actions Here</div>
       </StyledAccordionDetails>

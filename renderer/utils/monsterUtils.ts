@@ -1,8 +1,11 @@
 /* eslint-disable import/prefer-default-export */
+import Ability, { AbilityDoc } from 'models/monster/Ability';
+import Action, { ActionDoc } from 'models/monster/Action';
 import ConditionType from 'models/monster/ConditionType';
 import DamageType from 'models/monster/DamageType';
 import { MonsterModel } from 'models/monster/Monster';
 import Proficiency from 'models/monster/Proficiency';
+import { LeanDocument, Types } from 'mongoose';
 import { getFormattedModifier, getSkillAttribute } from './modifierUtils';
 
 /**
@@ -163,4 +166,31 @@ export const getProficienciesString = (monster: MonsterModel) => {
         )}`
     )
     .join(' | ');
+};
+
+const mapAbilityDoc = (doc: AbilityDoc): Ability => {
+  const { _id: id, ...ability } = doc;
+
+  return ability;
+};
+
+const mapActionDoc = (doc: ActionDoc): Action => {
+  const { _id: id, ...action } = doc;
+
+  return action;
+};
+
+export const mapMonsterDoc = (
+  doc: LeanDocument<MonsterModel> & {
+    _id: Types.ObjectId;
+  }
+) => {
+  const { _id: id, abilities, actions, ...restOfMonster } = doc;
+
+  return {
+    ...restOfMonster,
+    id: id.toString(),
+    abilities: abilities.map((ability) => mapAbilityDoc(ability as AbilityDoc)),
+    actions: actions.map((action) => mapActionDoc(action as ActionDoc)),
+  };
 };

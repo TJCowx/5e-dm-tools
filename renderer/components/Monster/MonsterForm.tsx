@@ -18,7 +18,7 @@ import { MonsterModel } from 'models/monster/Monster';
 import { MonsterSizeSelectOptions } from 'models/monster/MonsterSize';
 import { MonsterTypeSelectOptions } from 'models/monster/MonsterType';
 import { ProficiencySelectOptions } from 'models/monster/Proficiency';
-import { FC, FormEventHandler, Fragment } from 'react';
+import { FC, FormEventHandler, Fragment, useEffect } from 'react';
 import { Control, UseFormSetValue, UseFormWatch } from 'react-hook-form';
 import ActionListItem from './ActionListItem';
 
