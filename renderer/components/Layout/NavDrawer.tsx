@@ -34,7 +34,7 @@ const StyledDrawer = styled(Drawer)(({ theme }) => ({
   '& .MuiPaper-root': { top: '28px' },
   '& .MuiListItem-root': { padding: 0 },
   '& .MuiListItemButton-root': { padding: '6px 16px' },
-  '& .MuiListItemIcon-root': {
+  '& .MuiListItemIcon-root.rail-icon': {
     minWidth: 0,
     '&.is-active svg': { color: theme.palette.primary.main },
   },
@@ -54,6 +54,7 @@ const NavDrawer = () => {
                 <ListItemButton aria-label={text} component="a" href={href}>
                   <ListItemIcon
                     className={clsx({
+                      'rail-icon': true,
                       'is-active': router.pathname.startsWith(href),
                     })}
                   >

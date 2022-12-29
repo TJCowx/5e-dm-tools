@@ -19,6 +19,7 @@ import {
   getSavingThrowsString,
   getSpeedString,
 } from 'utils/monsterUtils';
+import DeadIcon from 'components/Icons/DeadIcon';
 
 type Props = {
   combatant: Combatant;
@@ -41,6 +42,11 @@ const SummaryContent = styled('div')(() => ({
   alignItems: 'center',
   width: '100%',
   marginRight: '12px',
+  '& .name-container': {
+    display: 'flex',
+    alignItems: 'center',
+    '& svg': { marginRight: '12px' },
+  },
 }));
 
 const StyledAccordionDetails = styled(AccordionDetails)(() => ({
@@ -84,7 +90,10 @@ const MonsterCombatantItem: FC<Props> = ({
         expandIcon={<MdExpandMore />}
       >
         <SummaryContent>
-          {combatant.name}
+          <span className="name-container">
+            {combatant.isDead && <DeadIcon />}
+            {combatant.name}
+          </span>
           <Typography
             variant="body2"
             color="GrayText"

@@ -2,10 +2,10 @@ import { ListItem, ListItemIcon } from '@mui/material';
 import { cyan, grey, red } from '@mui/material/colors';
 import { styled } from '@mui/system';
 import clsx from 'clsx';
+import DeadIcon from 'components/Icons/DeadIcon';
 import ListItemText from 'components/List/ListItemText';
 import Combatant from 'models/initiative/Combatant';
 import { FC } from 'react';
-import { GiDeathSkull } from 'react-icons/gi';
 import { MdDoubleArrow } from 'react-icons/md';
 
 import CombatantOptions from './CombatantOptions';
@@ -25,6 +25,10 @@ const StyledListItem = styled(ListItem)(() => ({
   },
   '&.is-dead': {
     background: grey[300],
+    '& .MuiListItemIcon-root': {
+      marginRight: '12px',
+      minWidth: 0,
+    },
   },
 }));
 
@@ -50,7 +54,7 @@ const InitiativeListItem: FC<Props> = ({ combatant, isActive, onFlag }) => {
       )}
       {isDead && (
         <ListItemIcon>
-          <GiDeathSkull color="warning" />
+          <DeadIcon />
         </ListItemIcon>
       )}
       <ListItemText
