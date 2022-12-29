@@ -21,6 +21,8 @@ import {
 } from 'utils/monsterUtils';
 import DeadIcon from 'components/Icons/DeadIcon';
 import AbilityFormat from 'components/LabelValue/AbilityFormat';
+import Action from 'models/monster/Action';
+import ActionList from './ActionList';
 
 type Props = {
   combatant: Combatant;
@@ -55,6 +57,9 @@ const StyledAccordionDetails = styled(AccordionDetails)(() => ({
     display: 'flex',
     columnGap: '12px',
   },
+  '& .ability-container': {
+    marginBottom: '8px',
+  },
 }));
 
 const MonsterCombatantItem: FC<Props> = ({
@@ -68,6 +73,10 @@ const MonsterCombatantItem: FC<Props> = ({
 
   const hasLoaded = useRef(false);
   const [currentHp, setCurrentHp] = useState(`${monsterStats.hitPoints}`);
+  const [actions, setActions] = useState<Action[]>([]);
+  const [legendaryActions, setLegendaryActions] = useState<Action[]>([]);
+  const [lairActions, setLairActions] = useState<Action[]>([]);
+  const [reactions, setReactions] = useState<Action[]>([]);
 
   useEffect(() => {
     if (hasLoaded.current) {
@@ -76,6 +85,36 @@ const MonsterCombatantItem: FC<Props> = ({
       hasLoaded.current = true;
     }
   }, [combatant.isDead]);
+
+  useEffect(() => {
+    const newActions: Action[] = [];
+    const newLegendaryActions: Action[] = [];
+    const newLairActions: Action[] = [];
+    const newReactions: Action[] = [];
+
+    monsterStats.actions.forEach((act) => {
+      switch (act.actionType) {
+        case 'Action':
+          newActions.push(act);
+          break;
+        case 'Reaction':
+          newReactions.push(act);
+          break;
+        case 'Legendary':
+          newLegendaryActions.push(act);
+          break;
+        case 'Lair':
+          newLairActions.push(act);
+          break;
+        default:
+      }
+    });
+
+    setActions(newActions);
+    setLegendaryActions(newLegendaryActions);
+    setReactions(newReactions);
+    setLairActions(newLairActions);
+  }, [monsterStats.actions]);
 
   return (
     <StyledAccordion
@@ -187,21 +226,63 @@ const MonsterCombatantItem: FC<Props> = ({
             />
           )}
         </div>
-        {!!monsterStats.abilities.length && (
+        {(!!monsterStats.abilities.length || monsterStats.isLegendary) && (
           <>
             <Divider className="my-16" />
-            <div className="m-16">
+            <div className="abilities-container, m-16">
               {monsterStats.abilities.map((ability) => (
                 <AbilityFormat
                   key={`${combatant.id}-${ability.name}`}
                   ability={ability}
                 />
               ))}
+              {monsterStats.isLegendary && (
+                <AbilityFormat
+                  ability={{
+                    name: 'Legendary Resistance (3/Day)',
+                    description: `If the ${monsterStats.name} fails a saving throw, it can choose to succeed instead.`,
+                  }}
+                />
+              )}
             </div>
           </>
         )}
-        <Divider className="my-16" />
-        <div className="m-16">Actions Here</div>
+        {!!actions.length && (
+          <>
+            <Divider className="my-16" />
+            <ActionList label="Actions" actions={actions} className="m-16" />
+          </>
+        )}
+        {!!reactions.length && (
+          <>
+            <Divider className="my-16" />
+            <ActionList
+              label="Reactions"
+              actions={reactions}
+              className="m-16"
+            />
+          </>
+        )}
+        {!!legendaryActions.length && (
+          <>
+            <Divider className="my-16" />
+            <ActionList
+              label="Legendary Actions"
+              actions={legendaryActions}
+              className="m-16"
+            />
+          </>
+        )}
+        {!!lairActions.length && (
+          <>
+            <Divider className="my-16" />
+            <ActionList
+              label="Lair Actions"
+              actions={lairActions}
+              className="m-16"
+            />
+          </>
+        )}
       </StyledAccordionDetails>
     </StyledAccordion>
   );

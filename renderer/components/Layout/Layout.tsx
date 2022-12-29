@@ -53,9 +53,6 @@ const Root = styled('div')(({ theme }) => ({
     '&::-webkit-scrollbar': {
       width: '16px',
     },
-    '&::-webkit-scrollbar-corner': {
-      background: '#000',
-    },
     '&::-webkit-scrollbar-thumb': {
       backgroundColor: '#ccc',
       borderRadius: '12px',
