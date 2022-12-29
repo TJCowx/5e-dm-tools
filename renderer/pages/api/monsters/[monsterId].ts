@@ -18,8 +18,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       break;
     case 'DELETE':
       try {
-        await Monster.deleteOne({ id: query.monsterId });
-        res.status(204).json({ success: false });
+        await Monster.deleteOne({ _id: query.monsterId });
+        res.status(204);
       } catch (e) {
         res.status(400).json({ success: false });
       }

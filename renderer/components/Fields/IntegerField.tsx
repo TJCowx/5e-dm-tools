@@ -9,6 +9,7 @@ import {
   RegisterOptions,
   UnPackAsyncDefaultValues,
 } from 'react-hook-form';
+import { RequireMessage } from 'utils/validationMessages';
 
 type Props<T> = {
   className?: string;
@@ -32,7 +33,7 @@ const createRules = (
     },
   };
 
-  if (isRequired) rules.required = 'This field is required';
+  if (isRequired) rules.required = RequireMessage;
 
   if (min != null) {
     rules.min = {
@@ -66,11 +67,13 @@ function IntegerField<T>({
   );
 
   const inputProps = useMemo(() => {
-    if (min != null && max != null) return { inputProps: { min, max } };
-    if (min != null && max == null) return { inputProps: { min } };
-    if (max != null && min == null) return { inputProps: { max } };
+    const stepProp = { step: 1 };
+    if (min != null && max != null)
+      return { inputProps: { min, max, ...stepProp } };
+    if (min != null && max == null) return { inputProps: { min, ...stepProp } };
+    if (max != null && min == null) return { inputProps: { max, ...stepProp } };
 
-    return undefined;
+    return { inputProps: stepProp };
   }, [min, max]);
 
   return (

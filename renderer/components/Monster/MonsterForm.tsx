@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { Button, Divider, List, ListItem, Typography } from '@mui/material';
+import { Button, Divider, IconButton, List, Typography } from '@mui/material';
 import AbilityModal from 'components/AbilityModal/AbilityModal';
 import ActionModal from 'components/ActionModal.tsx/ActionModal';
 import AttributeField from 'components/Fields/AttributeField';
@@ -9,6 +9,7 @@ import MultiselectField from 'components/Fields/MultiselectField';
 import SelectField from 'components/Fields/SelectField';
 import TextField from 'components/Fields/TextField';
 import ListItemText from 'components/List/ListItemText';
+import ListItemTwoSecondaryActions from 'components/List/ListItemTwoSecondaryActions';
 import { AlignmentSelectOptions } from 'models/monster/Alignment';
 import { AttributeSelectOptions } from 'models/monster/Attribute';
 import { ConditionTypeSelectOptions } from 'models/monster/ConditionType';
@@ -18,14 +19,15 @@ import { MonsterModel } from 'models/monster/Monster';
 import { MonsterSizeSelectOptions } from 'models/monster/MonsterSize';
 import { MonsterTypeSelectOptions } from 'models/monster/MonsterType';
 import { ProficiencySelectOptions } from 'models/monster/Proficiency';
-import { FC, FormEventHandler, Fragment, useEffect } from 'react';
-import { Control, UseFormSetValue, UseFormWatch } from 'react-hook-form';
+import { FC, FormEventHandler, Fragment } from 'react';
+import { Control, useFieldArray, UseFormWatch } from 'react-hook-form';
+import { MdDelete, MdEdit } from 'react-icons/md';
+
 import ActionListItem from './ActionListItem';
 
 type Props = {
   control: Control<MonsterModel>;
   onSubmit: FormEventHandler<HTMLFormElement>;
-  setValue: UseFormSetValue<MonsterModel>;
   watch: UseFormWatch<MonsterModel>;
 };
 
@@ -67,9 +69,18 @@ const StyledForm = styled('form')(() => ({
   },
 }));
 
-const MonsterForm: FC<Props> = ({ control, onSubmit, setValue, watch }) => {
-  const abilities = watch('abilities');
-  const actions = watch('actions');
+const MonsterForm: FC<Props> = ({ control, onSubmit, watch }) => {
+  const {
+    fields: abilities,
+    append: appendAbility,
+    remove: removeAbility,
+  } = useFieldArray({ control, name: 'abilities' });
+  const {
+    fields: actions,
+    append: appendAction,
+    remove: removeAction,
+  } = useFieldArray({ control, name: 'actions' });
+
   const isLegendary = watch('isLegendary');
   const hasLair = watch('hasLair');
 
@@ -79,8 +90,13 @@ const MonsterForm: FC<Props> = ({ control, onSubmit, setValue, watch }) => {
         <Typography variant="h6">Description</Typography>
         <Divider />
         <div className="grid mb-16">
-          <TextField fieldName="name" label="Name" control={control} />
-          <div className="row-of-fields">
+          <TextField
+            fieldName="name"
+            label="Name"
+            control={control}
+            isRequired
+          />
+          <div className="row-of-fields align-start">
             <CheckboxField
               fieldName="isLegendary"
               label="Is Legendary"
@@ -250,7 +266,12 @@ const MonsterForm: FC<Props> = ({ control, onSubmit, setValue, watch }) => {
             min={0}
             isRequired
           />
-          <TextField fieldName="hitDie" label="Hit Die" control={control} />
+          <TextField
+            fieldName="hitDie"
+            label="Hit Die"
+            control={control}
+            isRequired
+          />
         </div>
       </section>
       <section>
@@ -311,35 +332,56 @@ const MonsterForm: FC<Props> = ({ control, onSubmit, setValue, watch }) => {
         <Typography variant="h6">Abilities</Typography>
         <Divider />
         <List className="item-list" dense>
-          {abilities.map((ability) => (
+          {abilities.map((ability, i) => (
             <Fragment key={ability.name}>
-              <ListItem>
+              <ListItemTwoSecondaryActions
+                secondaryAction={
+                  <>
+                    <IconButton
+                      aria-label={`Edit ${ability.name}`}
+                      edge="end"
+                      onClick={() => console.log('Ability', ability.id)}
+                    >
+                      <MdEdit />
+                    </IconButton>
+                    <IconButton
+                      aria-label={`Delete ${ability.name}`}
+                      edge="end"
+                      color="warning"
+                      onClick={() => removeAbility(i)}
+                    >
+                      <MdDelete />
+                    </IconButton>
+                  </>
+                }
+              >
                 <ListItemText
                   primary={ability.name}
                   secondary={ability.description}
                 />
-              </ListItem>
+              </ListItemTwoSecondaryActions>
               <Divider />
             </Fragment>
           ))}
-          <AbilityModal
-            onSave={(newAbility) =>
-              setValue('abilities', [...abilities, newAbility])
-            }
-          />
+          <AbilityModal onSave={(newAbility) => appendAbility(newAbility)} />
         </List>
       </section>
       <section>
         <Typography variant="h6">Actions</Typography>
         <Divider />
         <List className="item-list" dense>
-          {actions.map((action) => (
-            <ActionListItem key={action.name} action={action} />
+          {actions.map((action, i) => (
+            <ActionListItem
+              key={action.name}
+              action={action}
+              onEdit={(id) => console.log('Edit', id)}
+              onDelete={() => removeAction(i)}
+            />
           ))}
           <ActionModal
             isLegendary={isLegendary}
             hasLair={hasLair}
-            onSave={(newAction) => setValue('actions', [...actions, newAction])}
+            onSave={(newAction) => appendAction(newAction)}
           />
         </List>
       </section>

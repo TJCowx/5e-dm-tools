@@ -14,6 +14,7 @@ import {
   Path,
   UnPackAsyncDefaultValues,
 } from 'react-hook-form';
+import { RequireMessage } from 'utils/validationMessages';
 
 type Props<T> = {
   id: string;
@@ -35,7 +36,13 @@ function SelectField<T>({
   isRequired,
 }: Props<T>) {
   const rules = useMemo(
-    () => (isRequired ? { required: 'This field is required' } : undefined),
+    () =>
+      isRequired
+        ? {
+            required: RequireMessage,
+            minLength: { value: 0, message: RequireMessage },
+          }
+        : undefined,
     [isRequired]
   );
 

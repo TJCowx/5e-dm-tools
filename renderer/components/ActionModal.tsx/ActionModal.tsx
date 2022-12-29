@@ -1,4 +1,3 @@
-import { MdAdd, MdDelete } from 'react-icons/md';
 import {
   Button,
   Divider,
@@ -22,9 +21,9 @@ import {
   AttackTypeSelectOptions,
 } from 'models/monster/AttackType';
 import { DamageTypeSelectOptions } from 'models/monster/DamageType';
-import { FC, useMemo, useState } from 'react';
-import { useFieldArray, useForm } from 'react-hook-form';
-import { stopPropagation } from 'utils/formUtils';
+import { BaseSyntheticEvent, FC, useMemo, useState } from 'react';
+import { SubmitHandler, useFieldArray, useForm } from 'react-hook-form';
+import { MdAdd, MdDelete } from 'react-icons/md';
 
 type Props = {
   isLegendary: boolean;
@@ -48,7 +47,7 @@ const StyledForm = styled('form')(() => ({
   },
   '& .damage-list-item': {
     display: 'flex',
-    '& .damage-field': {
+    '& .damage-field, .damage-dice-field': {
       width: '100px',
       marginRight: '16px',
     },
@@ -106,7 +105,11 @@ const ActionModal: FC<Props> = ({ isLegendary, hasLair, onSave }) => {
     reset();
   };
 
-  const onSubmit = (data: Action) => {
+  const onSubmit: SubmitHandler<Action> = (
+    data: Action,
+    e: BaseSyntheticEvent
+  ) => {
+    e.preventDefault();
     onSave(data);
     setIsOpen(false);
     reset();
@@ -124,7 +127,7 @@ const ActionModal: FC<Props> = ({ isLegendary, hasLair, onSave }) => {
       </ListItem>
       {isOpen && (
         <Modal title="Add Action" isOpen={isOpen} onClose={handleClose}>
-          <StyledForm onSubmit={stopPropagation(handleSubmit(onSubmit))}>
+          <StyledForm onSubmit={handleSubmit(onSubmit)}>
             <TextField
               fieldName="name"
               className="mb-16"
@@ -138,7 +141,7 @@ const ActionModal: FC<Props> = ({ isLegendary, hasLair, onSave }) => {
               label="Description"
               control={control}
               isMultiline
-              isRequired
+              isRequired={!isAttack}
             />
             <SelectField
               id="action-type-field"
@@ -198,8 +201,8 @@ const ActionModal: FC<Props> = ({ isLegendary, hasLair, onSave }) => {
                       key={damage.id}
                       className="damage-list-item pl-0"
                       secondaryAction={
-                        <IconButton onClick={() => remove(i)}>
-                          <MdDelete color="warning" />
+                        <IconButton onClick={() => remove(i)} color="warning">
+                          <MdDelete />
                         </IconButton>
                       }
                     >
@@ -207,6 +210,13 @@ const ActionModal: FC<Props> = ({ isLegendary, hasLair, onSave }) => {
                         fieldName={`damage.${i}.damage`}
                         className="damage-field"
                         label="Damage"
+                        control={control}
+                        isRequired={isAttack}
+                      />
+                      <TextField
+                        fieldName={`damage.${i}.damageDice`}
+                        className="damage-dice-field"
+                        label="Damage Dice"
                         control={control}
                         isRequired={isAttack}
                       />
@@ -224,7 +234,12 @@ const ActionModal: FC<Props> = ({ isLegendary, hasLair, onSave }) => {
                   <ListItem className="pl-0">
                     <ListItemButton
                       onClick={() =>
-                        append({ damage: '', type: 'Non-Magical' })
+                        append({
+                          id: undefined,
+                          damage: '',
+                          damageDice: '',
+                          type: 'Non-Magical',
+                        })
                       }
                     >
                       <ListItemIcon>

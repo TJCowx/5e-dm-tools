@@ -4,10 +4,9 @@ import TextField from 'components/Fields/TextField';
 import ListItemText from 'components/List/ListItemText';
 import Modal from 'components/Modal/Modal';
 import Ability from 'models/monster/Ability';
-import { FC, useState } from 'react';
+import { BaseSyntheticEvent, FC, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { MdAdd } from 'react-icons/md';
-import { stopPropagation } from 'utils/formUtils';
 
 type Props = {
   onSave: (ability: Ability) => void;
@@ -34,7 +33,8 @@ const AbilityModal: FC<Props> = ({ onSave }) => {
     setIsModalOpen(false);
   };
 
-  const onSubmit = (data: Ability) => {
+  const onSubmit = (data: Ability, e: BaseSyntheticEvent) => {
+    e.stopPropagation();
     onSave(data);
     setIsModalOpen(false);
     reset();
@@ -52,13 +52,19 @@ const AbilityModal: FC<Props> = ({ onSave }) => {
       </ListItem>
       {isModalOpen && (
         <Modal title="Add Ability" isOpen={isModalOpen} onClose={onCancel}>
-          <StyledForm onSubmit={stopPropagation(handleSubmit(onSubmit))}>
-            <TextField fieldName="name" label="Name" control={control} />
+          <StyledForm onSubmit={handleSubmit(onSubmit)}>
+            <TextField
+              fieldName="name"
+              label="Name"
+              control={control}
+              isRequired
+            />
             <TextField
               fieldName="description"
               label="Description"
               control={control}
               isMultiline
+              isRequired
             />
             <div className="actions-container">
               <Button onClick={onCancel}>Cancel</Button>

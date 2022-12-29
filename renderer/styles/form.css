@@ -3,4 +3,5 @@ form .input-row {
   grid-template-columns: repeat(auto-fit, minMax(200px, 1fr));
   row-gap: 16px;
   column-gap: 12px;
+  align-items: flex-start;
 }

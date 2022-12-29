@@ -1,5 +1,3 @@
-import styled from '@emotion/styled';
-import { MdAdd, MdDelete, MdEdit } from 'react-icons/md';
 import {
   Button,
   Dialog,
@@ -9,19 +7,17 @@ import {
   DialogTitle,
   Divider,
   IconButton,
-  ListItem,
+  styled,
 } from '@mui/material';
 import List from '@mui/material/List';
 import DebouncedInput from 'components/Fields/DebouncedInput';
 import Layout from 'components/Layout/Layout';
 import ListItemText from 'components/List/ListItemText';
+import ListItemTwoSecondaryActions from 'components/List/ListItemTwoSecondaryActions';
 import { MonsterModel } from 'models/monster/Monster';
 import Link from 'next/link';
 import { FC, Fragment, useEffect, useState } from 'react';
-
-const ListItemTwoSecondaryActions = styled(ListItem)(() => ({
-  paddingRight: 96,
-}));
+import { MdAdd, MdDeleteForever, MdEdit } from 'react-icons/md';
 
 const ActionContainer = styled('div')(() => ({
   display: 'flex',
@@ -109,7 +105,7 @@ const Monsters: FC = () => {
                     color="warning"
                     onClick={() => openDialog(id)}
                   >
-                    <MdDelete />
+                    <MdDeleteForever />
                   </IconButton>
                 </>
               }

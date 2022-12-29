@@ -45,3 +45,9 @@ body,
   padding-bottom: 40px;
 }
 /* #endregion ============= PADDINGS ============= */
+
+/* #region ============= ALIGNMENT ============= */
+.align-start {
+  align-items: flex-start;
+}
+/* #endregion ============= ALIGNMENT ============= */

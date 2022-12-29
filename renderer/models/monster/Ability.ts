@@ -1,6 +1,7 @@
 import { LeanDocument, Schema, Types } from 'mongoose';
 
 type Ability = {
+  id: string;
   name: string;
   description: string;
 };

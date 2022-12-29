@@ -7,6 +7,7 @@ import {
 } from 'react-hook-form';
 import { TextField as MuiTextField } from '@mui/material';
 import clsx from 'clsx';
+import { RequireMessage } from 'utils/validationMessages';
 
 type Props<T> = {
   id?: string;
@@ -27,7 +28,12 @@ function TextField<T>({
   isRequired,
   isMultiline,
 }: Props<T>) {
-  const rules = isRequired ? { required: 'This field is required' } : undefined;
+  const rules = isRequired
+    ? {
+        required: RequireMessage,
+        minLength: { value: 0, message: RequireMessage },
+      }
+    : undefined;
 
   return (
     <Controller

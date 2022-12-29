@@ -58,12 +58,11 @@ const DefaultValues: MonsterModel = {
 const CreateMonster = () => {
   const router = useRouter();
 
-  const { handleSubmit, control, setValue, watch } = useForm<MonsterModel>({
+  const { handleSubmit, control, watch } = useForm<MonsterModel>({
     defaultValues: DefaultValues,
   });
 
   const onSubmit = (data: MonsterModel) => {
-    console.log(data);
     fetch('/api/monsters', {
       method: 'POST',
       headers: {
@@ -89,7 +88,6 @@ const CreateMonster = () => {
       />
       <MonsterForm
         control={control}
-        setValue={setValue}
         watch={watch}
         onSubmit={handleSubmit(onSubmit)}
       />

@@ -2,9 +2,7 @@ import Layout from 'components/Layout/Layout';
 import NavBack from 'components/Links/NavBack';
 import MonsterForm from 'components/Monster/MonsterForm';
 import dbConnect from 'db/dbConnect';
-import Ability from 'models/monster/Ability';
 import Monster, { MonsterModel } from 'models/monster/Monster';
-import { LeanDocument } from 'mongoose';
 import { useRouter } from 'next/router';
 import { GetServerSideProps } from 'next/types';
 import { FC } from 'react';
@@ -18,7 +16,7 @@ type Props = {
 const EditMonster: FC<Props> = ({ monster }) => {
   const router = useRouter();
 
-  const { handleSubmit, control, setValue, watch } = useForm<MonsterModel>({
+  const { handleSubmit, control, watch } = useForm<MonsterModel>({
     defaultValues: monster,
   });
 
@@ -48,7 +46,6 @@ const EditMonster: FC<Props> = ({ monster }) => {
       />
       <MonsterForm
         control={control}
-        setValue={setValue}
         watch={watch}
         onSubmit={handleSubmit(onSubmit)}
       />

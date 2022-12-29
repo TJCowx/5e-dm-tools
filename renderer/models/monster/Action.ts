@@ -4,6 +4,7 @@ import { AttackDelivery, AttackType } from './AttackType';
 import Damage, { DamageSchema } from './Damage';
 
 type Action = {
+  id: string;
   name: string;
   description: string;
   actionType: ActionType;
@@ -15,14 +16,12 @@ type Action = {
   reach: number;
 };
 
-export type ActionDoc = Action & {
-  _id: Types.ObjectId;
-};
+export type ActionDoc = Action & { _id: Types.ObjectId };
 
 export const ActionSchema = new Schema<Action>({
   name: { type: String, required: [true, 'Name is required'] },
-  description: { type: String, required: [true, 'Description is required'] },
   actionType: { type: String, required: [true, 'Action type is required'] },
+  description: { type: String },
   isAttack: Boolean,
   attackDelivery: String,
   attackType: String,

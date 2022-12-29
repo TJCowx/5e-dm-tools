@@ -3,11 +3,12 @@ export const AllAlignments = [
   'Neutral Good',
   'Chaotic Good',
   'Lawful Neutral',
-  'Pure Neutral',
+  'Neutral',
   'Chaotic Neutral',
   'Lawful Evil',
   'Neutral Evil',
   'Chaotic Evil',
+  'Unaligned',
 ] as const;
 
 export const AlignmentSelectOptions = AllAlignments.map((alignment) => ({
