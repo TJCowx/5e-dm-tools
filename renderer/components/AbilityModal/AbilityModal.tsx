@@ -6,7 +6,7 @@ import Modal from 'components/Modal/Modal';
 import Ability from 'models/monster/Ability';
 import { BaseSyntheticEvent, FC, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { MdAdd } from 'react-icons/md';
+import { GrAdd } from 'react-icons/gr';
 
 type Props = {
   onSave: (ability: Ability) => void;
@@ -42,12 +42,12 @@ const AbilityModal: FC<Props> = ({ onSave }) => {
 
   return (
     <>
-      <ListItem>
+      <ListItem disableGutters>
         <ListItemButton onClick={() => setIsModalOpen(true)}>
           <ListItemIcon>
-            <MdAdd />
+            <GrAdd />
           </ListItemIcon>
-          <ListItemText primary="Add ability" />
+          <ListItemText primary="Add ability" className="mb-0" />
         </ListItemButton>
       </ListItem>
       {isModalOpen && (

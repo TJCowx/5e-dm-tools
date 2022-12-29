@@ -23,6 +23,7 @@ import {
 import { DamageTypeSelectOptions } from 'models/monster/DamageType';
 import { BaseSyntheticEvent, FC, useMemo, useState } from 'react';
 import { SubmitHandler, useFieldArray, useForm } from 'react-hook-form';
+import { GrAdd } from 'react-icons/gr';
 import { MdAdd, MdDelete } from 'react-icons/md';
 
 type Props = {
@@ -117,12 +118,12 @@ const ActionModal: FC<Props> = ({ isLegendary, hasLair, onSave }) => {
 
   return (
     <>
-      <ListItem>
+      <ListItem disableGutters>
         <ListItemButton onClick={() => setIsOpen(true)}>
           <ListItemIcon>
-            <MdAdd />
+            <GrAdd />
           </ListItemIcon>
-          <ListItemText primary="Add action" />
+          <ListItemText primary="Add action" className="mb-0" />
         </ListItemButton>
       </ListItem>
       {isOpen && (

@@ -1,13 +1,16 @@
 import { ListItemText as MuiListItemText } from '@mui/material';
+import clsx from 'clsx';
 import { FC, ReactNode } from 'react';
 
 type Props = {
   primary: string;
   secondary?: ReactNode;
+  className?: string;
 };
 
-const ListItemText: FC<Props> = ({ primary, secondary }) => (
+const ListItemText: FC<Props> = ({ primary, secondary, className }) => (
   <MuiListItemText
+    className={clsx({ [`${className}`]: className })}
     primary={primary}
     secondary={secondary}
     primaryTypographyProps={{ variant: 'body1' }}
@@ -20,6 +23,7 @@ const ListItemText: FC<Props> = ({ primary, secondary }) => (
 
 ListItemText.defaultProps = {
   secondary: undefined,
+  className: undefined,
 };
 
 export default ListItemText;
