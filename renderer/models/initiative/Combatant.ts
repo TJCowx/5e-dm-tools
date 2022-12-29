@@ -7,6 +7,7 @@ type Combatant = {
   initiativeModifier: number;
   isPlayer: boolean;
   isDead: boolean;
+  isLair?: boolean;
   maxHp?: number;
   currentHp?: number;
   monsterStats?: MonsterModel;

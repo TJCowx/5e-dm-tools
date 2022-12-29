@@ -35,14 +35,13 @@ const InitiativeContainer = styled('div')(() => ({
 
 const findNextCombatant = (
   currentIndex: number,
-  initiativeOrder: Combatant[],
-  combatants: Map<string, Combatant>
+  initiativeOrder: Combatant[]
 ) => {
   let nextIndex =
     currentIndex === initiativeOrder.length - 1 ? 0 : currentIndex + 1;
-  let foundAvailable: false | string = false;
+  let foundCombatant: Combatant = null;
 
-  while (nextIndex !== currentIndex && !foundAvailable) {
+  while (nextIndex !== currentIndex && !foundCombatant) {
     const nextCombatant = initiativeOrder[nextIndex];
 
     if (!nextCombatant) {
@@ -50,11 +49,28 @@ const findNextCombatant = (
     } else if (nextCombatant.isDead) {
       nextIndex += 1;
     } else {
-      foundAvailable = nextCombatant.id;
+      foundCombatant = nextCombatant;
     }
   }
 
-  return foundAvailable ? combatants.get(foundAvailable) : null;
+  return foundCombatant;
+};
+
+const addLairAction = (combatants: Combatant[]) => {
+  if (!combatants.some(({ monsterStats }) => monsterStats.hasLair))
+    return combatants;
+
+  const lairCombatant: Combatant = {
+    id: 'lair-action',
+    name: 'Lair Action',
+    initiative: 20,
+    initiativeModifier: 0,
+    isPlayer: false,
+    isDead: false,
+    isLair: true,
+  };
+
+  return [...combatants, lairCombatant];
 };
 
 const InitiativeList: FC<Props> = ({
@@ -68,9 +84,9 @@ const InitiativeList: FC<Props> = ({
   const order = useMemo(
     () =>
       orderBy(
-        Array.from(combatants.values()),
-        ['initiative', 'initiativeModifier', 'name'],
-        ['desc', 'desc', 'asc']
+        addLairAction(Array.from(combatants.values())),
+        ['initiative', 'isLair', 'initiativeModifier', 'name'],
+        ['desc', 'asc', 'desc', 'asc']
       ),
     [combatants]
   );
@@ -84,18 +100,11 @@ const InitiativeList: FC<Props> = ({
   const nextInitiative = () => {
     const currentIndex = order.findIndex(({ id }) => id === activeId);
 
-    setActiveId(findNextCombatant(currentIndex, order, combatants).id);
+    setActiveId(findNextCombatant(currentIndex, order)?.id);
   };
 
   useEffect(() => {
-    if (activeId) {
-      console.log(
-        'Combatants',
-        combatants,
-        'ActiveId',
-        activeId,
-        combatants.get(activeId)
-      );
+    if (activeId && activeId !== 'lair-action') {
       onCombatantClick(combatants.get(activeId));
     }
   }, [activeId]);
