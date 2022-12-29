@@ -4,7 +4,7 @@ import InitiativeList from 'components/Initiative/InitiativeList';
 import MonsterCombatantList from 'components/Initiative/MonsterCombatantList';
 import Layout from 'components/Layout/Layout';
 import Combatant from 'models/initiative/Combatant';
-import { FC, useState } from 'react';
+import { FC, useRef, useState } from 'react';
 import { getCombatantName } from 'utils/monsterUtils';
 
 const PageContainer = styled('div')(() => ({
@@ -70,12 +70,28 @@ const InitiativePage: FC = () => {
     setCombatants(prevCombatants);
   };
 
+  const highlightMonsterCombatant = (combatant: Combatant) => {
+    if (combatant.isPlayer) return;
+
+    const monsterPanel = document.getElementById(
+      `panel-${combatant.id}-header`
+    );
+
+    // Expand it if it isn't already expanded
+    if (!monsterPanel.classList.contains('Mui-expanded')) {
+      monsterPanel.click();
+    }
+
+    monsterPanel.scrollIntoView();
+  };
+
   return (
     <Layout title="Initiative" disablePadding contentFillPage>
       <PageContainer>
         <InitiativeList
           combatants={combatants}
           onCombatantAliveToggle={toggleAliveState}
+          onCombatantClick={highlightMonsterCombatant}
         />
         <MonsterCombatantList combatants={monsterCombatants} />
         <AddCombatant onAddCombatants={addCombatants} />

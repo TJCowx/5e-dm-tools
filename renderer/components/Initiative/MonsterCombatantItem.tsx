@@ -239,6 +239,7 @@ const MonsterCombatantItem: FC<Props> = ({
               {monsterStats.isLegendary && (
                 <AbilityFormat
                   ability={{
+                    id: undefined,
                     name: 'Legendary Resistance (3/Day)',
                     description: `If the ${monsterStats.name} fails a saving throw, it can choose to succeed instead.`,
                   }}

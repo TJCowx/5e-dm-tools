@@ -1,4 +1,4 @@
-import { ListItem, ListItemIcon } from '@mui/material';
+import { ListItem, ListItemButton, ListItemIcon } from '@mui/material';
 import { cyan, grey, red } from '@mui/material/colors';
 import { styled } from '@mui/system';
 import clsx from 'clsx';
@@ -14,6 +14,7 @@ type Props = {
   combatant: Combatant;
   isActive: boolean;
   onFlag: (id: string, isDead: boolean) => void;
+  onClick: (combatant: Combatant) => void;
 };
 
 const StyledListItem = styled(ListItem)(() => ({
@@ -32,12 +33,18 @@ const StyledListItem = styled(ListItem)(() => ({
   },
 }));
 
-const InitiativeListItem: FC<Props> = ({ combatant, isActive, onFlag }) => {
+const InitiativeListItem: FC<Props> = ({
+  combatant,
+  isActive,
+  onFlag,
+  onClick,
+}) => {
   const { id, name, isPlayer, initiative, initiativeModifier, isDead } =
     combatant;
 
   return (
     <StyledListItem
+      disableGutters
       className={clsx({
         active: isActive,
         'is-player': isPlayer,
@@ -47,20 +54,22 @@ const InitiativeListItem: FC<Props> = ({ combatant, isActive, onFlag }) => {
         <CombatantOptions isDead={isDead} onFlag={(flag) => onFlag(id, flag)} />
       }
     >
-      {isActive && (
-        <ListItemIcon>
-          <MdDoubleArrow />
-        </ListItemIcon>
-      )}
-      {isDead && (
-        <ListItemIcon>
-          <DeadIcon />
-        </ListItemIcon>
-      )}
-      <ListItemText
-        primary={name}
-        secondary={`Initiative: ${initiative} (${initiativeModifier})`}
-      />
+      <ListItemButton onClick={() => onClick(combatant)}>
+        {isActive && (
+          <ListItemIcon>
+            <MdDoubleArrow />
+          </ListItemIcon>
+        )}
+        {isDead && (
+          <ListItemIcon>
+            <DeadIcon />
+          </ListItemIcon>
+        )}
+        <ListItemText
+          primary={name}
+          secondary={`Initiative: ${initiative} (${initiativeModifier})`}
+        />
+      </ListItemButton>
     </StyledListItem>
   );
 };

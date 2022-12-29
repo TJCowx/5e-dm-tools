@@ -2,13 +2,14 @@ import styled from '@emotion/styled';
 import { Button, List, ListSubheader } from '@mui/material';
 import orderBy from 'lodash.orderby';
 import Combatant from 'models/initiative/Combatant';
-import { FC, Fragment, useMemo, useState } from 'react';
+import { FC, Fragment, useEffect, useMemo, useState } from 'react';
 
 import InitiativeListItem from './InitiativeListItem';
 
 type Props = {
   combatants: Map<string, Combatant>;
   onCombatantAliveToggle: (id: string, isAlive: boolean) => void;
+  onCombatantClick: (combatant: Combatant) => void;
 };
 
 const InitiativeContainer = styled('div')(() => ({
@@ -35,24 +36,28 @@ const findNextCombatant = (
 ) => {
   let nextIndex =
     currentIndex === initiativeOrder.length - 1 ? 0 : currentIndex + 1;
-  let foundAvailable = false;
+  let foundAvailable: false | string = false;
 
   while (nextIndex !== currentIndex && !foundAvailable) {
-    const nextCombatant = combatants[nextIndex];
+    const nextCombatant = initiativeOrder[nextIndex];
 
     if (!nextCombatant) {
       nextIndex = 0;
     } else if (nextCombatant.isDead) {
       nextIndex += 1;
     } else {
-      foundAvailable = true;
+      foundAvailable = nextCombatant.id;
     }
   }
 
-  return combatants[nextIndex];
+  return foundAvailable ? combatants.get(foundAvailable) : null;
 };
 
-const InitiativeList: FC<Props> = ({ combatants, onCombatantAliveToggle }) => {
+const InitiativeList: FC<Props> = ({
+  combatants,
+  onCombatantAliveToggle,
+  onCombatantClick,
+}) => {
   const [hasStarted, setHasStarted] = useState(false);
   const [activeId, setActiveId] = useState<string>(null);
 
@@ -78,6 +83,19 @@ const InitiativeList: FC<Props> = ({ combatants, onCombatantAliveToggle }) => {
     setActiveId(findNextCombatant(currentIndex, order, combatants).id);
   };
 
+  useEffect(() => {
+    if (activeId) {
+      console.log(
+        'Combatants',
+        combatants,
+        'ActiveId',
+        activeId,
+        combatants.get(activeId)
+      );
+      onCombatantClick(combatants.get(activeId));
+    }
+  }, [activeId]);
+
   return (
     <InitiativeContainer>
       <List
@@ -91,6 +109,7 @@ const InitiativeList: FC<Props> = ({ combatants, onCombatantAliveToggle }) => {
               combatant={combatant}
               isActive={combatant.id === activeId}
               onFlag={onCombatantAliveToggle}
+              onClick={onCombatantClick}
             />
           </Fragment>
         ))}
