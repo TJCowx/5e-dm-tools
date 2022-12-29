@@ -1,8 +1,7 @@
 import { InputAdornment, TextField } from '@mui/material';
-import SearchIcon from '@mui/icons-material/Search';
-import debounce from 'lodash.debounce';
-import { FC, useEffect, useState } from 'react';
 import useDebounce from 'hooks/useDebounce';
+import { FC, useEffect, useState } from 'react';
+import { MdSearch } from 'react-icons/md';
 
 type Props = {
   value: string;
@@ -38,7 +37,7 @@ const DebouncedInput: FC<Props> = ({
       InputProps={{
         startAdornment: (
           <InputAdornment position="start">
-            <SearchIcon />
+            <MdSearch />
           </InputAdornment>
         ),
       }}

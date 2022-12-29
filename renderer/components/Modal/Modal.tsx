@@ -1,7 +1,7 @@
 import { IconButton, Modal as MuiModal, Typography } from '@mui/material';
 import { styled } from '@mui/system';
 import { FC, ReactNode } from 'react';
-import IconClose from '@mui/icons-material/Close';
+import { MdClose } from 'react-icons/md';
 
 type Props = {
   title: string;
@@ -65,7 +65,7 @@ const Modal: FC<Props> = ({
       <div className="header-container">
         <Typography variant="h5">{title}</Typography>
         <IconButton aria-label="Close Modal" onClick={onClose}>
-          <IconClose />
+          <MdClose />
         </IconButton>
       </div>
       <div

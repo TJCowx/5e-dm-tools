@@ -1,9 +1,10 @@
-import AddIcon from '@mui/icons-material/Add';
 import { Fab, Tab, Tabs } from '@mui/material';
 import { styled } from '@mui/system';
 import Modal from 'components/Modal/Modal';
 import Combatant from 'models/initiative/Combatant';
 import { FC, useState } from 'react';
+import { GrAdd } from 'react-icons/gr';
+
 import AddMonsterCombatantForm from './AddMonsterCombatantForm';
 import AddPlayerCombatantForm from './AddPlayerCombatantForm';
 
@@ -33,7 +34,7 @@ const AddCombatant: FC<Props> = ({ onAddCombatants }) => {
         size="small"
         onClick={() => setIsOpen(true)}
       >
-        <AddIcon />
+        <GrAdd />
       </StyledFab>
       {isOpen && (
         <Modal

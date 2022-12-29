@@ -1,5 +1,3 @@
-import DoNotDisturbIcon from '@mui/icons-material/DoNotDisturb';
-import DoubleArrowIcon from '@mui/icons-material/DoubleArrow';
 import { ListItem, ListItemIcon } from '@mui/material';
 import { cyan, grey, red } from '@mui/material/colors';
 import { styled } from '@mui/system';
@@ -7,6 +5,8 @@ import clsx from 'clsx';
 import ListItemText from 'components/List/ListItemText';
 import Combatant from 'models/initiative/Combatant';
 import { FC } from 'react';
+import { GiDeathSkull } from 'react-icons/gi';
+import { MdDoubleArrow } from 'react-icons/md';
 
 import CombatantOptions from './CombatantOptions';
 
@@ -45,12 +45,12 @@ const InitiativeListItem: FC<Props> = ({ combatant, isActive, onFlag }) => {
     >
       {isActive && (
         <ListItemIcon>
-          <DoubleArrowIcon />
+          <MdDoubleArrow />
         </ListItemIcon>
       )}
       {isDead && (
         <ListItemIcon>
-          <DoNotDisturbIcon />
+          <GiDeathSkull color="warning" />
         </ListItemIcon>
       )}
       <ListItemText

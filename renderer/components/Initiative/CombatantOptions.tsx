@@ -1,5 +1,5 @@
 import { FC, useMemo, useRef, useState } from 'react';
-import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
+import { MdMoreHoriz } from 'react-icons/md';
 import { IconButton, Menu, MenuItem } from '@mui/material';
 import { v4 } from 'uuid';
 
@@ -30,7 +30,7 @@ const CombatantOptions: FC<Props> = ({ isDead, onFlag }) => {
         aria-controls={isOpen ? `${id}-menu` : undefined}
         onClick={handleClick}
       >
-        <MoreHorizIcon />
+        <MdMoreHoriz />
       </IconButton>
       <Menu
         anchorEl={buttonRef.current}

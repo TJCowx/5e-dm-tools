@@ -1,4 +1,3 @@
-import AddIcon from '@mui/icons-material/Add';
 import { Button, ListItem, ListItemButton, ListItemIcon } from '@mui/material';
 import { styled } from '@mui/system';
 import TextField from 'components/Fields/TextField';
@@ -7,6 +6,7 @@ import Modal from 'components/Modal/Modal';
 import Ability from 'models/monster/Ability';
 import { FC, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { MdAdd } from 'react-icons/md';
 
 type Props = {
   onSave: (ability: Ability) => void;
@@ -44,7 +44,7 @@ const AbilityModal: FC<Props> = ({ onSave }) => {
       <ListItem>
         <ListItemButton onClick={() => setIsModalOpen(true)}>
           <ListItemIcon>
-            <AddIcon />
+            <MdAdd />
           </ListItemIcon>
           <ListItemText primary="Add ability" />
         </ListItemButton>

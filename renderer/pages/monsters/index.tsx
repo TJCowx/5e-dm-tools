@@ -1,7 +1,5 @@
 import styled from '@emotion/styled';
-import AddIcon from '@mui/icons-material/Add';
-import DeleteIcon from '@mui/icons-material/Delete';
-import EditIcon from '@mui/icons-material/Edit';
+import { MdAdd, MdDelete, MdEdit } from 'react-icons/md';
 import {
   Button,
   Dialog,
@@ -90,7 +88,7 @@ const Monsters: FC = () => {
         <DebouncedInput value="" label="Search" onChange={filterMonster} />
         <Link href="/monsters/create" passHref>
           <IconButton aria-label="Create new monster">
-            <AddIcon />
+            <MdAdd />
           </IconButton>
         </Link>
       </ActionContainer>
@@ -102,7 +100,7 @@ const Monsters: FC = () => {
                 <>
                   <Link href={`/monsters/edit/${id}`} passHref>
                     <IconButton aria-label={`Edit ${name}`}>
-                      <EditIcon />
+                      <MdEdit />
                     </IconButton>
                   </Link>
                   <IconButton
@@ -111,7 +109,7 @@ const Monsters: FC = () => {
                     color="warning"
                     onClick={() => openDialog(id)}
                   >
-                    <DeleteIcon />
+                    <MdDelete />
                   </IconButton>
                 </>
               }

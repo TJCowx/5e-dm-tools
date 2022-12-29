@@ -1,5 +1,4 @@
-import AddIcon from '@mui/icons-material/Add';
-import DeleteIcon from '@mui/icons-material/Delete';
+import { MdAdd, MdDelete } from 'react-icons/md';
 import {
   Button,
   Divider,
@@ -117,7 +116,7 @@ const ActionModal: FC<Props> = ({ isLegendary, hasLair, onSave }) => {
       <ListItem>
         <ListItemButton onClick={() => setIsOpen(true)}>
           <ListItemIcon>
-            <AddIcon />
+            <MdAdd />
           </ListItemIcon>
           <ListItemText primary="Add action" />
         </ListItemButton>
@@ -199,7 +198,7 @@ const ActionModal: FC<Props> = ({ isLegendary, hasLair, onSave }) => {
                       className="damage-list-item pl-0"
                       secondaryAction={
                         <IconButton onClick={() => remove(i)}>
-                          <DeleteIcon color="warning" />
+                          <MdDelete color="warning" />
                         </IconButton>
                       }
                     >
@@ -228,7 +227,7 @@ const ActionModal: FC<Props> = ({ isLegendary, hasLair, onSave }) => {
                       }
                     >
                       <ListItemIcon>
-                        <AddIcon />
+                        <MdAdd />
                       </ListItemIcon>
                       <ListItemText primary="Add damage" />
                     </ListItemButton>

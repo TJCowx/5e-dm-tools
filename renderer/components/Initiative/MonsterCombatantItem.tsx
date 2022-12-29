@@ -1,4 +1,4 @@
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { MdExpandMore } from 'react-icons/md';
 import {
   Accordion,
   AccordionDetails,
@@ -22,6 +22,8 @@ import {
 
 type Props = {
   combatant: Combatant;
+  isExpanded: boolean;
+  onChange: () => void;
 };
 
 const StyledAccordion = styled(Accordion)(() => ({
@@ -48,7 +50,11 @@ const StyledAccordionDetails = styled(AccordionDetails)(() => ({
   },
 }));
 
-const MonsterCombatantItem: FC<Props> = ({ combatant }) => {
+const MonsterCombatantItem: FC<Props> = ({
+  combatant,
+  isExpanded,
+  onChange,
+}) => {
   const { id, monsterStats } = combatant;
   const panelHeaderId = `panel-${id}-header`;
   const panelContentId = `panel-${id}-content`;
@@ -65,11 +71,17 @@ const MonsterCombatantItem: FC<Props> = ({ combatant }) => {
   }, [combatant.isDead]);
 
   return (
-    <StyledAccordion disableGutters elevation={0} square>
+    <StyledAccordion
+      disableGutters
+      elevation={0}
+      square
+      expanded={isExpanded}
+      onChange={onChange}
+    >
       <StyledAccordionSummary
         id={panelHeaderId}
         aria-controls={panelContentId}
-        expandIcon={<ExpandMoreIcon />}
+        expandIcon={<MdExpandMore />}
       >
         <SummaryContent>
           {combatant.name}

@@ -1,9 +1,9 @@
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { Tooltip } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import { styled } from '@mui/system';
 import Link from 'next/link';
 import { FC } from 'react';
+import { MdArrowBack } from 'react-icons/md';
 
 type Props = {
   href: string;
@@ -21,7 +21,7 @@ const NavBack: FC<Props> = ({ href, ariaLabel, tooltipText }) => (
   <Link href={href}>
     <Tooltip title={tooltipText}>
       <StyledButton aria-label={ariaLabel}>
-        <ArrowBackIcon />
+        <MdArrowBack />
       </StyledButton>
     </Tooltip>
   </Link>
