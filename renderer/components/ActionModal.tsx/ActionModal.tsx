@@ -96,10 +96,10 @@ const ActionModal: FC<Props> = ({ isLegendary, hasLair, onSave }) => {
     setAction(newAction());
   };
 
-  const onSubmit: SubmitHandler<Action> = (data: Action) => {
-    onSave(data);
+  const onSubmit = () => {
+    onSave(action);
     setIsOpen(false);
-    reset();
+    setAction(newAction());
   };
 
   return (

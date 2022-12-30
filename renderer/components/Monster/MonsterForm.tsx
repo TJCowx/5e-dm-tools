@@ -1,13 +1,12 @@
 import styled from '@emotion/styled';
 import { Button, Divider, IconButton, List, Typography } from '@mui/material';
 import AbilityModal from 'components/AbilityModal/AbilityModal';
-import ActionModal from 'components/ActionModal.tsx/ActionModal';
-import RHFAttributeField from 'components/RHFFields/RHFAttributeField';
-import RHFCheckboxField from 'components/RHFFields/RHFCheckboxField';
-import RHFIntegerField from 'components/RHFFields/RHFIntegerField';
-import RHFMultiselectField from 'components/RHFFields/RHFMultiselectField';
-import RHFSelectField from 'components/RHFFields/RHFSelectField';
-import RHFTextField from 'components/RHFFields/RHFTextField';
+import RHFAttributeField from 'components/Fields/RHF/RHFAttributeField';
+import RHFCheckboxField from 'components/Fields/RHF/RHFCheckboxField';
+import RHFIntegerField from 'components/Fields/RHF/RHFIntegerField';
+import RHFMultiselectField from 'components/Fields/RHF/RHFMultiselectField';
+import RHFSelectField from 'components/Fields/RHF/RHFSelectField';
+import RHFTextField from 'components/Fields/RHF/RHFTextField';
 import ListItemText from 'components/List/ListItemText';
 import ListItemTwoSecondaryActions from 'components/List/ListItemTwoSecondaryActions';
 import { AlignmentSelectOptions } from 'models/monster/Alignment';
@@ -383,11 +382,11 @@ const MonsterForm: FC<Props> = ({ control, onSubmit, watch }) => {
               onDelete={() => removeAction(i)}
             />
           ))}
-          <ActionModal
+          {/* <ActionModal
             isLegendary={isLegendary}
             hasLair={hasLair}
             onSave={(newAction) => appendAction(newAction)}
-          />
+          /> */}
         </List>
       </section>
       <div className="action-container">

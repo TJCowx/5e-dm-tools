@@ -5,20 +5,22 @@ import {
   ListItemIcon,
   styled,
 } from '@mui/material';
-import RHFTextField from 'components/RHFFields/RHFTextField';
+import BasicTextField from 'components/Fields/Basic/BasicTextField';
 import ListItemText from 'components/List/ListItemText';
 import Modal from 'components/Modal/Modal';
 import Ability from 'models/monster/Ability';
-import { BaseSyntheticEvent, FC, useState } from 'react';
+import { BaseSyntheticEvent, FC, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { GrAdd } from 'react-icons/gr';
 import { MdOutlineAdd } from 'react-icons/md';
+import { RequireMessage } from 'utils/validationMessages';
+import { object as YupObject, string as YupString, ValidationError } from 'yup';
 
 type Props = {
   onSave: (ability: Ability) => void;
 };
 
-const StyledForm = styled('form')(() => ({
+type ErrorSchema = Record<'name' | 'description', string>;
+const Container = styled('div')(() => ({
   display: 'flex',
   flexDirection: 'column',
   '& >:not(:last-of-type)': { marginBottom: '16px' },
@@ -27,25 +29,51 @@ const StyledForm = styled('form')(() => ({
   },
 }));
 
+const newAbility = (): Ability => ({ id: null, name: '', description: '' });
+
+const schema = YupObject().shape({
+  name: YupString().required({ field: 'name', message: RequireMessage }),
+  description: YupString().required({
+    field: 'description',
+    message: RequireMessage,
+  }),
+});
+
 const AbilityModal: FC<Props> = ({ onSave }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const { handleSubmit, control, reset } = useForm<Ability>({
-    defaultValues: { name: '', description: '' },
+  const [ability, setAbility] = useState<Ability>(newAbility());
+  const [errors, setErrors] = useState<ErrorSchema>({
+    name: null,
+    description: null,
   });
 
   const onCancel = () => {
-    reset();
+    setAbility(newAbility());
     setIsModalOpen(false);
   };
 
-  const onSubmit = (data: Ability, e: BaseSyntheticEvent) => {
-    e.stopPropagation();
-    e.preventDefault();
-    onSave(data);
-    setIsModalOpen(false);
-    reset();
+  const onSubmit = () => {
+    schema
+      .validate(ability, { abortEarly: false })
+      .then(() => {
+        onSave(ability);
+        setIsModalOpen(false);
+        setAbility(newAbility());
+      })
+      .catch((e: ValidationError) => {
+        const newErrors: ErrorSchema = { name: null, description: null };
+        (e.errors as unknown as { field: string; message: string }[]).forEach(
+          (err) => {
+            newErrors[err.field] = err.message;
+          }
+        );
+        setErrors(newErrors);
+      });
   };
+
+  useEffect(() => {
+    console.log('Errors: ', errors);
+  }, [errors]);
 
   return (
     <>
@@ -59,27 +87,50 @@ const AbilityModal: FC<Props> = ({ onSave }) => {
       </ListItem>
       {isModalOpen && (
         <Modal title="Add Ability" isOpen={isModalOpen} onClose={onCancel}>
-          <StyledForm onSubmit={handleSubmit(onSubmit)}>
-            <RHFTextField
-              fieldName="name"
+          <Container>
+            <BasicTextField
               label="Name"
-              control={control}
-              isRequired
+              value={ability.name}
+              onChange={(e) =>
+                setAbility((prev) => ({ ...prev, name: e.target.value }))
+              }
+              error={errors.name != null}
+              helperText={errors.name}
+              onBlur={() => {
+                setErrors((prev) => ({
+                  ...prev,
+                  name: null,
+                }));
+              }}
             />
-            <RHFTextField
-              fieldName="description"
+            <BasicTextField
               label="Description"
-              control={control}
-              isMultiline
-              isRequired
+              value={ability.description}
+              multiline
+              onChange={(e) =>
+                setAbility((prev) => ({ ...prev, description: e.target.value }))
+              }
+              error={errors.description != null}
+              helperText={errors.description}
+              onBlur={() => {
+                setErrors((prev) => ({
+                  ...prev,
+                  description: null,
+                }));
+              }}
             />
             <div className="actions-container">
               <Button onClick={onCancel}>Cancel</Button>
-              <Button variant="contained" disableElevation type="submit">
+              <Button
+                variant="contained"
+                disableElevation
+                type="button"
+                onClick={() => onSubmit()}
+              >
                 Save
               </Button>
             </div>
-          </StyledForm>
+          </Container>
         </Modal>
       )}
     </>
