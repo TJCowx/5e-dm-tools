@@ -1,7 +1,7 @@
 import { Button } from '@mui/material';
 import { styled } from '@mui/system';
-import IntegerField from 'components/Fields/IntegerField';
-import TextField from 'components/Fields/TextField';
+import RHFIntegerField from 'components/RHFFields/RHFIntegerField';
+import RHFTextField from 'components/RHFFields/RHFTextField';
 import Combatant from 'models/initiative/Combatant';
 import { FC } from 'react';
 import { useForm } from 'react-hook-form';
@@ -59,7 +59,7 @@ const AddPlayerCombatantForm: FC<Props> = ({
 
   return (
     <StyledForm onSubmit={handleSubmit(onSubmit)}>
-      <TextField
+      <RHFTextField
         control={control}
         fieldName="name"
         id="name-field"
@@ -68,13 +68,13 @@ const AddPlayerCombatantForm: FC<Props> = ({
         isRequired
       />
       <div className="input-row">
-        <IntegerField
+        <RHFIntegerField
           control={control}
           fieldName="initiative"
           label="Initiative"
           isRequired
         />
-        <IntegerField
+        <RHFIntegerField
           control={control}
           fieldName="initiativeModifier"
           label="Initiative Modifier"

@@ -8,10 +8,10 @@ import {
   ListItemIcon,
   styled,
 } from '@mui/material';
-import IntegerField from 'components/Fields/IntegerField';
-import SelectField from 'components/Fields/SelectField';
-import SwitchField from 'components/Fields/SwitchField';
-import TextField from 'components/Fields/TextField';
+import RHFIntegerField from 'components/RHFFields/RHFIntegerField';
+import RHFSelectField from 'components/RHFFields/RHFSelectField';
+import RHFSwitchField from 'components/RHFFields/RHFSwitchField';
+import RHFTextField from 'components/RHFFields/RHFTextField';
 import ListItemText from 'components/List/ListItemText';
 import Modal from 'components/Modal/Modal';
 import Action from 'models/monster/Action';
@@ -21,7 +21,7 @@ import {
   AttackTypeSelectOptions,
 } from 'models/monster/AttackType';
 import { DamageTypeSelectOptions } from 'models/monster/DamageType';
-import { BaseSyntheticEvent, FC, useMemo, useState } from 'react';
+import { FC, useMemo, useState } from 'react';
 import { SubmitHandler, useFieldArray, useForm } from 'react-hook-form';
 import { MdAdd, MdDelete, MdOutlineAdd } from 'react-icons/md';
 
@@ -31,7 +31,7 @@ type Props = {
   onSave: (action: Action) => void;
 };
 
-const StyledForm = styled('form')(() => ({
+const StyledForm = styled('div')(() => ({
   display: 'flex',
   flexDirection: 'column',
   '& .mb-16': { marginBottom: '16px' },
@@ -61,33 +61,24 @@ const StyledForm = styled('form')(() => ({
   },
 }));
 
+const newAction = () => ({
+  id: null,
+  name: '',
+  description: '',
+  actionType: null,
+  isAttack: false,
+  attackDelivery: null,
+  attackType: null,
+  combatantsHit: null,
+  toHit: null,
+  damage: [],
+  reach: null,
+});
+
 const ActionModal: FC<Props> = ({ isLegendary, hasLair, onSave }) => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const { control, handleSubmit, reset, watch } = useForm<Action>({
-    defaultValues: {
-      name: '',
-      description: '',
-      actionType: null,
-      isAttack: false,
-      attackDelivery: null,
-      attackType: null,
-      toHit: null,
-      damage: [],
-      reach: null,
-    },
-  });
-
-  const {
-    fields: damageFields,
-    append,
-    remove,
-  } = useFieldArray({
-    control,
-    name: 'damage',
-  });
-
-  const isAttack = watch('isAttack');
+  const [action, setAction] = useState<Action>(newAction());
 
   const actionTypeOptions = useMemo(
     () =>
@@ -102,14 +93,10 @@ const ActionModal: FC<Props> = ({ isLegendary, hasLair, onSave }) => {
 
   const handleClose = () => {
     setIsOpen(false);
-    reset();
+    setAction(newAction());
   };
 
-  const onSubmit: SubmitHandler<Action> = (
-    data: Action,
-    e: BaseSyntheticEvent
-  ) => {
-    e.preventDefault();
+  const onSubmit: SubmitHandler<Action> = (data: Action) => {
     onSave(data);
     setIsOpen(false);
     reset();
@@ -127,15 +114,15 @@ const ActionModal: FC<Props> = ({ isLegendary, hasLair, onSave }) => {
       </ListItem>
       {isOpen && (
         <Modal title="Add Action" isOpen={isOpen} onClose={handleClose}>
-          <StyledForm onSubmit={handleSubmit(onSubmit)}>
-            <TextField
+          <StyledForm>
+            <RHFTextField
               fieldName="name"
               className="mb-16"
               label="Name"
               control={control}
               isRequired
             />
-            <TextField
+            <RHFTextField
               fieldName="description"
               className="mb-16"
               label="Description"
@@ -143,7 +130,7 @@ const ActionModal: FC<Props> = ({ isLegendary, hasLair, onSave }) => {
               isMultiline
               isRequired={!isAttack}
             />
-            <SelectField
+            <RHFSelectField
               id="action-type-field"
               control={control}
               className="mb-12"
@@ -152,7 +139,7 @@ const ActionModal: FC<Props> = ({ isLegendary, hasLair, onSave }) => {
               options={actionTypeOptions}
               isRequired
             />
-            <SwitchField
+            <RHFSwitchField
               control={control}
               className="mb-16"
               fieldName="isAttack"
@@ -161,7 +148,7 @@ const ActionModal: FC<Props> = ({ isLegendary, hasLair, onSave }) => {
             {isAttack && (
               <>
                 <div className="grid mb-16">
-                  <SelectField
+                  <RHFSelectField
                     id="attack-delivery-field"
                     control={control}
                     fieldName="attackDelivery"
@@ -169,7 +156,7 @@ const ActionModal: FC<Props> = ({ isLegendary, hasLair, onSave }) => {
                     options={AttackDeliverySelectOptions}
                     isRequired={isAttack}
                   />
-                  <SelectField
+                  <RHFSelectField
                     id="attack-type-field"
                     control={control}
                     fieldName="attackType"
@@ -179,18 +166,25 @@ const ActionModal: FC<Props> = ({ isLegendary, hasLair, onSave }) => {
                   />
                 </div>
                 <div className="grid mb-16">
-                  <IntegerField
+                  <RHFIntegerField
                     control={control}
                     fieldName="toHit"
                     label="To Hit"
                     min={0}
                     isRequired={isAttack}
                   />
-                  <IntegerField
+                  <RHFIntegerField
                     control={control}
                     fieldName="reach"
                     label="Reach"
                     min={0}
+                    isRequired={isAttack}
+                  />
+                  <RHFIntegerField
+                    control={control}
+                    fieldName="combatantsHit"
+                    label="Combatants Hit"
+                    min={1}
                     isRequired={isAttack}
                   />
                 </div>
@@ -206,21 +200,21 @@ const ActionModal: FC<Props> = ({ isLegendary, hasLair, onSave }) => {
                         </IconButton>
                       }
                     >
-                      <TextField
+                      <RHFTextField
                         fieldName={`damage.${i}.damage`}
                         className="damage-field"
                         label="Damage"
                         control={control}
                         isRequired={isAttack}
                       />
-                      <TextField
+                      <RHFTextField
                         fieldName={`damage.${i}.damageDice`}
                         className="damage-dice-field"
                         label="Damage Dice"
                         control={control}
                         isRequired={isAttack}
                       />
-                      <SelectField
+                      <RHFSelectField
                         id={`damage-${i}-type`}
                         control={control}
                         className="damage-type-field"
@@ -253,7 +247,12 @@ const ActionModal: FC<Props> = ({ isLegendary, hasLair, onSave }) => {
             )}
             <div className="actions-container">
               <Button onClick={handleClose}>Cancel</Button>
-              <Button variant="contained" disableElevation type="submit">
+              <Button
+                variant="contained"
+                disableElevation
+                type="button"
+                onClick={onSubmit}
+              >
                 Save
               </Button>
             </div>

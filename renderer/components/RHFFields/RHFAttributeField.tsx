@@ -2,7 +2,7 @@
 import clsx from 'clsx';
 import { Control, Path, UnPackAsyncDefaultValues } from 'react-hook-form';
 
-import IntegerField from './IntegerField';
+import RHFIntegerField from './RHFIntegerField';
 
 type Props<T> = {
   className?: string;
@@ -11,9 +11,14 @@ type Props<T> = {
   label: string;
 };
 
-function AttributeField<T>({ className, control, fieldName, label }: Props<T>) {
+function RHFAttributeField<T>({
+  className,
+  control,
+  fieldName,
+  label,
+}: Props<T>) {
   return (
-    <IntegerField
+    <RHFIntegerField
       className={clsx({ [`${className}`]: className })}
       fieldName={fieldName}
       control={control}
@@ -25,8 +30,8 @@ function AttributeField<T>({ className, control, fieldName, label }: Props<T>) {
   );
 }
 
-AttributeField.defaultProps = {
+RHFAttributeField.defaultProps = {
   className: undefined,
 };
 
-export default AttributeField;
+export default RHFAttributeField;

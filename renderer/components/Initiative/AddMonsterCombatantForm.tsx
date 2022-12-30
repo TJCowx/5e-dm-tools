@@ -7,8 +7,8 @@ import {
   Typography,
 } from '@mui/material';
 import { styled } from '@mui/system';
-import IntegerField from 'components/Fields/IntegerField';
-import SwitchField from 'components/Fields/SwitchField';
+import RHFIntegerField from 'components/RHFFields/RHFIntegerField';
+import RHFSwitchField from 'components/RHFFields/RHFSwitchField';
 import FormattedStat from 'components/Monster/FormattedStat';
 import Combatant from 'models/initiative/Combatant';
 import { MonsterModel } from 'models/monster/Monster';
@@ -190,14 +190,14 @@ const AddMonsterCombatantForm: FC<Props> = ({ onSubmit, onCancel }) => {
         )}
       />
       <div className="input-row mt-16">
-        <IntegerField
+        <RHFIntegerField
           control={control}
           fieldName="monsterCount"
           label="Number of Monsters"
           min={1}
           isRequired
         />
-        <SwitchField
+        <RHFSwitchField
           control={control}
           fieldName="groupInitiativeRoll"
           label="Group Initiative Roll"

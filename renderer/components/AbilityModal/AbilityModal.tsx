@@ -5,7 +5,7 @@ import {
   ListItemIcon,
   styled,
 } from '@mui/material';
-import TextField from 'components/Fields/TextField';
+import RHFTextField from 'components/RHFFields/RHFTextField';
 import ListItemText from 'components/List/ListItemText';
 import Modal from 'components/Modal/Modal';
 import Ability from 'models/monster/Ability';
@@ -41,6 +41,7 @@ const AbilityModal: FC<Props> = ({ onSave }) => {
 
   const onSubmit = (data: Ability, e: BaseSyntheticEvent) => {
     e.stopPropagation();
+    e.preventDefault();
     onSave(data);
     setIsModalOpen(false);
     reset();
@@ -59,13 +60,13 @@ const AbilityModal: FC<Props> = ({ onSave }) => {
       {isModalOpen && (
         <Modal title="Add Ability" isOpen={isModalOpen} onClose={onCancel}>
           <StyledForm onSubmit={handleSubmit(onSubmit)}>
-            <TextField
+            <RHFTextField
               fieldName="name"
               label="Name"
               control={control}
               isRequired
             />
-            <TextField
+            <RHFTextField
               fieldName="description"
               label="Description"
               control={control}

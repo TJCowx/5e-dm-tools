@@ -52,7 +52,7 @@ const createRules = (
   return rules;
 };
 
-function IntegerField<T>({
+function RHFIntegerField<T>({
   className,
   control,
   fieldName,
@@ -101,11 +101,11 @@ function IntegerField<T>({
   );
 }
 
-IntegerField.defaultProps = {
+RHFIntegerField.defaultProps = {
   min: null,
   max: null,
   isRequired: false,
   className: undefined,
 };
 
-export default IntegerField;
+export default RHFIntegerField;

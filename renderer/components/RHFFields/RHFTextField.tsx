@@ -19,7 +19,7 @@ type Props<T> = {
   isMultiline?: boolean;
 };
 
-function TextField<T>({
+function RHFTextField<T>({
   id,
   control,
   className,
@@ -57,11 +57,11 @@ function TextField<T>({
   );
 }
 
-TextField.defaultProps = {
+RHFTextField.defaultProps = {
   id: undefined,
   isRequired: false,
   isMultiline: false,
   className: undefined,
 };
 
-export default TextField;
+export default RHFTextField;

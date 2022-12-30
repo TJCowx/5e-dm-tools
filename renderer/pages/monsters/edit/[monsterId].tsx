@@ -31,6 +31,7 @@ const EditMonster: FC<Props> = ({ monster, error }) => {
       body: JSON.stringify(convertMonsterFormToDB(data)),
     })
       .then(() => {
+        console.log('UHHHH');
         router.push('/monsters');
       })
       .catch((e) => {

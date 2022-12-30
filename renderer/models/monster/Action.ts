@@ -12,6 +12,7 @@ type Action = {
   attackDelivery: AttackDelivery;
   attackType: AttackType;
   toHit: number;
+  combatantsHit: number;
   damage: Damage[];
   reach: number;
 };
@@ -28,6 +29,7 @@ export const ActionSchema = new Schema<Action>({
   toHit: Number,
   damage: [DamageSchema],
   reach: Number,
+  combatantsHit: Number,
 });
 
 export default Action;

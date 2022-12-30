@@ -1,6 +1,5 @@
 /* eslint-disable react/function-component-definition */
 import {
-  Checkbox,
   FormControl,
   FormHelperText,
   InputLabel,
@@ -8,13 +7,14 @@ import {
   Select,
 } from '@mui/material';
 import clsx from 'clsx';
-import ListItemText from 'components/List/ListItemText';
+import { useMemo } from 'react';
 import {
   Control,
   Controller,
   Path,
   UnPackAsyncDefaultValues,
 } from 'react-hook-form';
+import { RequireMessage } from 'utils/validationMessages';
 
 type Props<T> = {
   id: string;
@@ -23,26 +23,37 @@ type Props<T> = {
   fieldName: Path<UnPackAsyncDefaultValues<T>>;
   label: string;
   options: { value: string | number; text: string }[];
+  isRequired?: boolean;
 };
 
-function MultiselectField<T>({
+function RHFSelectField<T>({
   id,
-  className,
   control,
+  className,
   fieldName,
   label,
   options,
+  isRequired,
 }: Props<T>) {
+  const rules = useMemo(
+    () =>
+      isRequired
+        ? {
+            required: RequireMessage,
+            minLength: { value: 0, message: RequireMessage },
+          }
+        : undefined,
+    [isRequired]
+  );
+
   return (
     <Controller
       control={control}
       name={fieldName}
+      rules={rules}
       render={({ field, fieldState }) => (
         <FormControl
-          className={clsx({
-            'form-multiselect': true,
-            [`${className}`]: className,
-          })}
+          className={clsx({ 'form-select': true, [`${className}`]: className })}
           size="small"
         >
           <InputLabel id={id} shrink>
@@ -50,25 +61,16 @@ function MultiselectField<T>({
           </InputLabel>
           <Select
             {...field}
-            value={field.value || ''}
             labelId={id}
             label={label}
+            value={field.value || ''}
             error={fieldState.error != null}
             autoWidth={false}
-            renderValue={(selected: Array<string | number>) =>
-              selected.join(', ')
-            }
-            multiple
             notched
           >
             {options.map(({ value, text }) => (
-              <MenuItem key={value} value={value} dense>
-                <Checkbox
-                  checked={
-                    (field.value as Array<string | number>).indexOf(value) > -1
-                  }
-                />
-                <ListItemText primary={text} />
+              <MenuItem key={value} value={value}>
+                {text}
               </MenuItem>
             ))}
           </Select>
@@ -81,8 +83,9 @@ function MultiselectField<T>({
   );
 }
 
-MultiselectField.defaultProps = {
+RHFSelectField.defaultProps = {
+  isRequired: false,
   className: undefined,
 };
 
-export default MultiselectField;
+export default RHFSelectField;

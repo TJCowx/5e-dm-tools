@@ -14,7 +14,7 @@ import {
   styled,
 } from '@mui/material';
 import List from '@mui/material/List';
-import DebouncedInput from 'components/Fields/DebouncedInput';
+import DebouncedInput from 'components/DebouncedInput/DebouncedInput';
 import Layout from 'components/Layout/Layout';
 import ListItemText from 'components/List/ListItemText';
 import ListItemTwoSecondaryActions from 'components/List/ListItemTwoSecondaryActions';

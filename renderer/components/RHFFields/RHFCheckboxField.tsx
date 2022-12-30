@@ -1,5 +1,5 @@
 /* eslint-disable react/function-component-definition */
-import { FormControlLabel, Switch } from '@mui/material';
+import { Checkbox, FormControlLabel } from '@mui/material';
 import clsx from 'clsx';
 import {
   Control,
@@ -15,7 +15,12 @@ type Props<T> = {
   label: string;
 };
 
-function SwitchField<T>({ className, control, fieldName, label }: Props<T>) {
+function RHFCheckboxField<T>({
+  className,
+  control,
+  fieldName,
+  label,
+}: Props<T>) {
   return (
     <Controller
       name={fieldName}
@@ -25,9 +30,9 @@ function SwitchField<T>({ className, control, fieldName, label }: Props<T>) {
           label={label}
           className={clsx({ [`${className}`]: className })}
           control={
-            <Switch
+            <Checkbox
               {...field}
-              checked={field.value || false}
+              checked={field.value}
               onChange={(e) => field.onChange(e.target.checked)}
             />
           }
@@ -37,8 +42,8 @@ function SwitchField<T>({ className, control, fieldName, label }: Props<T>) {
   );
 }
 
-SwitchField.defaultProps = {
+RHFCheckboxField.defaultProps = {
   className: undefined,
 };
 
-export default SwitchField;
+export default RHFCheckboxField;

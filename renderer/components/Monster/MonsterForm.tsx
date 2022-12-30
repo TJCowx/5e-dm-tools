@@ -2,12 +2,12 @@ import styled from '@emotion/styled';
 import { Button, Divider, IconButton, List, Typography } from '@mui/material';
 import AbilityModal from 'components/AbilityModal/AbilityModal';
 import ActionModal from 'components/ActionModal.tsx/ActionModal';
-import AttributeField from 'components/Fields/AttributeField';
-import CheckboxField from 'components/Fields/CheckboxField';
-import IntegerField from 'components/Fields/IntegerField';
-import MultiselectField from 'components/Fields/MultiselectField';
-import SelectField from 'components/Fields/SelectField';
-import TextField from 'components/Fields/TextField';
+import RHFAttributeField from 'components/RHFFields/RHFAttributeField';
+import RHFCheckboxField from 'components/RHFFields/RHFCheckboxField';
+import RHFIntegerField from 'components/RHFFields/RHFIntegerField';
+import RHFMultiselectField from 'components/RHFFields/RHFMultiselectField';
+import RHFSelectField from 'components/RHFFields/RHFSelectField';
+import RHFTextField from 'components/RHFFields/RHFTextField';
 import ListItemText from 'components/List/ListItemText';
 import ListItemTwoSecondaryActions from 'components/List/ListItemTwoSecondaryActions';
 import { AlignmentSelectOptions } from 'models/monster/Alignment';
@@ -75,6 +75,7 @@ const MonsterForm: FC<Props> = ({ control, onSubmit, watch }) => {
     append: appendAbility,
     remove: removeAbility,
   } = useFieldArray({ control, name: 'abilities' });
+
   const {
     fields: actions,
     append: appendAction,
@@ -90,19 +91,19 @@ const MonsterForm: FC<Props> = ({ control, onSubmit, watch }) => {
         <Typography variant="h6">Description</Typography>
         <Divider />
         <div className="grid mb-16">
-          <TextField
+          <RHFTextField
             fieldName="name"
             label="Name"
             control={control}
             isRequired
           />
           <div className="row-of-fields align-start">
-            <CheckboxField
+            <RHFCheckboxField
               fieldName="isLegendary"
               label="Is Legendary"
               control={control}
             />
-            <CheckboxField
+            <RHFCheckboxField
               fieldName="hasLair"
               label="Has Lair"
               control={control}
@@ -110,21 +111,21 @@ const MonsterForm: FC<Props> = ({ control, onSubmit, watch }) => {
           </div>
         </div>
         <div className="grid mb-16">
-          <SelectField
+          <RHFSelectField
             id="size"
             fieldName="size"
             control={control}
             label="Size"
             options={MonsterSizeSelectOptions}
           />
-          <SelectField
+          <RHFSelectField
             id="type"
             fieldName="type"
             control={control}
             label="Type"
             options={MonsterTypeSelectOptions}
           />
-          <SelectField
+          <RHFSelectField
             id="alignment"
             fieldName="alignment"
             control={control}
@@ -133,21 +134,21 @@ const MonsterForm: FC<Props> = ({ control, onSubmit, watch }) => {
           />
         </div>
         <div className="grid">
-          <MultiselectField
+          <RHFMultiselectField
             id="languages-field"
             fieldName="languages"
             control={control}
             label="Languages"
             options={LanguageSelectOptions}
           />
-          <IntegerField
+          <RHFIntegerField
             control={control}
             fieldName="challengeRating"
             label="Challenge Rating"
             min={0}
             isRequired
           />
-          <IntegerField
+          <RHFIntegerField
             control={control}
             fieldName="rewardXP"
             label="Reward XP"
@@ -160,27 +161,27 @@ const MonsterForm: FC<Props> = ({ control, onSubmit, watch }) => {
         <Typography variant="h6">Movement</Typography>
         <Divider />
         <div className="row-of-fields">
-          <IntegerField
+          <RHFIntegerField
             control={control}
             label="Land Speed"
             fieldName="landSpeed"
           />
-          <IntegerField
+          <RHFIntegerField
             control={control}
             label="Fly Speed"
             fieldName="flySpeed"
           />
-          <IntegerField
+          <RHFIntegerField
             control={control}
             label="Burrow Speed"
             fieldName="burrowSpeed"
           />
-          <IntegerField
+          <RHFIntegerField
             control={control}
             label="Climb Speed"
             fieldName="climbSpeed"
           />
-          <IntegerField
+          <RHFIntegerField
             control={control}
             label="Hover Speed"
             fieldName="hoverSpeed"
@@ -191,22 +192,22 @@ const MonsterForm: FC<Props> = ({ control, onSubmit, watch }) => {
         <Typography variant="h6">Senses</Typography>
         <Divider />
         <div className="row-of-fields">
-          <IntegerField
+          <RHFIntegerField
             control={control}
             label="Blindsight"
             fieldName="blindsight"
           />
-          <IntegerField
+          <RHFIntegerField
             control={control}
             label="Darkvision"
             fieldName="darkvision"
           />
-          <IntegerField
+          <RHFIntegerField
             control={control}
             label="Tremorsense"
             fieldName="tremorsense"
           />
-          <IntegerField
+          <RHFIntegerField
             control={control}
             label="Truesight"
             fieldName="truesight"
@@ -217,56 +218,60 @@ const MonsterForm: FC<Props> = ({ control, onSubmit, watch }) => {
         <Typography variant="h6">Stats</Typography>
         <Divider />
         <div className="row-of-fields mb-16">
-          <AttributeField
+          <RHFAttributeField
             fieldName="strength"
             label="Strength"
             control={control}
           />
-          <AttributeField
+          <RHFAttributeField
             fieldName="dexterity"
             label="Dexterity"
             control={control}
           />
-          <AttributeField
+          <RHFAttributeField
             fieldName="constitution"
             label="Constitution"
             control={control}
           />
-          <AttributeField
+          <RHFAttributeField
             fieldName="intelligence"
             label="Intelligence"
             control={control}
           />
-          <AttributeField fieldName="wisdom" label="Wisdom" control={control} />
-          <AttributeField
+          <RHFAttributeField
+            fieldName="wisdom"
+            label="Wisdom"
+            control={control}
+          />
+          <RHFAttributeField
             fieldName="charisma"
             label="Charisma"
             control={control}
           />
         </div>
         <div className="grid">
-          <IntegerField
+          <RHFIntegerField
             fieldName="profBonus"
             label="Proficiency Bonus"
             control={control}
             min={0}
             isRequired
           />
-          <IntegerField
+          <RHFIntegerField
             fieldName="armourClass"
             label="Armour Class"
             control={control}
             min={0}
             isRequired
           />
-          <IntegerField
+          <RHFIntegerField
             fieldName="hitPoints"
             label="Hit Points"
             control={control}
             min={0}
             isRequired
           />
-          <TextField
+          <RHFTextField
             fieldName="hitDie"
             label="Hit Die"
             control={control}
@@ -278,14 +283,14 @@ const MonsterForm: FC<Props> = ({ control, onSubmit, watch }) => {
         <Typography variant="h6">Proficiencies</Typography>
         <Divider />
         <div className="grid">
-          <MultiselectField
+          <RHFMultiselectField
             id="prof-field"
             control={control}
             label="Proficiencies"
             fieldName="proficiencies"
             options={ProficiencySelectOptions}
           />
-          <MultiselectField
+          <RHFMultiselectField
             id="saving-throw-field"
             control={control}
             label="Saving Throws"
@@ -298,28 +303,28 @@ const MonsterForm: FC<Props> = ({ control, onSubmit, watch }) => {
         <Typography variant="h6">Damage Properties</Typography>
         <Divider />
         <div className="grid">
-          <MultiselectField
+          <RHFMultiselectField
             id="immunities-field"
             control={control}
             label="Immunities"
             fieldName="immunities"
             options={DamageTypeSelectOptions}
           />
-          <MultiselectField
+          <RHFMultiselectField
             id="cond-immunities-field"
             control={control}
             label="Condition Immunities"
             fieldName="condImmunities"
             options={ConditionTypeSelectOptions}
           />
-          <MultiselectField
+          <RHFMultiselectField
             id="resistances-field"
             control={control}
             label="Resistances"
             fieldName="resistances"
             options={DamageTypeSelectOptions}
           />
-          <MultiselectField
+          <RHFMultiselectField
             id="weaknesses-field"
             control={control}
             label="Weaknesses"
