@@ -94,7 +94,7 @@ const Monsters: FC = () => {
 
   return (
     <Layout title="Monsters">
-      {!hasError && (
+      {hasError && (
         <Alert severity="error" className="mb-16">
           There was an error loading the monsters. Please{' '}
           <MuiLink component="button" onClick={loadMonsters}>
