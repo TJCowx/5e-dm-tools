@@ -37,6 +37,7 @@ const Monsters: FC = () => {
   const [hasError, setHasError] = useState(false);
   const [monsters, setMonsters] = useState<MonsterModel[]>([]);
   const [filteredMonsters, setFilteredMonsters] = useState<MonsterModel[]>([]);
+  const [filterText, setFilterText] = useState('');
   const [deleteMonsterActionId, setDeleteMonsterActionId] =
     useState<string>(null);
 
@@ -62,7 +63,7 @@ const Monsters: FC = () => {
     loadMonsters();
   }, []);
 
-  const filterMonster = (filterText: string) => {
+  useEffect(() => {
     setFilteredMonsters(
       monsters.filter(
         ({ name, challengeRating, size, type }) =>
@@ -74,7 +75,7 @@ const Monsters: FC = () => {
           type.toLowerCase().includes(filterText.toLowerCase())
       )
     );
-  };
+  }, [filterText, monsters]);
 
   const openDialog = (id: string) => {
     setDeleteMonsterActionId(id);
@@ -103,7 +104,11 @@ const Monsters: FC = () => {
         </Alert>
       )}
       <ActionContainer>
-        <DebouncedInput value="" label="Search" onChange={filterMonster} />
+        <DebouncedInput
+          value={filterText}
+          label="Search"
+          onChange={(val) => setFilterText(val)}
+        />
         <Link href="/monsters/create" passHref>
           <IconButton aria-label="Create new monster">
             <MdAdd />

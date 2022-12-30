@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import dbConnect from 'db/dbConnect';
 import Monster from 'models/monster/Monster';
+import { logMessage } from 'utils/logUtils';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const { method } = req;
@@ -19,6 +20,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           }),
         });
       } catch (e) {
+        logMessage('error', e);
         res.status(400).json({ success: false });
       }
       break;
@@ -27,6 +29,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         const monster = await Monster.create(req.body);
         res.status(201).json({ success: true, data: monster });
       } catch (e) {
+        logMessage('error', e);
         res.status(400).json({ success: false });
       }
       break;

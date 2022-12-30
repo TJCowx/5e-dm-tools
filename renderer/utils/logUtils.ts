@@ -6,7 +6,7 @@ export const logMessage = (
   type: 'error' | 'warn' | 'info' | 'verbose' | 'debug',
   message: string
 ) => {
-  log.transports.file.fileName = `${format(new Date(), 'yyyy-mm-dd')}.log`;
+  log.transports.file.fileName = `${format(new Date(), 'yyyy-MM-dd')}.log`;
 
   switch (type) {
     case 'error':
