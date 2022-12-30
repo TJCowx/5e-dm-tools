@@ -7,13 +7,15 @@ import { useRouter } from 'next/router';
 import { GetServerSideProps } from 'next/types';
 import { FC } from 'react';
 import { useForm } from 'react-hook-form';
+import { logMessage } from 'utils/logUtils';
 import { convertMonsterFormToDB, mapMonsterDoc } from 'utils/monsterUtils';
 
 type Props = {
   monster: MonsterModel;
+  error: null | 'not-found' | 'server';
 };
 
-const EditMonster: FC<Props> = ({ monster }) => {
+const EditMonster: FC<Props> = ({ monster, error }) => {
   const router = useRouter();
 
   const { handleSubmit, control, watch } = useForm<MonsterModel>({
@@ -32,8 +34,7 @@ const EditMonster: FC<Props> = ({ monster }) => {
         router.push('/monsters');
       })
       .catch((e) => {
-        // TODO: Handle error
-        console.error(e);
+        logMessage('error', e);
       });
   };
 
@@ -54,14 +55,18 @@ const EditMonster: FC<Props> = ({ monster }) => {
 };
 
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
-  await dbConnect();
+  try {
+    await dbConnect();
 
-  const res = await Monster.findById(query.monsterId);
+    const res = await Monster.findById(query.monsterId);
 
-  // TODO: Handle no monster error
-  // TODO: Handle other error
+    if (!res) return { props: { monster: null, error: 'not-found' } };
 
-  return { props: { monster: mapMonsterDoc(res.toObject()) } };
+    return { props: { monster: mapMonsterDoc(res.toObject()) } };
+  } catch (e) {
+    logMessage('error', e);
+    return { props: { monster: null, error: 'server' } };
+  }
 };
 
 export default EditMonster;

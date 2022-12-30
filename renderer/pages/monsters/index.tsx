@@ -1,4 +1,5 @@
 import {
+  Alert,
   Button,
   Dialog,
   DialogActions,
@@ -7,6 +8,9 @@ import {
   DialogTitle,
   Divider,
   IconButton,
+  Link as MuiLink,
+  ListItem,
+  Skeleton,
   styled,
 } from '@mui/material';
 import List from '@mui/material/List';
@@ -18,6 +22,7 @@ import { MonsterModel } from 'models/monster/Monster';
 import Link from 'next/link';
 import { FC, Fragment, useEffect, useState } from 'react';
 import { MdAdd, MdDeleteForever, MdEdit } from 'react-icons/md';
+import { logMessage } from 'utils/logUtils';
 
 const ActionContainer = styled('div')(() => ({
   display: 'flex',
@@ -28,23 +33,33 @@ const ActionContainer = styled('div')(() => ({
 }));
 
 const Monsters: FC = () => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [hasError, setHasError] = useState(false);
   const [monsters, setMonsters] = useState<MonsterModel[]>([]);
   const [filteredMonsters, setFilteredMonsters] = useState<MonsterModel[]>([]);
   const [deleteMonsterActionId, setDeleteMonsterActionId] =
     useState<string>(null);
 
-  useEffect(() => {
+  const loadMonsters = () => {
+    setHasError(false);
+    setIsLoading(true);
     fetch('/api/monsters')
       .then(async (res) => {
         const { data } = await res.json();
 
         setMonsters(data);
         setFilteredMonsters(data);
+        setIsLoading(false);
       })
       .catch((e) => {
-        // TODO: Handle error
-        console.error(e);
+        logMessage('error', e);
+        setHasError(true);
+        setIsLoading(false);
       });
+  };
+
+  useEffect(() => {
+    loadMonsters();
   }, []);
 
   const filterMonster = (filterText: string) => {
@@ -72,14 +87,21 @@ const Monsters: FC = () => {
         setDeleteMonsterActionId(null);
       })
       .catch((e) => {
-        // TODO: Handle Error
-        console.error(e);
+        logMessage('error', e);
         setDeleteMonsterActionId(null);
       });
   };
 
   return (
     <Layout title="Monsters">
+      {!hasError && (
+        <Alert severity="error" className="mb-16">
+          There was an error loading the monsters. Please{' '}
+          <MuiLink component="button" onClick={loadMonsters}>
+            try again.
+          </MuiLink>
+        </Alert>
+      )}
       <ActionContainer>
         <DebouncedInput value="" label="Search" onChange={filterMonster} />
         <Link href="/monsters/create" passHref>
@@ -88,44 +110,58 @@ const Monsters: FC = () => {
           </IconButton>
         </Link>
       </ActionContainer>
-      <List dense>
-        {filteredMonsters.map(({ id, name, type, size, challengeRating }) => (
-          <Fragment key={id}>
-            <ListItemTwoSecondaryActions
-              secondaryAction={
-                <>
-                  <Link href={`/monsters/edit/${id}`} passHref>
-                    <IconButton aria-label={`Edit ${name}`}>
-                      <MdEdit />
-                    </IconButton>
-                  </Link>
-                  <IconButton
-                    edge="end"
-                    aria-label={`Delete ${name}`}
-                    color="warning"
-                    onClick={() => openDialog(id)}
-                  >
-                    <MdDeleteForever />
-                  </IconButton>
-                </>
-              }
-            >
-              <ListItemText
-                primary={name}
-                secondary={
+      {isLoading ? (
+        <List dense>
+          {[...Array(10)].map((_, i) => (
+            // eslint-disable-next-line react/no-array-index-key
+            <Fragment key={`skel-${i}`}>
+              <ListItem>
+                <Skeleton sx={{ width: '100%' }} />
+              </ListItem>
+              <Divider component="li" />
+            </Fragment>
+          ))}
+        </List>
+      ) : (
+        <List dense>
+          {filteredMonsters.map(({ id, name, type, size, challengeRating }) => (
+            <Fragment key={id}>
+              <ListItemTwoSecondaryActions
+                secondaryAction={
                   <>
-                    CR: {challengeRating} |{' '}
-                    <i>
-                      {size} {type}
-                    </i>
+                    <Link href={`/monsters/edit/${id}`} passHref>
+                      <IconButton aria-label={`Edit ${name}`}>
+                        <MdEdit />
+                      </IconButton>
+                    </Link>
+                    <IconButton
+                      edge="end"
+                      aria-label={`Delete ${name}`}
+                      color="warning"
+                      onClick={() => openDialog(id)}
+                    >
+                      <MdDeleteForever />
+                    </IconButton>
                   </>
                 }
-              />
-            </ListItemTwoSecondaryActions>
-            <Divider component="li" />
-          </Fragment>
-        ))}
-      </List>
+              >
+                <ListItemText
+                  primary={name}
+                  secondary={
+                    <>
+                      CR: {challengeRating} |{' '}
+                      <i>
+                        {size} {type}
+                      </i>
+                    </>
+                  }
+                />
+              </ListItemTwoSecondaryActions>
+              <Divider component="li" />
+            </Fragment>
+          ))}
+        </List>
+      )}
       {deleteMonsterActionId != null && (
         <Dialog open onClose={() => setDeleteMonsterActionId(null)}>
           <DialogTitle>Confirm Delete Monster</DialogTitle>

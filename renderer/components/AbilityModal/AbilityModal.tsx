@@ -1,5 +1,10 @@
-import { Button, ListItem, ListItemButton, ListItemIcon } from '@mui/material';
-import { styled } from '@mui/system';
+import {
+  Button,
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  styled,
+} from '@mui/material';
 import TextField from 'components/Fields/TextField';
 import ListItemText from 'components/List/ListItemText';
 import Modal from 'components/Modal/Modal';
@@ -7,6 +12,7 @@ import Ability from 'models/monster/Ability';
 import { BaseSyntheticEvent, FC, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { GrAdd } from 'react-icons/gr';
+import { MdOutlineAdd } from 'react-icons/md';
 
 type Props = {
   onSave: (ability: Ability) => void;
@@ -45,7 +51,7 @@ const AbilityModal: FC<Props> = ({ onSave }) => {
       <ListItem disableGutters>
         <ListItemButton onClick={() => setIsModalOpen(true)}>
           <ListItemIcon>
-            <GrAdd />
+            <MdOutlineAdd />
           </ListItemIcon>
           <ListItemText primary="Add ability" className="mb-0" />
         </ListItemButton>

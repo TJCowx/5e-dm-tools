@@ -35,11 +35,11 @@ const StyledAccordion = styled(Accordion)(() => ({
   '&:before': { height: 0 },
 }));
 
-const StyledAccordionSummary = styled(AccordionSummary)(() => ({
-  backgroundColor: grey[100],
+const StyledAccordionSummary = styled(AccordionSummary)(({ theme }) => ({
+  backgroundColor: theme.palette.mode === 'light' ? grey[100] : '#2c313c',
 }));
 
-const SummaryContent = styled('div')(() => ({
+const SummaryContent = styled('div')(({ theme }) => ({
   display: 'flex',
   justifyContent: 'space-between',
   alignItems: 'center',
@@ -49,6 +49,9 @@ const SummaryContent = styled('div')(() => ({
     display: 'flex',
     alignItems: 'center',
     '& svg': { marginRight: '12px' },
+  },
+  '& .end-slot-container': {
+    color: theme.palette.tonalOffset,
   },
 }));
 
@@ -134,11 +137,7 @@ const MonsterCombatantItem: FC<Props> = ({
             {combatant.isDead && <DeadIcon />}
             {combatant.name}
           </span>
-          <Typography
-            variant="body2"
-            color="GrayText"
-            className="end-slot-container"
-          >
+          <Typography variant="body2" className="end-slot-container">
             <span className="hp-container">
               {currentHp} / {monsterStats.hitPoints}
             </span>

@@ -1,9 +1,12 @@
+import { Alert } from '@mui/material';
 import Layout from 'components/Layout/Layout';
 import NavBack from 'components/Links/NavBack';
 import MonsterForm from 'components/Monster/MonsterForm';
 import { MonsterModel } from 'models/monster/Monster';
 import { useRouter } from 'next/router';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { logMessage } from 'utils/logUtils';
 import { convertMonsterFormToDB } from 'utils/monsterUtils';
 
 const DefaultValues: MonsterModel = {
@@ -57,11 +60,14 @@ const DefaultValues: MonsterModel = {
 const CreateMonster = () => {
   const router = useRouter();
 
+  const [hasError, setHasError] = useState(false);
+
   const { handleSubmit, control, watch } = useForm<MonsterModel>({
     defaultValues: DefaultValues,
   });
 
   const onSubmit = (data: MonsterModel) => {
+    setHasError(false);
     fetch('/api/monsters', {
       method: 'POST',
       headers: {
@@ -73,8 +79,8 @@ const CreateMonster = () => {
         router.push('/monsters');
       })
       .catch((e) => {
-        // TODO: Handle error
-        console.error(e);
+        logMessage('error', e);
+        setHasError(true);
       });
   };
 
@@ -85,6 +91,11 @@ const CreateMonster = () => {
         ariaLabel="Go to monsters list"
         tooltipText="Back to monsters list"
       />
+      {hasError && (
+        <Alert severity="error" className="mb-16">
+          There was an error saving your monster. Try again.
+        </Alert>
+      )}
       <MonsterForm
         control={control}
         watch={watch}

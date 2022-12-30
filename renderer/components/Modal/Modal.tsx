@@ -11,9 +11,9 @@ type Props = {
   onClose: () => void;
 };
 
-const StyledModal = styled(MuiModal)(() => ({
+const StyledModal = styled(MuiModal)(({ theme }) => ({
   '& .modal-wrapper': {
-    background: 'white', // TODO: Use theme
+    background: theme.palette.background.default,
     width: '50vw',
     position: 'absolute',
     top: '50%',

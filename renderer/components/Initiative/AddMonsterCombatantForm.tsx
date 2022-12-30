@@ -1,4 +1,5 @@
 import {
+  Alert,
   Autocomplete,
   Button,
   Divider,
@@ -13,6 +14,7 @@ import Combatant from 'models/initiative/Combatant';
 import { MonsterModel } from 'models/monster/Monster';
 import { FC, useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
+import { logMessage } from 'utils/logUtils';
 import { getModifier } from 'utils/modifierUtils';
 import { rollD20 } from 'utils/rollUtils';
 import { v4 } from 'uuid';
@@ -42,6 +44,8 @@ const StyledForm = styled('form')(() => ({
 }));
 
 const AddMonsterCombatantForm: FC<Props> = ({ onSubmit, onCancel }) => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [hasError, setHasError] = useState(false);
   const [availableMonsters, setAvailableMonsters] = useState<MonsterModel[]>(
     []
   );
@@ -57,14 +61,17 @@ const AddMonsterCombatantForm: FC<Props> = ({ onSubmit, onCancel }) => {
   );
 
   useEffect(() => {
+    setIsLoading(true);
     fetch('/api/monsters', { method: 'GET' })
       .then(async (res) => {
         const { data } = await res.json();
         setAvailableMonsters(data);
+        setIsLoading(false);
       })
       .catch((e) => {
-        // TODO: Handle Error
-        console.error(e);
+        logMessage('error', e);
+        setHasError(true);
+        setIsLoading(false);
       });
   }, []);
 
@@ -84,7 +91,7 @@ const AddMonsterCombatantForm: FC<Props> = ({ onSubmit, onCancel }) => {
     for (let i = 0; i < monsterCount; i++) {
       newCombatants.push({
         id: v4(),
-        name: submittedMonster.name, // TODO: Add (a/b/c/d)
+        name: submittedMonster.name,
         initiative: groupInitiativeRoll
           ? groupInitiative
           : rollD20(initiativeModifier),
@@ -130,6 +137,11 @@ const AddMonsterCombatantForm: FC<Props> = ({ onSubmit, onCancel }) => {
 
   return (
     <StyledForm onSubmit={handleSubmit(handleMonsterSubmit)}>
+      {hasError && (
+        <Alert severity="error" className="mb-16">
+          There was an error loading the monster list. Please try again.
+        </Alert>
+      )}
       <Controller
         control={control}
         name="monster"
@@ -138,6 +150,7 @@ const AddMonsterCombatantForm: FC<Props> = ({ onSubmit, onCancel }) => {
           <Autocomplete
             value={field.value ?? null}
             disablePortal
+            loading={isLoading}
             multiple={undefined}
             options={availableMonsters}
             getOptionLabel={(opt) => (typeof opt === 'string' ? opt : opt.name)}
