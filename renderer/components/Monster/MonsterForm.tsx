@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 import { Button, Divider, IconButton, List, Typography } from '@mui/material';
 import AbilityModal from 'components/AbilityModal/AbilityModal';
+import ActionModal from 'components/ActionModal.tsx/ActionModal';
 import RHFAttributeField from 'components/Fields/RHF/RHFAttributeField';
 import RHFCheckboxField from 'components/Fields/RHF/RHFCheckboxField';
 import RHFIntegerField from 'components/Fields/RHF/RHFIntegerField';
@@ -382,11 +383,11 @@ const MonsterForm: FC<Props> = ({ control, onSubmit, watch }) => {
               onDelete={() => removeAction(i)}
             />
           ))}
-          {/* <ActionModal
+          <ActionModal
             isLegendary={isLegendary}
             hasLair={hasLair}
             onSave={(newAction) => appendAction(newAction)}
-          /> */}
+          />
         </List>
       </section>
       <div className="action-container">

@@ -1,4 +1,5 @@
 import {
+  Alert,
   Button,
   Divider,
   IconButton,
@@ -8,28 +9,133 @@ import {
   ListItemIcon,
   styled,
 } from '@mui/material';
-import RHFIntegerField from 'components/RHFFields/RHFIntegerField';
-import RHFSelectField from 'components/RHFFields/RHFSelectField';
-import RHFSwitchField from 'components/RHFFields/RHFSwitchField';
-import RHFTextField from 'components/RHFFields/RHFTextField';
+import BasicNumberField from 'components/Fields/Basic/BasicNumberField';
+import BasicSelectField from 'components/Fields/Basic/BasicSelectField';
+import BasicSwitchField from 'components/Fields/Basic/BasicSwitchField';
+import BasicTextField from 'components/Fields/Basic/BasicTextField';
 import ListItemText from 'components/List/ListItemText';
 import Modal from 'components/Modal/Modal';
 import Action from 'models/monster/Action';
-import { ActionTypeSelectOptions } from 'models/monster/ActionType';
+import ActionType, { ActionTypeSelectOptions } from 'models/monster/ActionType';
 import {
+  AttackDelivery,
   AttackDeliverySelectOptions,
+  AttackType,
   AttackTypeSelectOptions,
 } from 'models/monster/AttackType';
-import { DamageTypeSelectOptions } from 'models/monster/DamageType';
+import Damage from 'models/monster/Damage';
+import DamageType, { DamageTypeSelectOptions } from 'models/monster/DamageType';
 import { FC, useMemo, useState } from 'react';
-import { SubmitHandler, useFieldArray, useForm } from 'react-hook-form';
 import { MdAdd, MdDelete, MdOutlineAdd } from 'react-icons/md';
+import { RequireMessage } from 'utils/validationMessages';
+import {
+  array as yupArray,
+  boolean as yupBoolean,
+  number as yupNumber,
+  object as yupObject,
+  string as yupString,
+  ValidationError,
+} from 'yup';
 
 type Props = {
   isLegendary: boolean;
   hasLair: boolean;
   onSave: (action: Action) => void;
 };
+
+type ErrorSchema = Record<keyof Action, string>;
+
+const schema = yupObject().shape({
+  name: yupString().required({ field: 'name', message: RequireMessage }),
+  description: yupString().when('isAttack', {
+    is: false,
+    then: yupString().required({
+      field: 'description',
+      message: RequireMessage,
+    }),
+  }),
+  actionType: yupString().nullable().required({
+    field: 'actionType',
+    message: RequireMessage,
+  }),
+  isAttack: yupBoolean(),
+  attackDelivery: yupString()
+    .nullable()
+    .when('isAttack', {
+      is: true,
+      then: yupString().nullable().required({
+        field: 'attackDelivery',
+        message: RequireMessage,
+      }),
+    }),
+  attackType: yupString()
+    .nullable()
+    .when('isAttack', {
+      is: true,
+      then: yupString().nullable().required({
+        field: 'attackType',
+        message: RequireMessage,
+      }),
+    }),
+  toHit: yupNumber()
+    .transform((value) => (Number.isNaN(value) ? null : value))
+    .nullable()
+    .when('isAttack', {
+      is: true,
+      then: yupNumber()
+        .transform((value) => (Number.isNaN(value) ? null : value))
+        .nullable()
+        .required({ field: 'toHit', message: RequireMessage })
+        .min(0, {
+          field: 'toHit',
+          message: 'Must be greater than or equal to 0',
+        }),
+    }),
+  reach: yupNumber()
+    .transform((value) => (Number.isNaN(value) ? null : value))
+    .nullable()
+    .when('isAttack', {
+      is: true,
+      then: yupNumber()
+        .transform((value) => (Number.isNaN(value) ? null : value))
+        .nullable()
+        .required({ field: 'reach', message: RequireMessage })
+        .min(0, {
+          field: 'reach',
+          message: 'Must be greater than or equal to 0',
+        }),
+    }),
+  combatantsHit: yupNumber()
+    .transform((value) => (Number.isNaN(value) ? null : value))
+    .nullable()
+    .when('isAttack', {
+      is: true,
+      then: yupNumber()
+        .transform((value) => (Number.isNaN(value) ? null : value))
+        .nullable()
+        .required({ field: 'combatantsHit', message: RequireMessage })
+        .min(1, {
+          field: 'combatantsHit',
+          message: 'Must be greater than or equal to 1',
+        }),
+    }),
+  damage: yupArray(
+    yupObject().shape({
+      damage: yupString().required({
+        field: 'damage',
+        message: 'Amount of Damage is required',
+      }),
+      damageDice: yupString().required({
+        field: 'damage',
+        message: 'Damage Dice is required',
+      }),
+      type: yupString().required({
+        field: 'damage',
+        message: 'Damage Type is required',
+      }),
+    })
+  ),
+});
 
 const StyledForm = styled('div')(() => ({
   display: 'flex',
@@ -79,6 +185,7 @@ const ActionModal: FC<Props> = ({ isLegendary, hasLair, onSave }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const [action, setAction] = useState<Action>(newAction());
+  const [errors, setErrors] = useState<Partial<ErrorSchema>>({});
 
   const actionTypeOptions = useMemo(
     () =>
@@ -93,13 +200,41 @@ const ActionModal: FC<Props> = ({ isLegendary, hasLair, onSave }) => {
 
   const handleClose = () => {
     setIsOpen(false);
+    setErrors({});
     setAction(newAction());
   };
 
   const onSubmit = () => {
-    onSave(action);
-    setIsOpen(false);
-    setAction(newAction());
+    schema
+      .validate(action, { abortEarly: false })
+      .then(() => {
+        onSave(action);
+        setIsOpen(false);
+        setAction(newAction());
+      })
+      .catch((e: ValidationError) => {
+        const newErrors: Partial<ErrorSchema> = {};
+
+        (e.errors as unknown as { field: string; message: string }[]).forEach(
+          (err) => {
+            newErrors[err.field] = err.message;
+          }
+        );
+        setErrors(newErrors);
+      });
+  };
+
+  const updateDamageItem = (damage: Damage, i: number) => {
+    const arrCopy = action.damage;
+
+    arrCopy[i] = damage;
+    setAction((prev) => ({ ...prev, damage: arrCopy }));
+  };
+
+  const removeDamageItem = (i: number) => {
+    const arrCopy = action.damage;
+    arrCopy.splice(i, 1);
+    setAction((prev) => ({ ...prev, damage: arrCopy }));
   };
 
   return (
@@ -115,125 +250,190 @@ const ActionModal: FC<Props> = ({ isLegendary, hasLair, onSave }) => {
       {isOpen && (
         <Modal title="Add Action" isOpen={isOpen} onClose={handleClose}>
           <StyledForm>
-            <RHFTextField
-              fieldName="name"
+            <BasicTextField
+              value={action.name}
               className="mb-16"
               label="Name"
-              control={control}
-              isRequired
+              error={errors.name}
+              onChange={(newVal) =>
+                setAction((prev) => ({ ...prev, name: newVal }))
+              }
+              onBlur={() => setErrors((prev) => ({ ...prev, name: null }))}
             />
-            <RHFTextField
-              fieldName="description"
+            <BasicTextField
+              value={action.description}
               className="mb-16"
               label="Description"
-              control={control}
               isMultiline
-              isRequired={!isAttack}
+              error={errors.description}
+              onChange={(newVal) =>
+                setAction((prev) => ({ ...prev, description: newVal }))
+              }
+              onBlur={() =>
+                setErrors((prev) => ({ ...prev, description: null }))
+              }
             />
-            <RHFSelectField
+            <BasicSelectField
               id="action-type-field"
-              control={control}
-              className="mb-12"
-              fieldName="actionType"
-              label="Action Type"
-              options={actionTypeOptions}
-              isRequired
-            />
-            <RHFSwitchField
-              control={control}
+              value={action.actionType}
               className="mb-16"
-              fieldName="isAttack"
-              label="Is Attack"
+              label="Action Type"
+              error={errors.actionType}
+              options={actionTypeOptions}
+              onChange={(newVal: ActionType) =>
+                setAction((prev) => ({ ...prev, actionType: newVal }))
+              }
+              onBlur={() =>
+                setErrors((prev) => ({ ...prev, actionType: null }))
+              }
             />
-            {isAttack && (
+            <BasicSwitchField
+              value={action.isAttack}
+              className="mb-16"
+              label="Is Attack"
+              onChange={
+                (isChecked) =>
+                  setAction((prev) => ({ ...prev, isAttack: isChecked })) // TODO: Remove Action stuff??
+              }
+            />
+            {action.isAttack && (
               <>
                 <div className="grid mb-16">
-                  <RHFSelectField
+                  <BasicSelectField
                     id="attack-delivery-field"
-                    control={control}
-                    fieldName="attackDelivery"
+                    value={action.attackDelivery}
                     label="Attack Delivery"
+                    error={errors.attackDelivery}
                     options={AttackDeliverySelectOptions}
-                    isRequired={isAttack}
+                    onChange={(newVal: AttackDelivery) =>
+                      setAction((prev) => ({ ...prev, attackDelivery: newVal }))
+                    }
+                    onBlur={() =>
+                      setErrors((prev) => ({ ...prev, attackDelivery: null }))
+                    }
                   />
-                  <RHFSelectField
+                  <BasicSelectField
                     id="attack-type-field"
-                    control={control}
-                    fieldName="attackType"
                     label="Attack Type"
+                    value={action.attackType}
+                    error={errors.actionType}
                     options={AttackTypeSelectOptions}
-                    isRequired={isAttack}
+                    onChange={(newVal: AttackType) =>
+                      setAction((prev) => ({ ...prev, attackType: newVal }))
+                    }
+                    onBlur={() =>
+                      setErrors((prev) => ({ ...prev, attackType: null }))
+                    }
                   />
                 </div>
                 <div className="grid mb-16">
-                  <RHFIntegerField
-                    control={control}
-                    fieldName="toHit"
+                  <BasicNumberField
+                    value={action.toHit}
                     label="To Hit"
                     min={0}
-                    isRequired={isAttack}
+                    error={errors.toHit}
+                    onChange={(newVal) =>
+                      setAction((prev) => ({ ...prev, toHit: newVal }))
+                    }
+                    onBlur={() =>
+                      setErrors((prev) => ({ ...prev, toHit: null }))
+                    }
                   />
-                  <RHFIntegerField
-                    control={control}
-                    fieldName="reach"
+                  <BasicNumberField
+                    value={action.reach}
                     label="Reach"
                     min={0}
-                    isRequired={isAttack}
+                    step={5}
+                    error={errors.reach}
+                    onChange={(newVal) =>
+                      setAction((prev) => ({ ...prev, reach: newVal }))
+                    }
+                    onBlur={() =>
+                      setErrors((prev) => ({ ...prev, reach: null }))
+                    }
                   />
-                  <RHFIntegerField
-                    control={control}
-                    fieldName="combatantsHit"
+                  <BasicNumberField
+                    value={action.combatantsHit}
                     label="Combatants Hit"
                     min={1}
-                    isRequired={isAttack}
+                    error={errors.combatantsHit}
+                    onChange={(newVal) =>
+                      setAction((prev) => ({
+                        ...prev,
+                        combatantsHit: Number(newVal),
+                      }))
+                    }
+                    onBlur={() =>
+                      setErrors((prev) => ({ ...prev, combatantsHit: null }))
+                    }
                   />
                 </div>
                 <Divider />
+                {!!errors.damage?.length && (
+                  <Alert
+                    severity="error"
+                    sx={{ marginTop: '12px', marginBottom: '12px' }}
+                  >
+                    {errors.damage}
+                  </Alert>
+                )}
                 <List dense>
-                  {damageFields.map((damage, i) => (
+                  {action.damage.map((damage, i) => (
                     <ListItem
-                      key={damage.id}
+                      key={damage.id || `damage-${i}`}
                       className="damage-list-item pl-0"
                       secondaryAction={
-                        <IconButton onClick={() => remove(i)} color="warning">
+                        <IconButton
+                          onClick={() => removeDamageItem(i)}
+                          color="warning"
+                        >
                           <MdDelete />
                         </IconButton>
                       }
                     >
-                      <RHFTextField
-                        fieldName={`damage.${i}.damage`}
+                      <BasicTextField
                         className="damage-field"
                         label="Damage"
-                        control={control}
-                        isRequired={isAttack}
+                        value={damage.damage}
+                        onChange={(newVal) =>
+                          updateDamageItem({ ...damage, damage: newVal }, i)
+                        }
                       />
-                      <RHFTextField
-                        fieldName={`damage.${i}.damageDice`}
+                      <BasicTextField
                         className="damage-dice-field"
                         label="Damage Dice"
-                        control={control}
-                        isRequired={isAttack}
+                        value={damage.damageDice}
+                        onChange={(newVal) =>
+                          updateDamageItem({ ...damage, damageDice: newVal }, i)
+                        }
                       />
-                      <RHFSelectField
+                      <BasicSelectField
                         id={`damage-${i}-type`}
-                        control={control}
                         className="damage-type-field"
-                        fieldName={`damage.${i}.type`}
                         label="Damage Type"
                         options={DamageTypeSelectOptions}
-                        isRequired={isAttack}
+                        value={damage.type}
+                        onChange={(newVal: DamageType) =>
+                          updateDamageItem({ ...damage, type: newVal }, i)
+                        }
                       />
                     </ListItem>
                   ))}
                   <ListItem className="pl-0">
                     <ListItemButton
                       onClick={() =>
-                        append({
-                          id: undefined,
-                          damage: '',
-                          damageDice: '',
-                          type: 'Non-Magical',
-                        })
+                        setAction((prev) => ({
+                          ...prev,
+                          damage: [
+                            ...prev.damage,
+                            {
+                              id: undefined,
+                              damage: '',
+                              damageDice: '',
+                              type: 'Non-Magical',
+                            },
+                          ],
+                        }))
                       }
                     >
                       <ListItemIcon>

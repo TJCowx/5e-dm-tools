@@ -56,7 +56,7 @@ function RHFSelectField<T>({
           className={clsx({ 'form-select': true, [`${className}`]: className })}
           size="small"
         >
-          <InputLabel id={id} shrink>
+          <InputLabel id={id} shrink error={fieldState.error != null}>
             {label}
           </InputLabel>
           <Select

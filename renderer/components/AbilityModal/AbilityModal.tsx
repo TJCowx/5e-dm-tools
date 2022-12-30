@@ -9,17 +9,17 @@ import BasicTextField from 'components/Fields/Basic/BasicTextField';
 import ListItemText from 'components/List/ListItemText';
 import Modal from 'components/Modal/Modal';
 import Ability from 'models/monster/Ability';
-import { BaseSyntheticEvent, FC, useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { FC, useState } from 'react';
 import { MdOutlineAdd } from 'react-icons/md';
 import { RequireMessage } from 'utils/validationMessages';
-import { object as YupObject, string as YupString, ValidationError } from 'yup';
+import { object as yupObject, string as yupString, ValidationError } from 'yup';
 
 type Props = {
   onSave: (ability: Ability) => void;
 };
 
-type ErrorSchema = Record<'name' | 'description', string>;
+type ErrorSchema = Partial<Record<keyof Ability, string>>;
+
 const Container = styled('div')(() => ({
   display: 'flex',
   flexDirection: 'column',
@@ -31,9 +31,9 @@ const Container = styled('div')(() => ({
 
 const newAbility = (): Ability => ({ id: null, name: '', description: '' });
 
-const schema = YupObject().shape({
-  name: YupString().required({ field: 'name', message: RequireMessage }),
-  description: YupString().required({
+const schema = yupObject().shape({
+  name: yupString().required({ field: 'name', message: RequireMessage }),
+  description: yupString().required({
     field: 'description',
     message: RequireMessage,
   }),
@@ -61,7 +61,7 @@ const AbilityModal: FC<Props> = ({ onSave }) => {
         setAbility(newAbility());
       })
       .catch((e: ValidationError) => {
-        const newErrors: ErrorSchema = { name: null, description: null };
+        const newErrors: Partial<ErrorSchema> = {};
         (e.errors as unknown as { field: string; message: string }[]).forEach(
           (err) => {
             newErrors[err.field] = err.message;
@@ -70,10 +70,6 @@ const AbilityModal: FC<Props> = ({ onSave }) => {
         setErrors(newErrors);
       });
   };
-
-  useEffect(() => {
-    console.log('Errors: ', errors);
-  }, [errors]);
 
   return (
     <>
@@ -91,33 +87,23 @@ const AbilityModal: FC<Props> = ({ onSave }) => {
             <BasicTextField
               label="Name"
               value={ability.name}
-              onChange={(e) =>
-                setAbility((prev) => ({ ...prev, name: e.target.value }))
+              onChange={(newVal) =>
+                setAbility((prev) => ({ ...prev, name: newVal }))
               }
-              error={errors.name != null}
-              helperText={errors.name}
-              onBlur={() => {
-                setErrors((prev) => ({
-                  ...prev,
-                  name: null,
-                }));
-              }}
+              error={errors.name}
+              onBlur={() => setErrors((prev) => ({ ...prev, name: null }))}
             />
             <BasicTextField
               label="Description"
               value={ability.description}
-              multiline
-              onChange={(e) =>
-                setAbility((prev) => ({ ...prev, description: e.target.value }))
+              isMultiline
+              onChange={(newVal) =>
+                setAbility((prev) => ({ ...prev, description: newVal }))
               }
-              error={errors.description != null}
-              helperText={errors.description}
-              onBlur={() => {
-                setErrors((prev) => ({
-                  ...prev,
-                  description: null,
-                }));
-              }}
+              error={errors.description}
+              onBlur={() =>
+                setErrors((prev) => ({ ...prev, description: null }))
+              }
             />
             <div className="actions-container">
               <Button onClick={onCancel}>Cancel</Button>
