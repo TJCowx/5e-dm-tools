@@ -23,6 +23,7 @@ const ActionListItem: FC<Props> = ({ action, onEdit, onDelete }) => {
     toHit,
     damage,
     reach,
+    combatantsHit,
   } = action;
 
   const damageText = (damage ?? [])
@@ -30,7 +31,7 @@ const ActionListItem: FC<Props> = ({ action, onEdit, onDelete }) => {
     .join(', ');
 
   const attackDescription = isAttack
-    ? ` - ${attackDelivery} ${attackType} Attack | +${toHit} to hit | Reach ${reach}ft | ${damageText}`
+    ? ` - ${attackDelivery} ${attackType} Attack | +${toHit} to hit | Reach ${reach}ft | ${damageText} | ${combatantsHit} target`
     : '';
 
   return (

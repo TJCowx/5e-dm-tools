@@ -18,15 +18,23 @@ const ActionItem: FC<Props> = ({ action }) => {
     attackType,
     toHit,
     damage,
+    combatantsHit,
     reach,
   } = action;
+
+  const damageString = damage.map(
+    (damageItem) =>
+      `${damageItem.damage} (${damageItem.damageDice}) ${damageItem.type} damage`
+  );
 
   return (
     <Container>
       <Typography variant="subtitle2">{name}</Typography>
       <Typography variant="body2">
         {isAttack &&
-          `${attackDelivery} ${attackType} Attack: +${toHit}, reach ${reach}ft., NUM_TARGETS, Hit: TODO\n`}
+          `${attackDelivery} ${attackType} Attack: +${toHit}, reach ${reach}ft., ${combatantsHit} target, Hit: ${damageString.join(
+            ', '
+          )}\n`}
         {description}
       </Typography>
     </Container>
