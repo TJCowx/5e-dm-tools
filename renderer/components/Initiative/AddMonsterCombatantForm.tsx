@@ -7,8 +7,8 @@ import {
   Typography,
 } from '@mui/material';
 import { styled } from '@mui/system';
-import RHFIntegerField from 'components/RHFFields/RHFIntegerField';
-import RHFSwitchField from 'components/RHFFields/RHFSwitchField';
+import RHFIntegerField from 'components/Fields/RHF/RHFIntegerField';
+import RHFSwitchField from 'components/Fields/RHF/RHFSwitchField';
 import FormattedStat from 'components/Monster/FormattedStat';
 import Combatant from 'models/initiative/Combatant';
 import { MonsterModel } from 'models/monster/Monster';

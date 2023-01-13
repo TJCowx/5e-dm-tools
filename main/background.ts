@@ -1,6 +1,5 @@
-import { app, ipcMain } from 'electron';
+import { app, ipcMain, nativeTheme } from 'electron';
 import serve from 'electron-serve';
-import log from 'electron-log';
 import { createWindow } from './helpers';
 
 const isProd: boolean = process.env.NODE_ENV === 'production';
@@ -25,6 +24,7 @@ if (isProd) {
       symbolColor: 'rgba(0, 0, 0, 0.87)',
       height: 28,
     },
+    backgroundColor: nativeTheme.shouldUseDarkColors ? '#282c34' : '#FFFFFF',
   });
 
   if (isProd) {

@@ -1,6 +1,5 @@
-import { ListItem, ListItemButton, ListItemIcon } from '@mui/material';
+import { ListItem, ListItemButton, ListItemIcon, styled } from '@mui/material';
 import { cyan, grey, red } from '@mui/material/colors';
-import { styled } from '@mui/system';
 import clsx from 'clsx';
 import DeadIcon from 'components/Icons/DeadIcon';
 import ListItemText from 'components/List/ListItemText';
@@ -17,7 +16,7 @@ type Props = {
   onClick: (combatant: Combatant) => void;
 };
 
-const StyledListItem = styled(ListItem)(() => ({
+const StyledListItem = styled(ListItem)(({ theme }) => ({
   '&.active': {
     background: red[50],
     '&.is-player': {
@@ -25,7 +24,12 @@ const StyledListItem = styled(ListItem)(() => ({
     },
   },
   '&.is-dead': {
-    background: grey[300],
+    background:
+      theme.palette.mode === 'light' ? grey[300] : 'rgba(255, 255, 255, 0.12)',
+    color: theme.palette.text.disabled,
+    '& .secondary-text': {
+      color: theme.palette.text.disabled,
+    },
     '& .MuiListItemIcon-root': {
       marginRight: '12px',
       minWidth: 0,

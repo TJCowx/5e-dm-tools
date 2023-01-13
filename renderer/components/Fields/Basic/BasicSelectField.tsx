@@ -45,6 +45,7 @@ const BasicSelectField: FC<Props> = ({
       notched
       onChange={(e) => onChange(e.target.value)}
       onBlur={onBlur}
+      MenuProps={{ style: { maxHeight: '500px' } }}
     >
       {options.map(({ value: optVal, text }) => (
         <MenuItem key={optVal} value={optVal}>

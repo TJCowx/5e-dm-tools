@@ -60,6 +60,7 @@ function RHFMultiselectField<T>({
             }
             multiple
             notched
+            MenuProps={{ style: { maxHeight: '500px' } }}
           >
             {options.map(({ value, text }) => (
               <MenuItem key={value} value={value} dense>

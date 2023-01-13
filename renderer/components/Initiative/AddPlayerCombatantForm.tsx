@@ -1,7 +1,7 @@
 import { Button } from '@mui/material';
 import { styled } from '@mui/system';
-import RHFIntegerField from 'components/RHFFields/RHFIntegerField';
-import RHFTextField from 'components/RHFFields/RHFTextField';
+import RHFIntegerField from 'components/Fields/RHF/RHFIntegerField';
+import RHFTextField from 'components/Fields/RHF/RHFTextField';
 import Combatant from 'models/initiative/Combatant';
 import { FC } from 'react';
 import { useForm } from 'react-hook-form';

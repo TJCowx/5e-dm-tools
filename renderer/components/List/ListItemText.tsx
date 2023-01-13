@@ -10,7 +10,7 @@ type Props = {
 
 const StyledListItem = styled(MuiListItemText)(({ theme }) => ({
   '& .secondary-text': {
-    color: theme.palette.tonalOffset,
+    color: theme.palette.text.secondary,
   },
 }));
 
@@ -23,7 +23,6 @@ const ListItemText: FC<Props> = ({ primary, secondary, className }) => (
     secondaryTypographyProps={{
       variant: 'body2',
       className: 'secondary-text',
-      // color: 'InfoText',
     }}
   />
 );
