@@ -1,4 +1,6 @@
 import styled from '@emotion/styled';
+import { faPen, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button, Divider, IconButton, List, Typography } from '@mui/material';
 import AbilityModal from 'components/AbilityModal/AbilityModal';
 import ActionModal from 'components/ActionModal.tsx/ActionModal';
@@ -21,7 +23,6 @@ import { MonsterTypeSelectOptions } from 'models/monster/MonsterType';
 import { ProficiencySelectOptions } from 'models/monster/Proficiency';
 import { FC, FormEventHandler, Fragment } from 'react';
 import { Control, useFieldArray, UseFormWatch } from 'react-hook-form';
-import { MdDelete, MdEdit } from 'react-icons/md';
 
 import ActionListItem from './ActionListItem';
 
@@ -347,7 +348,7 @@ const MonsterForm: FC<Props> = ({ control, onSubmit, watch }) => {
                       edge="end"
                       onClick={() => console.log('Ability', ability.id)}
                     >
-                      <MdEdit />
+                      <FontAwesomeIcon icon={faPen} />{' '}
                     </IconButton>
                     <IconButton
                       aria-label={`Delete ${ability.name}`}
@@ -355,7 +356,7 @@ const MonsterForm: FC<Props> = ({ control, onSubmit, watch }) => {
                       color="warning"
                       onClick={() => removeAbility(i)}
                     >
-                      <MdDelete />
+                      <FontAwesomeIcon icon={faTrash} />
                     </IconButton>
                   </>
                 }

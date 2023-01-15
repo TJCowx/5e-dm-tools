@@ -1,3 +1,5 @@
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   Button,
   ListItem,
@@ -10,7 +12,6 @@ import ListItemText from 'components/List/ListItemText';
 import Modal from 'components/Modal/Modal';
 import Ability from 'models/monster/Ability';
 import { FC, useState } from 'react';
-import { MdOutlineAdd } from 'react-icons/md';
 import { RequireMessage } from 'utils/validationMessages';
 import { object as yupObject, string as yupString, ValidationError } from 'yup';
 
@@ -76,7 +77,7 @@ const AbilityModal: FC<Props> = ({ onSave }) => {
       <ListItem disableGutters>
         <ListItemButton onClick={() => setIsModalOpen(true)}>
           <ListItemIcon>
-            <MdOutlineAdd />
+            <FontAwesomeIcon icon={faPlus} />
           </ListItemIcon>
           <ListItemText primary="Add ability" className="mb-0" />
         </ListItemButton>

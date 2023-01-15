@@ -1,9 +1,10 @@
+import { faPen, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IconButton, Typography } from '@mui/material';
 import ListItemText from 'components/List/ListItemText';
 import ListItemTwoSecondaryActions from 'components/List/ListItemTwoSecondaryActions';
 import Action from 'models/monster/Action';
 import { FC } from 'react';
-import { MdDelete, MdEdit } from 'react-icons/md';
 
 type Props = {
   action: Action;
@@ -43,7 +44,7 @@ const ActionListItem: FC<Props> = ({ action, onEdit, onDelete }) => {
             edge="end"
             onClick={() => onEdit(id)}
           >
-            <MdEdit />
+            <FontAwesomeIcon icon={faPen} />
           </IconButton>
           <IconButton
             aria-label={`Delete ${name}`}
@@ -51,7 +52,7 @@ const ActionListItem: FC<Props> = ({ action, onEdit, onDelete }) => {
             color="warning"
             onClick={() => onDelete(id)}
           >
-            <MdDelete />
+            <FontAwesomeIcon icon={faTrash} />
           </IconButton>
         </>
       }

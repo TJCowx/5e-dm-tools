@@ -1,3 +1,5 @@
+import { faAnglesRight } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ListItem, ListItemButton, ListItemIcon, styled } from '@mui/material';
 import { cyan, grey, red } from '@mui/material/colors';
 import clsx from 'clsx';
@@ -5,7 +7,6 @@ import DeadIcon from 'components/Icons/DeadIcon';
 import ListItemText from 'components/List/ListItemText';
 import Combatant from 'models/initiative/Combatant';
 import { FC } from 'react';
-import { MdDoubleArrow } from 'react-icons/md';
 
 import CombatantOptions from './CombatantOptions';
 
@@ -61,7 +62,7 @@ const InitiativeListItem: FC<Props> = ({
       <ListItemButton onClick={() => onClick(combatant)}>
         {isActive && (
           <ListItemIcon>
-            <MdDoubleArrow />
+            <FontAwesomeIcon icon={faAnglesRight} />
           </ListItemIcon>
         )}
         {isDead && (

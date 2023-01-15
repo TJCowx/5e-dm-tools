@@ -1,4 +1,5 @@
-import { MdExpandMore } from 'react-icons/md';
+import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   Accordion,
   AccordionDetails,
@@ -10,18 +11,19 @@ import {
   Typography,
 } from '@mui/material';
 import { grey } from '@mui/material/colors';
+import DeadIcon from 'components/Icons/DeadIcon';
+import AbilityFormat from 'components/LabelValue/AbilityFormat';
 import LabelValueRow from 'components/LabelValue/LabelValueRow';
 import FormattedStat from 'components/Monster/FormattedStat';
 import Combatant from 'models/initiative/Combatant';
+import Action from 'models/monster/Action';
 import { FC, useEffect, useRef, useState } from 'react';
 import {
   getProficienciesString,
   getSavingThrowsString,
   getSpeedString,
 } from 'utils/monsterUtils';
-import DeadIcon from 'components/Icons/DeadIcon';
-import AbilityFormat from 'components/LabelValue/AbilityFormat';
-import Action from 'models/monster/Action';
+
 import ActionList from './ActionList';
 
 type Props = {
@@ -130,7 +132,7 @@ const MonsterCombatantItem: FC<Props> = ({
       <StyledAccordionSummary
         id={panelHeaderId}
         aria-controls={panelContentId}
-        expandIcon={<MdExpandMore />}
+        expandIcon={<FontAwesomeIcon icon={faChevronDown} />}
       >
         <SummaryContent>
           <span className="name-container">

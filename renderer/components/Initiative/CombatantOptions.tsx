@@ -1,6 +1,7 @@
-import { FC, useMemo, useRef, useState } from 'react';
-import { MdMoreHoriz } from 'react-icons/md';
+import { faEllipsis } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IconButton, Menu, MenuItem } from '@mui/material';
+import { FC, useMemo, useRef, useState } from 'react';
 import { v4 } from 'uuid';
 
 type Props = {
@@ -30,7 +31,7 @@ const CombatantOptions: FC<Props> = ({ isDead, onFlag }) => {
         aria-controls={isOpen ? `${id}-menu` : undefined}
         onClick={handleClick}
       >
-        <MdMoreHoriz />
+        <FontAwesomeIcon icon={faEllipsis} />
       </IconButton>
       <Menu
         anchorEl={buttonRef.current}

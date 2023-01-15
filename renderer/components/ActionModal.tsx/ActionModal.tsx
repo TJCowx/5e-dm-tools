@@ -1,3 +1,5 @@
+import { faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   Alert,
   Button,
@@ -26,7 +28,6 @@ import {
 import Damage from 'models/monster/Damage';
 import DamageType, { DamageTypeSelectOptions } from 'models/monster/DamageType';
 import { FC, useMemo, useState } from 'react';
-import { MdAdd, MdDelete, MdOutlineAdd } from 'react-icons/md';
 import { RequireMessage } from 'utils/validationMessages';
 import {
   array as yupArray,
@@ -242,7 +243,7 @@ const ActionModal: FC<Props> = ({ isLegendary, hasLair, onSave }) => {
       <ListItem disableGutters>
         <ListItemButton onClick={() => setIsOpen(true)}>
           <ListItemIcon>
-            <MdOutlineAdd />
+            <FontAwesomeIcon icon={faPlus} />
           </ListItemIcon>
           <ListItemText primary="Add action" className="mb-0" />
         </ListItemButton>
@@ -387,7 +388,7 @@ const ActionModal: FC<Props> = ({ isLegendary, hasLair, onSave }) => {
                           onClick={() => removeDamageItem(i)}
                           color="warning"
                         >
-                          <MdDelete />
+                          <FontAwesomeIcon icon={faTrash} />
                         </IconButton>
                       }
                     >
@@ -437,7 +438,7 @@ const ActionModal: FC<Props> = ({ isLegendary, hasLair, onSave }) => {
                       }
                     >
                       <ListItemIcon>
-                        <MdAdd />
+                        <FontAwesomeIcon icon={faPlus} />
                       </ListItemIcon>
                       <ListItemText primary="Add damage" />
                     </ListItemButton>

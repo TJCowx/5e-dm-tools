@@ -1,3 +1,5 @@
+import { faPen, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   Alert,
   Button,
@@ -21,7 +23,6 @@ import ListItemTwoSecondaryActions from 'components/List/ListItemTwoSecondaryAct
 import { MonsterModel } from 'models/monster/Monster';
 import Link from 'next/link';
 import { FC, Fragment, useEffect, useState } from 'react';
-import { MdAdd, MdDeleteForever, MdEdit } from 'react-icons/md';
 import { logMessage } from 'utils/logUtils';
 
 const ActionContainer = styled('div')(() => ({
@@ -111,7 +112,7 @@ const Monsters: FC = () => {
         />
         <Link href="/monsters/create" passHref>
           <IconButton aria-label="Create new monster">
-            <MdAdd />
+            <FontAwesomeIcon icon={faPlus} />{' '}
           </IconButton>
         </Link>
       </ActionContainer>
@@ -136,7 +137,7 @@ const Monsters: FC = () => {
                   <>
                     <Link href={`/monsters/edit/${id}`} passHref>
                       <IconButton aria-label={`Edit ${name}`}>
-                        <MdEdit />
+                        <FontAwesomeIcon icon={faPen} />
                       </IconButton>
                     </Link>
                     <IconButton
@@ -145,7 +146,7 @@ const Monsters: FC = () => {
                       color="warning"
                       onClick={() => openDialog(id)}
                     >
-                      <MdDeleteForever />
+                      <FontAwesomeIcon icon={faTrash} />
                     </IconButton>
                   </>
                 }

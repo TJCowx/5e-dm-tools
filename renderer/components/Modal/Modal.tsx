@@ -1,7 +1,8 @@
+import { faXmark } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IconButton, Modal as MuiModal, Typography } from '@mui/material';
 import { styled } from '@mui/system';
 import { FC, ReactNode } from 'react';
-import { MdClose } from 'react-icons/md';
 
 type Props = {
   title: string;
@@ -62,7 +63,7 @@ const Modal: FC<Props> = ({
       <div className="header-container">
         <Typography variant="h5">{title}</Typography>
         <IconButton aria-label="Close Modal" onClick={onClose}>
-          <MdClose />
+          <FontAwesomeIcon icon={faXmark} />
         </IconButton>
       </div>
       <div

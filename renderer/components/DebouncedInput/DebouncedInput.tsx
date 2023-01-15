@@ -1,7 +1,8 @@
+import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { InputAdornment, TextField } from '@mui/material';
 import useDebounce from 'hooks/useDebounce';
 import { FC, useEffect, useState } from 'react';
-import { MdSearch } from 'react-icons/md';
 
 type Props = {
   value: string;
@@ -37,7 +38,7 @@ const DebouncedInput: FC<Props> = ({
       InputProps={{
         startAdornment: (
           <InputAdornment position="start">
-            <MdSearch />
+            <FontAwesomeIcon icon={faMagnifyingGlass} />
           </InputAdornment>
         ),
       }}

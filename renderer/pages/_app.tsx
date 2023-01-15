@@ -4,6 +4,9 @@ import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 import 'styles/global.css';
 import 'styles/form.css';
+import '@fortawesome/fontawesome-svg-core/styles.css';
+
+import { config } from '@fortawesome/fontawesome-svg-core';
 
 import createCache from '@emotion/cache';
 import { CacheProvider, ThemeProvider } from '@emotion/react';
@@ -11,6 +14,7 @@ import { CssBaseline } from '@mui/material';
 import useTheme from 'hooks/useTheme';
 import { AppProps } from 'next/app';
 import Head from 'next/head';
+config.autoAddCss = false;
 
 const muiCache = createCache({
   key: 'mui',
