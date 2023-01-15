@@ -6,6 +6,7 @@ import { ipcRenderer } from 'electron';
 import { FC, ReactNode } from 'react';
 
 import NavDrawer from './NavDrawer';
+import TitleBar from './TitleBar';
 
 type Props = {
   title: string;
@@ -19,23 +20,6 @@ const Root = styled('div')(({ theme }) => ({
   width: '100%',
   display: 'flex',
   flexDirection: 'column',
-  '& .title-bar': {
-    background: theme.palette.primary.main,
-    color: theme.palette.primary.contrastText,
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: '28px',
-    minHeight: '28px',
-    userSelect: 'none',
-    appRegion: 'drag',
-    webkitAppRegion: 'drag',
-    position: 'sticky',
-    top: 0,
-    zIndex: 1,
-    flexGrow: 0,
-    flexShrink: 1,
-  },
   '& .page-wrapper': {
     display: 'flex',
     flexGrow: 1,
@@ -49,7 +33,6 @@ const Root = styled('div')(({ theme }) => ({
   },
   '& .scroll-enabled': {
     overflow: 'auto',
-
     '&::-webkit-scrollbar': {
       width: '16px',
     },
@@ -78,16 +61,9 @@ const Layout: FC<Props> = ({
   disablePadding,
   contentFillPage,
 }) => {
-  const formattedTitle = `${title} | 5e DM Tools`;
-
   return (
     <Root>
-      <div
-        className="title-bar"
-        onDoubleClick={() => ipcRenderer.send('toggle-maximize-window')}
-      >
-        <Typography variant="caption">{formattedTitle}</Typography>
-      </div>
+      <TitleBar title={title} />
       <div className="page-wrapper">
         <NavDrawer />
         <Box

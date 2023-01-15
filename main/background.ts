@@ -28,10 +28,10 @@ if (isProd) {
   });
 
   if (isProd) {
-    await mainWindow.loadURL('app://./home.html');
+    await mainWindow.loadURL('app://./connect.html');
   } else {
     const port = process.argv[2];
-    await mainWindow.loadURL(`http://localhost:${port}/home`);
+    await mainWindow.loadURL(`http://localhost:${port}/connect`);
     mainWindow.webContents.openDevTools();
   }
 
