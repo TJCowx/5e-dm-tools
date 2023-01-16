@@ -137,7 +137,7 @@ const Monsters: FC = () => {
                   <>
                     <Link href={`/monsters/edit/${id}`} passHref>
                       <IconButton aria-label={`Edit ${name}`}>
-                        <FontAwesomeIcon icon={faPen} />
+                        <FontAwesomeIcon size="xs" icon={faPen} />
                       </IconButton>
                     </Link>
                     <IconButton
@@ -146,7 +146,7 @@ const Monsters: FC = () => {
                       color="warning"
                       onClick={() => openDialog(id)}
                     >
-                      <FontAwesomeIcon icon={faTrash} />
+                      <FontAwesomeIcon size="xs" icon={faTrash} />
                     </IconButton>
                   </>
                 }
