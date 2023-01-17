@@ -1,6 +1,6 @@
 import { Typography } from '@mui/material';
 import clsx from 'clsx';
-import Action from 'models/monster/Action';
+import Action from 'models/creature/Action';
 import { FC } from 'react';
 
 import ActionItem from './ActionItem';

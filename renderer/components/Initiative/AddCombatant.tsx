@@ -6,7 +6,7 @@ import Modal from 'components/Modal/Modal';
 import Combatant from 'models/initiative/Combatant';
 import { FC, useState } from 'react';
 
-import AddMonsterCombatantForm from './AddMonsterCombatantForm';
+import AddCreatureCombatantForm from './AddCreatureCombatantForm';
 import AddPlayerCombatantForm from './AddPlayerCombatantForm';
 
 type Props = {
@@ -50,9 +50,9 @@ const AddCombatant: FC<Props> = ({ onAddCombatants }) => {
           >
             <Tab id="player-tab" aria-controls="player-panel" label="Player" />
             <Tab
-              id="monster-tab"
-              aria-controls="monster-panel"
-              label="Monster"
+              id="creature-tab"
+              aria-controls="creature-panel"
+              label="Creature"
             />
           </StyledTabs>
           <div
@@ -67,12 +67,12 @@ const AddCombatant: FC<Props> = ({ onAddCombatants }) => {
             />
           </div>
           <div
-            id="monster-panel"
+            id="creature-panel"
             role="tabpanel"
             hidden={activeTab !== 1}
-            aria-labelledby="monster-tab"
+            aria-labelledby="creature-tab"
           >
-            <AddMonsterCombatantForm
+            <AddCreatureCombatantForm
               onSubmit={onAddCombatants}
               onCancel={() => setIsOpen(false)}
             />

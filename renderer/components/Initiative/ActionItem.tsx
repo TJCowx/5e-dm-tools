@@ -1,6 +1,6 @@
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/system';
-import Action from 'models/monster/Action';
+import Action from 'models/creature/Action';
 import { FC } from 'react';
 
 type Props = {

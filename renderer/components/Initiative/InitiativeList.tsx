@@ -57,8 +57,7 @@ const findNextCombatant = (
 };
 
 const addLairAction = (combatants: Combatant[]) => {
-  if (!combatants.some(({ monsterStats }) => monsterStats?.hasLair))
-    return combatants;
+  if (!combatants.some(({ stats }) => stats.hasLair)) return combatants;
 
   const lairCombatant: Combatant = {
     id: 'lair-action',

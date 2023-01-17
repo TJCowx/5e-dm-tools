@@ -1,6 +1,6 @@
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/system';
-import Attribute from 'models/monster/Attribute';
+import Attribute from 'models/creature/Attribute';
 import { FC } from 'react';
 import { getFormattedModifier } from 'utils/modifierUtils';
 

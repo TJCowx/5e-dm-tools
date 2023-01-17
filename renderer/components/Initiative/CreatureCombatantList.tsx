@@ -2,18 +2,18 @@ import { styled } from '@mui/system';
 import Combatant from 'models/initiative/Combatant';
 import { FC, useMemo, useState } from 'react';
 
-import MonsterCombatantItem from './MonsterCombatantItem';
+import CreatureCombatantItem from './CreatureCombatantItem';
 
 type Props = {
   combatants: Map<string, Combatant>;
 };
 
-const MonsterContainer = styled('div')(() => ({
+const CreatureContainer = styled('div')(() => ({
   flexGrow: 1,
   paddingBottom: '44px',
 }));
 
-const MonsterCombatantList: FC<Props> = ({ combatants }) => {
+const CreatureCombatantList: FC<Props> = ({ combatants }) => {
   const [expandedItem, setExpandedItem] = useState('');
 
   const combatantsList = useMemo(
@@ -26,10 +26,10 @@ const MonsterCombatantList: FC<Props> = ({ combatants }) => {
   };
 
   return (
-    <MonsterContainer id="monster-container" className="scroll-enabled">
+    <CreatureContainer id="creature-container" className="scroll-enabled">
       <div>
         {combatantsList.map((combatant) => (
-          <MonsterCombatantItem
+          <CreatureCombatantItem
             key={combatant.id}
             combatant={combatant}
             isExpanded={expandedItem === `panel-${combatant.id}`}
@@ -37,8 +37,8 @@ const MonsterCombatantList: FC<Props> = ({ combatants }) => {
           />
         ))}
       </div>
-    </MonsterContainer>
+    </CreatureContainer>
   );
 };
 
-export default MonsterCombatantList;
+export default CreatureCombatantList;

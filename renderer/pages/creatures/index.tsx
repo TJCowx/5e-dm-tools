@@ -20,7 +20,7 @@ import DebouncedInput from 'components/DebouncedInput/DebouncedInput';
 import Layout from 'components/Layout/Layout';
 import ListItemText from 'components/List/ListItemText';
 import ListItemTwoSecondaryActions from 'components/List/ListItemTwoSecondaryActions';
-import { MonsterModel } from 'models/monster/Monster';
+import { CreatureModel } from 'models/creature/Creature';
 import Link from 'next/link';
 import { FC, Fragment, useEffect, useState } from 'react';
 import { logMessage } from 'utils/logUtils';
@@ -33,24 +33,26 @@ const ActionContainer = styled('div')(() => ({
   },
 }));
 
-const Monsters: FC = () => {
+const Creatures: FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [hasError, setHasError] = useState(false);
-  const [monsters, setMonsters] = useState<MonsterModel[]>([]);
-  const [filteredMonsters, setFilteredMonsters] = useState<MonsterModel[]>([]);
+  const [creatures, setCreatures] = useState<CreatureModel[]>([]);
+  const [filteredCreatures, setFilteredCreatures] = useState<CreatureModel[]>(
+    []
+  );
   const [filterText, setFilterText] = useState('');
-  const [deleteMonsterActionId, setDeleteMonsterActionId] =
+  const [deleteCreatureActionId, setDeleteCreatureActionId] =
     useState<string>(null);
 
-  const loadMonsters = () => {
+  const loadCreatures = () => {
     setHasError(false);
     setIsLoading(true);
-    fetch('/api/monsters')
+    fetch('/api/creatures')
       .then(async (res) => {
         const { data } = await res.json();
 
-        setMonsters(data);
-        setFilteredMonsters(data);
+        setCreatures(data);
+        setFilteredCreatures(data);
         setIsLoading(false);
       })
       .catch((e) => {
@@ -61,12 +63,12 @@ const Monsters: FC = () => {
   };
 
   useEffect(() => {
-    loadMonsters();
+    loadCreatures();
   }, []);
 
   useEffect(() => {
-    setFilteredMonsters(
-      monsters.filter(
+    setFilteredCreatures(
+      creatures.filter(
         ({ name, challengeRating, size, type }) =>
           name.toLowerCase().includes(filterText.toLowerCase()) ||
           `${challengeRating}`
@@ -76,30 +78,30 @@ const Monsters: FC = () => {
           type.toLowerCase().includes(filterText.toLowerCase())
       )
     );
-  }, [filterText, monsters]);
+  }, [filterText, creatures]);
 
   const openDialog = (id: string) => {
-    setDeleteMonsterActionId(id);
+    setDeleteCreatureActionId(id);
   };
 
   const handleDelete = (id: string) => {
-    fetch(`/api/monsters/${id}`, { method: 'DELETE' })
+    fetch(`/api/creatures/${id}`, { method: 'DELETE' })
       .then(() => {
-        setMonsters((prev) => prev.filter(({ id: mId }) => mId !== id));
-        setDeleteMonsterActionId(null);
+        setCreatures((prev) => prev.filter(({ id: mId }) => mId !== id));
+        setDeleteCreatureActionId(null);
       })
       .catch((e) => {
         logMessage('error', e);
-        setDeleteMonsterActionId(null);
+        setDeleteCreatureActionId(null);
       });
   };
 
   return (
-    <Layout title="Monsters">
+    <Layout title="Creatures">
       {hasError && (
         <Alert severity="error" className="mb-16">
-          There was an error loading the monsters. Please{' '}
-          <MuiLink component="button" onClick={loadMonsters}>
+          There was an error loading the creatures. Please{' '}
+          <MuiLink component="button" onClick={loadCreatures}>
             try again.
           </MuiLink>
         </Alert>
@@ -110,12 +112,13 @@ const Monsters: FC = () => {
           label="Search"
           onChange={(val) => setFilterText(val)}
         />
-        <Link href="/monsters/create" passHref>
-          <IconButton aria-label="Create new monster">
+        <Link href="/creatures/create" passHref>
+          <IconButton aria-label="Create new creature">
             <FontAwesomeIcon icon={faPlus} />{' '}
           </IconButton>
         </Link>
       </ActionContainer>
+      <Divider className="mt-16" />
       {isLoading ? (
         <List dense>
           {[...Array(10)].map((_, i) => (
@@ -130,62 +133,64 @@ const Monsters: FC = () => {
         </List>
       ) : (
         <List dense>
-          {filteredMonsters.map(({ id, name, type, size, challengeRating }) => (
-            <Fragment key={id}>
-              <ListItemTwoSecondaryActions
-                secondaryAction={
-                  <>
-                    <Link href={`/monsters/edit/${id}`} passHref>
-                      <IconButton aria-label={`Edit ${name}`}>
-                        <FontAwesomeIcon size="xs" icon={faPen} />
-                      </IconButton>
-                    </Link>
-                    <IconButton
-                      edge="end"
-                      aria-label={`Delete ${name}`}
-                      color="warning"
-                      onClick={() => openDialog(id)}
-                    >
-                      <FontAwesomeIcon size="xs" icon={faTrash} />
-                    </IconButton>
-                  </>
-                }
-              >
-                <ListItemText
-                  primary={name}
-                  secondary={
+          {filteredCreatures.map(
+            ({ id, name, type, size, challengeRating }) => (
+              <Fragment key={id}>
+                <ListItemTwoSecondaryActions
+                  secondaryAction={
                     <>
-                      CR: {challengeRating} |{' '}
-                      <i>
-                        {size} {type}
-                      </i>
+                      <Link href={`/creatures/edit/${id}`} passHref>
+                        <IconButton aria-label={`Edit ${name}`}>
+                          <FontAwesomeIcon size="xs" icon={faPen} />
+                        </IconButton>
+                      </Link>
+                      <IconButton
+                        edge="end"
+                        aria-label={`Delete ${name}`}
+                        color="warning"
+                        onClick={() => openDialog(id)}
+                      >
+                        <FontAwesomeIcon size="xs" icon={faTrash} />
+                      </IconButton>
                     </>
                   }
-                />
-              </ListItemTwoSecondaryActions>
-              <Divider component="li" />
-            </Fragment>
-          ))}
+                >
+                  <ListItemText
+                    primary={name}
+                    secondary={
+                      <>
+                        CR: {challengeRating} |{' '}
+                        <i>
+                          {size} {type}
+                        </i>
+                      </>
+                    }
+                  />
+                </ListItemTwoSecondaryActions>
+                <Divider component="li" />
+              </Fragment>
+            )
+          )}
         </List>
       )}
-      {deleteMonsterActionId != null && (
-        <Dialog open onClose={() => setDeleteMonsterActionId(null)}>
-          <DialogTitle>Confirm Delete Monster</DialogTitle>
+      {deleteCreatureActionId != null && (
+        <Dialog open onClose={() => setDeleteCreatureActionId(null)}>
+          <DialogTitle>Confirm Delete Creature</DialogTitle>
           <DialogContent>
             <DialogContentText>
-              This will <strong>permanently</strong> delete the monster. Do you
+              This will <strong>permanently</strong> delete the creature. Do you
               want to continue?
             </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <Button onClick={() => setDeleteMonsterActionId(null)}>
+            <Button onClick={() => setDeleteCreatureActionId(null)}>
               Cancel
             </Button>
             <Button
               variant="contained"
               color="warning"
               disableElevation
-              onClick={() => handleDelete(deleteMonsterActionId)}
+              onClick={() => handleDelete(deleteCreatureActionId)}
             >
               Delete
             </Button>
@@ -196,4 +201,4 @@ const Monsters: FC = () => {
   );
 };
 
-export default Monsters;
+export default Creatures;

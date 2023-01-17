@@ -14,15 +14,15 @@ import { grey } from '@mui/material/colors';
 import DeadIcon from 'components/Icons/DeadIcon';
 import AbilityFormat from 'components/LabelValue/AbilityFormat';
 import LabelValueRow from 'components/LabelValue/LabelValueRow';
-import FormattedStat from 'components/Monster/FormattedStat';
+import FormattedStat from 'components/Creature/FormattedStat';
 import Combatant from 'models/initiative/Combatant';
-import Action from 'models/monster/Action';
+import Action from 'models/creature/Action';
 import { FC, useEffect, useRef, useState } from 'react';
 import {
   getProficienciesString,
   getSavingThrowsString,
   getSpeedString,
-} from 'utils/monsterUtils';
+} from 'utils/creatureUtils';
 
 import ActionList from './ActionList';
 
@@ -67,17 +67,17 @@ const StyledAccordionDetails = styled(AccordionDetails)(() => ({
   },
 }));
 
-const MonsterCombatantItem: FC<Props> = ({
+const CreatureCombatantItem: FC<Props> = ({
   combatant,
   isExpanded,
   onChange,
 }) => {
-  const { id, monsterStats } = combatant;
+  const { id, stats } = combatant;
   const panelHeaderId = `panel-${id}-header`;
   const panelContentId = `panel-${id}-content`;
 
   const hasLoaded = useRef(false);
-  const [currentHp, setCurrentHp] = useState(`${monsterStats.hitPoints}`);
+  const [currentHp, setCurrentHp] = useState(`${stats.hitPoints}`);
   const [actions, setActions] = useState<Action[]>([]);
   const [legendaryActions, setLegendaryActions] = useState<Action[]>([]);
   const [lairActions, setLairActions] = useState<Action[]>([]);
@@ -97,7 +97,7 @@ const MonsterCombatantItem: FC<Props> = ({
     const newLairActions: Action[] = [];
     const newReactions: Action[] = [];
 
-    monsterStats.actions.forEach((act) => {
+    stats.actions.forEach((act) => {
       switch (act.actionType) {
         case 'Action':
           newActions.push(act);
@@ -119,7 +119,7 @@ const MonsterCombatantItem: FC<Props> = ({
     setLegendaryActions(newLegendaryActions);
     setReactions(newReactions);
     setLairActions(newLairActions);
-  }, [monsterStats.actions]);
+  }, [stats.actions]);
 
   return (
     <StyledAccordion
@@ -141,7 +141,7 @@ const MonsterCombatantItem: FC<Props> = ({
           </span>
           <Typography variant="body2" className="end-slot-container">
             <span className="hp-container">
-              {currentHp} / {monsterStats.hitPoints}
+              {currentHp} / {stats.hitPoints}
             </span>
           </Typography>
         </SummaryContent>
@@ -158,7 +158,7 @@ const MonsterCombatantItem: FC<Props> = ({
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end">
-                  / {monsterStats.hitPoints}
+                  / {stats.hitPoints}
                 </InputAdornment>
               ),
             }}
@@ -166,83 +166,74 @@ const MonsterCombatantItem: FC<Props> = ({
           />
         </div>
         <div className="stats-container m-16">
-          <FormattedStat label="Strength" value={monsterStats.strength} />
-          <FormattedStat label="Dexterity" value={monsterStats.dexterity} />
-          <FormattedStat
-            label="Constitution"
-            value={monsterStats.constitution}
-          />
-          <FormattedStat
-            label="Intelligence"
-            value={monsterStats.intelligence}
-          />
-          <FormattedStat label="Wisdom" value={monsterStats.wisdom} />
-          <FormattedStat label="Charisma" value={monsterStats.charisma} />
+          <FormattedStat label="Strength" value={stats.strength} />
+          <FormattedStat label="Dexterity" value={stats.dexterity} />
+          <FormattedStat label="Constitution" value={stats.constitution} />
+          <FormattedStat label="Intelligence" value={stats.intelligence} />
+          <FormattedStat label="Wisdom" value={stats.wisdom} />
+          <FormattedStat label="Charisma" value={stats.charisma} />
         </div>
         <Divider className="my-16" />
         <div className="m-16">
-          <LabelValueRow
-            label="Armour Class"
-            value={`${monsterStats.armourClass}`}
-          />
-          <LabelValueRow label="Speed" value={getSpeedString(monsterStats)} />
+          <LabelValueRow label="Armour Class" value={`${stats.armourClass}`} />
+          <LabelValueRow label="Speed" value={getSpeedString(stats)} />
           <LabelValueRow
             label="Saving Throws"
-            value={getSavingThrowsString(monsterStats)}
+            value={getSavingThrowsString(stats)}
           />
-          {!!monsterStats.proficiencies.length && (
+          {!!stats.proficiencies.length && (
             <LabelValueRow
               label="Proficiencies"
-              value={getProficienciesString(monsterStats)}
+              value={getProficienciesString(stats)}
             />
           )}
-          {!!monsterStats.immunities.length && (
+          {!!stats.immunities.length && (
             <LabelValueRow
               label="Damage Immunities"
-              value={monsterStats.immunities.join(' | ')}
+              value={stats.immunities.join(' | ')}
             />
           )}
-          {!!monsterStats.condImmunities.length && (
+          {!!stats.condImmunities.length && (
             <LabelValueRow
               label="Condition Immunities"
-              value={monsterStats.condImmunities.join(' | ')}
+              value={stats.condImmunities.join(' | ')}
             />
           )}
-          {!!monsterStats.resistances.length && (
+          {!!stats.resistances.length && (
             <LabelValueRow
               label="Resistances"
-              value={monsterStats.resistances.join(' | ')}
+              value={stats.resistances.join(' | ')}
             />
           )}
-          {!!monsterStats.weaknesses.length && (
+          {!!stats.weaknesses.length && (
             <LabelValueRow
               label="Weaknesses"
-              value={monsterStats.weaknesses.join(' | ')}
+              value={stats.weaknesses.join(' | ')}
             />
           )}
-          {!!monsterStats.languages.length && (
+          {!!stats.languages.length && (
             <LabelValueRow
               label="Languages"
-              value={monsterStats.languages.join(' | ')}
+              value={stats.languages.join(' | ')}
             />
           )}
         </div>
-        {(!!monsterStats.abilities.length || monsterStats.isLegendary) && (
+        {(!!stats.abilities.length || stats.isLegendary) && (
           <>
             <Divider className="my-16" />
             <div className="abilities-container, m-16">
-              {monsterStats.abilities.map((ability) => (
+              {stats.abilities.map((ability) => (
                 <AbilityFormat
                   key={`${combatant.id}-${ability.name}`}
                   ability={ability}
                 />
               ))}
-              {monsterStats.isLegendary && (
+              {stats.isLegendary && (
                 <AbilityFormat
                   ability={{
                     id: undefined,
                     name: 'Legendary Resistance (3/Day)',
-                    description: `If the ${monsterStats.name} fails a saving throw, it can choose to succeed instead.`,
+                    description: `If the ${stats.name} fails a saving throw, it can choose to succeed instead.`,
                   }}
                 />
               )}
@@ -290,4 +281,4 @@ const MonsterCombatantItem: FC<Props> = ({
   );
 };
 
-export default MonsterCombatantItem;
+export default CreatureCombatantItem;

@@ -9,9 +9,9 @@ import {
 import { styled } from '@mui/system';
 import RHFIntegerField from 'components/Fields/RHF/RHFIntegerField';
 import RHFSwitchField from 'components/Fields/RHF/RHFSwitchField';
-import FormattedStat from 'components/Monster/FormattedStat';
+import FormattedStat from 'components/Creature/FormattedStat';
 import Combatant from 'models/initiative/Combatant';
-import { MonsterModel } from 'models/monster/Monster';
+import { CreatureModel } from 'models/creature/Creature';
 import { FC, useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { logMessage } from 'utils/logUtils';
@@ -20,9 +20,9 @@ import { rollD20 } from 'utils/rollUtils';
 import { v4 } from 'uuid';
 
 type FormInputs = {
-  monster: MonsterModel;
+  creature: CreatureModel;
   groupInitiativeRoll: boolean;
-  monsterCount: number;
+  creatureCount: number;
 };
 
 type Props = {
@@ -43,10 +43,10 @@ const StyledForm = styled('form')(() => ({
   },
 }));
 
-const AddMonsterCombatantForm: FC<Props> = ({ onSubmit, onCancel }) => {
+const AddCreatureCombatantForm: FC<Props> = ({ onSubmit, onCancel }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [hasError, setHasError] = useState(false);
-  const [availableMonsters, setAvailableMonsters] = useState<MonsterModel[]>(
+  const [availableCreature, setAvailableCreature] = useState<CreatureModel[]>(
     []
   );
 
@@ -54,18 +54,18 @@ const AddMonsterCombatantForm: FC<Props> = ({ onSubmit, onCancel }) => {
     {
       defaultValues: {
         groupInitiativeRoll: true,
-        monsterCount: 1,
-        monster: null,
+        creatureCount: 1,
+        creature: null,
       },
     }
   );
 
   useEffect(() => {
     setIsLoading(true);
-    fetch('/api/monsters', { method: 'GET' })
+    fetch('/api/creatures', { method: 'GET' })
       .then(async (res) => {
         const { data } = await res.json();
-        setAvailableMonsters(data);
+        setAvailableCreature(data);
         setIsLoading(false);
       })
       .catch((e) => {
@@ -75,32 +75,32 @@ const AddMonsterCombatantForm: FC<Props> = ({ onSubmit, onCancel }) => {
       });
   }, []);
 
-  const monster = watch('monster');
+  const creature = watch('creature');
 
-  const handleMonsterSubmit = ({
-    monster: submittedMonster,
-    monsterCount,
+  const handleCreatureSubmit = ({
+    creature,
+    creatureCount,
     groupInitiativeRoll,
   }: FormInputs) => {
-    const initiativeModifier = getModifier(submittedMonster.dexterity);
+    const initiativeModifier = getModifier(creature.dexterity);
     const groupInitiative = rollD20(initiativeModifier);
 
     const newCombatants: Combatant[] = [];
 
     // eslint-disable-next-line no-plusplus
-    for (let i = 0; i < monsterCount; i++) {
+    for (let i = 0; i < creatureCount; i++) {
       newCombatants.push({
         id: v4(),
-        name: submittedMonster.name,
+        name: creature.name,
         initiative: groupInitiativeRoll
           ? groupInitiative
           : rollD20(initiativeModifier),
         initiativeModifier,
         isPlayer: false,
         isDead: false,
-        maxHp: submittedMonster.hitPoints,
-        currentHp: submittedMonster.hitPoints,
-        monsterStats: submittedMonster,
+        maxHp: creature.hitPoints,
+        currentHp: creature.hitPoints,
+        stats: creature,
       });
     }
 
@@ -114,51 +114,51 @@ const AddMonsterCombatantForm: FC<Props> = ({ onSubmit, onCancel }) => {
   };
 
   const handleAutocompleteChange = (
-    val: (string | MonsterModel)[] | MonsterModel | string
+    val: (string | CreatureModel)[] | CreatureModel | string
   ) => {
-    let newVal: MonsterModel;
+    let newVal: CreatureModel;
 
-    // Autocomplete component is expecting (string | MonsterModel)[] even though it's
-    // emitting MonsterModal. Handle the expected just in case
+    // Autocomplete component is expecting (string | CreatureModel)[] even though it's
+    // emitting CreatureModel. Handle the expected just in case
     if (Array.isArray(val)) {
       const firstVal = val[0];
       newVal =
         typeof firstVal === 'string'
-          ? availableMonsters.find(({ id }) => firstVal === id)
+          ? availableCreature.find(({ id }) => firstVal === id)
           : firstVal;
     } else if (typeof val === 'string') {
-      newVal = availableMonsters.find(({ id }) => val === id);
+      newVal = availableCreature.find(({ id }) => val === id);
     } else {
       newVal = val;
     }
 
-    setValue('monster', newVal);
+    setValue('creature', newVal);
   };
 
   return (
-    <StyledForm onSubmit={handleSubmit(handleMonsterSubmit)}>
+    <StyledForm onSubmit={handleSubmit(handleCreatureSubmit)}>
       {hasError && (
         <Alert severity="error" className="mb-16">
-          There was an error loading the monster list. Please try again.
+          There was an error loading the creature list. Please try again.
         </Alert>
       )}
       <Controller
         control={control}
-        name="monster"
-        rules={{ required: 'Monster is required' }}
+        name="creature"
+        rules={{ required: 'Creature is required' }}
         render={({ field }) => (
           <Autocomplete
             value={field.value ?? null}
             disablePortal
             loading={isLoading}
             multiple={undefined}
-            options={availableMonsters}
+            options={availableCreature}
             getOptionLabel={(opt) => (typeof opt === 'string' ? opt : opt.name)}
             size="small"
             onChange={(_, val) => handleAutocompleteChange(val)}
             isOptionEqualToValue={(
-              opt: MonsterModel,
-              val: string | MonsterModel
+              opt: CreatureModel,
+              val: string | CreatureModel
             ) =>
               val == null
                 ? false
@@ -169,18 +169,18 @@ const AddMonsterCombatantForm: FC<Props> = ({ onSubmit, onCancel }) => {
             renderInput={(params) => (
               <TextField
                 {...params}
-                label="Monster"
+                label="Creature"
                 InputLabelProps={{ shrink: true }}
               />
             )}
-            renderOption={(optProps, monsterOpt: MonsterModel) => (
+            renderOption={(optProps, creatureOpt: CreatureModel) => (
               <li {...optProps}>
                 <Typography variant="subtitle2">
-                  {monsterOpt.name}
+                  {creatureOpt.name}
                   <Typography variant="body2">
                     <i>
-                      CR: {monsterOpt.challengeRating} | {monsterOpt.size}{' '}
-                      {monsterOpt.type} | {monsterOpt.alignment}
+                      CR: {creatureOpt.challengeRating} | {creatureOpt.size}{' '}
+                      {creatureOpt.type} | {creatureOpt.alignment}
                     </i>
                   </Typography>
                 </Typography>
@@ -192,8 +192,8 @@ const AddMonsterCombatantForm: FC<Props> = ({ onSubmit, onCancel }) => {
       <div className="input-row mt-16">
         <RHFIntegerField
           control={control}
-          fieldName="monsterCount"
-          label="Number of Monsters"
+          fieldName="creatureCount"
+          label="Number of Creatures"
           min={1}
           isRequired
         />
@@ -203,41 +203,41 @@ const AddMonsterCombatantForm: FC<Props> = ({ onSubmit, onCancel }) => {
           label="Group Initiative Roll"
         />
       </div>
-      {monster != null && (
-        <div className="monster-container">
+      {creature != null && (
+        <div className="creature-container">
           <Divider className="my-16" />
           <div className="description-container mb-16">
             <Typography variant="body2">
               <i>
-                {monster.size} {monster.type} | {monster.alignment}
+                {creature.size} {creature.type} | {creature.alignment}
               </i>
             </Typography>
             <Typography variant="body2">
               <Typography variant="subtitle2" component="span">
                 Challenge Rating:
               </Typography>{' '}
-              {monster.challengeRating} ({monster.rewardXP}XP)
+              {creature.challengeRating} ({creature.rewardXP}XP)
             </Typography>
             <Typography variant="body2">
               <Typography variant="subtitle2" component="span">
                 Armour Class:
               </Typography>{' '}
-              {monster.armourClass}
+              {creature.armourClass}
             </Typography>
             <Typography variant="body2">
               <Typography variant="subtitle2" component="span">
                 Hit Points:
               </Typography>{' '}
-              {monster.hitPoints} ({monster.hitDie})
+              {creature.hitPoints} ({creature.hitDie})
             </Typography>
           </div>
           <div className="stats-container">
-            <FormattedStat label="Strength" value={monster.strength} />
-            <FormattedStat label="Dexterity" value={monster.dexterity} />
-            <FormattedStat label="Constitution" value={monster.constitution} />
-            <FormattedStat label="Intelligence" value={monster.intelligence} />
-            <FormattedStat label="Wisdom" value={monster.wisdom} />
-            <FormattedStat label="Charisma" value={monster.charisma} />
+            <FormattedStat label="Strength" value={creature.strength} />
+            <FormattedStat label="Dexterity" value={creature.dexterity} />
+            <FormattedStat label="Constitution" value={creature.constitution} />
+            <FormattedStat label="Intelligence" value={creature.intelligence} />
+            <FormattedStat label="Wisdom" value={creature.wisdom} />
+            <FormattedStat label="Charisma" value={creature.charisma} />
           </div>
         </div>
       )}
@@ -253,4 +253,4 @@ const AddMonsterCombatantForm: FC<Props> = ({ onSubmit, onCancel }) => {
   );
 };
 
-export default AddMonsterCombatantForm;
+export default AddCreatureCombatantForm;

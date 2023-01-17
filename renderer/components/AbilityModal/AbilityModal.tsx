@@ -10,7 +10,7 @@ import {
 import BasicTextField from 'components/Fields/Basic/BasicTextField';
 import ListItemText from 'components/List/ListItemText';
 import Modal from 'components/Modal/Modal';
-import Ability from 'models/monster/Ability';
+import Ability from 'models/creature/Ability';
 import { FC, useState } from 'react';
 import { RequireMessage } from 'utils/validationMessages';
 import { object as yupObject, string as yupString, ValidationError } from 'yup';

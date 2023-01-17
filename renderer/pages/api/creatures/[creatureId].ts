@@ -1,5 +1,5 @@
 import dbConnect from 'db/dbConnect';
-import Monster from 'models/monster/Monster';
+import Creature from 'models/creature/Creature';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { logMessage } from 'utils/logUtils';
 
@@ -11,7 +11,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   switch (method) {
     case 'PUT':
       try {
-        await Monster.findByIdAndUpdate(body.id, body);
+        await Creature.findByIdAndUpdate(body.id, body);
         res.status(200).json({ success: true });
       } catch (e) {
         logMessage('error', e);
@@ -20,7 +20,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       break;
     case 'DELETE':
       try {
-        await Monster.deleteOne({ _id: query.monsterId });
+        await Creature.deleteOne({ _id: query.creatureId });
         res.status(200).json({ success: true });
       } catch (e) {
         logMessage('error', e);

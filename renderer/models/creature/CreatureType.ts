@@ -1,4 +1,4 @@
-export const AllMonsterTypes = [
+export const AllCreatureTypes = [
   'Aberration',
   'Beast',
   'Celestial',
@@ -15,11 +15,11 @@ export const AllMonsterTypes = [
   'Undead',
 ] as const;
 
-export const MonsterTypeSelectOptions = AllMonsterTypes.map((type) => ({
+export const CreatureTypeSelectOptions = AllCreatureTypes.map((type) => ({
   value: type,
   text: type,
 }));
 
-type MonsterType = typeof AllMonsterTypes[number];
+type CreatureType = typeof AllCreatureTypes[number];
 
-export default MonsterType;
+export default CreatureType;

@@ -32,9 +32,9 @@ const NavItems: NavItem[] = [
     href: '/initiative',
   },
   {
-    text: 'Monsters',
+    text: 'Creatures',
     icon: <FontAwesomeIcon icon={faDragon} />,
-    href: '/monsters',
+    href: '/creatures',
   },
 ];
 

@@ -1,15 +1,15 @@
 import { Alert } from '@mui/material';
 import Layout from 'components/Layout/Layout';
 import NavBack from 'components/Links/NavBack';
-import MonsterForm from 'components/Monster/MonsterForm';
-import { MonsterModel } from 'models/monster/Monster';
+import CreatureForm from 'components/Creature/CreatureForm';
+import { CreatureModel } from 'models/creature/Creature';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { logMessage } from 'utils/logUtils';
-import { convertMonsterFormToDB } from 'utils/monsterUtils';
+import { convertCreatureFormToDB } from 'utils/creatureUtils';
 
-const DefaultValues: MonsterModel = {
+const DefaultValues: CreatureModel = {
   id: undefined,
   name: '',
   size: undefined,
@@ -57,26 +57,26 @@ const DefaultValues: MonsterModel = {
   hasLair: false,
 };
 
-const CreateMonster = () => {
+const CreateCreature = () => {
   const router = useRouter();
 
   const [hasError, setHasError] = useState(false);
 
-  const { handleSubmit, control, watch } = useForm<MonsterModel>({
+  const { handleSubmit, control, watch } = useForm<CreatureModel>({
     defaultValues: DefaultValues,
   });
 
-  const onSubmit = (data: MonsterModel) => {
+  const onSubmit = (data: CreatureModel) => {
     setHasError(false);
-    fetch('/api/monsters', {
+    fetch('/api/creatures', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(convertMonsterFormToDB(data)),
+      body: JSON.stringify(convertCreatureFormToDB(data)),
     })
       .then(() => {
-        router.push('/monsters');
+        router.push('/creatures');
       })
       .catch((e) => {
         logMessage('error', e);
@@ -85,18 +85,18 @@ const CreateMonster = () => {
   };
 
   return (
-    <Layout title="Create Monster">
+    <Layout title="Create Creature">
       <NavBack
-        href="/monsters"
-        ariaLabel="Go to monsters list"
-        tooltipText="Back to monsters list"
+        href="/creatures"
+        ariaLabel="Go to creature list"
+        tooltipText="Back to creatures list"
       />
       {hasError && (
         <Alert severity="error" className="mb-16">
-          There was an error saving your monster. Try again.
+          There was an error saving your creature. Try again.
         </Alert>
       )}
-      <MonsterForm
+      <CreatureForm
         control={control}
         watch={watch}
         onSubmit={handleSubmit(onSubmit)}
@@ -105,4 +105,4 @@ const CreateMonster = () => {
   );
 };
 
-export default CreateMonster;
+export default CreateCreature;

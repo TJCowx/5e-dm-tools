@@ -12,24 +12,24 @@ import RHFSelectField from 'components/Fields/RHF/RHFSelectField';
 import RHFTextField from 'components/Fields/RHF/RHFTextField';
 import ListItemText from 'components/List/ListItemText';
 import ListItemTwoSecondaryActions from 'components/List/ListItemTwoSecondaryActions';
-import { AlignmentSelectOptions } from 'models/monster/Alignment';
-import { AttributeSelectOptions } from 'models/monster/Attribute';
-import { ConditionTypeSelectOptions } from 'models/monster/ConditionType';
-import { DamageTypeSelectOptions } from 'models/monster/DamageType';
-import { LanguageSelectOptions } from 'models/monster/Language';
-import { MonsterModel } from 'models/monster/Monster';
-import { MonsterSizeSelectOptions } from 'models/monster/MonsterSize';
-import { MonsterTypeSelectOptions } from 'models/monster/MonsterType';
-import { ProficiencySelectOptions } from 'models/monster/Proficiency';
+import { AlignmentSelectOptions } from 'models/creature/Alignment';
+import { AttributeSelectOptions } from 'models/creature/Attribute';
+import { ConditionTypeSelectOptions } from 'models/creature/ConditionType';
+import { DamageTypeSelectOptions } from 'models/creature/DamageType';
+import { LanguageSelectOptions } from 'models/creature/Language';
+import { CreatureModel } from 'models/creature/Creature';
+import { CreatureSizeSelectOptions } from 'models/creature/CreatureSize';
+import { CreatureTypeSelectOptions } from 'models/creature/CreatureType';
+import { ProficiencySelectOptions } from 'models/creature/Proficiency';
 import { FC, FormEventHandler, Fragment } from 'react';
 import { Control, useFieldArray, UseFormWatch } from 'react-hook-form';
 
 import ActionListItem from './ActionListItem';
 
 type Props = {
-  control: Control<MonsterModel>;
+  control: Control<CreatureModel>;
   onSubmit: FormEventHandler<HTMLFormElement>;
-  watch: UseFormWatch<MonsterModel>;
+  watch: UseFormWatch<CreatureModel>;
 };
 
 const StyledForm = styled('form')(() => ({
@@ -70,7 +70,7 @@ const StyledForm = styled('form')(() => ({
   },
 }));
 
-const MonsterForm: FC<Props> = ({ control, onSubmit, watch }) => {
+const CreatureForm: FC<Props> = ({ control, onSubmit, watch }) => {
   const {
     fields: abilities,
     append: appendAbility,
@@ -117,14 +117,14 @@ const MonsterForm: FC<Props> = ({ control, onSubmit, watch }) => {
             fieldName="size"
             control={control}
             label="Size"
-            options={MonsterSizeSelectOptions}
+            options={CreatureSizeSelectOptions}
           />
           <RHFSelectField
             id="type"
             fieldName="type"
             control={control}
             label="Type"
-            options={MonsterTypeSelectOptions}
+            options={CreatureTypeSelectOptions}
           />
           <RHFSelectField
             id="alignment"
@@ -405,4 +405,4 @@ const MonsterForm: FC<Props> = ({ control, onSubmit, watch }) => {
   );
 };
 
-export default MonsterForm;
+export default CreatureForm;

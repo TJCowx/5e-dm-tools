@@ -1,8 +1,8 @@
 /* eslint-disable import/prefer-default-export */
-import Ability, { AbilityDoc } from 'models/monster/Ability';
-import Action, { ActionDoc } from 'models/monster/Action';
-import Damage, { DamageDoc } from 'models/monster/Damage';
-import { MonsterModel } from 'models/monster/Monster';
+import Ability, { AbilityDoc } from 'models/creature/Ability';
+import Action, { ActionDoc } from 'models/creature/Action';
+import Damage, { DamageDoc } from 'models/creature/Damage';
+import { CreatureModel } from 'models/creature/Creature';
 import { LeanDocument, Types } from 'mongoose';
 
 import { getFormattedModifier, getSkillAttribute } from './modifierUtils';
@@ -13,10 +13,10 @@ import { getFormattedModifier, getSkillAttribute } from './modifierUtils';
  * This is created due to MUI's number input emitting the value
  * as strings.
  *
- * @param monster The monster from the form
+ * @param creature The creature from the form
  * @returns the number fields parsed into numbers
  */
-export const convertMonsterFormToDB = (monster: Partial<MonsterModel>) => {
+export const convertCreatureFormToDB = (creature: Partial<CreatureModel>) => {
   const {
     armourClass,
     hitPoints,
@@ -39,10 +39,10 @@ export const convertMonsterFormToDB = (monster: Partial<MonsterModel>) => {
     challengeRating,
     rewardXP,
     actions,
-  } = monster;
+  } = creature;
 
   return {
-    ...monster,
+    ...creature,
     armourClass: parseInt(`${armourClass}`, 10),
     hitPoints: parseInt(`${hitPoints}`, 10),
     landSpeed: landSpeed != null ? parseInt(`${landSpeed}`, 10) : undefined,
@@ -83,11 +83,11 @@ export const getCombatantName = (name: string, numPrevType: number) => {
 /**
  * Generates a string of speeds.
  *
- * @param monster the monster with the speed stats
+ * @param creature the creature with the speed stats
  * @returns the string that lists the speeds
  */
-export const getSpeedString = (monster: MonsterModel) => {
-  const { landSpeed, flySpeed, burrowSpeed, climbSpeed, hoverSpeed } = monster;
+export const getSpeedString = (creature: CreatureModel) => {
+  const { landSpeed, flySpeed, burrowSpeed, climbSpeed, hoverSpeed } = creature;
 
   const speedItems: string[] = [];
 
@@ -100,7 +100,7 @@ export const getSpeedString = (monster: MonsterModel) => {
   return speedItems.join(' | ');
 };
 
-export const getSavingThrowsString = (monster: MonsterModel) => {
+export const getSavingThrowsString = (creature: CreatureModel) => {
   const {
     strength,
     dexterity,
@@ -110,7 +110,7 @@ export const getSavingThrowsString = (monster: MonsterModel) => {
     charisma,
     savingThrows,
     profBonus,
-  } = monster;
+  } = creature;
 
   const proficientSavingThrows: string[] = [];
 
@@ -153,14 +153,14 @@ export const getSavingThrowsString = (monster: MonsterModel) => {
   return proficientSavingThrows.join(' | ');
 };
 
-export const getProficienciesString = (monster: MonsterModel) => {
-  const { proficiencies, profBonus } = monster;
+export const getProficienciesString = (creature: CreatureModel) => {
+  const { proficiencies, profBonus } = creature;
 
   return proficiencies
     .map(
       (prof) =>
         `${prof} ${getFormattedModifier(
-          getSkillAttribute(prof, monster),
+          getSkillAttribute(prof, creature),
           profBonus
         )}`
     )
@@ -189,15 +189,15 @@ const mapActionDoc = (doc: ActionDoc): Action => {
   };
 };
 
-export const mapMonsterDoc = (
-  doc: LeanDocument<MonsterModel> & {
+export const mapCreatureDoc = (
+  doc: LeanDocument<CreatureModel> & {
     _id: Types.ObjectId;
   }
 ) => {
-  const { _id: id, abilities, actions, ...restOfMonster } = doc;
+  const { _id: id, abilities, actions, ...restOfCreature } = doc;
 
   return {
-    ...restOfMonster,
+    ...restOfCreature,
     id: id.toString(),
     abilities: abilities.map((ability) => mapAbilityDoc(ability as AbilityDoc)),
     actions: actions.map((action) => mapActionDoc(action as ActionDoc)),

@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import dbConnect from 'db/dbConnect';
-import Monster from 'models/monster/Monster';
+import Creature from 'models/creature/Creature';
 import { logMessage } from 'utils/logUtils';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -11,12 +11,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   switch (method) {
     case 'GET':
       try {
-        const monsters = await Monster.find({});
+        const creatures = await Creature.find({});
         res.status(200).json({
           success: true,
-          data: monsters.map((monster) => {
-            const { _id: id, ...restOfMonster } = monster.toObject();
-            return { ...restOfMonster, id };
+          data: creatures.map((creature) => {
+            const { _id: id, ...restOfCreature } = creature.toObject();
+            return { ...restOfCreature, id };
           }),
         });
       } catch (e) {
@@ -26,8 +26,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       break;
     case 'POST':
       try {
-        const monster = await Monster.create(req.body);
-        res.status(201).json({ success: true, data: monster });
+        const creature = await Creature.create(req.body);
+        res.status(201).json({ success: true, data: creature });
       } catch (e) {
         logMessage('error', e);
         res.status(400).json({ success: false });

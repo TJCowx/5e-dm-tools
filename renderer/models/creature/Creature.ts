@@ -6,15 +6,15 @@ import Attribute from './Attribute';
 import ConditionType from './ConditionType';
 import DamageType from './DamageType';
 import Language from './Language';
-import MonsterSize from './MonsterSize';
-import MonsterType from './MonsterType';
+import CreatureSize from './CreatureSize';
+import CreatureType from './CreatureType';
 import Proficiency from './Proficiency';
 
-export type MonsterModel = {
+export type CreatureModel = {
   id: string;
   name: string;
-  size: MonsterSize;
-  type: MonsterType;
+  size: CreatureSize;
+  type: CreatureType;
   alignment: Alignment;
 
   armourClass: number;
@@ -58,7 +58,7 @@ export type MonsterModel = {
   hasLair: boolean;
 };
 
-export const MonsterSchema = new Schema<MonsterModel>({
+export const CreatureSchema = new Schema<CreatureModel>({
   name: { type: String, required: [true, 'Name is required'] },
   size: { type: String, required: [true, 'Size is required'] },
   type: { type: String, required: [true, 'Type is required'] },
@@ -139,5 +139,5 @@ export const MonsterSchema = new Schema<MonsterModel>({
   hasLair: Boolean,
 });
 
-export default (mongoose.models.Monster as Model<MonsterModel>) ||
-  model<MonsterModel>('Monster', MonsterSchema);
+export default (mongoose.models.Creature as Model<CreatureModel>) ||
+  model<CreatureModel>('Creature', CreatureSchema);

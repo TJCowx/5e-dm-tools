@@ -17,16 +17,20 @@ import BasicSwitchField from 'components/Fields/Basic/BasicSwitchField';
 import BasicTextField from 'components/Fields/Basic/BasicTextField';
 import ListItemText from 'components/List/ListItemText';
 import Modal from 'components/Modal/Modal';
-import Action from 'models/monster/Action';
-import ActionType, { ActionTypeSelectOptions } from 'models/monster/ActionType';
+import Action from 'models/creature/Action';
+import ActionType, {
+  ActionTypeSelectOptions,
+} from 'models/creature/ActionType';
 import {
   AttackDelivery,
   AttackDeliverySelectOptions,
   AttackType,
   AttackTypeSelectOptions,
-} from 'models/monster/AttackType';
-import Damage from 'models/monster/Damage';
-import DamageType, { DamageTypeSelectOptions } from 'models/monster/DamageType';
+} from 'models/creature/AttackType';
+import Damage from 'models/creature/Damage';
+import DamageType, {
+  DamageTypeSelectOptions,
+} from 'models/creature/DamageType';
 import { FC, useMemo, useState } from 'react';
 import { RequireMessage } from 'utils/validationMessages';
 import {
