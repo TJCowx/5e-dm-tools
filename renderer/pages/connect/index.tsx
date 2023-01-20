@@ -1,9 +1,11 @@
 import { Button, Paper, styled } from '@mui/material';
+import RHFCheckboxField from 'components/Fields/RHF/RHFCheckboxField';
 import RHFTextField from 'components/Fields/RHF/RHFTextField';
 import TitleBar from 'components/Layout/TitleBar';
 import { init } from 'db/dbConnect';
+import ElectronStore from 'electron-store';
 import { useRouter } from 'next/router';
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { logMessage } from 'utils/logUtils';
 
@@ -39,13 +41,19 @@ const StyledForm = styled('form')(() => ({
 
 type FormState = {
   connectionString: string;
+  remember: boolean;
 };
+
+const Store = new ElectronStore({ schema: { connection: { type: 'string' } } });
 
 const ConnectPage: FC = () => {
   const router = useRouter();
 
   const { control, handleSubmit } = useForm({
-    defaultValues: { connectionString: '' },
+    defaultValues: {
+      connectionString: Store.get('connection') ?? '',
+      remember: Store.get('connection') != null,
+    },
   });
 
   const onSubmit = (data: FormState) => {
@@ -56,6 +64,11 @@ const ConnectPage: FC = () => {
       body: JSON.stringify(data),
     })
       .then(() => {
+        if (data.remember) {
+          Store.set('connection', data.connectionString);
+        } else {
+          Store.delete('connection');
+        }
         router.push('/home');
       })
       .catch((e) => {
@@ -70,12 +83,20 @@ const ConnectPage: FC = () => {
       <ContentContainer>
         <StyledPaper>
           <StyledForm onSubmit={handleSubmit(onSubmit)}>
-            <RHFTextField
-              fieldName="connectionString"
-              label="Connection"
-              control={control}
-              isRequired
-            />
+            <div className="fields-container">
+              <RHFTextField
+                className="w-100"
+                fieldName="connectionString"
+                label="Connection"
+                control={control}
+                isRequired
+              />
+              <RHFCheckboxField
+                fieldName="remember"
+                label="Remember Connection"
+                control={control}
+              />
+            </div>
             <Button className="btn connect" type="submit" variant="contained">
               Connect
             </Button>

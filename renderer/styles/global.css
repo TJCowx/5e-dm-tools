@@ -58,3 +58,9 @@ body,
   align-items: flex-start;
 }
 /* #endregion ============= ALIGNMENT ============= */
+
+/* #region ============== WIDTH =============== */
+.w-100 {
+  width: 100%;
+}
+/* #endregion ============== WIDTH =============== */
