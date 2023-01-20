@@ -8,6 +8,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { logMessage } from 'utils/logUtils';
 import { convertCreatureFormToDB } from 'utils/creatureUtils';
+import useConfirmBeforeExitPage from 'hooks/useConfirmBeforeExitPage';
 
 const DefaultValues: CreatureModel = {
   id: undefined,
@@ -58,6 +59,7 @@ const DefaultValues: CreatureModel = {
 };
 
 const CreateCreature = () => {
+  useConfirmBeforeExitPage();
   const router = useRouter();
 
   const [hasError, setHasError] = useState(false);

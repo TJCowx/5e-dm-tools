@@ -6,6 +6,7 @@ import Layout from 'components/Layout/Layout';
 import Combatant from 'models/initiative/Combatant';
 import { FC, useRef, useState } from 'react';
 import { getCombatantName } from 'utils/creatureUtils';
+import useConfirmBeforeExitPage from 'hooks/useConfirmBeforeExitPage';
 
 const PageContainer = styled('div')(() => ({
   display: 'flex',
@@ -14,6 +15,8 @@ const PageContainer = styled('div')(() => ({
 }));
 
 const InitiativePage: FC = () => {
+  useConfirmBeforeExitPage();
+
   const [creatureCombatants, setCreatureCombatants] = useState(
     new Map<string, Combatant>([])
   );

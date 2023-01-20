@@ -9,6 +9,7 @@ import { FC } from 'react';
 import { useForm } from 'react-hook-form';
 import { logMessage } from 'utils/logUtils';
 import { convertCreatureFormToDB, mapCreatureDoc } from 'utils/creatureUtils';
+import useConfirmBeforeExitPage from 'hooks/useConfirmBeforeExitPage';
 
 type Props = {
   creature: CreatureModel;
@@ -17,6 +18,8 @@ type Props = {
 
 const EditCreature: FC<Props> = ({ creature, error }) => {
   const router = useRouter();
+
+  useConfirmBeforeExitPage();
 
   const { handleSubmit, control, watch } = useForm<CreatureModel>({
     defaultValues: creature,
