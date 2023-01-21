@@ -1,4 +1,4 @@
-import { app, ipcMain, nativeTheme } from 'electron';
+import { app, ipcMain, nativeTheme, shell } from 'electron';
 import serve from 'electron-serve';
 import { createWindow } from './helpers';
 
@@ -34,6 +34,12 @@ if (isProd) {
     await mainWindow.loadURL(`http://localhost:${port}/connect`);
     mainWindow.webContents.openDevTools();
   }
+
+  mainWindow.webContents.setWindowOpenHandler(({ url }) => {
+    shell.openExternal(url);
+
+    return { action: 'deny' };
+  });
 
   ipcMain.on('toggle-maximize-window', () => {
     if (mainWindow.isMaximized()) {

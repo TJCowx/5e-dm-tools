@@ -1,3 +1,5 @@
+const { version } = require('../package.json');
+
 module.exports = {
   webpack: (config, { isServer }) => {
     if (!isServer) {
@@ -5,5 +7,8 @@ module.exports = {
     }
 
     return config;
+  },
+  publicRuntimeConfig: {
+    version,
   },
 };

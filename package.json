@@ -23,6 +23,7 @@
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
     "@fontsource/roboto": "^4.5.8",
+    "@fortawesome/free-brands-svg-icons": "^6.2.1",
     "@mui/material": "^5.11.1",
     "@mui/system": "^5.11.1",
     "@types/lodash.orderby": "^4.6.7",

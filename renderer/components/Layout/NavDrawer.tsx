@@ -1,5 +1,5 @@
 import { faListAlt } from '@fortawesome/free-regular-svg-icons';
-import { faDragon, faHouse } from '@fortawesome/free-solid-svg-icons';
+import { faDragon, faHouse, faGear } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   Drawer,
@@ -76,6 +76,24 @@ const NavDrawer = () => {
               </Link>
             </ListItem>
           ))}
+          <ListItem>
+            <Link href="/settings" passHref>
+              <ListItemButton
+                aria-label="Settings"
+                component="a"
+                href="/settings"
+              >
+                <ListItemIcon
+                  className={clsx({
+                    'rail-icon': true,
+                    'is-active': router.pathname.startsWith('/settings'),
+                  })}
+                >
+                  <FontAwesomeIcon icon={faGear} />
+                </ListItemIcon>
+              </ListItemButton>
+            </Link>
+          </ListItem>
         </List>
       </StyledDrawer>
     </>
