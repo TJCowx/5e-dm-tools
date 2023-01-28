@@ -3,7 +3,7 @@ import { faPen, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button, Divider, IconButton, List, Typography } from '@mui/material';
 import AbilityModal from 'components/AbilityModal/AbilityModal';
-import ActionModal from 'components/ActionModal.tsx/ActionModal';
+import ActionModal from 'components/ActionModal/ActionModal';
 import RHFAttributeField from 'components/Fields/RHF/RHFAttributeField';
 import RHFCheckboxField from 'components/Fields/RHF/RHFCheckboxField';
 import RHFIntegerField from 'components/Fields/RHF/RHFIntegerField';
