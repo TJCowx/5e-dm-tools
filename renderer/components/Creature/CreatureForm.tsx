@@ -2,8 +2,9 @@ import styled from '@emotion/styled';
 import { faPen, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button, Divider, IconButton, List, Typography } from '@mui/material';
-import AbilityModal from 'components/AbilityModal/AbilityModal';
-import ActionModal from 'components/ActionModal/ActionModal';
+import EditAbilityButton from 'components/Ability/EditAbilityButton';
+import NewAbilityListItem from 'components/Ability/NewAbilityListItem';
+import NewActionListItem from 'components/Action/NewActionListItem';
 import RHFAttributeField from 'components/Fields/RHF/RHFAttributeField';
 import RHFCheckboxField from 'components/Fields/RHF/RHFCheckboxField';
 import RHFIntegerField from 'components/Fields/RHF/RHFIntegerField';
@@ -15,11 +16,11 @@ import ListItemTwoSecondaryActions from 'components/List/ListItemTwoSecondaryAct
 import { AlignmentSelectOptions } from 'models/creature/Alignment';
 import { AttributeSelectOptions } from 'models/creature/Attribute';
 import { ConditionTypeSelectOptions } from 'models/creature/ConditionType';
-import { DamageTypeSelectOptions } from 'models/creature/DamageType';
-import { LanguageSelectOptions } from 'models/creature/Language';
 import { CreatureModel } from 'models/creature/Creature';
 import { CreatureSizeSelectOptions } from 'models/creature/CreatureSize';
 import { CreatureTypeSelectOptions } from 'models/creature/CreatureType';
+import { DamageTypeSelectOptions } from 'models/creature/DamageType';
+import { LanguageSelectOptions } from 'models/creature/Language';
 import { ProficiencySelectOptions } from 'models/creature/Proficiency';
 import { FC, FormEventHandler, Fragment } from 'react';
 import { Control, useFieldArray, UseFormWatch } from 'react-hook-form';
@@ -75,12 +76,14 @@ const CreatureForm: FC<Props> = ({ control, onSubmit, watch }) => {
     fields: abilities,
     append: appendAbility,
     remove: removeAbility,
+    update: updateAbility,
   } = useFieldArray({ control, name: 'abilities' });
 
   const {
     fields: actions,
     append: appendAction,
     remove: removeAction,
+    update: updateAction,
   } = useFieldArray({ control, name: 'actions' });
 
   const isLegendary = watch('isLegendary');
@@ -343,13 +346,10 @@ const CreatureForm: FC<Props> = ({ control, onSubmit, watch }) => {
               <ListItemTwoSecondaryActions
                 secondaryAction={
                   <>
-                    <IconButton
-                      aria-label={`Edit ${ability.name}`}
-                      edge="end"
-                      onClick={() => console.log('Ability', ability.id)}
-                    >
-                      <FontAwesomeIcon icon={faPen} />{' '}
-                    </IconButton>
+                    <EditAbilityButton
+                      ability={ability}
+                      onSave={(updated) => updateAbility(i, updated)}
+                    />
                     <IconButton
                       aria-label={`Delete ${ability.name}`}
                       edge="end"
@@ -369,7 +369,9 @@ const CreatureForm: FC<Props> = ({ control, onSubmit, watch }) => {
               <Divider />
             </Fragment>
           ))}
-          <AbilityModal onSave={(newAbility) => appendAbility(newAbility)} />
+          <NewAbilityListItem
+            onSave={(newAbility) => appendAbility(newAbility)}
+          />
         </List>
       </section>
       <section>
@@ -380,11 +382,13 @@ const CreatureForm: FC<Props> = ({ control, onSubmit, watch }) => {
             <ActionListItem
               key={action.name}
               action={action}
-              onEdit={(id) => console.log('Edit', id)}
+              isLegendary={isLegendary}
+              hasLair={hasLair}
+              onEdit={(updated) => updateAction(i, updated)}
               onDelete={() => removeAction(i)}
             />
           ))}
-          <ActionModal
+          <NewActionListItem
             isLegendary={isLegendary}
             hasLair={hasLair}
             onSave={(newAction) => appendAction(newAction)}

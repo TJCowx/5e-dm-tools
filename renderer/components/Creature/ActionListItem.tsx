@@ -1,6 +1,7 @@
 import { faPen, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IconButton, Typography } from '@mui/material';
+import EditActionButton from 'components/Action/EditActionButton';
 import ListItemText from 'components/List/ListItemText';
 import ListItemTwoSecondaryActions from 'components/List/ListItemTwoSecondaryActions';
 import Action from 'models/creature/Action';
@@ -8,11 +9,19 @@ import { FC } from 'react';
 
 type Props = {
   action: Action;
-  onEdit: (id: string) => void;
+  isLegendary: boolean;
+  hasLair: boolean;
+  onEdit: (action: Action) => void;
   onDelete: (id: string) => void;
 };
 
-const ActionListItem: FC<Props> = ({ action, onEdit, onDelete }) => {
+const ActionListItem: FC<Props> = ({
+  action,
+  isLegendary,
+  hasLair,
+  onEdit,
+  onDelete,
+}) => {
   const {
     id,
     name,
@@ -39,13 +48,12 @@ const ActionListItem: FC<Props> = ({ action, onEdit, onDelete }) => {
     <ListItemTwoSecondaryActions
       secondaryAction={
         <>
-          <IconButton
-            aria-label={`Edit ${name}`}
-            edge="end"
-            onClick={() => onEdit(id)}
-          >
-            <FontAwesomeIcon icon={faPen} />
-          </IconButton>
+          <EditActionButton
+            action={action}
+            isLegendary={isLegendary}
+            hasLair={hasLair}
+            onSave={onEdit}
+          />
           <IconButton
             aria-label={`Delete ${name}`}
             edge="end"
