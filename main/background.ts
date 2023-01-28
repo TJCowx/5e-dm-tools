@@ -1,5 +1,7 @@
 import { app, ipcMain, nativeTheme, shell } from 'electron';
 import serve from 'electron-serve';
+import UpdateService from 'update-electron-app';
+
 import { createWindow } from './helpers';
 
 const isProd: boolean = process.env.NODE_ENV === 'production';
@@ -12,6 +14,8 @@ if (isProd) {
 
 (async () => {
   await app.whenReady();
+
+  UpdateService();
 
   const mainWindow = createWindow('main', {
     width: 1000,
