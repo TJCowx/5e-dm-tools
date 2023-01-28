@@ -52,7 +52,7 @@ const ConnectPage: FC = () => {
   const { control, handleSubmit } = useForm({
     defaultValues: {
       connectionString: Store.get('connection') ?? '',
-      remember: Store.get('connection') != null,
+      remember: true,
     },
   });
 

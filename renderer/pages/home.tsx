@@ -24,7 +24,7 @@ const Home: FC = () => {
             />
           </ListItemButton>
         </NextLink>
-        <NextLink href="/connection/connect" passHref>
+        <NextLink href="/connect" passHref>
           <ListItemButton component="a">
             <ListItemText
               primary="Change Connection"
