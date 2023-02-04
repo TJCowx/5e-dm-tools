@@ -5,28 +5,47 @@ import dbConnect from 'db/dbConnect';
 import Creature, { CreatureModel } from 'models/creature/Creature';
 import { useRouter } from 'next/router';
 import { GetServerSideProps } from 'next/types';
-import { FC } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { logMessage } from 'utils/logUtils';
 import { convertCreatureFormToDB, mapCreatureDoc } from 'utils/creatureUtils';
 import useConfirmBeforeExitPage from 'hooks/useConfirmBeforeExitPage';
+import LoadingSpinner from 'components/LoadingSpinner/LoadingSpinner';
+import { styled } from '@mui/material';
 
-type Props = {
-  creature: CreatureModel;
-  error: null | 'not-found' | 'server';
-};
+const LoadingContainer = styled('div')(() => ({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  marginTop: '84px',
+}));
 
-const EditCreature: FC<Props> = ({ creature, error }) => {
+const EditCreature: FC = () => {
   const router = useRouter();
+  const { creatureId } = router.query;
 
   useConfirmBeforeExitPage();
 
-  const { handleSubmit, control, watch } = useForm<CreatureModel>({
+  const [creature, setCreature] = useState<CreatureModel>();
+  const [isLoading, setIsLoading] = useState(true);
+
+  const { handleSubmit, control, watch, reset } = useForm<CreatureModel>({
     defaultValues: creature,
   });
 
+  useEffect(() => {
+    fetch(`/api/creatures/${creatureId}`, { method: 'GET' }).then(
+      async (res) => {
+        const parsedRes = await res.json();
+        reset(parsedRes.data);
+        setCreature(parsedRes.data);
+        // setIsLoading(false);
+      }
+    );
+  }, []);
+
   const onSubmit = (data: CreatureModel) => {
-    fetch(`/api/creature/${creature.id}`, {
+    fetch(`/api/creatures/${creature.id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -42,34 +61,25 @@ const EditCreature: FC<Props> = ({ creature, error }) => {
   };
 
   return (
-    <Layout title={`Edit ${creature.name}`}>
+    <Layout title={`Edit ${creature?.name ?? ''}`}>
       <NavBack
         href="/creatures"
         ariaLabel="Navigate to creature list"
         tooltipText="Back to creatures list"
       />
-      <CreatureForm
-        control={control}
-        watch={watch}
-        onSubmit={handleSubmit(onSubmit)}
-      />
+      {isLoading ? (
+        <LoadingContainer>
+          <LoadingSpinner />
+        </LoadingContainer>
+      ) : (
+        <CreatureForm
+          control={control}
+          watch={watch}
+          onSubmit={handleSubmit(onSubmit)}
+        />
+      )}
     </Layout>
   );
-};
-
-export const getServerSideProps: GetServerSideProps = async ({ query }) => {
-  try {
-    await dbConnect();
-
-    const res = await Creature.findById(query.creatureId);
-
-    if (!res) return { props: { creature: null, error: 'not-found' } };
-
-    return { props: { creature: mapCreatureDoc(res.toObject()) } };
-  } catch (e) {
-    logMessage('error', e);
-    return { props: { creature: null, error: 'server' } };
-  }
 };
 
 export default EditCreature;
