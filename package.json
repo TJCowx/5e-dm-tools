@@ -1,12 +1,16 @@
 {
   "private": true,
   "name": "5e-dm-tools",
-  "version": "1.0.0",
+  "version": "1.0.0-beta.1",
+  "author": "Travis Cowx",
+  "description": "Tools for the 5th Edition Dungeons & Dragons DM",
+  "repository": "https://github.com/TJCowx/5e-dm-tools",
   "main": "app/background.js",
   "scripts": {
     "dev": "nextron",
     "build": "nextron build",
     "postinstall": "electron-builder install-app-deps",
+    "self-sign": "electron-builder create-self-signed-cert",
     "lint": "eslint ."
   },
   "dependencies": {

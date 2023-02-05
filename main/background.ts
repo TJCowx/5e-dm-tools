@@ -4,7 +4,7 @@ import UpdateService from 'update-electron-app';
 
 import { createWindow } from './helpers';
 
-const isProd: boolean = process.env.NODE_ENV === 'production';
+const isProd: boolean = app.isPackaged;
 
 if (isProd) {
   serve({ directory: 'app' });

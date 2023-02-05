@@ -3,3 +3,8 @@ node_modules
 .next
 app
 dist
+
+*.key
+*.pub
+
+out/

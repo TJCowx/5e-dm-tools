@@ -1,6 +1,6 @@
-appId: com.example.nextron
-productName: My Nextron App
-copyright: Copyright © 2018 Yoshihide Shiono
+appId: com.5e-dm-tools.app
+productName: 5e DM Tools
+copyright: Copyright © 2023 Travis Cowx
 directories:
   output: dist
   buildResources: resources
@@ -9,4 +9,6 @@ files:
     filter:
       - package.json
       - app
-publish: null
+win:
+  publish:
+    - github
