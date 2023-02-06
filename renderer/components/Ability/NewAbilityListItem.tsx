@@ -8,6 +8,7 @@ import {
 } from '@mui/material';
 import Ability from 'models/creature/Ability';
 import { FC, useState } from 'react';
+
 import AbilityModal from './AbilityModal';
 
 type Props = {

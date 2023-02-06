@@ -1,5 +1,4 @@
 import { styled } from '@mui/material';
-import { FC } from 'react';
 
 export default styled('span')(({ theme }) => ({
   transform: 'rotateZ(45deg)',

@@ -1,12 +1,12 @@
 import { styled } from '@mui/system';
 import AddCombatant from 'components/Initiative/AddCombatant';
-import InitiativeList from 'components/Initiative/InitiativeList';
 import CreatureCombatantList from 'components/Initiative/CreatureCombatantList';
+import InitiativeList from 'components/Initiative/InitiativeList';
 import Layout from 'components/Layout/Layout';
-import Combatant from 'models/initiative/Combatant';
-import { FC, useRef, useState } from 'react';
-import { getCombatantName } from 'utils/creatureUtils';
 import useConfirmBeforeExitPage from 'hooks/useConfirmBeforeExitPage';
+import Combatant from 'models/initiative/Combatant';
+import { FC, useState } from 'react';
+import { getCombatantName } from 'utils/creatureUtils';
 
 const PageContainer = styled('div')(() => ({
   display: 'flex',

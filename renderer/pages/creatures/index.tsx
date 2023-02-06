@@ -16,14 +16,14 @@ import {
   styled,
 } from '@mui/material';
 import List from '@mui/material/List';
+import Creature from 'models/creature/Creature';
+import { logMessage } from 'utils/logUtils';
 import DebouncedInput from 'components/DebouncedInput/DebouncedInput';
 import Layout from 'components/Layout/Layout';
 import ListItemText from 'components/List/ListItemText';
 import ListItemTwoSecondaryActions from 'components/List/ListItemTwoSecondaryActions';
-import { CreatureModel } from 'models/creature/Creature';
 import Link from 'next/link';
 import { FC, Fragment, useEffect, useState } from 'react';
-import { logMessage } from 'utils/logUtils';
 
 const ActionContainer = styled('div')(() => ({
   display: 'flex',
@@ -36,10 +36,8 @@ const ActionContainer = styled('div')(() => ({
 const Creatures: FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [hasError, setHasError] = useState(false);
-  const [creatures, setCreatures] = useState<CreatureModel[]>([]);
-  const [filteredCreatures, setFilteredCreatures] = useState<CreatureModel[]>(
-    []
-  );
+  const [creatures, setCreatures] = useState<Creature[]>([]);
+  const [filteredCreatures, setFilteredCreatures] = useState<Creature[]>([]);
   const [filterText, setFilterText] = useState('');
   const [deleteCreatureActionId, setDeleteCreatureActionId] =
     useState<string>(null);
@@ -47,7 +45,7 @@ const Creatures: FC = () => {
   const loadCreatures = () => {
     setHasError(false);
     setIsLoading(true);
-    fetch('/api/creatures')
+    fetch('/creatures')
       .then(async (res) => {
         const { data } = await res.json();
 
@@ -85,7 +83,7 @@ const Creatures: FC = () => {
   };
 
   const handleDelete = (id: string) => {
-    fetch(`/api/creatures/${id}`, { method: 'DELETE' })
+    fetch(`/creatures/${id}`, { method: 'DELETE' })
       .then(() => {
         setCreatures((prev) => prev.filter(({ id: mId }) => mId !== id));
         setDeleteCreatureActionId(null);

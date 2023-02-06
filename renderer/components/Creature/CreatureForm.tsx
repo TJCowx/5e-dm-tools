@@ -1,7 +1,16 @@
 import styled from '@emotion/styled';
-import { faPen, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button, Divider, IconButton, List, Typography } from '@mui/material';
+import { AlignmentSelectOptions } from 'models/creature/Alignment';
+import { AttributeSelectOptions } from 'models/creature/Attribute';
+import { ConditionTypeSelectOptions } from 'models/creature/ConditionType';
+import Creature from 'models/creature/Creature';
+import { CreatureSizeSelectOptions } from 'models/creature/CreatureSize';
+import { CreatureTypeSelectOptions } from 'models/creature/CreatureType';
+import { DamageTypeSelectOptions } from 'models/creature/DamageType';
+import { LanguageSelectOptions } from 'models/creature/Language';
+import { ProficiencySelectOptions } from 'models/creature/Proficiency';
 import EditAbilityButton from 'components/Ability/EditAbilityButton';
 import NewAbilityListItem from 'components/Ability/NewAbilityListItem';
 import NewActionListItem from 'components/Action/NewActionListItem';
@@ -13,24 +22,15 @@ import RHFSelectField from 'components/Fields/RHF/RHFSelectField';
 import RHFTextField from 'components/Fields/RHF/RHFTextField';
 import ListItemText from 'components/List/ListItemText';
 import ListItemTwoSecondaryActions from 'components/List/ListItemTwoSecondaryActions';
-import { AlignmentSelectOptions } from 'models/creature/Alignment';
-import { AttributeSelectOptions } from 'models/creature/Attribute';
-import { ConditionTypeSelectOptions } from 'models/creature/ConditionType';
-import { CreatureModel } from 'models/creature/Creature';
-import { CreatureSizeSelectOptions } from 'models/creature/CreatureSize';
-import { CreatureTypeSelectOptions } from 'models/creature/CreatureType';
-import { DamageTypeSelectOptions } from 'models/creature/DamageType';
-import { LanguageSelectOptions } from 'models/creature/Language';
-import { ProficiencySelectOptions } from 'models/creature/Proficiency';
 import { FC, FormEventHandler, Fragment } from 'react';
 import { Control, useFieldArray, UseFormWatch } from 'react-hook-form';
 
 import ActionListItem from './ActionListItem';
 
 type Props = {
-  control: Control<CreatureModel>;
+  control: Control<Creature>;
   onSubmit: FormEventHandler<HTMLFormElement>;
-  watch: UseFormWatch<CreatureModel>;
+  watch: UseFormWatch<Creature>;
 };
 
 const StyledForm = styled('form')(() => ({

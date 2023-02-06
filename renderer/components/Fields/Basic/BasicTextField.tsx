@@ -1,4 +1,4 @@
-import { TextField, TextFieldProps } from '@mui/material';
+import { TextField } from '@mui/material';
 import clsx from 'clsx';
 import { FC } from 'react';
 

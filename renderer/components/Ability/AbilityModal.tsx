@@ -1,16 +1,7 @@
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  Button,
-  ListItem,
-  ListItemButton,
-  ListItemIcon,
-  styled,
-} from '@mui/material';
-import BasicTextField from 'components/Fields/Basic/BasicTextField';
-import ListItemText from 'components/List/ListItemText';
-import Modal from 'components/Modal/Modal';
+import { Button, styled } from '@mui/material';
 import Ability from 'models/creature/Ability';
+import BasicTextField from 'components/Fields/Basic/BasicTextField';
+import Modal from 'components/Modal/Modal';
 import { FC, useState } from 'react';
 import { RequireMessage } from 'utils/validationMessages';
 import { object as yupObject, string as yupString, ValidationError } from 'yup';

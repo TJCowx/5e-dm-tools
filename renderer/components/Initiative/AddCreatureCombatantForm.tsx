@@ -7,20 +7,20 @@ import {
   Typography,
 } from '@mui/material';
 import { styled } from '@mui/system';
+import Creature from 'models/creature/Creature';
+import { logMessage } from 'utils/logUtils';
+import FormattedStat from 'components/Creature/FormattedStat';
 import RHFIntegerField from 'components/Fields/RHF/RHFIntegerField';
 import RHFSwitchField from 'components/Fields/RHF/RHFSwitchField';
-import FormattedStat from 'components/Creature/FormattedStat';
 import Combatant from 'models/initiative/Combatant';
-import { CreatureModel } from 'models/creature/Creature';
 import { FC, useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { logMessage } from 'utils/logUtils';
 import { getModifier } from 'utils/modifierUtils';
 import { rollD20 } from 'utils/rollUtils';
 import { v4 } from 'uuid';
 
 type FormInputs = {
-  creature: CreatureModel;
+  creature: Creature;
   groupInitiativeRoll: boolean;
   creatureCount: number;
 };
@@ -46,9 +46,7 @@ const StyledForm = styled('form')(() => ({
 const AddCreatureCombatantForm: FC<Props> = ({ onSubmit, onCancel }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [hasError, setHasError] = useState(false);
-  const [availableCreature, setAvailableCreature] = useState<CreatureModel[]>(
-    []
-  );
+  const [availableCreature, setAvailableCreature] = useState<Creature[]>([]);
 
   const { handleSubmit, reset, setValue, watch, control } = useForm<FormInputs>(
     {
@@ -62,7 +60,7 @@ const AddCreatureCombatantForm: FC<Props> = ({ onSubmit, onCancel }) => {
 
   useEffect(() => {
     setIsLoading(true);
-    fetch('/api/creatures', { method: 'GET' })
+    fetch('/creatures', { method: 'GET' })
       .then(async (res) => {
         const { data } = await res.json();
         setAvailableCreature(data);
@@ -114,12 +112,12 @@ const AddCreatureCombatantForm: FC<Props> = ({ onSubmit, onCancel }) => {
   };
 
   const handleAutocompleteChange = (
-    val: (string | CreatureModel)[] | CreatureModel | string
+    val: (string | Creature)[] | Creature | string
   ) => {
-    let newVal: CreatureModel;
+    let newVal: Creature;
 
-    // Autocomplete component is expecting (string | CreatureModel)[] even though it's
-    // emitting CreatureModel. Handle the expected just in case
+    // Autocomplete component is expecting (string | Creature)[] even though it's
+    // emitting Creature. Handle the expected just in case
     if (Array.isArray(val)) {
       const firstVal = val[0];
       newVal =
@@ -156,10 +154,7 @@ const AddCreatureCombatantForm: FC<Props> = ({ onSubmit, onCancel }) => {
             getOptionLabel={(opt) => (typeof opt === 'string' ? opt : opt.name)}
             size="small"
             onChange={(_, val) => handleAutocompleteChange(val)}
-            isOptionEqualToValue={(
-              opt: CreatureModel,
-              val: string | CreatureModel
-            ) =>
+            isOptionEqualToValue={(opt: Creature, val: string | Creature) =>
               val == null
                 ? false
                 : typeof val === 'string'
@@ -173,7 +168,7 @@ const AddCreatureCombatantForm: FC<Props> = ({ onSubmit, onCancel }) => {
                 InputLabelProps={{ shrink: true }}
               />
             )}
-            renderOption={(optProps, creatureOpt: CreatureModel) => (
+            renderOption={(optProps, creatureOpt: Creature) => (
               <li {...optProps}>
                 <Typography variant="subtitle2">
                   {creatureOpt.name}

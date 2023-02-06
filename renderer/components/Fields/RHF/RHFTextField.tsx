@@ -1,12 +1,12 @@
 /* eslint-disable react/function-component-definition */
+import { TextField as MuiTextField } from '@mui/material';
+import clsx from 'clsx';
 import {
   Control,
   Controller,
   Path,
   UnPackAsyncDefaultValues,
 } from 'react-hook-form';
-import { TextField as MuiTextField } from '@mui/material';
-import clsx from 'clsx';
 import { RequireMessage } from 'utils/validationMessages';
 
 type Props<T> = {
