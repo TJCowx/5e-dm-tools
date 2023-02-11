@@ -1,15 +1,15 @@
 import { styled } from '@mui/material';
-import Creature from 'models/creature/Creature';
-import { logMessage } from 'utils/logUtils';
 import CreatureForm from 'components/Creature/CreatureForm';
-import Layout from 'components/Layout/Layout';
 import NavBack from 'components/Links/NavBack';
 import LoadingSpinner from 'components/LoadingSpinner/LoadingSpinner';
 import useConfirmBeforeExitPage from 'hooks/useConfirmBeforeExitPage';
-import { useRouter } from 'next/router';
+import useDocumentTitle from 'hooks/useDocumentTitle';
+import Creature from 'models/creature/Creature';
 import { FC, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useNavigate, useParams } from 'react-router-dom';
 import { convertCreatureFormToDB } from 'utils/creatureUtils';
+import { logMessage } from 'utils/logUtils';
 
 const LoadingContainer = styled('div')(() => ({
   display: 'flex',
@@ -18,9 +18,10 @@ const LoadingContainer = styled('div')(() => ({
   marginTop: '84px',
 }));
 
-const EditCreature: FC = () => {
-  const router = useRouter();
-  const { creatureId } = router.query;
+const EditCreaturePage: FC = () => {
+  useDocumentTitle('Edit Monster');
+  const navigate = useNavigate();
+  const { creatureId } = useParams();
 
   useConfirmBeforeExitPage();
 
@@ -49,7 +50,7 @@ const EditCreature: FC = () => {
       body: JSON.stringify(convertCreatureFormToDB(data)),
     })
       .then(() => {
-        router.push('/creatures');
+        navigate('/creatures');
       })
       .catch((e) => {
         logMessage('error', e);
@@ -57,7 +58,7 @@ const EditCreature: FC = () => {
   };
 
   return (
-    <Layout title={`Edit ${creature?.name ?? ''}`}>
+    <div>
       <NavBack
         href="/creatures"
         ariaLabel="Navigate to creature list"
@@ -74,8 +75,8 @@ const EditCreature: FC = () => {
           onSubmit={handleSubmit(onSubmit)}
         />
       )}
-    </Layout>
+    </div>
   );
 };
 
-export default EditCreature;
+export default EditCreaturePage;

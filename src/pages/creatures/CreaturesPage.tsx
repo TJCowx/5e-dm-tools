@@ -22,8 +22,8 @@ import DebouncedInput from 'components/DebouncedInput/DebouncedInput';
 import Layout from 'components/Layout/Layout';
 import ListItemText from 'components/List/ListItemText';
 import ListItemTwoSecondaryActions from 'components/List/ListItemTwoSecondaryActions';
-import Link from 'next/link';
 import { FC, Fragment, useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 
 const ActionContainer = styled('div')(() => ({
   display: 'flex',
@@ -33,7 +33,7 @@ const ActionContainer = styled('div')(() => ({
   },
 }));
 
-const Creatures: FC = () => {
+const CreaturesPage: FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [hasError, setHasError] = useState(false);
   const [creatures, setCreatures] = useState<Creature[]>([]);
@@ -95,7 +95,7 @@ const Creatures: FC = () => {
   };
 
   return (
-    <Layout title="Creatures">
+    <div>
       {hasError && (
         <Alert severity="error" className="mb-16">
           There was an error loading the creatures. Please{' '}
@@ -110,11 +110,14 @@ const Creatures: FC = () => {
           label="Search"
           onChange={(val) => setFilterText(val)}
         />
-        <Link href="/creatures/create" passHref>
-          <IconButton aria-label="Create new creature">
-            <FontAwesomeIcon icon={faPlus} />{' '}
-          </IconButton>
-        </Link>
+
+        <IconButton
+          component={Link}
+          to="/creatures/create"
+          aria-label="Create new creature"
+        >
+          <FontAwesomeIcon icon={faPlus} />{' '}
+        </IconButton>
       </ActionContainer>
       <Divider className="mt-16" />
       {isLoading ? (
@@ -137,11 +140,13 @@ const Creatures: FC = () => {
                 <ListItemTwoSecondaryActions
                   secondaryAction={
                     <>
-                      <Link href={`/creatures/edit/${id}`} passHref>
-                        <IconButton aria-label={`Edit ${name}`}>
-                          <FontAwesomeIcon size="xs" icon={faPen} />
-                        </IconButton>
-                      </Link>
+                      <IconButton
+                        component={Link}
+                        to={`/creatures/edit/${id}`}
+                        aria-label={`Edit ${name}`}
+                      >
+                        <FontAwesomeIcon size="xs" icon={faPen} />
+                      </IconButton>
                       <IconButton
                         edge="end"
                         aria-label={`Delete ${name}`}
@@ -195,8 +200,8 @@ const Creatures: FC = () => {
           </DialogActions>
         </Dialog>
       )}
-    </Layout>
+    </div>
   );
 };
 
-export default Creatures;
+export default CreaturesPage;

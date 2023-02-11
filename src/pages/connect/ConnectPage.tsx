@@ -1,12 +1,12 @@
 import { Button, Paper, styled } from '@mui/material';
-import { logMessage } from 'utils/logUtils';
 import RHFCheckboxField from 'components/Fields/RHF/RHFCheckboxField';
 import RHFTextField from 'components/Fields/RHF/RHFTextField';
-import TitleBar from 'components/Layout/TitleBar';
 import ElectronStore from 'electron-store';
-import { useRouter } from 'next/router';
-import { FC, useEffect, useState } from 'react';
+import useDocumentTitle from 'hooks/useDocumentTitle';
+import { FC } from 'react';
 import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
+import { logMessage } from 'utils/logUtils';
 
 const Root = styled('div')(() => ({
   height: '100%',
@@ -46,7 +46,9 @@ type FormState = {
 const Store = new ElectronStore({ schema: { connection: { type: 'string' } } });
 
 const ConnectPage: FC = () => {
-  const router = useRouter();
+  useDocumentTitle('Connect to Database');
+
+  const navigate = useNavigate();
 
   const { control, handleSubmit } = useForm({
     defaultValues: {
@@ -68,7 +70,7 @@ const ConnectPage: FC = () => {
         } else {
           Store.delete('connection');
         }
-        router.push('/home');
+        navigate('/home');
       })
       .catch((e) => {
         logMessage('error', e);
@@ -77,7 +79,6 @@ const ConnectPage: FC = () => {
 
   return (
     <Root>
-      <TitleBar title="Connect" />
       <ContentContainer>
         <StyledPaper>
           <StyledForm onSubmit={handleSubmit(onSubmit)}>

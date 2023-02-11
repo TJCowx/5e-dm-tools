@@ -7,6 +7,7 @@ import NavDrawer from './NavDrawer';
 import TitleBar from './TitleBar';
 
 type Props = {
+  // eslint-disable-next-line react/no-unused-prop-types
   title: string;
   children: ReactNode;
   disablePadding?: boolean;
@@ -53,35 +54,28 @@ const Root = styled('div')(() => ({
   },
 }));
 
-const Layout: FC<Props> = ({
-  title,
-  children,
-  disablePadding,
-  contentFillPage,
-}) => {
-  return (
-    <Root>
-      <TitleBar title={title} />
-      <div className="page-wrapper">
-        <NavDrawer />
-        <Box
-          className={clsx({
-            'content-wrapper': true,
-            'scroll-enabled': true,
-            'no-padding': disablePadding,
-          })}
+const Layout: FC<Props> = ({ children, disablePadding, contentFillPage }) => (
+  <Root>
+    <TitleBar />
+    <div className="page-wrapper">
+      <NavDrawer />
+      <Box
+        className={clsx({
+          'content-wrapper': true,
+          'scroll-enabled': true,
+          'no-padding': disablePadding,
+        })}
+      >
+        <Container
+          component="main"
+          className={clsx({ 'fill-page': contentFillPage })}
         >
-          <Container
-            component="main"
-            className={clsx({ 'fill-page': contentFillPage })}
-          >
-            {children}
-          </Container>
-        </Box>
-      </div>
-    </Root>
-  );
-};
+          {children}
+        </Container>
+      </Box>
+    </div>
+  </Root>
+);
 
 Layout.defaultProps = {
   disablePadding: false,

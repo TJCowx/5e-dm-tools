@@ -4,6 +4,7 @@ import CreatureCombatantList from 'components/Initiative/CreatureCombatantList';
 import InitiativeList from 'components/Initiative/InitiativeList';
 import Layout from 'components/Layout/Layout';
 import useConfirmBeforeExitPage from 'hooks/useConfirmBeforeExitPage';
+import useDocumentTitle from 'hooks/useDocumentTitle';
 import Combatant from 'models/initiative/Combatant';
 import { FC, useState } from 'react';
 import { getCombatantName } from 'utils/creatureUtils';
@@ -15,6 +16,7 @@ const PageContainer = styled('div')(() => ({
 }));
 
 const InitiativePage: FC = () => {
+  useDocumentTitle('Initiative');
   useConfirmBeforeExitPage();
 
   const [creatureCombatants, setCreatureCombatants] = useState(
@@ -89,7 +91,7 @@ const InitiativePage: FC = () => {
   };
 
   return (
-    <Layout title="Initiative" disablePadding contentFillPage>
+    <div>
       <PageContainer>
         <InitiativeList
           combatants={combatants}
@@ -99,7 +101,7 @@ const InitiativePage: FC = () => {
         <CreatureCombatantList combatants={creatureCombatants} />
         <AddCombatant onAddCombatants={addCombatants} />
       </PageContainer>
-    </Layout>
+    </div>
   );
 };
 

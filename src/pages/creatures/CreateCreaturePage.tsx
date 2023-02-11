@@ -1,14 +1,14 @@
 import { Alert } from '@mui/material';
-import Creature from 'models/creature/Creature';
-import { logMessage } from 'utils/logUtils';
 import CreatureForm from 'components/Creature/CreatureForm';
-import Layout from 'components/Layout/Layout';
 import NavBack from 'components/Links/NavBack';
 import useConfirmBeforeExitPage from 'hooks/useConfirmBeforeExitPage';
-import { useRouter } from 'next/router';
+import useDocumentTitle from 'hooks/useDocumentTitle';
+import Creature from 'models/creature/Creature';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
 import { convertCreatureFormToDB } from 'utils/creatureUtils';
+import { logMessage } from 'utils/logUtils';
 
 const DefaultValues: Creature = {
   id: undefined,
@@ -58,9 +58,11 @@ const DefaultValues: Creature = {
   hasLair: false,
 };
 
-const CreateCreature = () => {
+const CreateCreaturePage = () => {
+  useDocumentTitle('Create');
   useConfirmBeforeExitPage();
-  const router = useRouter();
+
+  const navigate = useNavigate();
 
   const [hasError, setHasError] = useState(false);
 
@@ -78,7 +80,7 @@ const CreateCreature = () => {
       body: JSON.stringify(convertCreatureFormToDB(data)),
     })
       .then(() => {
-        router.push('/creatures');
+        navigate('/creatures');
       })
       .catch((e) => {
         logMessage('error', e);
@@ -87,7 +89,7 @@ const CreateCreature = () => {
   };
 
   return (
-    <Layout title="Create Creature">
+    <div>
       <NavBack
         href="/creatures"
         ariaLabel="Go to creature list"
@@ -103,8 +105,8 @@ const CreateCreature = () => {
         watch={watch}
         onSubmit={handleSubmit(onSubmit)}
       />
-    </Layout>
+    </div>
   );
 };
 
-export default CreateCreature;
+export default CreateCreaturePage;

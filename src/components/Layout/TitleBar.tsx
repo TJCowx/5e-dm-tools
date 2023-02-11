@@ -20,21 +20,13 @@ const Container = styled('div')(({ theme }) => ({
   flexShrink: 1,
 }));
 
-type Props = {
-  title: string;
-};
-
-const TitleBar: FC<Props> = ({ title }) => {
-  const formattedTitle = `${title} | 5e DM Tools`;
-
-  return (
-    <Container
-      className="title-bar"
-      onDoubleClick={() => ipcRenderer.send('toggle-maximize-window')}
-    >
-      <Typography variant="caption">{formattedTitle}</Typography>
-    </Container>
-  );
-};
+const TitleBar: FC = () => (
+  <Container
+    className="title-bar"
+    onDoubleClick={() => ipcRenderer.send('toggle-maximize-window')}
+  >
+    <Typography variant="caption">{document.title}</Typography>
+  </Container>
+);
 
 export default TitleBar;

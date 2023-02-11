@@ -2,35 +2,36 @@ import { faGithub } from '@fortawesome/free-brands-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button, Typography } from '@mui/material';
 import Layout from 'components/Layout/Layout';
-import getConfig from 'next/config';
-import NextLink from 'next/link';
+import useDocumentTitle from 'hooks/useDocumentTitle';
 import { FC } from 'react';
+import { Link } from 'react-router-dom';
 
 const SettingsPage: FC = () => {
-  const { publicRuntimeConfig } = getConfig();
+  useDocumentTitle('Settings');
+
+  const version = 'fake';
 
   return (
-    <Layout title="Settings">
+    <div>
       <div>
         <Typography component="span" variant="subtitle2">
           Version:
         </Typography>
         &nbsp;
         <Typography component="span" variant="body2">
-          {publicRuntimeConfig.version}
+          {version}
         </Typography>
       </div>
-      <NextLink href="https://github.com/TJCowx/5e-dm-tools" passHref>
-        <Button
-          variant="text"
-          component="a"
-          target="_blank"
-          endIcon={<FontAwesomeIcon icon={faGithub} />}
-        >
-          View on GitHub
-        </Button>
-      </NextLink>
-    </Layout>
+      <Button
+        variant="text"
+        component={Link}
+        to="https://github.com/TJCowx/5e-dm-tools"
+        target="_blank"
+        endIcon={<FontAwesomeIcon icon={faGithub} />}
+      >
+        View on GitHub
+      </Button>
+    </div>
   );
 };
 
