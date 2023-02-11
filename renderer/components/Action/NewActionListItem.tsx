@@ -8,7 +8,6 @@ import {
 } from '@mui/material';
 import Action from 'models/creature/Action';
 import { FC, useState } from 'react';
-
 import ActionModal from './ActionModal';
 
 type Props = {

@@ -1,6 +1,8 @@
 import { styled } from '@mui/material/styles';
+import Typography from '@mui/material/Typography';
 import { Box, Container } from '@mui/system';
 import clsx from 'clsx';
+import { ipcRenderer } from 'electron';
 import { FC, ReactNode } from 'react';
 
 import NavDrawer from './NavDrawer';

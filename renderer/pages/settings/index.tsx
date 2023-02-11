@@ -1,6 +1,6 @@
-import { faGithub } from '@fortawesome/free-brands-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Button, Typography } from '@mui/material';
+import { faGithub } from '@fortawesome/free-brands-svg-icons';
+import { Button, Link, styled, Typography } from '@mui/material';
 import Layout from 'components/Layout/Layout';
 import getConfig from 'next/config';
 import NextLink from 'next/link';

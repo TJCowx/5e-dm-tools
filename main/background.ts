@@ -4,9 +4,6 @@ import UpdateService from 'update-electron-app';
 
 import { createWindow } from './helpers';
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const server = require('../api/app');
-
 const isProd: boolean = app.isPackaged;
 
 if (isProd) {

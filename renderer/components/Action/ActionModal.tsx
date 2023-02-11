@@ -11,6 +11,12 @@ import {
   ListItemIcon,
   styled,
 } from '@mui/material';
+import BasicNumberField from 'components/Fields/Basic/BasicNumberField';
+import BasicSelectField from 'components/Fields/Basic/BasicSelectField';
+import BasicSwitchField from 'components/Fields/Basic/BasicSwitchField';
+import BasicTextField from 'components/Fields/Basic/BasicTextField';
+import ListItemText from 'components/List/ListItemText';
+import Modal from 'components/Modal/Modal';
 import Action from 'models/creature/Action';
 import ActionType, {
   ActionTypeSelectOptions,
@@ -25,12 +31,6 @@ import Damage from 'models/creature/Damage';
 import DamageType, {
   DamageTypeSelectOptions,
 } from 'models/creature/DamageType';
-import BasicNumberField from 'components/Fields/Basic/BasicNumberField';
-import BasicSelectField from 'components/Fields/Basic/BasicSelectField';
-import BasicSwitchField from 'components/Fields/Basic/BasicSwitchField';
-import BasicTextField from 'components/Fields/Basic/BasicTextField';
-import ListItemText from 'components/List/ListItemText';
-import Modal from 'components/Modal/Modal';
 import { FC, useMemo, useState } from 'react';
 import { RequireMessage } from 'utils/validationMessages';
 import {

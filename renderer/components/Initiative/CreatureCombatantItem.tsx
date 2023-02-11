@@ -11,12 +11,12 @@ import {
   Typography,
 } from '@mui/material';
 import { grey } from '@mui/material/colors';
-import Action from 'models/creature/Action';
-import FormattedStat from 'components/Creature/FormattedStat';
 import DeadIcon from 'components/Icons/DeadIcon';
 import AbilityFormat from 'components/LabelValue/AbilityFormat';
 import LabelValueRow from 'components/LabelValue/LabelValueRow';
+import FormattedStat from 'components/Creature/FormattedStat';
 import Combatant from 'models/initiative/Combatant';
+import Action from 'models/creature/Action';
 import { FC, useEffect, useRef, useState } from 'react';
 import {
   getProficienciesString,

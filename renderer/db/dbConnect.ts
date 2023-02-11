@@ -1,4 +1,5 @@
 import { connect } from 'mongoose';
+import { logMessage } from 'utils/logUtils';
 
 /**
  * Global is used here to maintain a cached connection across hot reloads

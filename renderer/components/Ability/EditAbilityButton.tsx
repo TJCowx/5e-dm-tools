@@ -3,7 +3,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IconButton } from '@mui/material';
 import Ability from 'models/creature/Ability';
 import { FC, useState } from 'react';
-
 import AbilityModal from './AbilityModal';
 
 type Props = {

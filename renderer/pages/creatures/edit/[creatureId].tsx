@@ -1,15 +1,17 @@
-import { styled } from '@mui/material';
-import Creature from 'models/creature/Creature';
-import { logMessage } from 'utils/logUtils';
-import CreatureForm from 'components/Creature/CreatureForm';
 import Layout from 'components/Layout/Layout';
 import NavBack from 'components/Links/NavBack';
-import LoadingSpinner from 'components/LoadingSpinner/LoadingSpinner';
-import useConfirmBeforeExitPage from 'hooks/useConfirmBeforeExitPage';
+import CreatureForm from 'components/Creature/CreatureForm';
+import dbConnect from 'db/dbConnect';
+import Creature, { CreatureModel } from 'models/creature/Creature';
 import { useRouter } from 'next/router';
+import { GetServerSideProps } from 'next/types';
 import { FC, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { convertCreatureFormToDB } from 'utils/creatureUtils';
+import { logMessage } from 'utils/logUtils';
+import { convertCreatureFormToDB, mapCreatureDoc } from 'utils/creatureUtils';
+import useConfirmBeforeExitPage from 'hooks/useConfirmBeforeExitPage';
+import LoadingSpinner from 'components/LoadingSpinner/LoadingSpinner';
+import { styled } from '@mui/material';
 
 const LoadingContainer = styled('div')(() => ({
   display: 'flex',
@@ -24,24 +26,26 @@ const EditCreature: FC = () => {
 
   useConfirmBeforeExitPage();
 
-  const [creature, setCreature] = useState<Creature>();
+  const [creature, setCreature] = useState<CreatureModel>();
   const [isLoading, setIsLoading] = useState(true);
 
-  const { handleSubmit, control, watch, reset } = useForm<Creature>({
+  const { handleSubmit, control, watch, reset } = useForm<CreatureModel>({
     defaultValues: creature,
   });
 
   useEffect(() => {
-    fetch(`/creatures/${creatureId}`, { method: 'GET' }).then(async (res) => {
-      const parsedRes = await res.json();
-      reset(parsedRes.data);
-      setCreature(parsedRes.data);
-      setIsLoading(false);
-    });
+    fetch(`/api/creatures/${creatureId}`, { method: 'GET' }).then(
+      async (res) => {
+        const parsedRes = await res.json();
+        reset(parsedRes.data);
+        setCreature(parsedRes.data);
+        // setIsLoading(false);
+      }
+    );
   }, []);
 
-  const onSubmit = (data: Creature) => {
-    fetch(`/creatures/${creature.id}`, {
+  const onSubmit = (data: CreatureModel) => {
+    fetch(`/api/creatures/${creature.id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',

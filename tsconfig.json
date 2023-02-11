@@ -14,11 +14,7 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
-    "baseUrl": "./renderer",
-    "paths": {
-      "@shared-models/*": ["./models/*"],
-      "@shared-utils/*": ["./utils/*"]
-    }
+    "baseUrl": "./renderer"
   },
   "exclude": ["node_modules", "renderer/next.config.js", "app", "dist"]
 }

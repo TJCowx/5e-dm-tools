@@ -1,4 +1,4 @@
-import Creature from 'models/creature/Creature';
+import { CreatureModel } from 'models/creature/Creature';
 
 type Combatant = {
   id: string;
@@ -10,7 +10,7 @@ type Combatant = {
   isLair?: boolean;
   maxHp?: number;
   currentHp?: number;
-  stats?: Creature;
+  stats?: CreatureModel;
 };
 
 export default Combatant;

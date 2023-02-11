@@ -1,12 +1,13 @@
 import { Button, Paper, styled } from '@mui/material';
-import { logMessage } from 'utils/logUtils';
 import RHFCheckboxField from 'components/Fields/RHF/RHFCheckboxField';
 import RHFTextField from 'components/Fields/RHF/RHFTextField';
 import TitleBar from 'components/Layout/TitleBar';
+import { init } from 'db/dbConnect';
 import ElectronStore from 'electron-store';
 import { useRouter } from 'next/router';
 import { FC, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { logMessage } from 'utils/logUtils';
 
 const Root = styled('div')(() => ({
   height: '100%',
@@ -57,7 +58,7 @@ const ConnectPage: FC = () => {
 
   const onSubmit = (data: FormState) => {
     // Test Connection string
-    fetch('/connection/connect', {
+    fetch('/api/connection/connect', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data),
@@ -71,6 +72,7 @@ const ConnectPage: FC = () => {
         router.push('/home');
       })
       .catch((e) => {
+        console.error(e);
         logMessage('error', e);
       });
   };

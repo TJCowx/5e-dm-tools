@@ -1,4 +1,4 @@
-import Creature from 'models/creature/Creature';
+import { CreatureModel } from 'models/creature/Creature';
 import Proficiency from 'models/creature/Proficiency';
 
 export const getModifier = (value: number) => Math.floor((value - 10) / 2);
@@ -9,7 +9,10 @@ export const getFormattedModifier = (value: number, profBonus = 0) => {
   return modifier >= 0 ? `+${modifier}` : `${modifier}`;
 };
 
-export const getSkillAttribute = (prof: Proficiency, creature: Creature) => {
+export const getSkillAttribute = (
+  prof: Proficiency,
+  creature: CreatureModel
+) => {
   const { strength, dexterity, intelligence, wisdom, charisma } = creature;
 
   switch (prof) {

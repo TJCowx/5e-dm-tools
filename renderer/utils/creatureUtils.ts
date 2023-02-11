@@ -1,4 +1,9 @@
-import Creature from 'models/creature/Creature';
+/* eslint-disable import/prefer-default-export */
+import Ability, { AbilityDoc } from 'models/creature/Ability';
+import Action, { ActionDoc } from 'models/creature/Action';
+import Damage, { DamageDoc } from 'models/creature/Damage';
+import { CreatureModel } from 'models/creature/Creature';
+import { LeanDocument, Types } from 'mongoose';
 
 import { getFormattedModifier, getSkillAttribute } from './modifierUtils';
 
@@ -11,7 +16,7 @@ import { getFormattedModifier, getSkillAttribute } from './modifierUtils';
  * @param creature The creature from the form
  * @returns the number fields parsed into numbers
  */
-export const convertCreatureFormToDB = (creature: Partial<Creature>) => {
+export const convertCreatureFormToDB = (creature: Partial<CreatureModel>) => {
   const {
     armourClass,
     hitPoints,
@@ -81,7 +86,7 @@ export const getCombatantName = (name: string, numPrevType: number) => {
  * @param creature the creature with the speed stats
  * @returns the string that lists the speeds
  */
-export const getSpeedString = (creature: Creature) => {
+export const getSpeedString = (creature: CreatureModel) => {
   const { landSpeed, flySpeed, burrowSpeed, climbSpeed, hoverSpeed } = creature;
 
   const speedItems: string[] = [];
@@ -95,7 +100,7 @@ export const getSpeedString = (creature: Creature) => {
   return speedItems.join(' | ');
 };
 
-export const getSavingThrowsString = (creature: Creature) => {
+export const getSavingThrowsString = (creature: CreatureModel) => {
   const {
     strength,
     dexterity,
@@ -148,7 +153,7 @@ export const getSavingThrowsString = (creature: Creature) => {
   return proficientSavingThrows.join(' | ');
 };
 
-export const getProficienciesString = (creature: Creature) => {
+export const getProficienciesString = (creature: CreatureModel) => {
   const { proficiencies, profBonus } = creature;
 
   return proficiencies
@@ -160,4 +165,41 @@ export const getProficienciesString = (creature: Creature) => {
         )}`
     )
     .join(' | ');
+};
+
+const mapDamageDoc = (doc: DamageDoc): Damage => {
+  const { _id: id, ...damage } = doc;
+
+  return { id: id.toString(), ...damage };
+};
+
+const mapAbilityDoc = (doc: AbilityDoc): Ability => {
+  const { _id: id, ...ability } = doc;
+
+  return { id: id.toString(), ...ability };
+};
+
+const mapActionDoc = (doc: ActionDoc): Action => {
+  const { _id: id, damage, ...action } = doc;
+
+  return {
+    id: id.toString(),
+    damage: damage.map((d) => mapDamageDoc(d as DamageDoc)),
+    ...action,
+  };
+};
+
+export const mapCreatureDoc = (
+  doc: LeanDocument<CreatureModel> & {
+    _id: Types.ObjectId;
+  }
+) => {
+  const { _id: id, abilities, actions, ...restOfCreature } = doc;
+
+  return {
+    ...restOfCreature,
+    id: id.toString(),
+    abilities: abilities.map((ability) => mapAbilityDoc(ability as AbilityDoc)),
+    actions: actions.map((action) => mapActionDoc(action as ActionDoc)),
+  };
 };

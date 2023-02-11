@@ -1,16 +1,16 @@
 import { Alert } from '@mui/material';
-import Creature from 'models/creature/Creature';
-import { logMessage } from 'utils/logUtils';
-import CreatureForm from 'components/Creature/CreatureForm';
 import Layout from 'components/Layout/Layout';
 import NavBack from 'components/Links/NavBack';
-import useConfirmBeforeExitPage from 'hooks/useConfirmBeforeExitPage';
+import CreatureForm from 'components/Creature/CreatureForm';
+import { CreatureModel } from 'models/creature/Creature';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { logMessage } from 'utils/logUtils';
 import { convertCreatureFormToDB } from 'utils/creatureUtils';
+import useConfirmBeforeExitPage from 'hooks/useConfirmBeforeExitPage';
 
-const DefaultValues: Creature = {
+const DefaultValues: CreatureModel = {
   id: undefined,
   name: '',
   size: undefined,
@@ -64,13 +64,13 @@ const CreateCreature = () => {
 
   const [hasError, setHasError] = useState(false);
 
-  const { handleSubmit, control, watch } = useForm<Creature>({
+  const { handleSubmit, control, watch } = useForm<CreatureModel>({
     defaultValues: DefaultValues,
   });
 
-  const onSubmit = (data: Creature) => {
+  const onSubmit = (data: CreatureModel) => {
     setHasError(false);
-    fetch('/creatures', {
+    fetch('/api/creatures', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
