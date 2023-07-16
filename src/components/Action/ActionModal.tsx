@@ -344,11 +344,12 @@ const ActionModal: FC<Props> = ({
                 step={5}
                 error={errors.reach}
                 onChange={(newVal) =>
-                  setAction((prev) => ({ ...prev, reach: newVal }))
+                  setAction((prev) => ({
+                    ...prev,
+                    reach: newVal == null ? null : newVal,
+                  }))
                 }
-                onBlur={() =>
-                  setErrors((prev) => ({ ...prev, reach: undefined }))
-                }
+                onBlur={() => setErrors((prev) => ({ ...prev, reach: null }))}
               />
               <BasicNumberField
                 value={action.combatantsHit}
@@ -362,7 +363,7 @@ const ActionModal: FC<Props> = ({
                   }))
                 }
                 onBlur={() =>
-                  setErrors((prev) => ({ ...prev, combatantsHit: undefined }))
+                  setErrors((prev) => ({ ...prev, combatantsHit: null }))
                 }
               />
             </div>

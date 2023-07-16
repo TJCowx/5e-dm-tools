@@ -24,6 +24,7 @@ import ListItemTwoSecondaryActions from 'components/List/ListItemTwoSecondaryAct
 import Creature from 'models/creature/Creature';
 import Link from 'next/link';
 import { FC, Fragment, useEffect, useState } from 'react';
+import { logMessage } from 'utils/loggingUtils';
 
 const ActionContainer = styled('div')(() => ({
   display: 'flex',
@@ -64,7 +65,7 @@ const Creatures: FC = () => {
         setIsLoading(false);
       })
       .catch((e) => {
-        console.error(e);
+        logMessage('error', e);
         setHasError(true);
         setIsLoading(false);
       });
@@ -81,7 +82,7 @@ const Creatures: FC = () => {
         loadCreatures();
       })
       .catch((e) => {
-        console.error(e);
+        logMessage('error', e);
         setHasError(true);
       });
   };

@@ -3,6 +3,7 @@ import { invoke } from '@tauri-apps/api/tauri';
 import RHFTextField from 'components/Fields/RHF/RHFTextField';
 import router from 'next/router';
 import { useForm } from 'react-hook-form';
+import { logMessage } from 'utils/loggingUtils';
 
 const Root = styled('div')(() => ({
   height: '100%',
@@ -41,7 +42,7 @@ const Connect = () => {
     invoke('connect_db', { conn_str: data.connectionString })
       .then(() => router.push('/home'))
       .catch((e) => {
-        console.error(e);
+        logMessage('error', e);
       });
   };
 

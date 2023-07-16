@@ -11,11 +11,11 @@ import { FC } from 'react';
 type Props = {
   id: string;
   className?: string;
-  value: string | number | null;
+  value: string | null;
   label: string;
   error?: string | null;
-  options: { value: string | number; text: string }[];
-  onChange: (newVal: string | number) => void;
+  options: { value: string; text: string }[];
+  onChange: (newVal: string) => void;
   onBlur?: () => void;
 };
 

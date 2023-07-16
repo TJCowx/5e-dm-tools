@@ -60,12 +60,14 @@ const AbilityModal: FC<Props> = ({
       })
       .catch((e: ValidationError) => {
         const newErrors: Partial<ErrorSchema> = {};
-        (e.errors as unknown as { field: string; message: string }[]).forEach(
-          (err) => {
-            // TODO: Fix
-            // newErrors[err.field] = err.message;
-          }
-        );
+
+        // Casting because `e.errors` is incorrectly types `string[]`
+        (
+          e.errors as unknown as { field: keyof Ability; message: string }[]
+        ).forEach(({ field, message }) => {
+          newErrors[field] = message;
+        });
+
         setErrors(newErrors);
       });
   };
@@ -80,8 +82,7 @@ const AbilityModal: FC<Props> = ({
             setAbility((prev) => ({ ...prev, name: newVal }))
           }
           error={errors.name}
-          // TODO: Fix
-          // onBlur={() => setErrors((prev) => ({ ...prev, name: null }))}
+          onBlur={() => setErrors((prev) => ({ ...prev, name: null }))}
         />
         <BasicTextField
           label="Description"
@@ -91,8 +92,7 @@ const AbilityModal: FC<Props> = ({
             setAbility((prev) => ({ ...prev, description: newVal }))
           }
           error={errors.description}
-          // TODO: Fix
-          // onBlur={() => setErrors((prev) => ({ ...prev, description: null }))}
+          onBlur={() => setErrors((prev) => ({ ...prev, description: null }))}
         />
         <div className="actions-container">
           <Button onClick={onCancel}>Cancel</Button>

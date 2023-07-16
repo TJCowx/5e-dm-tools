@@ -9,6 +9,7 @@ import Creature from 'models/creature/Creature';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { logMessage } from 'utils/loggingUtils';
 
 const LoadingContainer = styled('div')(() => ({
   display: 'flex',
@@ -37,8 +38,8 @@ const EditCreature = () => {
         reset(res);
         setIsLoading(false);
       })
-      .catch(() => {
-        // TODO: Add error logging
+      .catch((e) => {
+        logMessage('error', e);
         setIsLoading(false);
       });
   }, []);
@@ -49,6 +50,7 @@ const EditCreature = () => {
         router.push('/creatures');
       })
       .catch((err) => {
+        logMessage('error', err);
         console.error(err);
       });
   };

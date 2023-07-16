@@ -18,6 +18,7 @@ import { getModifier } from 'utils/modifierUtils';
 import { rollD20 } from 'utils/rollUtils';
 import { v4 } from 'uuid';
 import { getAllCreatures } from 'api/creatures';
+import { logMessage } from 'utils/loggingUtils';
 
 type FormInputs = {
   newCreature: Creature | null;
@@ -66,6 +67,7 @@ const AddCreatureCombatantForm: FC<Props> = ({ onSubmit, onCancel }) => {
         setIsLoading(false);
       })
       .catch((e) => {
+        logMessage('error', e);
         setHasError(true);
         setIsLoading(false);
       });

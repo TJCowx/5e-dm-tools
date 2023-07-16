@@ -9,6 +9,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { SnakeCasedPropertiesDeep } from 'type-fest';
 import { convertCreatureFormToDB } from 'utils/creatureUtils';
+import { logMessage } from 'utils/loggingUtils';
 
 const DefaultValues: Partial<Creature> = {
   id: undefined,
@@ -74,8 +75,7 @@ const CreateCreature = () => {
         router.push('/creatures');
       })
       .catch((e) => {
-        // TODO: Send to log
-        console.log(e);
+        logMessage('error', e);
         setHasError(true);
       });
   };
