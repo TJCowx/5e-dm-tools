@@ -77,20 +77,11 @@ const CreatureCombatantItem: FC<Props> = ({
   const panelHeaderId = `panel-${id}-header`;
   const panelContentId = `panel-${id}-content`;
 
-  const hasLoaded = useRef(false);
   const [currentHp, setCurrentHp] = useState(`${stats?.hitPoints}`);
   const [actions, setActions] = useState<Action[]>([]);
   const [legendaryActions, setLegendaryActions] = useState<Action[]>([]);
   const [lairActions, setLairActions] = useState<Action[]>([]);
   const [reactions, setReactions] = useState<Action[]>([]);
-
-  useEffect(() => {
-    if (hasLoaded.current) {
-      setCurrentHp(combatant.isDead ? '0' : '1');
-    } else {
-      hasLoaded.current = true;
-    }
-  }, [combatant.isDead]);
 
   useEffect(() => {
     const newActions: Action[] = [];
@@ -241,7 +232,6 @@ const CreatureCombatantItem: FC<Props> = ({
               {stats?.isLegendary && (
                 <AbilityFormat
                   ability={{
-                    id: undefined,
                     name: 'Legendary Resistance (3/Day)',
                     description: `If the ${stats?.name} fails a saving throw, it can choose to succeed instead.`,
                   }}

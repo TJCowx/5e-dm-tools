@@ -289,9 +289,8 @@ const ActionModal: FC<Props> = ({
           value={action.isAttack}
           className="mb-16"
           label="Is Attack"
-          onChange={
-            (isChecked) =>
-              setAction((prev) => ({ ...prev, isAttack: isChecked })) // TODO: Remove Action stuff??
+          onChange={(isChecked) =>
+            setAction((prev) => ({ ...prev, isAttack: isChecked }))
           }
         />
         {action.isAttack && (
