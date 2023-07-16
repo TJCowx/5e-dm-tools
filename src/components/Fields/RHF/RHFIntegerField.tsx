@@ -16,14 +16,14 @@ type Props<T extends FieldValues> = {
   control: Control<T>;
   fieldName: FieldPath<T>;
   label: string;
-  min?: number;
-  max?: number;
+  min?: number | null;
+  max?: number | null;
   isRequired?: boolean;
 };
 
 const createRules = (
-  min: number | undefined,
-  max: number | undefined,
+  min: number | null,
+  max: number | null,
   isRequired = false
 ) => {
   const rules: RegisterOptions = {
@@ -57,8 +57,8 @@ function RHFIntegerField<T extends FieldValues>({
   control,
   fieldName,
   label,
-  min,
-  max,
+  min = null,
+  max = null,
   isRequired = false,
 }: Props<T>) {
   const rules = useMemo(

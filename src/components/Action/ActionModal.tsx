@@ -50,7 +50,7 @@ type Props = {
   onClose: () => void;
 };
 
-type ErrorSchema = Record<keyof Action, string>;
+type ErrorSchema = Record<keyof Action, string | null>;
 
 const schema = yupObject().shape({
   name: yupString().required({ field: 'name', message: RequireMessage }),
@@ -258,7 +258,7 @@ const ActionModal: FC<Props> = ({
           onChange={(newVal) =>
             setAction((prev) => ({ ...prev, name: newVal }))
           }
-          // onBlur={() => setErrors((prev) => ({ ...prev, name: null }))}
+          onBlur={() => setErrors((prev) => ({ ...prev, name: null }))}
         />
         <BasicTextField
           value={action.description}
@@ -269,7 +269,7 @@ const ActionModal: FC<Props> = ({
           onChange={(newVal) =>
             setAction((prev) => ({ ...prev, description: newVal }))
           }
-          // onBlur={() => setErrors((prev) => ({ ...prev, description: null }))}
+          onBlur={() => setErrors((prev) => ({ ...prev, description: null }))}
         />
         <BasicSelectField
           id="action-type-field"
@@ -378,7 +378,8 @@ const ActionModal: FC<Props> = ({
             <List dense>
               {(action.damage ?? []).map((damage, i) => (
                 <ListItem
-                  key={damage.id || `damage-${i}`}
+                  // eslint-disable-next-line react/no-array-index-key
+                  key={`damage-${i}`}
                   className="damage-list-item pl-0"
                   secondaryAction={
                     <IconButton

@@ -38,8 +38,4 @@ const Layout: FC<PropsWithChildren<Props>> = ({
   </Root>
 );
 
-Layout.defaultProps = {
-  disablePadding: false,
-};
-
 export default Layout;

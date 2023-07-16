@@ -9,7 +9,7 @@ type Props = {
   min?: number;
   max?: number;
   step?: number;
-  error?: string;
+  error?: string | null;
   onChange: (newVal: number | undefined) => void;
   onBlur?: () => void;
 };

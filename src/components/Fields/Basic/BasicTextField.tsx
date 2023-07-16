@@ -7,7 +7,7 @@ type Props = {
   className?: string;
   label: string;
   value: string;
-  error?: string;
+  error?: string | null;
   isMultiline?: boolean;
   onChange: (newVal: string) => void;
   onBlur?: () => void;

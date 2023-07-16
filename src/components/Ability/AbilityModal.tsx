@@ -12,7 +12,7 @@ type Props = {
   onClose: () => void;
 };
 
-type ErrorSchema = Partial<Record<keyof Ability, string>>;
+type ErrorSchema = Partial<Record<keyof Ability, string | null>>;
 
 const Container = styled('div')(() => ({
   display: 'flex',
@@ -23,11 +23,10 @@ const Container = styled('div')(() => ({
   },
 }));
 
-const newAbility = (): Ability => ({
-  id: undefined,
+const newAbility: Ability = {
   name: '',
   description: '',
-});
+};
 
 const schema = yupObject().shape({
   name: yupString().required({ field: 'name', message: RequireMessage }),
@@ -37,13 +36,15 @@ const schema = yupObject().shape({
   }),
 });
 
-const AbilityModal: FC<Props> = ({ initialAbility, onSave, onClose }) => {
-  const [ability, setAbility] = useState<Ability>(
-    initialAbility ?? newAbility()
-  );
+const AbilityModal: FC<Props> = ({
+  initialAbility = newAbility,
+  onSave,
+  onClose,
+}) => {
+  const [ability, setAbility] = useState<Ability>(initialAbility);
   const [errors, setErrors] = useState<ErrorSchema>({
-    name: undefined,
-    description: undefined,
+    name: null,
+    description: null,
   });
 
   const onCancel = () => {
@@ -107,10 +108,6 @@ const AbilityModal: FC<Props> = ({ initialAbility, onSave, onClose }) => {
       </Container>
     </Modal>
   );
-};
-
-AbilityModal.defaultProps = {
-  initialAbility: undefined,
 };
 
 export default AbilityModal;

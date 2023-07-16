@@ -13,7 +13,7 @@ type Props = {
   className?: string;
   value: string | number | null;
   label: string;
-  error?: string;
+  error?: string | null;
   options: { value: string | number; text: string }[];
   onChange: (newVal: string | number) => void;
   onBlur?: () => void;
