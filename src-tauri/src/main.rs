@@ -4,10 +4,8 @@
 )]
 
 mod creature;
-mod mongo;
 
 pub use crate::creature::*;
-pub use crate::mongo::connect_db;
 
 fn main() {
     tauri::Builder::default()

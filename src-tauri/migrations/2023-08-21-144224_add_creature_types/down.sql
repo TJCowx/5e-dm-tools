@@ -1,0 +1,1 @@
+DROP TABLE creature_types;
