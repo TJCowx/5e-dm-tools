@@ -3,20 +3,18 @@
     windows_subsystem = "windows"
 )]
 
-mod creature;
-
-pub use crate::creature::*;
+mod db;
+mod queries;
+pub mod schema;
 
 fn main() {
     tauri::Builder::default()
-        .invoke_handler(tauri::generate_handler![
-            connect_db,
-            creature::queries::get_all_creatures,
-            creature::queries::get_creature_by_id,
-            creature::queries::add_creature,
-            creature::queries::update_creature,
-            creature::queries::delete_creature,
-        ])
+        .invoke_handler(tauri::generate_handler![])
+        .setup(|_app| {
+            db::init();
+
+            Ok(())
+        })
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
