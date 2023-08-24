@@ -8,19 +8,6 @@ diesel::table! {
 }
 
 diesel::table! {
-    actions (id) {
-        id -> Integer,
-        name -> Text,
-        description -> Text,
-        is_attack -> Integer,
-        to_hit -> Integer,
-        reach -> Integer,
-        attack_delivery_id -> Nullable<Integer>,
-        action_type_id -> Integer,
-    }
-}
-
-diesel::table! {
     alignments (id) {
         id -> Integer,
         name -> Text,
@@ -49,6 +36,39 @@ diesel::table! {
 }
 
 diesel::table! {
+    creature_abilities (id) {
+        id -> Integer,
+        name -> Text,
+        description -> Text,
+        creature_id -> Integer,
+    }
+}
+
+diesel::table! {
+    creature_action_damages (id) {
+        id -> Integer,
+        default_damage -> Integer,
+        dice -> Text,
+        type_id -> Integer,
+        action_id -> Integer,
+    }
+}
+
+diesel::table! {
+    creature_actions (id) {
+        id -> Integer,
+        name -> Text,
+        description -> Text,
+        is_attack -> Integer,
+        to_hit -> Nullable<Integer>,
+        reach -> Nullable<Integer>,
+        attack_delivery_id -> Nullable<Integer>,
+        action_type_id -> Integer,
+        creature_id -> Integer,
+    }
+}
+
+diesel::table! {
     creature_types (id) {
         id -> Integer,
         name -> Text,
@@ -59,6 +79,7 @@ diesel::table! {
     creatures (id) {
         id -> Integer,
         name -> Text,
+        description -> Nullable<Text>,
         armour_class -> Integer,
         hit_points -> Integer,
         hit_die -> Text,
@@ -78,12 +99,13 @@ diesel::table! {
         wisdom -> Integer,
         charisma -> Integer,
         prof_bonus -> Integer,
-        challenge_rating -> Double,
-        reward_xp -> Float,
-        is_legendary -> Integer,
-        has_lair -> Integer,
-        size_id -> Integer,
+        challenge_rating -> Float,
+        reward_xp -> Integer,
+        is_legendary -> Bool,
+        has_lair -> Bool,
+        alignment_id -> Integer,
         creature_type_id -> Integer,
+        size_id -> Integer,
     }
 }
 
@@ -153,16 +175,6 @@ diesel::table! {
 }
 
 diesel::table! {
-    damages (id) {
-        id -> Integer,
-        default_damage -> Integer,
-        dice -> Text,
-        type_id -> Integer,
-        action_id -> Integer,
-    }
-}
-
-diesel::table! {
     languages (id) {
         id -> Integer,
         name -> Text,
@@ -183,8 +195,13 @@ diesel::table! {
     }
 }
 
-diesel::joinable!(actions -> action_types (action_type_id));
-diesel::joinable!(actions -> attack_deliveries (attack_delivery_id));
+diesel::joinable!(creature_abilities -> creatures (creature_id));
+diesel::joinable!(creature_action_damages -> creature_actions (action_id));
+diesel::joinable!(creature_action_damages -> damage_types (type_id));
+diesel::joinable!(creature_actions -> action_types (action_type_id));
+diesel::joinable!(creature_actions -> attack_deliveries (attack_delivery_id));
+diesel::joinable!(creature_actions -> creatures (creature_id));
+diesel::joinable!(creatures -> alignments (alignment_id));
 diesel::joinable!(creatures -> creature_types (creature_type_id));
 diesel::joinable!(creatures -> sizes (size_id));
 diesel::joinable!(creatures_condition_immunities -> creatures (creature_id));
@@ -195,18 +212,17 @@ diesel::joinable!(creatures_proficiencies -> creatures (creature_id));
 diesel::joinable!(creatures_proficiencies -> proficiencies (proficiency_id));
 diesel::joinable!(creatures_resistances -> creatures (creature_id));
 diesel::joinable!(creatures_saving_throws -> creatures (creature_id));
-diesel::joinable!(damage -> actions (action_id));
 diesel::joinable!(damage -> damage_types (type_id));
-diesel::joinable!(damages -> actions (action_id));
-diesel::joinable!(damages -> damage_types (type_id));
 
 diesel::allow_tables_to_appear_in_same_query!(
     action_types,
-    actions,
     alignments,
     attack_deliveries,
     attack_types,
     condition_types,
+    creature_abilities,
+    creature_action_damages,
+    creature_actions,
     creature_types,
     creatures,
     creatures_condition_immunities,
@@ -217,7 +233,6 @@ diesel::allow_tables_to_appear_in_same_query!(
     creatures_saving_throws,
     damage,
     damage_types,
-    damages,
     languages,
     proficiencies,
     sizes,

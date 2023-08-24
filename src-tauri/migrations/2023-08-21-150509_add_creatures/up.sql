@@ -1,6 +1,7 @@
 CREATE TABLE creatures (
   id INTEGER NOT NULL PRIMARY KEY,
   name TEXT NOT NULL,
+  description TEXT NULL,
   armour_class INTEGER NOT NULL,
   hit_points INTEGER NOT NULL,
   hit_die TEXT NOT NULL,
@@ -20,13 +21,14 @@ CREATE TABLE creatures (
   wisdom INTEGER NOT NULL,
   charisma INTEGER NOT NULL,
   prof_bonus INTEGER NOT NULL,
-  challenge_rating NUMBER NOT NULL,
-  reward_xp REAL NOT NULL,
-  is_legendary INT(1) NOT NULL,
-  has_lair INT(1) NOT NULL,
-  size_id INTEGER NOT NULL,
+  challenge_rating REAL NOT NULL,
+  reward_xp INTEGER NOT NULL,
+  is_legendary BOOLEAN NOT NULL,
+  has_lair BOOLEAN NOT NULL,
+  alignment_id INTEGER NOT NULL,
   creature_type_id INTEGER NOT NULL,
-  FOREIGN KEY (size_id) REFERENCES sizes(id) ON UPDATE RESTRICT ON DELETE RESTRICT,
+  size_id INTEGER NOT NULL,
+  FOREIGN KEY (alignment_id) REFERENCES alignments(id) ON DELETE RESTRICT FOREIGN KEY (size_id) REFERENCES sizes(id) ON UPDATE RESTRICT ON DELETE RESTRICT,
   FOREIGN KEY (creature_type_id) REFERENCES creature_types(id) ON UPDATE RESTRICT ON DELETE RESTRICT
 );
 -- ADD JOIN TABLES
