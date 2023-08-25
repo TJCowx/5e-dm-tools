@@ -10,3 +10,10 @@ pub struct CreatureAbility {
     description: String,
     creature_id: i32,
 }
+
+#[derive(Debug, Serialize, Deserialize, Insertable)]
+#[diesel(table_name = crate::schema::creature_abilities)]
+pub struct NewCreatureAbility {
+    name: String,
+    description: String,
+}
