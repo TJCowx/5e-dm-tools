@@ -113,7 +113,7 @@ diesel::table! {
     creatures_condition_immunities (id) {
         id -> Integer,
         creature_id -> Integer,
-        condition_immunity_id -> Integer,
+        condition_type_id -> Integer,
     }
 }
 
@@ -121,7 +121,7 @@ diesel::table! {
     creatures_immunities (id) {
         id -> Integer,
         creature_id -> Integer,
-        immunity_id -> Integer,
+        damage_type_id -> Integer,
     }
 }
 
@@ -145,7 +145,7 @@ diesel::table! {
     creatures_resistances (id) {
         id -> Integer,
         creature_id -> Integer,
-        resistance_id -> Integer,
+        damage_type_id -> Integer,
     }
 }
 
@@ -154,6 +154,14 @@ diesel::table! {
         id -> Integer,
         creature_id -> Integer,
         saving_throw_id -> Integer,
+    }
+}
+
+diesel::table! {
+    creatures_weaknesses (id) {
+        id -> Integer,
+        creature_id -> Integer,
+        damage_type_id -> Integer,
     }
 }
 
@@ -204,14 +212,19 @@ diesel::joinable!(creature_actions -> creatures (creature_id));
 diesel::joinable!(creatures -> alignments (alignment_id));
 diesel::joinable!(creatures -> creature_types (creature_type_id));
 diesel::joinable!(creatures -> sizes (size_id));
+diesel::joinable!(creatures_condition_immunities -> condition_types (condition_type_id));
 diesel::joinable!(creatures_condition_immunities -> creatures (creature_id));
 diesel::joinable!(creatures_immunities -> creatures (creature_id));
+diesel::joinable!(creatures_immunities -> damage_types (damage_type_id));
 diesel::joinable!(creatures_languages -> creatures (creature_id));
 diesel::joinable!(creatures_languages -> languages (language_id));
 diesel::joinable!(creatures_proficiencies -> creatures (creature_id));
 diesel::joinable!(creatures_proficiencies -> proficiencies (proficiency_id));
 diesel::joinable!(creatures_resistances -> creatures (creature_id));
+diesel::joinable!(creatures_resistances -> damage_types (damage_type_id));
 diesel::joinable!(creatures_saving_throws -> creatures (creature_id));
+diesel::joinable!(creatures_weaknesses -> creatures (creature_id));
+diesel::joinable!(creatures_weaknesses -> damage_types (damage_type_id));
 diesel::joinable!(damage -> damage_types (type_id));
 
 diesel::allow_tables_to_appear_in_same_query!(
@@ -231,6 +244,7 @@ diesel::allow_tables_to_appear_in_same_query!(
     creatures_proficiencies,
     creatures_resistances,
     creatures_saving_throws,
+    creatures_weaknesses,
     damage,
     damage_types,
     languages,

@@ -16,4 +16,5 @@ pub struct CreatureAbility {
 pub struct NewCreatureAbility {
     name: String,
     description: String,
+    creature_id: i32,
 }

@@ -49,23 +49,30 @@ CREATE TABLE creatures_saving_throws (
 CREATE TABLE creatures_immunities (
   id INTEGER NOT NULL PRIMARY KEY,
   creature_id INTEGER NOT NULL,
-  immunity_id INTEGER NOT NULL,
+  damage_type_id INTEGER NOT NULL,
   FOREIGN KEY (creature_id) REFERENCES creatures(id) ON UPDATE RESTRICT ON DELETE RESTRICT,
-  FOREIGN KEY (immunity_id) REFERENCES immunities(id) ON UPDATE RESTRICT ON DELETE RESTRICT
+  FOREIGN KEY (damage_type_id) REFERENCES damage_types(id) ON UPDATE RESTRICT ON DELETE RESTRICT
 );
 CREATE TABLE creatures_condition_immunities (
   id INTEGER NOT NULL PRIMARY KEY,
   creature_id INTEGER NOT NULL,
-  condition_immunity_id INTEGER NOT NULL,
+  condition_type_id INTEGER NOT NULL,
   FOREIGN KEY (creature_id) REFERENCES creatures(id) ON UPDATE RESTRICT ON DELETE RESTRICT,
-  FOREIGN KEY (condition_immunity_id) REFERENCES condition_immunities(id) ON UPDATE RESTRICT ON DELETE RESTRICT
+  FOREIGN KEY (condition_type_id) REFERENCES condition_types(id) ON UPDATE RESTRICT ON DELETE RESTRICT
 );
 CREATE TABLE creatures_resistances (
   id INTEGER NOT NULL PRIMARY KEY,
   creature_id INTEGER NOT NULL,
-  resistance_id INTEGER NOT NULL,
+  damage_type_id INTEGER NOT NULL,
   FOREIGN KEY (creature_id) REFERENCES creatures(id) ON UPDATE RESTRICT ON DELETE RESTRICT,
-  FOREIGN KEY (resistance_id) REFERENCES resistances(id) ON UPDATE RESTRICT ON DELETE RESTRICT
+  FOREIGN KEY (damage_type_id) REFERENCES damage_types(id) ON UPDATE RESTRICT ON DELETE RESTRICT
+);
+CREATE TABLE creatures_weaknesses (
+  id INTEGER NOT NULL PRIMARY KEY,
+  creature_id INTEGER NOT NULL,
+  damage_type_id INTEGER NOT NULL,
+  FOREIGN KEY (creature_id) REFERENCES creatures(id) ON DELETE RESTRICT,
+  FOREIGN KEY (damage_type_id) REFERENCES damage_types(id) ON UPDATE RESTRICT ON DELETE RESTRICT
 );
 CREATE TABLE creatures_languages (
   id INTEGER NOT NULL PRIMARY KEY,
