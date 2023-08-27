@@ -1,7 +1,7 @@
 use diesel::prelude::*;
 use serde::{Deserialize, Serialize};
 
-use crate::{db::connect_db, models::creature_action_damage::NewCreatureActionDamage};
+use crate::models::creature_action_damage::NewCreatureActionDamage;
 
 use super::creature_action_damage::CreatureActionDamageIn;
 
@@ -50,44 +50,44 @@ pub struct CreatureActionIn {
 }
 
 impl CreatureAction {
-    pub fn save_actions(actions: Vec<CreatureActionIn>, parent_id: &i32) -> QueryResult<()> {
+    pub fn save_actions(
+        conn: &mut SqliteConnection,
+        actions: Vec<CreatureActionIn>,
+        parent_id: &i32,
+    ) {
         use crate::schema::creature_actions::dsl::*;
 
-        let conn = &mut connect_db();
+        for action in actions {
+            let new_action = NewCreatureAction {
+                name: action.name,
+                description: action.description,
+                is_attack: action.is_attack,
+                to_hit: action.to_hit,
+                reach: action.reach,
+                attack_delivery_id: action.attack_delivery_id,
+                action_type_id: action.action_type_id,
+                creature_id: parent_id.clone(),
+            };
 
-        conn.transaction(|connection| {
-            for action in actions {
-                let new_action = NewCreatureAction {
-                    name: action.name,
-                    description: action.description,
-                    is_attack: action.is_attack,
-                    to_hit: action.to_hit,
-                    reach: action.reach,
-                    attack_delivery_id: action.attack_delivery_id,
-                    action_type_id: action.action_type_id,
-                    creature_id: parent_id.clone(),
-                };
+            let inserted_action: CreatureAction = diesel::insert_into(creature_actions)
+                .values(&new_action)
+                .get_result(conn)
+                .unwrap();
 
-                let new_action: CreatureAction = diesel::insert_into(creature_actions)
-                    .values(&new_action)
-                    .get_result(connection)?;
+            let mapped_damages: Vec<NewCreatureActionDamage> = action
+                .damages
+                .into_iter()
+                .map(|damage| NewCreatureActionDamage {
+                    default_damage: damage.default_damage,
+                    dice: damage.dice,
+                    type_id: damage.type_id,
+                    action_id: inserted_action.id,
+                })
+                .collect();
 
-                let mapped_damages: Vec<NewCreatureActionDamage> = action
-                    .damages
-                    .into_iter()
-                    .map(|damage| NewCreatureActionDamage {
-                        default_damage: damage.default_damage,
-                        dice: damage.dice,
-                        type_id: damage.type_id,
-                        action_id: new_action.id,
-                    })
-                    .collect();
-
-                diesel::insert_into(crate::schema::creature_action_damages::table)
-                    .values(&mapped_damages)
-                    .execute(connection)?;
-            }
-            Ok(())
-        })
+            diesel::insert_into(crate::schema::creature_action_damages::table)
+                .values(&mapped_damages)
+                .execute(conn);
+        }
     }
 }

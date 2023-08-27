@@ -1,25 +1,20 @@
 // use crate::schema::creatures::dsl::creatures as all_creatures;
-use crate::schema::{
-    creature_abilities,
-    creatures::{self, dsl::creatures as all_creatures},
-    creatures_condition_immunities, creatures_immunities, creatures_languages,
-    creatures_proficiencies, creatures_resistances, creatures_saving_throws, creatures_weaknesses,
-};
+use crate::schema::creatures::{self, dsl::creatures as all_creatures};
 use diesel::prelude::*;
 use serde::{Deserialize, Serialize};
 
 use crate::db::connect_db;
 
 use super::{
-    creature_ability::{BaseCreatureAbility, NewCreatureAbility},
+    creature_ability::{BaseCreatureAbility, CreatureAbility},
     creature_action::{CreatureAction, CreatureActionIn},
-    creature_cond_immunity::{CreatureCondImmunity, NewCreatureCondImmunity},
-    creature_immunity::NewCreatureImmunity,
-    creature_language::NewCreatureLanguage,
-    creature_prof::NewCreatureProf,
-    creature_resistance::NewCreatureResistance,
-    creature_saving_throw::NewCreatureSavingThrow,
-    creature_weakness::NewCreatureWeakness,
+    creature_cond_immunity::CreatureCondImmunity,
+    creature_immunity::CreatureImmunity,
+    creature_language::CreatureLanguage,
+    creature_prof::CreatureProf,
+    creature_resistance::CreatureResistance,
+    creature_saving_throw::CreatureSavingThrow,
+    creature_weakness::CreatureWeakness,
 };
 
 #[derive(Debug, Serialize, Deserialize, Queryable)]
@@ -141,112 +136,43 @@ impl Creature {
                 .values(&creature)
                 .get_result(connection)?;
 
-            let mapped_profs: Vec<NewCreatureProf> = associations
-                .proficiencies
-                .iter()
-                .map(|prof_id| NewCreatureProf {
-                    creature_id: inserted_creature.id,
-                    proficiency_id: prof_id.clone(),
-                })
-                .collect();
-
-            let mapped_saving_throws: Vec<NewCreatureSavingThrow> = associations
-                .saving_throws
-                .iter()
-                .map(|saving_throw_id| NewCreatureSavingThrow {
-                    creature_id: inserted_creature.id,
-                    saving_throw_id: saving_throw_id.clone(),
-                })
-                .collect();
-
-            let mapped_immunities: Vec<NewCreatureImmunity> = associations
-                .immunities
-                .iter()
-                .map(|damage_type_id| NewCreatureImmunity {
-                    creature_id: inserted_creature.id,
-                    damage_type_id: damage_type_id.clone(),
-                })
-                .collect();
-
-            let mapped_cond_immunity: Vec<NewCreatureCondImmunity> = associations
-                .cond_immunities
-                .iter()
-                .map(|condition_type_id| NewCreatureCondImmunity {
-                    creature_id: inserted_creature.id,
-                    condition_type_id: condition_type_id.clone(),
-                })
-                .collect();
-
-            let mapped_resistances: Vec<NewCreatureResistance> = associations
-                .resistances
-                .iter()
-                .map(|damage_type_id| NewCreatureResistance {
-                    creature_id: inserted_creature.id,
-                    damage_type_id: damage_type_id.clone(),
-                })
-                .collect();
-
-            let mapped_weaknesses: Vec<NewCreatureWeakness> = associations
-                .weaknesses
-                .iter()
-                .map(|damage_type_id| NewCreatureWeakness {
-                    creature_id: inserted_creature.id,
-                    damage_type_id: damage_type_id.clone(),
-                })
-                .collect();
-
-            let mapped_languages: Vec<NewCreatureLanguage> = associations
-                .languages
-                .iter()
-                .map(|language_id| NewCreatureLanguage {
-                    creature_id: inserted_creature.id,
-                    language_id: language_id.clone(),
-                })
-                .collect();
-
-            let mapped_abilities: Vec<NewCreatureAbility> = associations
-                .abilities
-                .iter()
-                .map(|ability| NewCreatureAbility {
-                    creature_id: inserted_creature.id,
-                    name: ability.name.clone(),
-                    description: ability.description.clone(),
-                })
-                .collect();
-
-            diesel::insert_into(creatures_proficiencies::table)
-                .values(&mapped_profs)
-                .execute(connection)?;
-
-            diesel::insert_into(creatures_saving_throws::table)
-                .values(&mapped_saving_throws)
-                .execute(connection)?;
-
-            diesel::insert_into(creatures_immunities::table)
-                .values(&mapped_immunities)
-                .execute(connection)?;
-
-            diesel::insert_into(creatures_condition_immunities::table)
-                .values(&mapped_cond_immunity)
-                .execute(connection)?;
-
-            diesel::insert_into(creatures_resistances::table)
-                .values(&mapped_resistances)
-                .execute(connection)?;
-
-            diesel::insert_into(creatures_weaknesses::table)
-                .values(&mapped_weaknesses)
-                .execute(connection)?;
-
-            diesel::insert_into(creatures_languages::table)
-                .values(&mapped_languages)
-                .execute(connection)?;
-
-            diesel::insert_into(creature_abilities::table)
-                .values(&mapped_abilities)
-                .execute(connection)?;
-
-            CreatureAction::save_actions(associations.actions, &inserted_creature.id)?;
+            CreatureProf::save_creature_profs(
+                conn,
+                associations.proficiencies,
+                &inserted_creature.id,
+            );
+            CreatureSavingThrow::save_creature_saving_throws(
+                conn,
+                associations.saving_throws,
+                &inserted_creature.id,
+            );
+            CreatureImmunity::save_creature_immunities(
+                conn,
+                associations.immunities,
+                &inserted_creature.id,
+            );
+            CreatureCondImmunity::save_creature_cond_immunities(
+                conn,
+                associations.cond_immunities,
+                &inserted_creature.id,
+            );
+            CreatureResistance::save_creature_resistances(
+                conn,
+                associations.resistances,
+                &inserted_creature.id,
+            );
+            CreatureWeakness::save_creature_weaknesses(
+                conn,
+                associations.weaknesses,
+                &inserted_creature.id,
+            );
+            CreatureLanguage::save_creature_languages(
+                conn,
+                associations.languages,
+                &inserted_creature.id,
+            );
+            CreatureAbility::save_abilities(conn, associations.abilities, &inserted_creature.id);
+            CreatureAction::save_actions(conn, associations.actions, &inserted_creature.id);
 
             Ok(())
         })

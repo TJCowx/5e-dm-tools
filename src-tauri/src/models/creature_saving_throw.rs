@@ -16,3 +16,25 @@ pub struct NewCreatureSavingThrow {
     pub creature_id: i32,
     pub saving_throw_id: i32,
 }
+
+impl CreatureSavingThrow {
+    pub fn save_creature_saving_throws(
+        conn: &mut SqliteConnection,
+        saving_throws: Vec<i32>,
+        parent_id: &i32,
+    ) {
+        use crate::schema::creatures_saving_throws::dsl::*;
+
+        let mapped_saving_throws: Vec<NewCreatureSavingThrow> = saving_throws
+            .iter()
+            .map(|item_id| NewCreatureSavingThrow {
+                creature_id: *parent_id,
+                saving_throw_id: *item_id,
+            })
+            .collect();
+
+        diesel::insert_into(creatures_saving_throws)
+            .values(&mapped_saving_throws)
+            .execute(conn);
+    }
+}

@@ -17,3 +17,25 @@ pub struct NewCreatureLanguage {
     pub creature_id: i32,
     pub language_id: i32,
 }
+
+impl CreatureLanguage {
+    pub fn save_creature_languages(
+        conn: &mut SqliteConnection,
+        languages: Vec<i32>,
+        parent_id: &i32,
+    ) {
+        use crate::schema::creatures_languages::dsl::*;
+
+        let mapped_languages: Vec<NewCreatureLanguage> = languages
+            .iter()
+            .map(|item_id| NewCreatureLanguage {
+                creature_id: *parent_id,
+                language_id: *item_id,
+            })
+            .collect();
+
+        diesel::insert_into(creatures_languages)
+            .values(&mapped_languages)
+            .execute(conn);
+    }
+}

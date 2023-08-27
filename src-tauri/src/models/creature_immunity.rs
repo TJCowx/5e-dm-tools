@@ -17,3 +17,25 @@ pub struct NewCreatureImmunity {
     pub creature_id: i32,
     pub damage_type_id: i32,
 }
+
+impl CreatureImmunity {
+    pub fn save_creature_immunities(
+        cond: &mut SqliteConnection,
+        immunities: Vec<i32>,
+        parent_id: &i32,
+    ) {
+        use crate::schema::creatures_immunities::dsl::*;
+
+        let mapped_immunities: Vec<NewCreatureImmunity> = immunities
+            .iter()
+            .map(|immunity_id| NewCreatureImmunity {
+                creature_id: *parent_id,
+                damage_type_id: *immunity_id,
+            })
+            .collect();
+
+        diesel::insert_into(creatures_immunities)
+            .values(&mapped_immunities)
+            .execute(conn)?;
+    }
+}
