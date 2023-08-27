@@ -14,7 +14,12 @@ pub struct CreatureAbility {
 #[derive(Debug, Serialize, Deserialize, Insertable)]
 #[diesel(table_name = crate::schema::creature_abilities)]
 pub struct NewCreatureAbility {
-    name: String,
-    description: String,
-    creature_id: i32,
+    pub name: String,
+    pub description: String,
+    pub creature_id: i32,
+}
+
+pub struct BaseCreatureAbility {
+    pub name: String,
+    pub description: String,
 }

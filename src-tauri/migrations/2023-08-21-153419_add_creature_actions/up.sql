@@ -10,7 +10,7 @@ CREATE TABLE creature_actions (
   id INTEGER NOT NULL PRIMARY KEY,
   name TEXT NOT NULL,
   description TEXT NOT NULL,
-  is_attack INTEGER(1) NOT NULL,
+  is_attack BOOLEAN NOT NULL,
   to_hit INTEGER NULL,
   reach INTEGER NULL,
   attack_delivery_id INTEGER NULL,

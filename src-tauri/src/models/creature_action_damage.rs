@@ -13,3 +13,20 @@ pub struct CreatureActionDamage {
     type_id: i32,
     action_id: i32,
 }
+
+#[derive(Debug, Serialize, Deserialize, Insertable)]
+#[diesel(table_name = crate::schema::creature_action_damages)]
+#[diesel(check_for_backend(diesel::sqlite::Sqlite))]
+pub struct NewCreatureActionDamage {
+    pub default_damage: i32,
+    pub dice: String,
+    pub type_id: i32,
+    pub action_id: i32,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct CreatureActionDamageIn {
+    pub default_damage: i32,
+    pub dice: String,
+    pub type_id: i32,
+}

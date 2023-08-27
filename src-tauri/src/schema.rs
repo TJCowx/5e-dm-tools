@@ -59,7 +59,7 @@ diesel::table! {
         id -> Integer,
         name -> Text,
         description -> Text,
-        is_attack -> Integer,
+        is_attack -> Bool,
         to_hit -> Nullable<Integer>,
         reach -> Nullable<Integer>,
         attack_delivery_id -> Nullable<Integer>,

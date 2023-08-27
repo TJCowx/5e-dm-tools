@@ -11,7 +11,8 @@ use serde::{Deserialize, Serialize};
 use crate::db::connect_db;
 
 use super::{
-    creature_ability::NewCreatureAbility,
+    creature_ability::{BaseCreatureAbility, NewCreatureAbility},
+    creature_action::{CreatureAction, CreatureActionIn},
     creature_cond_immunity::{CreatureCondImmunity, NewCreatureCondImmunity},
     creature_immunity::NewCreatureImmunity,
     creature_language::NewCreatureLanguage,
@@ -106,8 +107,8 @@ pub struct CreatureAssociations {
     resistances: Vec<i32>,
     weaknesses: Vec<i32>,
     languages: Vec<i32>,
-    abilities: Vec<NewCreatureAbility>,
-    // pub actions: Vec<Action>,
+    abilities: Vec<BaseCreatureAbility>,
+    actions: Vec<CreatureActionIn>,
 }
 
 impl Creature {
@@ -145,7 +146,7 @@ impl Creature {
                 .iter()
                 .map(|prof_id| NewCreatureProf {
                     creature_id: inserted_creature.id,
-                    proficiency_id: *prof_id,
+                    proficiency_id: prof_id.clone(),
                 })
                 .collect();
 
@@ -154,7 +155,7 @@ impl Creature {
                 .iter()
                 .map(|saving_throw_id| NewCreatureSavingThrow {
                     creature_id: inserted_creature.id,
-                    saving_throw_id: *saving_throw_id,
+                    saving_throw_id: saving_throw_id.clone(),
                 })
                 .collect();
 
@@ -163,7 +164,7 @@ impl Creature {
                 .iter()
                 .map(|damage_type_id| NewCreatureImmunity {
                     creature_id: inserted_creature.id,
-                    damage_type_id: *damage_type_id,
+                    damage_type_id: damage_type_id.clone(),
                 })
                 .collect();
 
@@ -172,7 +173,7 @@ impl Creature {
                 .iter()
                 .map(|condition_type_id| NewCreatureCondImmunity {
                     creature_id: inserted_creature.id,
-                    condition_type_id: *condition_type_id,
+                    condition_type_id: condition_type_id.clone(),
                 })
                 .collect();
 
@@ -181,7 +182,7 @@ impl Creature {
                 .iter()
                 .map(|damage_type_id| NewCreatureResistance {
                     creature_id: inserted_creature.id,
-                    damage_type_id: *damage_type_id,
+                    damage_type_id: damage_type_id.clone(),
                 })
                 .collect();
 
@@ -190,7 +191,7 @@ impl Creature {
                 .iter()
                 .map(|damage_type_id| NewCreatureWeakness {
                     creature_id: inserted_creature.id,
-                    damage_type_id: *damage_type_id,
+                    damage_type_id: damage_type_id.clone(),
                 })
                 .collect();
 
@@ -199,7 +200,17 @@ impl Creature {
                 .iter()
                 .map(|language_id| NewCreatureLanguage {
                     creature_id: inserted_creature.id,
-                    language_id: *language_id,
+                    language_id: language_id.clone(),
+                })
+                .collect();
+
+            let mapped_abilities: Vec<NewCreatureAbility> = associations
+                .abilities
+                .iter()
+                .map(|ability| NewCreatureAbility {
+                    creature_id: inserted_creature.id,
+                    name: ability.name.clone(),
+                    description: ability.description.clone(),
                 })
                 .collect();
 
@@ -231,14 +242,11 @@ impl Creature {
                 .values(&mapped_languages)
                 .execute(connection)?;
 
-            // TODO: Abilities
-            for id in associations.abilities {
-                // diesel::insert_into(creature_abilities::table).values((
-                //     creature_abilities::creature_id.eq(inserted_creature.id),
-                //     creature_abilities::name.eq(),
-                // ))
-            }
-            // TODO: Actions
+            diesel::insert_into(creature_abilities::table)
+                .values(&mapped_abilities)
+                .execute(connection)?;
+
+            CreatureAction::save_actions(associations.actions, &inserted_creature.id)?;
 
             Ok(())
         })
