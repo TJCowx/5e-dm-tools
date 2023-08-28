@@ -1,7 +1,7 @@
 use diesel::prelude::*;
 use serde::{Deserialize, Serialize};
 
-use crate::models::creature_action_damage::NewCreatureActionDamage;
+use crate::models::creature::creature_action_damage::NewCreatureActionDamage;
 
 use super::creature_action_damage::CreatureActionDamageIn;
 
