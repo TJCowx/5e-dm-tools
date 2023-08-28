@@ -1,4 +1,4 @@
-use diesel::prelude::*;
+use diesel::{prelude::*, result::Error};
 use serde::{Deserialize, Serialize};
 
 use crate::models::creature::creature_action_damage::NewCreatureActionDamage;
@@ -54,7 +54,7 @@ impl CreatureAction {
         conn: &mut SqliteConnection,
         actions: Vec<CreatureActionIn>,
         parent_id: &i32,
-    ) {
+    ) -> QueryResult<()> {
         use crate::schema::creature_actions::dsl::*;
 
         for action in actions {
@@ -87,7 +87,9 @@ impl CreatureAction {
 
             diesel::insert_into(crate::schema::creature_action_damages::table)
                 .values(&mapped_damages)
-                .execute(conn);
+                .execute(conn)?;
         }
+
+        Ok(())
     }
 }

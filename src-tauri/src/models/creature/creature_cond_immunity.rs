@@ -23,7 +23,7 @@ impl CreatureCondImmunity {
         conn: &mut SqliteConnection,
         cond_immunities: Vec<i32>,
         parent_id: &i32,
-    ) {
+    ) -> QueryResult<usize> {
         use crate::schema::creatures_condition_immunities::dsl::*;
 
         let mapped_cond_immunities: Vec<NewCreatureCondImmunity> = cond_immunities
@@ -36,6 +36,6 @@ impl CreatureCondImmunity {
 
         diesel::insert_into(creatures_condition_immunities)
             .values(&mapped_cond_immunities)
-            .execute(conn);
+            .execute(conn)
     }
 }

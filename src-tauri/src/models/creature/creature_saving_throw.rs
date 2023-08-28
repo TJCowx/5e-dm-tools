@@ -22,7 +22,7 @@ impl CreatureSavingThrow {
         conn: &mut SqliteConnection,
         saving_throws: Vec<i32>,
         parent_id: &i32,
-    ) {
+    ) -> QueryResult<usize> {
         use crate::schema::creatures_saving_throws::dsl::*;
 
         let mapped_saving_throws: Vec<NewCreatureSavingThrow> = saving_throws
@@ -35,6 +35,6 @@ impl CreatureSavingThrow {
 
         diesel::insert_into(creatures_saving_throws)
             .values(&mapped_saving_throws)
-            .execute(conn);
+            .execute(conn)
     }
 }

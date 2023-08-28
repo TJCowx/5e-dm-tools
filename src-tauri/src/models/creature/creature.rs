@@ -141,43 +141,43 @@ impl Creature {
                 connection,
                 associations.proficiencies,
                 &inserted_creature.id,
-            );
+            )?;
             CreatureSavingThrow::save_creature_saving_throws(
                 connection,
                 associations.saving_throws,
                 &inserted_creature.id,
-            );
+            )?;
             CreatureImmunity::save_creature_immunities(
                 connection,
                 associations.immunities,
                 &inserted_creature.id,
-            );
+            )?;
             CreatureCondImmunity::save_creature_cond_immunities(
                 connection,
                 associations.cond_immunities,
                 &inserted_creature.id,
-            );
+            )?;
             CreatureResistance::save_creature_resistances(
                 connection,
                 associations.resistances,
                 &inserted_creature.id,
-            );
+            )?;
             CreatureWeakness::save_creature_weaknesses(
                 connection,
                 associations.weaknesses,
                 &inserted_creature.id,
-            );
+            )?;
             CreatureLanguage::save_creature_languages(
                 connection,
                 associations.languages,
                 &inserted_creature.id,
-            );
+            )?;
             CreatureAbility::save_abilities(
                 connection,
                 associations.abilities,
                 &inserted_creature.id,
-            );
-            CreatureAction::save_actions(connection, associations.actions, &inserted_creature.id);
+            )?;
+            CreatureAction::save_actions(connection, associations.actions, &inserted_creature.id)?;
 
             Ok(())
         })

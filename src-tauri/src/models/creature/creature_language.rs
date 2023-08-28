@@ -23,7 +23,7 @@ impl CreatureLanguage {
         conn: &mut SqliteConnection,
         languages: Vec<i32>,
         parent_id: &i32,
-    ) {
+    ) -> QueryResult<usize> {
         use crate::schema::creatures_languages::dsl::*;
 
         let mapped_languages: Vec<NewCreatureLanguage> = languages
@@ -36,6 +36,6 @@ impl CreatureLanguage {
 
         diesel::insert_into(creatures_languages)
             .values(&mapped_languages)
-            .execute(conn);
+            .execute(conn)
     }
 }

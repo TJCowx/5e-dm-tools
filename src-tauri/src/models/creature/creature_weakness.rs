@@ -23,7 +23,7 @@ impl CreatureWeakness {
         conn: &mut SqliteConnection,
         weaknesses: Vec<i32>,
         parent_id: &i32,
-    ) {
+    ) -> QueryResult<usize> {
         use crate::schema::creatures_weaknesses::dsl::*;
 
         let mapped_weaknesses: Vec<NewCreatureWeakness> = weaknesses
@@ -36,6 +36,6 @@ impl CreatureWeakness {
 
         diesel::insert_into(creatures_weaknesses)
             .values(&mapped_weaknesses)
-            .execute(conn);
+            .execute(conn)
     }
 }

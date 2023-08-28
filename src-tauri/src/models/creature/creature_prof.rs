@@ -23,7 +23,7 @@ impl CreatureProf {
         conn: &mut SqliteConnection,
         proficiencies: Vec<i32>,
         parent_id: &i32,
-    ) {
+    ) -> QueryResult<usize> {
         use crate::schema::creatures_proficiencies::dsl::*;
 
         let mapped_profs: Vec<NewCreatureProf> = proficiencies
@@ -36,6 +36,6 @@ impl CreatureProf {
 
         diesel::insert_into(creatures_proficiencies)
             .values(&mapped_profs)
-            .execute(conn);
+            .execute(conn)
     }
 }

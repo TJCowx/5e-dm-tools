@@ -23,7 +23,7 @@ impl CreatureResistance {
         conn: &mut SqliteConnection,
         resistances: Vec<i32>,
         parent_id: &i32,
-    ) {
+    ) -> QueryResult<usize> {
         use crate::schema::creatures_resistances::dsl::*;
 
         let mapped_resistances: Vec<NewCreatureResistance> = resistances
@@ -36,6 +36,6 @@ impl CreatureResistance {
 
         diesel::insert_into(creatures_resistances)
             .values(&mapped_resistances)
-            .execute(conn);
+            .execute(conn)
     }
 }
