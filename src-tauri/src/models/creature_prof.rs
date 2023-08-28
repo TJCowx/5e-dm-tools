@@ -36,6 +36,6 @@ impl CreatureProf {
 
         diesel::insert_into(creatures_proficiencies)
             .values(&mapped_profs)
-            .execute(conn)?;
+            .execute(conn);
     }
 }

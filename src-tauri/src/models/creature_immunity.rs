@@ -20,7 +20,7 @@ pub struct NewCreatureImmunity {
 
 impl CreatureImmunity {
     pub fn save_creature_immunities(
-        cond: &mut SqliteConnection,
+        conn: &mut SqliteConnection,
         immunities: Vec<i32>,
         parent_id: &i32,
     ) {
@@ -36,6 +36,6 @@ impl CreatureImmunity {
 
         diesel::insert_into(creatures_immunities)
             .values(&mapped_immunities)
-            .execute(conn)?;
+            .execute(conn);
     }
 }
