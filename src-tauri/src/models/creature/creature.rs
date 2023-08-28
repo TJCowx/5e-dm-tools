@@ -95,6 +95,7 @@ pub struct NewCreature {
     size_id: i32,
 }
 
+#[derive(Debug, Deserialize)]
 pub struct CreatureAssociations {
     proficiencies: Vec<i32>,
     saving_throws: Vec<i32>,

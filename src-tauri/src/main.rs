@@ -11,7 +11,8 @@ pub mod schema;
 fn main() {
     tauri::Builder::default()
         .invoke_handler(tauri::generate_handler![
-            queries::creature::get_all_creatures
+            queries::creature::get_all_creatures,
+            queries::creature::add_creature,
         ])
         .setup(|_app| {
             db::init();

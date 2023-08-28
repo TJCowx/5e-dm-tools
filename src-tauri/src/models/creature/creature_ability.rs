@@ -19,6 +19,7 @@ pub struct NewCreatureAbility {
     pub creature_id: i32,
 }
 
+#[derive(Debug, Deserialize)]
 pub struct BaseCreatureAbility {
     pub name: String,
     pub description: String,
