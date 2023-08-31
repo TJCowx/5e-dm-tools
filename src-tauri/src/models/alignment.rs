@@ -8,3 +8,16 @@ pub struct Alignment {
     id: i32,
     name: String,
 }
+
+impl Alignment {
+    pub fn get_all() -> Vec<Alignment> {
+        use crate::schema::alignments::dsl::*;
+
+        let conn = &mut crate::db::connect_db();
+        let results = alignments
+            .load::<Alignment>(conn)
+            .expect("Error loading alignments");
+
+        results
+    }
+}

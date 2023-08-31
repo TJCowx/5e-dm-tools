@@ -8,3 +8,16 @@ pub struct Proficiencies {
     id: i32,
     name: String,
 }
+
+impl Proficiencies {
+    pub fn get_all() -> Vec<Proficiencies> {
+        use crate::schema::proficiencies::dsl::*;
+
+        let conn = &mut crate::db::connect_db();
+        let results = proficiencies
+            .load::<Proficiencies>(conn)
+            .expect("Error loading proficiencies");
+
+        results
+    }
+}

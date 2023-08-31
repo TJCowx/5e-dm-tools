@@ -9,3 +9,16 @@ pub struct DamageType {
     id: i32,
     name: String,
 }
+
+impl DamageType {
+    pub fn get_all() -> Vec<DamageType> {
+        use crate::schema::damage_types::dsl::*;
+
+        let conn = &mut crate::db::connect_db();
+        let results = damage_types
+            .load::<DamageType>(conn)
+            .expect("Error loading damage types");
+
+        results
+    }
+}

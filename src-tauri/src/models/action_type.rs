@@ -8,3 +8,16 @@ pub struct ActionType {
     id: i32,
     name: String,
 }
+
+impl ActionType {
+    pub fn get_all() -> Vec<ActionType> {
+        use crate::schema::action_types::dsl::*;
+
+        let conn = &mut crate::db::connect_db();
+        let results = action_types
+            .load::<ActionType>(conn)
+            .expect("Error loading action types");
+
+        results
+    }
+}

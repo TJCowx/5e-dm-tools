@@ -8,3 +8,16 @@ pub struct ConditionType {
     id: i32,
     name: String,
 }
+
+impl ConditionType {
+    pub fn get_all() -> Vec<ConditionType> {
+        use crate::schema::condition_types::dsl::*;
+
+        let conn = &mut crate::db::connect_db();
+        let results = condition_types
+            .load::<ConditionType>(conn)
+            .expect("Error loading condition types");
+
+        results
+    }
+}
