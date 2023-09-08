@@ -38,34 +38,30 @@ export const convertCreatureFormToDB = (creature: Partial<Creature>) => {
   } = creature;
 
   return {
-    ...creature,
-    armourClass: parseInt(`${armourClass}`, 10),
-    hitPoints: parseInt(`${hitPoints}`, 10),
-    landSpeed: landSpeed != null ? parseInt(`${landSpeed}`, 10) : undefined,
-    flySpeed: flySpeed != null ? parseInt(`${flySpeed}`, 10) : undefined,
-    burrowSpeed:
-      burrowSpeed != null ? parseInt(`${burrowSpeed}`, 10) : undefined,
-    climbSpeed: climbSpeed != null ? parseInt(`${climbSpeed}`, 10) : undefined,
-    hoverSpeed: hoverSpeed != null ? parseInt(`${hoverSpeed}`, 10) : undefined,
-    blindsight: blindsight != null ? parseInt(`${blindsight}`, 10) : undefined,
-    darkvision: darkvision != null ? parseInt(`${darkvision}`, 10) : undefined,
-    tremorsense:
-      tremorsense != null ? parseInt(`${tremorsense}`, 10) : undefined,
-    truesight: truesight != null ? parseInt(`${truesight}`, 10) : undefined,
-    strength: parseInt(`${strength}`, 10),
-    dexterity: parseInt(`${dexterity}`, 10),
-    constitution: parseInt(`${constitution}`, 10),
-    intelligence: parseInt(`${intelligence}`, 10),
-    wisdom: parseInt(`${wisdom}`, 10),
-    charisma: parseInt(`${charisma}`, 10),
-    profBonus: parseInt(`${profBonus}`, 10),
-    challengeRating: parseInt(`${challengeRating}`, 10),
-    rewardXp: parseInt(`${rewardXp}`, 10),
-    actions: actions?.map((act) => ({
-      ...act,
-      toHit: parseInt(`${act.toHit}`, 10),
-      react: parseInt(`${act.reach}`, 10),
-    })),
+    newCreature: {
+      ...creature,
+      armourClass: +(armourClass ?? 0),
+      hitPoints: +(hitPoints ?? 0),
+      landSpeed: landSpeed != null ? +(landSpeed ?? 0) : null,
+      flySpeed: flySpeed != null ? +(flySpeed ?? 0) : null,
+      burrowSpeed: burrowSpeed != null ? +(burrowSpeed ?? 0) : null,
+      climbSpeed: climbSpeed != null ? +(climbSpeed ?? 0) : null,
+      hoverSpeed: hoverSpeed != null ? +(hoverSpeed ?? 0) : null,
+      blindsight: blindsight != null ? +(blindsight ?? 0) : null,
+      darkvision: darkvision != null ? +(darkvision ?? 0) : null,
+      tremorsense: tremorsense != null ? +(tremorsense ?? 0) : null,
+      truesight: truesight != null ? +(truesight ?? 0) : null,
+      strength: +(strength ?? 0),
+      dexterity: +(dexterity ?? 0),
+      constitution: +(constitution ?? 0),
+      intelligence: +(intelligence ?? 0),
+      wisdom: +(wisdom ?? 0),
+      charisma: +(charisma ?? 0),
+      profBonus: +(profBonus ?? 0),
+      challengeRating: +(challengeRating ?? 0),
+      rewardXp: +(rewardXp ?? 0),
+    },
+    associations: {},
   };
 };
 

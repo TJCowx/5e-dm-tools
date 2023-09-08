@@ -12,24 +12,21 @@ import Proficiency from './Proficiency';
 type Creature = {
   id: string;
   name: string;
-  size: CreatureSize;
-  creatureType: CreatureType;
-  alignment: Alignment;
-
+  description?: string;
   armourClass: number;
   hitPoints: number;
   hitDie: string;
 
-  landSpeed: number;
-  flySpeed: number;
-  burrowSpeed: number;
-  climbSpeed: number;
-  hoverSpeed: number;
+  landSpeed?: number;
+  flySpeed?: number;
+  burrowSpeed?: number;
+  climbSpeed?: number;
+  hoverSpeed?: number;
 
-  blindsight: number;
-  darkvision: number;
-  tremorsense: number;
-  truesight: number;
+  blindsight?: number;
+  darkvision?: number;
+  tremorsense?: number;
+  truesight?: number;
 
   strength: number;
   dexterity: number;
@@ -41,20 +38,25 @@ type Creature = {
 
   challengeRating: number;
   rewardXp: number;
-
-  proficiencies: Proficiency[];
-  savingThrows: Attribute[];
-  immunities: DamageType[];
-  condImmunities: ConditionType[];
-  resistances: DamageType[];
-  weaknesses: DamageType[];
-  languages: Language[];
-
-  abilities: Ability[];
-  actions: Action[];
-
   isLegendary: boolean;
   hasLair: boolean;
+
+  alignmentId: number;
+  creatureTypeId: number;
+  sizeId: number;
+
+  creatureType: CreatureType;
+  alignment: Alignment;
+  size?: CreatureSize;
+  proficiencies?: Proficiency[];
+  savingThrows?: Attribute[];
+  immunities?: DamageType[];
+  condImmunities?: ConditionType[];
+  resistances?: DamageType[];
+  weaknesses?: DamageType[];
+  languages?: Language[];
+  abilities?: Ability[];
+  actions?: Action[];
 };
 
 export default Creature;

@@ -1,6 +1,7 @@
 /* eslint-disable react/function-component-definition */
 import {
   Checkbox,
+  CircularProgress,
   FormControl,
   FormHelperText,
   InputLabel,
@@ -9,7 +10,11 @@ import {
 } from '@mui/material';
 import clsx from 'clsx';
 import ListItemText from 'components/List/ListItemText';
+import { RequireMessage } from 'constants/validationMessages';
+import { useMemo } from 'react';
 import { Control, Controller, FieldPath, FieldValues } from 'react-hook-form';
+
+import { SelectOptions } from './RHFSelectField';
 
 type Props<T extends FieldValues> = {
   id: string;
@@ -17,7 +22,10 @@ type Props<T extends FieldValues> = {
   control: Control<T>;
   fieldName: FieldPath<T>;
   label: string;
-  options: { value: string | number; text: string }[];
+  options: SelectOptions[];
+  isRequired?: boolean;
+  isLoading?: boolean;
+  error?: string;
 };
 
 function RHFMultiselectField<T extends FieldValues>({
@@ -27,11 +35,25 @@ function RHFMultiselectField<T extends FieldValues>({
   fieldName,
   label,
   options,
+  isRequired = false,
+  isLoading = false,
+  error,
 }: Props<T>) {
+  const rules = useMemo(
+    () =>
+      isRequired
+        ? {
+            required: RequireMessage,
+            minLength: { value: 0, message: RequireMessage },
+          }
+        : undefined,
+    [isRequired]
+  );
   return (
     <Controller
       control={control}
       name={fieldName}
+      rules={rules}
       render={({ field, fieldState }) => (
         <FormControl
           className={clsx({
@@ -68,6 +90,8 @@ function RHFMultiselectField<T extends FieldValues>({
               </MenuItem>
             ))}
           </Select>
+          {isLoading && <CircularProgress size={20} />}
+          {error && <FormHelperText error>{error}</FormHelperText>}
           {fieldState.error?.message && (
             <FormHelperText error>{fieldState.error?.message}</FormHelperText>
           )}

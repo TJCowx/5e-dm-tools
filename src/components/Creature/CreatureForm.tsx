@@ -8,21 +8,18 @@ import NewActionListItem from 'components/Action/NewActionListItem';
 import RHFAttributeField from 'components/Fields/RHF/RHFAttributeField';
 import RHFCheckboxField from 'components/Fields/RHF/RHFCheckboxField';
 import RHFIntegerField from 'components/Fields/RHF/RHFIntegerField';
+import RHFLazySelect from 'components/Fields/RHF/RHFLazySelect';
 import RHFMultiselectField from 'components/Fields/RHF/RHFMultiselectField';
-import RHFSelectField from 'components/Fields/RHF/RHFSelectField';
 import RHFTextField from 'components/Fields/RHF/RHFTextField';
 import ListItemText from 'components/List/ListItemText';
 import ListItemTwoSecondaryActions from 'components/List/ListItemTwoSecondaryActions';
-import { AlignmentSelectOptions } from 'models/creature/Alignment';
 import { AttributeSelectOptions } from 'models/creature/Attribute';
 import { ConditionTypeSelectOptions } from 'models/creature/ConditionType';
 import Creature from 'models/creature/Creature';
-import { CreatureSizeSelectOptions } from 'models/creature/CreatureSize';
-import { CreatureTypeSelectOptions } from 'models/creature/CreatureType';
 import { DamageTypeSelectOptions } from 'models/creature/DamageType';
 import { LanguageSelectOptions } from 'models/creature/Language';
 import { ProficiencySelectOptions } from 'models/creature/Proficiency';
-import { FC, FormEventHandler, Fragment } from 'react';
+import { FormEventHandler, Fragment } from 'react';
 import { Control, useFieldArray, UseFormWatch } from 'react-hook-form';
 
 import ActionListItem from './ActionListItem';
@@ -71,7 +68,7 @@ const StyledForm = styled('form')(() => ({
   },
 }));
 
-const CreatureForm: FC<Props> = ({ control, onSubmit, watch }) => {
+function CreatureForm({ control, onSubmit, watch }: Props) {
   const {
     fields: abilities,
     append: appendAbility,
@@ -115,26 +112,41 @@ const CreatureForm: FC<Props> = ({ control, onSubmit, watch }) => {
           </div>
         </div>
         <div className="grid mb-16">
-          <RHFSelectField
-            id="size"
-            fieldName="size"
+          <RHFLazySelect
+            id="sizeId"
+            fieldName="sizeId"
             control={control}
             label="Size"
-            options={CreatureSizeSelectOptions}
+            isRequired
+            queryArgs={{
+              queryName: 'get_all_sizes',
+              valueKey: 'id',
+              textKey: 'name',
+            }}
           />
-          <RHFSelectField
-            id="creatureType"
-            fieldName="creatureType"
+          <RHFLazySelect
+            id="creatureTypeId"
+            fieldName="creatureTypeId"
             control={control}
             label="Type"
-            options={CreatureTypeSelectOptions}
+            isRequired
+            queryArgs={{
+              queryName: '', // TODO: get all creature types
+              valueKey: 'id',
+              textKey: 'name',
+            }}
           />
-          <RHFSelectField
-            id="alignment"
-            fieldName="alignment"
+          <RHFLazySelect
+            id="alignmentId"
+            fieldName="alignmentId"
             control={control}
             label="Alignment"
-            options={AlignmentSelectOptions}
+            isRequired
+            queryArgs={{
+              queryName: '', // TODO: Get all alignments
+              valueKey: 'id',
+              textKey: 'name',
+            }}
           />
         </div>
         <div className="grid">
@@ -407,6 +419,6 @@ const CreatureForm: FC<Props> = ({ control, onSubmit, watch }) => {
       </div>
     </StyledForm>
   );
-};
+}
 
 export default CreatureForm;

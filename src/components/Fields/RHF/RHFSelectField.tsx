@@ -1,5 +1,6 @@
 /* eslint-disable react/function-component-definition */
 import {
+  CircularProgress,
   FormControl,
   FormHelperText,
   InputLabel,
@@ -11,14 +12,21 @@ import { useMemo } from 'react';
 import { Control, Controller, FieldPath, FieldValues } from 'react-hook-form';
 import { RequireMessage } from 'utils/validationMessages';
 
+export interface SelectOptions {
+  value: string | number;
+  text: string;
+}
+
 type Props<T extends FieldValues> = {
   id: string;
   className?: string;
   control: Control<T>;
   fieldName: FieldPath<T>;
   label: string;
-  options: { value: string | number; text: string }[];
+  options: SelectOptions[];
   isRequired?: boolean;
+  isLoading?: boolean;
+  error?: string;
 };
 
 function RHFSelectField<T extends FieldValues>({
@@ -28,7 +36,9 @@ function RHFSelectField<T extends FieldValues>({
   fieldName,
   label,
   options,
-  isRequired,
+  isRequired = false,
+  isLoading = false,
+  error,
 }: Props<T>) {
   const rules = useMemo(
     () =>
@@ -70,6 +80,8 @@ function RHFSelectField<T extends FieldValues>({
               </MenuItem>
             ))}
           </Select>
+          {isLoading && <CircularProgress size={20} />}
+          {error && <FormHelperText error>{error}</FormHelperText>}
           {fieldState.error?.message && (
             <FormHelperText error>{fieldState.error?.message}</FormHelperText>
           )}
@@ -78,10 +90,5 @@ function RHFSelectField<T extends FieldValues>({
     />
   );
 }
-
-RHFSelectField.defaultProps = {
-  isRequired: false,
-  className: undefined,
-};
 
 export default RHFSelectField;
