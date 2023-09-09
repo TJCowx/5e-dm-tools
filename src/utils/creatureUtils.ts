@@ -60,8 +60,18 @@ export const convertCreatureFormToDB = (creature: Partial<Creature>) => {
       profBonus: +(profBonus ?? 0),
       challengeRating: +(challengeRating ?? 0),
       rewardXp: +(rewardXp ?? 0),
+      savingThrows: creature.savingThrows?.join(','),
     },
-    associations: {},
+    associations: {
+      proficiencies: creature.proficiencyIds,
+      immunities: creature.immunityIds,
+      condImmunities: creature.condImmunityIds,
+      resistances: creature.resistanceIds,
+      weaknesses: creature.weaknessIds,
+      languages: creature.languageIds,
+      abilities: [],
+      actions: [],
+    },
   };
 };
 
@@ -106,7 +116,7 @@ export const getSavingThrowsString = (creature: Creature) => {
 
   const proficientSavingThrows: string[] = [];
 
-  savingThrows.forEach((savingThrow) => {
+  (savingThrows ?? []).forEach((savingThrow) => {
     switch (savingThrow) {
       case 'Strength':
         proficientSavingThrows.push(
@@ -148,7 +158,7 @@ export const getSavingThrowsString = (creature: Creature) => {
 export const getProficienciesString = (creature: Creature) => {
   const { proficiencies, profBonus } = creature;
 
-  return proficiencies
+  return (proficiencies ?? [])
     .map(
       (prof) =>
         `${prof} ${getFormattedModifier(

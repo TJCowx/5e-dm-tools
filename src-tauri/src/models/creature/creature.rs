@@ -14,7 +14,6 @@ use super::{
     creature_language::CreatureLanguage,
     creature_prof::CreatureProf,
     creature_resistance::CreatureResistance,
-    creature_saving_throw::CreatureSavingThrow,
     creature_weakness::CreatureWeakness,
 };
 
@@ -28,6 +27,7 @@ pub struct Creature {
     armour_class: i32,
     hit_points: i32,
     hit_die: String,
+    saving_throws: Option<String>,
     land_speed: Option<i32>,
     fly_speed: Option<i32>,
     burrow_speed: Option<i32>,
@@ -54,14 +54,16 @@ pub struct Creature {
     size_id: i32,
 }
 
-#[derive(Debug, Deserialize, Insertable)]
+#[derive(Debug, Deserialize, Serialize, Insertable)]
 #[diesel(table_name = crate::schema::creatures)]
+#[serde(rename_all = "camelCase")]
 pub struct NewCreature {
     name: String,
     description: Option<String>,
     armour_class: i32,
     hit_points: i32,
     hit_die: String,
+    saving_throws: Option<String>,
     land_speed: Option<i32>,
     fly_speed: Option<i32>,
     burrow_speed: Option<i32>,
@@ -88,9 +90,9 @@ pub struct NewCreature {
 }
 
 #[derive(Debug, Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub struct CreatureAssociations {
     proficiencies: Vec<i32>,
-    saving_throws: Vec<i32>,
     immunities: Vec<i32>,
     cond_immunities: Vec<i32>,
     resistances: Vec<i32>,
@@ -123,6 +125,7 @@ impl Creature {
         creature: NewCreature,
         associations: CreatureAssociations,
     ) -> QueryResult<()> {
+        println!("{:?}", creature);
         let conn = &mut connect_db();
 
         conn.transaction(|connection| {
@@ -133,11 +136,6 @@ impl Creature {
             CreatureProf::save_creature_profs(
                 connection,
                 associations.proficiencies,
-                &inserted_creature.id,
-            )?;
-            CreatureSavingThrow::save_creature_saving_throws(
-                connection,
-                associations.saving_throws,
                 &inserted_creature.id,
             )?;
             CreatureImmunity::save_creature_immunities(

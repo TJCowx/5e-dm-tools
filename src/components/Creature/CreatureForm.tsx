@@ -10,9 +10,11 @@ import RHFCheckboxField from 'components/Fields/RHF/RHFCheckboxField';
 import RHFIntegerField from 'components/Fields/RHF/RHFIntegerField';
 import RHFLazyMultiselect from 'components/Fields/RHF/RHFLazyMultiselect';
 import RHFLazySelect from 'components/Fields/RHF/RHFLazySelect';
+import RHFMultiselectField from 'components/Fields/RHF/RHFMultiselectField';
 import RHFTextField from 'components/Fields/RHF/RHFTextField';
 import ListItemText from 'components/List/ListItemText';
 import ListItemTwoSecondaryActions from 'components/List/ListItemTwoSecondaryActions';
+import { AttributeSelectOptions } from 'models/creature/Attribute';
 import Creature from 'models/creature/Creature';
 import { FormEventHandler, Fragment } from 'react';
 import { Control, useFieldArray, UseFormWatch } from 'react-hook-form';
@@ -95,7 +97,7 @@ function CreatureForm({ control, onSubmit, watch }: Props) {
           />
           <RHFTextField
             fieldName="description"
-            label="name"
+            label="Description"
             control={control}
           />
           <div className="row-of-fields align-start">
@@ -314,14 +316,13 @@ function CreatureForm({ control, onSubmit, watch }: Props) {
               textKey: 'name',
             }}
           />
-          {/* This should be a constant */}
-          {/* <RHFLazyMultiselect
+          <RHFMultiselectField
             id="saving-throw-field"
             control={control}
             label="Saving Throws"
             fieldName="savingThrowIds"
-            queryArgs={{}} 
-          /> */}
+            options={AttributeSelectOptions}
+          />
         </div>
       </section>
       <section>

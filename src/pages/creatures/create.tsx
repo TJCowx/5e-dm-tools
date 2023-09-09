@@ -69,7 +69,7 @@ function CreateCreature() {
 
   const onSubmit = (data: Creature) => {
     setHasError(false);
-    invoke('add_creature', { creature: convertCreatureFormToDB(data) })
+    invoke('add_creature', convertCreatureFormToDB(data))
       .then(() => {
         router.push('/creatures');
       })

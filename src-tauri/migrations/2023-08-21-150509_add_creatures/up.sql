@@ -5,6 +5,7 @@ CREATE TABLE creatures (
   armour_class INTEGER NOT NULL,
   hit_points INTEGER NOT NULL,
   hit_die TEXT NOT NULL,
+  saving_throws TEXT NULL,
   land_speed INTEGER NULL,
   fly_speed INTEGER NULL,
   burrow_speed INTEGER NULL,
@@ -38,13 +39,6 @@ CREATE TABLE creatures_proficiencies (
   proficiency_id INTEGER NOT NULL,
   FOREIGN KEY (creature_id) REFERENCES creatures(id) ON UPDATE RESTRICT ON DELETE RESTRICT,
   FOREIGN KEY (proficiency_id) REFERENCES proficiencies(id) ON UPDATE RESTRICT ON DELETE RESTRICT
-);
-CREATE TABLE creatures_saving_throws (
-  id INTEGER NOT NULL PRIMARY KEY,
-  creature_id INTEGER NOT NULL,
-  saving_throw_id INTEGER NOT NULL,
-  FOREIGN KEY (creature_id) REFERENCES creatures(id) ON UPDATE RESTRICT ON DELETE RESTRICT,
-  FOREIGN KEY (saving_throw_id) REFERENCES saving_throws(id) ON UPDATE RESTRICT ON DELETE RESTRICT
 );
 CREATE TABLE creatures_immunities (
   id INTEGER NOT NULL PRIMARY KEY,

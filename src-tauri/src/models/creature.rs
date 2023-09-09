@@ -7,6 +7,5 @@ pub mod creature_immunity;
 pub mod creature_language;
 pub mod creature_prof;
 pub mod creature_resistance;
-pub mod creature_saving_throw;
 pub mod creature_type;
 pub mod creature_weakness;

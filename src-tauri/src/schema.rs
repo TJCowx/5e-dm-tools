@@ -83,6 +83,7 @@ diesel::table! {
         armour_class -> Integer,
         hit_points -> Integer,
         hit_die -> Text,
+        saving_throws -> Nullable<Text>,
         land_speed -> Nullable<Integer>,
         fly_speed -> Nullable<Integer>,
         burrow_speed -> Nullable<Integer>,
@@ -146,14 +147,6 @@ diesel::table! {
         id -> Integer,
         creature_id -> Integer,
         damage_type_id -> Integer,
-    }
-}
-
-diesel::table! {
-    creatures_saving_throws (id) {
-        id -> Integer,
-        creature_id -> Integer,
-        saving_throw_id -> Integer,
     }
 }
 
@@ -222,7 +215,6 @@ diesel::joinable!(creatures_proficiencies -> creatures (creature_id));
 diesel::joinable!(creatures_proficiencies -> proficiencies (proficiency_id));
 diesel::joinable!(creatures_resistances -> creatures (creature_id));
 diesel::joinable!(creatures_resistances -> damage_types (damage_type_id));
-diesel::joinable!(creatures_saving_throws -> creatures (creature_id));
 diesel::joinable!(creatures_weaknesses -> creatures (creature_id));
 diesel::joinable!(creatures_weaknesses -> damage_types (damage_type_id));
 diesel::joinable!(damage -> damage_types (type_id));
@@ -243,7 +235,6 @@ diesel::allow_tables_to_appear_in_same_query!(
     creatures_languages,
     creatures_proficiencies,
     creatures_resistances,
-    creatures_saving_throws,
     creatures_weaknesses,
     damage,
     damage_types,
