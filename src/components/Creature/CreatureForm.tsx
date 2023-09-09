@@ -8,17 +8,12 @@ import NewActionListItem from 'components/Action/NewActionListItem';
 import RHFAttributeField from 'components/Fields/RHF/RHFAttributeField';
 import RHFCheckboxField from 'components/Fields/RHF/RHFCheckboxField';
 import RHFIntegerField from 'components/Fields/RHF/RHFIntegerField';
+import RHFLazyMultiselect from 'components/Fields/RHF/RHFLazyMultiselect';
 import RHFLazySelect from 'components/Fields/RHF/RHFLazySelect';
-import RHFMultiselectField from 'components/Fields/RHF/RHFMultiselectField';
 import RHFTextField from 'components/Fields/RHF/RHFTextField';
 import ListItemText from 'components/List/ListItemText';
 import ListItemTwoSecondaryActions from 'components/List/ListItemTwoSecondaryActions';
-import { AttributeSelectOptions } from 'models/creature/Attribute';
-import { ConditionTypeSelectOptions } from 'models/creature/ConditionType';
 import Creature from 'models/creature/Creature';
-import { DamageTypeSelectOptions } from 'models/creature/DamageType';
-import { LanguageSelectOptions } from 'models/creature/Language';
-import { ProficiencySelectOptions } from 'models/creature/Proficiency';
 import { FormEventHandler, Fragment } from 'react';
 import { Control, useFieldArray, UseFormWatch } from 'react-hook-form';
 
@@ -98,6 +93,11 @@ function CreatureForm({ control, onSubmit, watch }: Props) {
             control={control}
             isRequired
           />
+          <RHFTextField
+            fieldName="description"
+            label="name"
+            control={control}
+          />
           <div className="row-of-fields align-start">
             <RHFCheckboxField
               fieldName="isLegendary"
@@ -131,7 +131,7 @@ function CreatureForm({ control, onSubmit, watch }: Props) {
             label="Type"
             isRequired
             queryArgs={{
-              queryName: '', // TODO: get all creature types
+              queryName: 'get_all_creature_types',
               valueKey: 'id',
               textKey: 'name',
             }}
@@ -143,19 +143,23 @@ function CreatureForm({ control, onSubmit, watch }: Props) {
             label="Alignment"
             isRequired
             queryArgs={{
-              queryName: '', // TODO: Get all alignments
+              queryName: 'get_all_alignments',
               valueKey: 'id',
               textKey: 'name',
             }}
           />
         </div>
         <div className="grid">
-          <RHFMultiselectField
+          <RHFLazyMultiselect
             id="languages-field"
-            fieldName="languages"
+            fieldName="languageIds"
             control={control}
             label="Languages"
-            options={LanguageSelectOptions}
+            queryArgs={{
+              queryName: 'get_all_languages',
+              valueKey: 'id',
+              textKey: 'name',
+            }}
           />
           <RHFIntegerField
             control={control}
@@ -299,53 +303,74 @@ function CreatureForm({ control, onSubmit, watch }: Props) {
         <Typography variant="h6">Proficiencies</Typography>
         <Divider />
         <div className="grid">
-          <RHFMultiselectField
+          <RHFLazyMultiselect
             id="prof-field"
             control={control}
             label="Proficiencies"
-            fieldName="proficiencies"
-            options={ProficiencySelectOptions}
+            fieldName="proficiencyIds"
+            queryArgs={{
+              queryName: 'get_all_proficiencies',
+              valueKey: 'id',
+              textKey: 'name',
+            }}
           />
-          <RHFMultiselectField
+          {/* This should be a constant */}
+          {/* <RHFLazyMultiselect
             id="saving-throw-field"
             control={control}
             label="Saving Throws"
-            fieldName="savingThrows"
-            options={AttributeSelectOptions}
-          />
+            fieldName="savingThrowIds"
+            queryArgs={{}} 
+          /> */}
         </div>
       </section>
       <section>
         <Typography variant="h6">Damage Properties</Typography>
         <Divider />
         <div className="grid">
-          <RHFMultiselectField
+          <RHFLazyMultiselect
             id="immunities-field"
             control={control}
             label="Immunities"
-            fieldName="immunities"
-            options={DamageTypeSelectOptions}
+            fieldName="immunityIds"
+            queryArgs={{
+              queryName: 'get_all_damage_types',
+              valueKey: 'id',
+              textKey: 'name',
+            }}
           />
-          <RHFMultiselectField
+          <RHFLazyMultiselect
             id="cond-immunities-field"
             control={control}
             label="Condition Immunities"
-            fieldName="condImmunities"
-            options={ConditionTypeSelectOptions}
+            fieldName="condImmunityIds"
+            queryArgs={{
+              queryName: 'get_all_condition_types',
+              valueKey: 'id',
+              textKey: 'name',
+            }}
           />
-          <RHFMultiselectField
+          <RHFLazyMultiselect
             id="resistances-field"
             control={control}
             label="Resistances"
-            fieldName="resistances"
-            options={DamageTypeSelectOptions}
+            fieldName="resistanceIds"
+            queryArgs={{
+              queryName: 'get_all_damage_types',
+              valueKey: 'id',
+              textKey: 'name',
+            }}
           />
-          <RHFMultiselectField
+          <RHFLazyMultiselect
             id="weaknesses-field"
             control={control}
             label="Weaknesses"
-            fieldName="weaknesses"
-            options={DamageTypeSelectOptions}
+            fieldName="weaknessIds"
+            queryArgs={{
+              queryName: 'get_all_damage_types',
+              valueKey: 'id',
+              textKey: 'name',
+            }}
           />
         </div>
       </section>

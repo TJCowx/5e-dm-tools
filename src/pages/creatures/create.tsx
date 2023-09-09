@@ -7,7 +7,6 @@ import Creature from 'models/creature/Creature';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { SnakeCasedPropertiesDeep } from 'type-fest';
 import { convertCreatureFormToDB } from 'utils/creatureUtils';
 import { logMessage } from 'utils/loggingUtils';
 
@@ -44,13 +43,13 @@ const DefaultValues: Partial<Creature> = {
   challengeRating: 0,
   rewardXp: 0,
 
-  proficiencies: [],
-  savingThrows: [],
-  immunities: [],
-  condImmunities: [],
-  resistances: [],
-  weaknesses: [],
-  languages: [],
+  proficiencyIds: [],
+  savingThrowIds: [],
+  immunityIds: [],
+  condImmunityIds: [],
+  resistanceIds: [],
+  weaknessIds: [],
+  languageIds: [],
 
   abilities: [],
   actions: [],
@@ -59,7 +58,7 @@ const DefaultValues: Partial<Creature> = {
   hasLair: false,
 };
 
-const CreateCreature = () => {
+function CreateCreature() {
   const router = useRouter();
 
   const [hasError, setHasError] = useState(false);
@@ -99,6 +98,6 @@ const CreateCreature = () => {
       />
     </Layout>
   );
-};
+}
 
 export default CreateCreature;

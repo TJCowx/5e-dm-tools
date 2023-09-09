@@ -45,6 +45,15 @@ type Creature = {
   creatureTypeId: number;
   sizeId: number;
 
+  // I'm going to end up redesigning and rewriting the FE so this is fine for now despite be hating this
+  languageIds?: number[];
+  proficiencyIds?: number[];
+  savingThrowIds?: number[];
+  immunityIds?: number[];
+  condImmunityIds?: number[];
+  resistanceIds?: number[];
+  weaknessIds?: number[];
+
   creatureType: CreatureType;
   alignment: Alignment;
   size?: CreatureSize;
@@ -55,6 +64,7 @@ type Creature = {
   resistances?: DamageType[];
   weaknesses?: DamageType[];
   languages?: Language[];
+
   abilities?: Ability[];
   actions?: Action[];
 };

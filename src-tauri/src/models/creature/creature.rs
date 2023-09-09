@@ -52,14 +52,6 @@ pub struct Creature {
     alignment_id: i32,
     creature_type_id: i32,
     size_id: i32,
-    // pub proficiencies: Vec<String>,
-    // pub saving_throws: Vec<String>,
-    // pub immunities: Vec<String>,
-    // pub cond_immunities: Vec<String>,
-    // pub resistances: Vec<String>,
-    // pub weaknesses: Vec<String>,
-    // pub languages: Vec<String>,
-    // pub actions: Vec<Action>,
 }
 
 #[derive(Debug, Deserialize, Insertable)]

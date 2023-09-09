@@ -11,8 +11,8 @@ import {
 } from '@mui/material';
 import clsx from 'clsx';
 import Link from 'next/link';
-import router from 'next/router';
-import { FC, ReactNode } from 'react';
+import { useRouter } from 'next/router';
+import { ReactNode } from 'react';
 
 type NavItem = {
   text: string;
@@ -47,7 +47,9 @@ const StyledDrawer = styled(Drawer)(({ theme }) => ({
   },
 }));
 
-const NavDrawer: FC = () => {
+function NavDrawer() {
+  const router = useRouter();
+
   return (
     <StyledDrawer variant="permanent">
       <List>
@@ -88,6 +90,6 @@ const NavDrawer: FC = () => {
       </List>
     </StyledDrawer>
   );
-};
+}
 
 export default NavDrawer;

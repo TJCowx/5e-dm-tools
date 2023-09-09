@@ -21,21 +21,23 @@ type Props = {
   disablePadding?: boolean;
 };
 
-const Layout: FC<PropsWithChildren<Props>> = ({
+function Layout({
   children,
   disablePadding = false,
-}) => (
-  <Root>
-    <NavDrawer />
-    <ContentContainer
-      className={clsx({
-        'content-container': true,
-        'no-padding': disablePadding,
-      })}
-    >
-      {children}
-    </ContentContainer>
-  </Root>
-);
+}: PropsWithChildren<Props>) {
+  return (
+    <Root>
+      <NavDrawer />
+      <ContentContainer
+        className={clsx({
+          'content-container': true,
+          'no-padding': disablePadding,
+        })}
+      >
+        {children}
+      </ContentContainer>
+    </Root>
+  );
+}
 
 export default Layout;

@@ -11,7 +11,7 @@ import {
 import clsx from 'clsx';
 import ListItemText from 'components/List/ListItemText';
 import { RequireMessage } from 'constants/validationMessages';
-import { useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import { Control, Controller, FieldPath, FieldValues } from 'react-hook-form';
 
 import { SelectOptions } from './RHFSelectField';
@@ -49,6 +49,18 @@ function RHFMultiselectField<T extends FieldValues>({
         : undefined,
     [isRequired]
   );
+
+  const formatDisplayValue = useCallback(
+    (selected: Array<string | number>) =>
+      options.reduce((acc, { value, text }) => {
+        if (selected.indexOf(value) > -1) {
+          return acc.length > 0 ? `${acc}, ${text}` : text;
+        }
+        return acc;
+      }, ''),
+    [options]
+  );
+
   return (
     <Controller
       control={control}
@@ -73,7 +85,7 @@ function RHFMultiselectField<T extends FieldValues>({
             error={fieldState.error != null}
             autoWidth={false}
             renderValue={(selected: Array<string | number>) =>
-              selected.join(', ')
+              formatDisplayValue(selected)
             }
             multiple
             notched
