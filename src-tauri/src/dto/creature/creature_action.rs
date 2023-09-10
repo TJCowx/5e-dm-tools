@@ -1,9 +1,6 @@
+use crate::models::base_creature_action::BaseCreatureAction;
 use diesel::{prelude::*, result::Error};
 use serde::{Deserialize, Serialize};
-
-use crate::models::creature::creature_action_damage::NewCreatureActionDamage;
-
-use super::creature_action_damage::CreatureActionDamageIn;
 
 #[derive(Debug, Serialize, Deserialize, Queryable)]
 #[diesel(table_name = crate::schema::creature_actions)]
@@ -37,22 +34,10 @@ pub struct NewCreatureAction {
     pub creature_id: i32,
 }
 
-#[derive(Debug, Serialize, Deserialize)]
-pub struct CreatureActionIn {
-    pub name: String,
-    pub description: String,
-    pub is_attack: bool,
-    pub to_hit: Option<i32>,
-    pub reach: Option<i32>,
-    pub attack_delivery_id: Option<i32>,
-    pub action_type_id: i32,
-    pub damages: Vec<CreatureActionDamageIn>,
-}
-
 impl CreatureAction {
     pub fn save_actions(
         conn: &mut SqliteConnection,
-        actions: Vec<CreatureActionIn>,
+        actions: Vec<BaseCreatureAction>,
         parent_id: &i32,
     ) -> QueryResult<()> {
         use crate::schema::creature_actions::dsl::*;
@@ -74,20 +59,20 @@ impl CreatureAction {
                 .get_result(conn)
                 .unwrap();
 
-            let mapped_damages: Vec<NewCreatureActionDamage> = action
-                .damages
-                .into_iter()
-                .map(|damage| NewCreatureActionDamage {
-                    default_damage: damage.default_damage,
-                    dice: damage.dice,
-                    type_id: damage.type_id,
-                    action_id: inserted_action.id,
-                })
-                .collect();
+            // let mapped_damages: Vec<NewCreatureActionDamage> = action
+            //     .damages
+            //     .into_iter()
+            //     .map(|damage| NewCreatureActionDamage {
+            //         default_damage: damage.default_damage,
+            //         dice: damage.dice,
+            //         type_id: damage.type_id,
+            //         action_id: inserted_action.id,
+            //     })
+            //     .collect();
 
-            diesel::insert_into(crate::schema::creature_action_damages::table)
-                .values(&mapped_damages)
-                .execute(conn)?;
+            // diesel::insert_into(crate::schema::creature_action_damages::table)
+            //     .values(&mapped_damages)
+            //     .execute(conn)?;
         }
 
         Ok(())

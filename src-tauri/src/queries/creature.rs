@@ -1,4 +1,5 @@
-use crate::dto::creature::creature::{Creature, CreatureAssociations, NewCreature};
+use crate::dto::creature::creature::Creature;
+use crate::models::new_creature::NewCreature;
 
 #[tauri::command]
 pub fn get_all_creatures() -> Result<Vec<Creature>, String> {
@@ -11,13 +12,10 @@ pub fn get_all_creatures() -> Result<Vec<Creature>, String> {
 }
 
 #[tauri::command]
-pub fn add_creature(
-    new_creature: NewCreature,
-    associations: CreatureAssociations,
-) -> Result<(), String> {
+pub fn add_creature(new_creature: NewCreature) -> Result<(), String> {
     println!("[server] Adding creature");
 
-    match Creature::insert_full_creature(new_creature, associations) {
+    match Creature::insert_full_creature(new_creature) {
         Ok(_) => {
             println!("[server] Added creature");
             Ok(())

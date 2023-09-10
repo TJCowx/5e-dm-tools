@@ -1,5 +1,5 @@
 /* eslint-disable import/prefer-default-export */
-import Creature from 'models/creature/Creature';
+import Creature, { NewCreature } from 'models/creature/Creature';
 
 import { getFormattedModifier, getSkillAttribute } from './modifierUtils';
 
@@ -12,7 +12,7 @@ import { getFormattedModifier, getSkillAttribute } from './modifierUtils';
  * @param creature The creature from the form
  * @returns the number fields parsed into numbers
  */
-export const convertCreatureFormToDB = (creature: Partial<Creature>) => {
+export const convertCreatureFormToDB = (creature: Partial<NewCreature>) => {
   const {
     armourClass,
     hitPoints,
@@ -38,40 +38,28 @@ export const convertCreatureFormToDB = (creature: Partial<Creature>) => {
   } = creature;
 
   return {
-    newCreature: {
-      ...creature,
-      armourClass: +(armourClass ?? 0),
-      hitPoints: +(hitPoints ?? 0),
-      landSpeed: landSpeed != null ? +(landSpeed ?? 0) : null,
-      flySpeed: flySpeed != null ? +(flySpeed ?? 0) : null,
-      burrowSpeed: burrowSpeed != null ? +(burrowSpeed ?? 0) : null,
-      climbSpeed: climbSpeed != null ? +(climbSpeed ?? 0) : null,
-      hoverSpeed: hoverSpeed != null ? +(hoverSpeed ?? 0) : null,
-      blindsight: blindsight != null ? +(blindsight ?? 0) : null,
-      darkvision: darkvision != null ? +(darkvision ?? 0) : null,
-      tremorsense: tremorsense != null ? +(tremorsense ?? 0) : null,
-      truesight: truesight != null ? +(truesight ?? 0) : null,
-      strength: +(strength ?? 0),
-      dexterity: +(dexterity ?? 0),
-      constitution: +(constitution ?? 0),
-      intelligence: +(intelligence ?? 0),
-      wisdom: +(wisdom ?? 0),
-      charisma: +(charisma ?? 0),
-      profBonus: +(profBonus ?? 0),
-      challengeRating: +(challengeRating ?? 0),
-      rewardXp: +(rewardXp ?? 0),
-      savingThrows: creature.savingThrows?.join(','),
-    },
-    associations: {
-      proficiencies: creature.proficiencyIds,
-      immunities: creature.immunityIds,
-      condImmunities: creature.condImmunityIds,
-      resistances: creature.resistanceIds,
-      weaknesses: creature.weaknessIds,
-      languages: creature.languageIds,
-      abilities: [],
-      actions: [],
-    },
+    ...creature,
+    armourClass: +(armourClass ?? 0),
+    hitPoints: +(hitPoints ?? 0),
+    landSpeed: landSpeed != null ? +(landSpeed ?? 0) : null,
+    flySpeed: flySpeed != null ? +(flySpeed ?? 0) : null,
+    burrowSpeed: burrowSpeed != null ? +(burrowSpeed ?? 0) : null,
+    climbSpeed: climbSpeed != null ? +(climbSpeed ?? 0) : null,
+    hoverSpeed: hoverSpeed != null ? +(hoverSpeed ?? 0) : null,
+    blindsight: blindsight != null ? +(blindsight ?? 0) : null,
+    darkvision: darkvision != null ? +(darkvision ?? 0) : null,
+    tremorsense: tremorsense != null ? +(tremorsense ?? 0) : null,
+    truesight: truesight != null ? +(truesight ?? 0) : null,
+    strength: +(strength ?? 0),
+    dexterity: +(dexterity ?? 0),
+    constitution: +(constitution ?? 0),
+    intelligence: +(intelligence ?? 0),
+    wisdom: +(wisdom ?? 0),
+    charisma: +(charisma ?? 0),
+    profBonus: +(profBonus ?? 0),
+    challengeRating: +(challengeRating ?? 0),
+    rewardXp: +(rewardXp ?? 0),
+    savingThrows: creature.savingThrows?.join(','),
   };
 };
 

@@ -9,8 +9,7 @@ import DamageType from './DamageType';
 import Language from './Language';
 import Proficiency from './Proficiency';
 
-type Creature = {
-  id: string;
+type BaseCreature = {
   name: string;
   description?: string;
   armourClass: number;
@@ -44,15 +43,10 @@ type Creature = {
   alignmentId: number;
   creatureTypeId: number;
   sizeId: number;
+};
 
-  // I'm going to end up redesigning and rewriting the FE so this is fine for now despite be hating this
-  languageIds?: number[];
-  proficiencyIds?: number[];
-  savingThrowIds?: number[];
-  immunityIds?: number[];
-  condImmunityIds?: number[];
-  resistanceIds?: number[];
-  weaknessIds?: number[];
+type Creature = BaseCreature & {
+  id: string;
 
   creatureType: CreatureType;
   alignment: Alignment;
@@ -64,6 +58,19 @@ type Creature = {
   resistances?: DamageType[];
   weaknesses?: DamageType[];
   languages?: Language[];
+
+  abilities?: Ability[];
+  actions?: Action[];
+};
+
+export type NewCreature = BaseCreature & {
+  languages: number[];
+  proficiencies: number[];
+  savingThrows: number[];
+  immunities: number[];
+  condImmunities: number[];
+  resistances: number[];
+  weaknesses: number[];
 
   abilities?: Ability[];
   actions?: Action[];

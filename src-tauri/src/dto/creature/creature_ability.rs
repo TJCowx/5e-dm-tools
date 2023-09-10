@@ -1,3 +1,4 @@
+use crate::models::base_creature_ability::BaseCreatureAbility;
 use diesel::prelude::*;
 use serde::{Deserialize, Serialize};
 
@@ -17,12 +18,6 @@ pub struct NewCreatureAbility {
     pub name: String,
     pub description: String,
     pub creature_id: i32,
-}
-
-#[derive(Debug, Deserialize)]
-pub struct BaseCreatureAbility {
-    pub name: String,
-    pub description: String,
 }
 
 impl CreatureAbility {

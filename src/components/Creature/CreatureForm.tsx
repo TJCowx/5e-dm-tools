@@ -15,16 +15,16 @@ import RHFTextField from 'components/Fields/RHF/RHFTextField';
 import ListItemText from 'components/List/ListItemText';
 import ListItemTwoSecondaryActions from 'components/List/ListItemTwoSecondaryActions';
 import { AttributeSelectOptions } from 'models/creature/Attribute';
-import Creature from 'models/creature/Creature';
+import { NewCreature } from 'models/creature/Creature';
 import { FormEventHandler, Fragment } from 'react';
 import { Control, useFieldArray, UseFormWatch } from 'react-hook-form';
 
 import ActionListItem from './ActionListItem';
 
 type Props = {
-  control: Control<Creature>;
+  control: Control<NewCreature>;
   onSubmit: FormEventHandler<HTMLFormElement>;
-  watch: UseFormWatch<Creature>;
+  watch: UseFormWatch<NewCreature>;
 };
 
 const StyledForm = styled('form')(() => ({
@@ -154,7 +154,7 @@ function CreatureForm({ control, onSubmit, watch }: Props) {
         <div className="grid">
           <RHFLazyMultiselect
             id="languages-field"
-            fieldName="languageIds"
+            fieldName="languages"
             control={control}
             label="Languages"
             queryArgs={{
@@ -309,7 +309,7 @@ function CreatureForm({ control, onSubmit, watch }: Props) {
             id="prof-field"
             control={control}
             label="Proficiencies"
-            fieldName="proficiencyIds"
+            fieldName="proficiencies"
             queryArgs={{
               queryName: 'get_all_proficiencies',
               valueKey: 'id',
@@ -320,7 +320,7 @@ function CreatureForm({ control, onSubmit, watch }: Props) {
             id="saving-throw-field"
             control={control}
             label="Saving Throws"
-            fieldName="savingThrowIds"
+            fieldName="savingThrows"
             options={AttributeSelectOptions}
           />
         </div>
@@ -333,7 +333,7 @@ function CreatureForm({ control, onSubmit, watch }: Props) {
             id="immunities-field"
             control={control}
             label="Immunities"
-            fieldName="immunityIds"
+            fieldName="immunities"
             queryArgs={{
               queryName: 'get_all_damage_types',
               valueKey: 'id',
@@ -344,7 +344,7 @@ function CreatureForm({ control, onSubmit, watch }: Props) {
             id="cond-immunities-field"
             control={control}
             label="Condition Immunities"
-            fieldName="condImmunityIds"
+            fieldName="condImmunities"
             queryArgs={{
               queryName: 'get_all_condition_types',
               valueKey: 'id',
@@ -355,7 +355,7 @@ function CreatureForm({ control, onSubmit, watch }: Props) {
             id="resistances-field"
             control={control}
             label="Resistances"
-            fieldName="resistanceIds"
+            fieldName="resistances"
             queryArgs={{
               queryName: 'get_all_damage_types',
               valueKey: 'id',
@@ -366,7 +366,7 @@ function CreatureForm({ control, onSubmit, watch }: Props) {
             id="weaknesses-field"
             control={control}
             label="Weaknesses"
-            fieldName="weaknessIds"
+            fieldName="weaknesses"
             queryArgs={{
               queryName: 'get_all_damage_types',
               valueKey: 'id',

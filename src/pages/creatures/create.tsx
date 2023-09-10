@@ -3,19 +3,18 @@ import { invoke } from '@tauri-apps/api/tauri';
 import CreatureForm from 'components/Creature/CreatureForm';
 import Layout from 'components/Layout/Layout';
 import NavBack from 'components/Links/NavBack';
-import Creature from 'models/creature/Creature';
+import Creature, { NewCreature } from 'models/creature/Creature';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { convertCreatureFormToDB } from 'utils/creatureUtils';
 import { logMessage } from 'utils/loggingUtils';
 
-const DefaultValues: Partial<Creature> = {
-  id: undefined,
+const DefaultValues: Partial<NewCreature> = {
   name: '',
-  size: undefined,
-  creatureType: undefined,
-  alignment: undefined,
+  sizeId: undefined,
+  creatureTypeId: undefined,
+  alignmentId: undefined,
 
   armourClass: undefined,
   hitPoints: undefined,
@@ -43,13 +42,13 @@ const DefaultValues: Partial<Creature> = {
   challengeRating: 0,
   rewardXp: 0,
 
-  proficiencyIds: [],
-  savingThrowIds: [],
-  immunityIds: [],
-  condImmunityIds: [],
-  resistanceIds: [],
-  weaknessIds: [],
-  languageIds: [],
+  proficiencies: [],
+  savingThrows: [],
+  immunities: [],
+  condImmunities: [],
+  resistances: [],
+  weaknesses: [],
+  languages: [],
 
   abilities: [],
   actions: [],
@@ -63,13 +62,13 @@ function CreateCreature() {
 
   const [hasError, setHasError] = useState(false);
 
-  const { handleSubmit, control, watch } = useForm<Creature>({
+  const { handleSubmit, control, watch } = useForm<NewCreature>({
     defaultValues: DefaultValues,
   });
 
-  const onSubmit = (data: Creature) => {
+  const onSubmit = (data: NewCreature) => {
     setHasError(false);
-    invoke('add_creature', convertCreatureFormToDB(data))
+    invoke('add_creature', { newCreature: convertCreatureFormToDB(data) })
       .then(() => {
         router.push('/creatures');
       })

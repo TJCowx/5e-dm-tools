@@ -23,7 +23,7 @@ import ListItemText from 'components/List/ListItemText';
 import ListItemTwoSecondaryActions from 'components/List/ListItemTwoSecondaryActions';
 import Creature from 'models/creature/Creature';
 import Link from 'next/link';
-import { FC, Fragment, useEffect, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { logMessage } from 'utils/loggingUtils';
 
 const ActionContainer = styled('div')(() => ({
@@ -38,7 +38,7 @@ const StyledAlert = styled(Alert)(() => ({
   marginBottom: '16px',
 }));
 
-const Creatures: FC = () => {
+function Creatures() {
   const [isLoading, setIsLoading] = useState(false);
   const [hasError, setHasError] = useState(false);
   const [creatures, setCreatures] = useState<Creature[]>([]);
@@ -54,14 +54,8 @@ const Creatures: FC = () => {
 
     getAllCreatures()
       .then((res) => {
-        const mappedRes = res.map((creature) => ({
-          ...creature,
-          // TODO: Fix bad cast
-          // eslint-disable-next-line no-underscore-dangle
-          id: (creature as any)._id.$oid,
-        }));
-        setCreatures(mappedRes);
-        setFilteredCreatures(mappedRes);
+        setCreatures(res);
+        setFilteredCreatures(res);
         setIsLoading(false);
       })
       .catch((e) => {
@@ -208,6 +202,6 @@ const Creatures: FC = () => {
       )}
     </Layout>
   );
-};
+}
 
 export default Creatures;
