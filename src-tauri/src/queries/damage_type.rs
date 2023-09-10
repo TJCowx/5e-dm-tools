@@ -1,4 +1,4 @@
-use crate::models::damage_type::DamageType;
+use crate::dto::damage_type::DamageType;
 
 #[tauri::command]
 pub fn get_all_damage_types() -> Result<Vec<DamageType>, String> {

@@ -1,4 +1,4 @@
-use crate::models::creature::creature::{Creature, CreatureAssociations, NewCreature};
+use crate::dto::creature::creature::{Creature, CreatureAssociations, NewCreature};
 
 #[tauri::command]
 pub fn get_all_creatures() -> Result<Vec<Creature>, String> {

@@ -1,4 +1,4 @@
-use crate::models::attack_delivery::AttackDelivery;
+use crate::dto::attack_delivery::AttackDelivery;
 
 #[tauri::command]
 pub fn get_all_attack_deliveries() -> Result<Vec<AttackDelivery>, String> {

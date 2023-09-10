@@ -1,4 +1,4 @@
-use crate::models::proficiency::Proficiencies;
+use crate::dto::proficiency::Proficiencies;
 
 #[tauri::command]
 pub fn get_all_proficiencies() -> Result<Vec<Proficiencies>, String> {

@@ -1,4 +1,4 @@
-use crate::models::alignment::Alignment;
+use crate::dto::alignment::Alignment;
 
 #[tauri::command]
 pub fn get_all_alignments() -> Result<Vec<Alignment>, String> {

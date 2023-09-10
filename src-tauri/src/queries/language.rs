@@ -1,4 +1,4 @@
-use crate::models::language::Language;
+use crate::dto::language::Language;
 
 #[tauri::command]
 pub fn get_all_languages() -> Result<Vec<Language>, String> {

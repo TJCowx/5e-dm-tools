@@ -4,7 +4,7 @@
 )]
 
 mod db;
-pub mod models;
+pub mod dto;
 mod queries;
 pub mod schema;
 

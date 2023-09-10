@@ -1,4 +1,4 @@
-use crate::models::creature::creature_type::CreatureType;
+use crate::dto::creature::creature_type::CreatureType;
 
 #[tauri::command]
 pub fn get_all_creature_types() -> Result<Vec<CreatureType>, String> {

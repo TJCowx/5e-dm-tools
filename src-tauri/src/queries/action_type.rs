@@ -1,4 +1,4 @@
-use crate::models::action_type::ActionType;
+use crate::dto::action_type::ActionType;
 
 #[tauri::command]
 pub fn get_all_action_types() -> Result<Vec<ActionType>, String> {

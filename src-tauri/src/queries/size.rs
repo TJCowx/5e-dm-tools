@@ -1,4 +1,4 @@
-use crate::models::size::Size;
+use crate::dto::size::Size;
 
 #[tauri::command]
 pub fn get_all_sizes() -> Result<Vec<Size>, String> {
