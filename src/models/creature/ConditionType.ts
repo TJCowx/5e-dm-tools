@@ -20,6 +20,9 @@ export const ConditionTypeSelectOptions = AllConditionTypes.map((ct) => ({
   text: ct,
 }));
 
-type ConditionType = typeof AllConditionTypes[number];
+type ConditionType = {
+  id: number;
+  name: string;
+};
 
 export default ConditionType;

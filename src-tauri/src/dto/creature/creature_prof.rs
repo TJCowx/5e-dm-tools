@@ -1,9 +1,13 @@
 use diesel::prelude::*;
 use serde::{Deserialize, Serialize};
 
+use crate::dto::proficiency::Proficiency;
+
 #[derive(Queryable, Debug, Serialize, Deserialize)]
 #[diesel(table_name = crate::schema::creatures_proficiencies)]
 #[diesel(check_for_backend(diesel::sqlite::Sqlite))]
+#[diesel(belongs_to(CreatureDto))]
+#[diesel(belongs_to(Proficiency))]
 pub struct CreatureProf {
     id: i32,
     creature_id: i32,
@@ -37,5 +41,17 @@ impl CreatureProf {
         diesel::insert_into(creatures_proficiencies)
             .values(&mapped_profs)
             .execute(conn)
+    }
+
+    pub fn get_profs_by_creature_id(creature_id: &i32) -> Vec<Proficiency> {
+        use crate::schema::proficiencies::dsl::*;
+
+        let conn = &mut crate::db::connect_db();
+        proficiencies
+            .inner_join(crate::schema::creatures_proficiencies::dsl::creatures_proficiencies)
+            .filter(crate::schema::creatures_proficiencies::dsl::creature_id.eq(creature_id))
+            .select(proficiencies::all_columns())
+            .load::<Proficiency>(conn)
+            .expect("Error loading proficiencies")
     }
 }

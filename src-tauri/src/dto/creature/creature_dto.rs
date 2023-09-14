@@ -1,6 +1,8 @@
 // use crate::schema::creatures::dsl::creatures as all_creatures;
 use crate::{
     db::connect_db,
+    dto::{alignment::Alignment, proficiency::Proficiency, size::Size},
+    models::creature::Creature,
     schema::creatures::{self, dsl::creatures as all_creatures},
 };
 use diesel::prelude::*;
@@ -10,14 +12,15 @@ use super::{
     creature_ability::CreatureAbility, creature_action::CreatureAction,
     creature_cond_immunity::CreatureCondImmunity, creature_immunity::CreatureImmunity,
     creature_language::CreatureLanguage, creature_prof::CreatureProf,
-    creature_resistance::CreatureResistance, creature_weakness::CreatureWeakness,
+    creature_resistance::CreatureResistance, creature_type::CreatureType,
+    creature_weakness::CreatureWeakness,
 };
 use crate::models::new_creature::NewCreature;
 
 #[derive(Debug, Serialize, Deserialize, Queryable)]
 #[diesel(table_name = crate::schema::creatures)]
 #[diesel(check_for_backend(diesel::sqlite::Sqlite))]
-pub struct Creature {
+pub struct CreatureDto {
     id: i32,
     name: String,
     description: Option<String>,
@@ -53,7 +56,7 @@ pub struct Creature {
 
 #[derive(Debug, Deserialize, Serialize, Insertable)]
 #[diesel(table_name = crate::schema::creatures)]
-struct InsertCreature {
+struct NewCreatureDto {
     name: String,
     description: Option<String>,
     armour_class: i32,
@@ -85,9 +88,9 @@ struct InsertCreature {
     size_id: i32,
 }
 
-impl Creature {
-    fn make_insert_creature(creature: &NewCreature) -> InsertCreature {
-        InsertCreature {
+impl CreatureDto {
+    fn make_insert_creature(creature: &NewCreature) -> NewCreatureDto {
+        NewCreatureDto {
             name: creature.name.clone(),
             description: creature.description.clone(),
             armour_class: creature.armour_class,
@@ -120,21 +123,70 @@ impl Creature {
         }
     }
 
+    // TODO: Maybe turn this ino a trait on creature
+    fn map_display_creature(creature: Self) -> Creature {
+        Creature {
+            id: creature.id,
+            name: creature.name,
+            description: creature.description,
+            armour_class: creature.armour_class,
+            hit_points: creature.hit_points,
+            hit_die: creature.hit_die,
+            saving_throws: creature.saving_throws,
+            land_speed: creature.land_speed,
+            fly_speed: creature.fly_speed,
+            burrow_speed: creature.burrow_speed,
+            climb_speed: creature.climb_speed,
+            hover_speed: creature.hover_speed,
+            blindsight: creature.blindsight,
+            darkvision: creature.darkvision,
+            tremorsense: creature.tremorsense,
+            truesight: creature.truesight,
+            strength: creature.strength,
+            dexterity: creature.dexterity,
+            constitution: creature.constitution,
+            intelligence: creature.intelligence,
+            wisdom: creature.wisdom,
+            charisma: creature.charisma,
+            prof_bonus: creature.prof_bonus,
+            challenge_rating: creature.challenge_rating,
+            reward_xp: creature.reward_xp,
+            is_legendary: creature.is_legendary,
+            has_lair: creature.has_lair,
+            alignment: Alignment::get_by_id(&creature.alignment_id),
+            creature_type: CreatureType::get_by_id(&creature.creature_type_id),
+            size: Size::get_by_id(&creature.size_id),
+            proficiencies: CreatureProf::get_profs_by_creature_id(&creature.id),
+            immunities: CreatureImmunity::get_immunities_by_creature_id(&creature.id),
+            cond_immunities: CreatureCondImmunity::get_conditions_by_creature_id(&creature.id),
+            resistances: CreatureResistance::get_resistances_by_creature_id(&creature.id),
+            weaknesses: CreatureWeakness::get_weaknesses_by_creature_id(&creature.id),
+            languages: CreatureLanguage::get_languages_by_creature_id(&creature.id),
+            abilities: CreatureAbility::get_abilities_by_creature_id(&creature.id),
+            actions: Vec::new(),
+        }
+    }
+
     pub fn get_all() -> Vec<Creature> {
         let conn = &mut connect_db();
 
-        all_creatures
-            .load::<Creature>(conn)
-            .expect("Failed to get all creatures!")
+        let creatures = all_creatures
+            .load::<CreatureDto>(conn)
+            .expect("Failed to get all creatures!");
+
+        creatures
+            .into_iter()
+            .map(Self::map_display_creature)
+            .collect()
     }
 
     // TODO: Get all properties eventually
-    pub fn get_by_id(id: i32) -> Creature {
+    pub fn get_by_id(id: i32) -> CreatureDto {
         let conn = &mut connect_db();
 
         all_creatures
             .find(id)
-            .first::<Creature>(conn)
+            .first::<CreatureDto>(conn)
             .expect("Failed to get creature")
     }
 
@@ -142,7 +194,7 @@ impl Creature {
         let conn = &mut connect_db();
 
         conn.transaction(|connection| {
-            let inserted_creature: Creature = diesel::insert_into(creatures::table)
+            let inserted_creature: CreatureDto = diesel::insert_into(creatures::table)
                 .values(Self::make_insert_creature(&creature))
                 .get_result(connection)?;
 

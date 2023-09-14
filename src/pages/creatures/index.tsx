@@ -93,8 +93,8 @@ function Creatures() {
           `${challengeRating}`
             .toLowerCase()
             .includes(filterText.toLowerCase()) ||
-          size.toLowerCase().includes(filterText.toLowerCase()) ||
-          type.toLowerCase().includes(filterText.toLowerCase())
+          size?.name.toLowerCase().includes(filterText.toLowerCase()) ||
+          type?.name.toLowerCase().includes(filterText.toLowerCase())
       )
     );
   }, [filterText, creatures]);
@@ -164,7 +164,7 @@ function Creatures() {
                       <>
                         CR: {challengeRating} |{' '}
                         <i>
-                          {size} {type}
+                          {size?.name} {type.name}
                         </i>
                       </>
                     }

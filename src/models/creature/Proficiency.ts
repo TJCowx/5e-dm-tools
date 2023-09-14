@@ -24,6 +24,9 @@ export const ProficiencySelectOptions = AllProficiencies.map((prof) => ({
   text: prof,
 }));
 
-type Proficiency = typeof AllProficiencies[number];
+type Proficiency = {
+  id: number;
+  name: string;
+};
 
 export default Proficiency;

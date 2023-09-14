@@ -21,6 +21,9 @@ export const DamageTypeSelectOptions = AllDamageTypes.map((dt) => ({
   text: dt,
 }));
 
-type DamageType = typeof AllDamageTypes[number];
+type DamageType = {
+  id: number;
+  name: string;
+};
 
 export default DamageType;

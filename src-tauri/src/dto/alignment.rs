@@ -20,4 +20,14 @@ impl Alignment {
 
         results
     }
+
+    pub fn get_by_id(id: &i32) -> Alignment {
+        use crate::schema::alignments::dsl::*;
+
+        let conn = &mut crate::db::connect_db();
+        alignments
+            .filter(id.eq(id))
+            .first::<Alignment>(conn)
+            .expect("Error loading alignment")
+    }
 }

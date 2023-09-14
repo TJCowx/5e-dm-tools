@@ -1,8 +1,8 @@
-pub mod creature;
 pub mod creature_ability;
 pub mod creature_action;
 pub mod creature_action_damage;
 pub mod creature_cond_immunity;
+pub mod creature_dto;
 pub mod creature_immunity;
 pub mod creature_language;
 pub mod creature_prof;

@@ -22,6 +22,9 @@ export const LanguageSelectOptions = AllLanguages.map((lang) => ({
   text: lang,
 }));
 
-type Language = typeof AllLanguages[number];
+type Language = {
+  id: number;
+  name: string;
+};
 
 export default Language;

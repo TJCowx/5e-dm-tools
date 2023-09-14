@@ -1,9 +1,9 @@
-use crate::dto::proficiency::Proficiencies;
+use crate::dto::proficiency::Proficiency;
 
 #[tauri::command]
-pub fn get_all_proficiencies() -> Result<Vec<Proficiencies>, String> {
+pub fn get_all_proficiencies() -> Result<Vec<Proficiency>, String> {
     println!("[server] Getting all proficiencies");
-    let proficiencies = Proficiencies::get_all();
+    let proficiencies = Proficiency::get_all();
 
     println!("[server] Retrieved {} proficiencies", proficiencies.len());
 

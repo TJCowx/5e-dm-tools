@@ -20,6 +20,9 @@ export const CreatureTypeSelectOptions = AllCreatureTypes.map((type) => ({
   text: type,
 }));
 
-type CreatureType = typeof AllCreatureTypes[number];
+type CreatureType = {
+  id: number;
+  name: string;
+};
 
 export default CreatureType;

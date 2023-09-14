@@ -1,9 +1,13 @@
 use diesel::prelude::*;
 use serde::{Deserialize, Serialize};
 
+use crate::dto::damage_type::DamageType;
+
 #[derive(Queryable, Debug, Serialize, Deserialize)]
 #[diesel(table_name = crate::schema::creatures_immunities)]
 #[diesel(check_for_backend(diesel::sqlite::Sqlite))]
+#[diesel(belongs_to(CreatureDto))]
+#[diesel(belongs_to(DamageType))]
 pub struct CreatureImmunity {
     id: i32,
     creature_id: i32,
@@ -37,5 +41,17 @@ impl CreatureImmunity {
         diesel::insert_into(creatures_immunities)
             .values(&mapped_immunities)
             .execute(conn)
+    }
+
+    pub fn get_immunities_by_creature_id(creature_id: &i32) -> Vec<DamageType> {
+        use crate::schema::damage_types::dsl::*;
+
+        let conn = &mut crate::db::connect_db();
+        damage_types
+            .inner_join(crate::schema::creatures_immunities::dsl::creatures_immunities)
+            .filter(crate::schema::creatures_immunities::dsl::creature_id.eq(creature_id))
+            .select(damage_types::all_columns())
+            .load::<DamageType>(conn)
+            .expect("Error loading damage types")
     }
 }

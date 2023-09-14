@@ -1,9 +1,13 @@
 use diesel::prelude::*;
 use serde::{Deserialize, Serialize};
 
+use crate::dto::condition_type::ConditionType;
+
 #[derive(Queryable, Debug, Serialize, Deserialize)]
 #[diesel(table_name = crate::schema::creatures_condition_immunities)]
 #[diesel(check_for_backend(diesel::sqlite::Sqlite))]
+#[diesel(belongs_to(CreatureDto))]
+#[diesel(belongs_to(ConditionType))]
 pub struct CreatureCondImmunity {
     id: i32,
     creature_id: i32,
@@ -37,5 +41,19 @@ impl CreatureCondImmunity {
         diesel::insert_into(creatures_condition_immunities)
             .values(&mapped_cond_immunities)
             .execute(conn)
+    }
+
+    pub fn get_conditions_by_creature_id(creature_id: &i32) -> Vec<ConditionType> {
+        use crate::schema::condition_types::dsl::*;
+
+        let conn = &mut crate::db::connect_db();
+        condition_types
+            .inner_join(
+                crate::schema::creatures_condition_immunities::dsl::creatures_condition_immunities,
+            )
+            .filter(crate::schema::creatures_condition_immunities::dsl::creature_id.eq(creature_id))
+            .select(condition_types::all_columns())
+            .load::<ConditionType>(conn)
+            .expect("Error loading condition types")
     }
 }

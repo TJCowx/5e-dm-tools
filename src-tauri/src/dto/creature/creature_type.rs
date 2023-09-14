@@ -20,4 +20,14 @@ impl CreatureType {
 
         results
     }
+
+    pub fn get_by_id(id: &i32) -> CreatureType {
+        use crate::schema::creature_types::dsl::*;
+
+        let conn = &mut crate::db::connect_db();
+        creature_types
+            .filter(id.eq(id))
+            .first::<CreatureType>(conn)
+            .expect("Error loading creature type")
+    }
 }

@@ -19,4 +19,14 @@ impl Size {
 
         results
     }
+
+    pub fn get_by_id(id: &i32) -> Size {
+        use crate::schema::sizes::dsl::*;
+
+        let conn = &mut crate::db::connect_db();
+        sizes
+            .filter(id.eq(id))
+            .first::<Size>(conn)
+            .expect("Error loading size")
+    }
 }
