@@ -24,7 +24,7 @@ const NavItems: NavItem[] = [
   {
     text: 'Home',
     icon: <FontAwesomeIcon icon={faHouse} />,
-    href: '/home',
+    href: '/',
   },
   {
     text: 'Initiative',
