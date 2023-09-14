@@ -8,7 +8,6 @@ pub fn get_all_creatures() -> Result<Vec<Creature>, String> {
     let creatures = CreatureDto::get_all();
 
     println!("[server] Retrieved {} creatures", creatures.len());
-    println!("{:?}", creatures);
 
     Ok(creatures)
 }
