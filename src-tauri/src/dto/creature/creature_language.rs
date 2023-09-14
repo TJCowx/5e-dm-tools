@@ -43,6 +43,15 @@ impl CreatureLanguage {
             .execute(conn)
     }
 
+    pub fn delete_creature_languages(
+        conn: &mut SqliteConnection,
+        parent_id: &i32,
+    ) -> QueryResult<usize> {
+        use crate::schema::creatures_languages::dsl::*;
+
+        diesel::delete(creatures_languages.filter(creature_id.eq(parent_id))).execute(conn)
+    }
+
     pub fn get_languages_by_creature_id(id: &i32) -> Vec<Language> {
         use crate::schema::languages::dsl::*;
 

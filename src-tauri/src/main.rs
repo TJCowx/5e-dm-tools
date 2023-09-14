@@ -14,6 +14,7 @@ fn main() {
         .invoke_handler(tauri::generate_handler![
             queries::creature::get_all_creatures,
             queries::creature::add_creature,
+            queries::creature::delete_creature,
             queries::alignment::get_all_alignments,
             queries::attack_delivery::get_all_attack_deliveries,
             queries::action_type::get_all_action_types,

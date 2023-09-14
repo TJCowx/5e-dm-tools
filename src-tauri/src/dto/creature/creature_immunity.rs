@@ -43,6 +43,15 @@ impl CreatureImmunity {
             .execute(conn)
     }
 
+    pub fn delete_creature_immunities(
+        conn: &mut SqliteConnection,
+        parent_id: &i32,
+    ) -> QueryResult<usize> {
+        use crate::schema::creatures_immunities::dsl::*;
+
+        diesel::delete(creatures_immunities.filter(creature_id.eq(parent_id))).execute(conn)
+    }
+
     pub fn get_immunities_by_creature_id(creature_id: &i32) -> Vec<DamageType> {
         use crate::schema::damage_types::dsl::*;
 

@@ -1,7 +1,7 @@
 // use crate::schema::creatures::dsl::creatures as all_creatures;
 use crate::{
     db::connect_db,
-    dto::{alignment::Alignment, proficiency::Proficiency, size::Size},
+    dto::{alignment::Alignment, size::Size},
     models::creature::Creature,
     schema::creatures::{self, dsl::creatures as all_creatures},
 };
@@ -89,6 +89,7 @@ struct NewCreatureDto {
 }
 
 impl CreatureDto {
+    // TODO: Maybe turn this into a trait on this struct
     fn make_insert_creature(creature: &NewCreature) -> NewCreatureDto {
         NewCreatureDto {
             name: creature.name.clone(),
@@ -230,6 +231,25 @@ impl CreatureDto {
             )?;
             CreatureAbility::save_abilities(connection, creature.abilities, &inserted_creature.id)?;
             CreatureAction::save_actions(connection, creature.actions, &inserted_creature.id)?;
+
+            Ok(())
+        })
+    }
+
+    pub fn delete(id: i32) -> QueryResult<()> {
+        let conn = &mut connect_db();
+
+        conn.transaction(|connection| {
+            CreatureProf::delete_creature_profs(connection, &id)?;
+            CreatureImmunity::delete_creature_immunities(connection, &id)?;
+            CreatureCondImmunity::delete_creature_cond_immunities(connection, &id)?;
+            CreatureResistance::delete_creature_resistances(connection, &id)?;
+            CreatureWeakness::delete_creature_weaknesses(connection, &id)?;
+            CreatureLanguage::delete_creature_languages(connection, &id)?;
+            CreatureAbility::delete_abilities(connection, &id)?;
+            // CreatureAction::delete_actions(connection, &id)?; TODO: #3 implement action obviously
+
+            diesel::delete(all_creatures.find(id)).execute(connection)?;
 
             Ok(())
         })

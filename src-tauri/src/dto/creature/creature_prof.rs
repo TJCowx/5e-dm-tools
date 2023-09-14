@@ -43,6 +43,15 @@ impl CreatureProf {
             .execute(conn)
     }
 
+    pub fn delete_creature_profs(
+        conn: &mut SqliteConnection,
+        parent_id: &i32,
+    ) -> QueryResult<usize> {
+        use crate::schema::creatures_proficiencies::dsl::*;
+
+        diesel::delete(creatures_proficiencies.filter(creature_id.eq(parent_id))).execute(conn)
+    }
+
     pub fn get_profs_by_creature_id(creature_id: &i32) -> Vec<Proficiency> {
         use crate::schema::proficiencies::dsl::*;
 

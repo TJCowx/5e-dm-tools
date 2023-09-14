@@ -42,6 +42,12 @@ impl CreatureAbility {
             .execute(conn)
     }
 
+    pub fn delete_abilities(conn: &mut SqliteConnection, parent_id: &i32) -> QueryResult<usize> {
+        use crate::schema::creature_abilities::dsl::*;
+
+        diesel::delete(creature_abilities.filter(creature_id.eq(parent_id))).execute(conn)
+    }
+
     pub fn get_abilities_by_creature_id(id: &i32) -> Vec<CreatureAbility> {
         use crate::schema::creature_abilities::dsl::*;
 

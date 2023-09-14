@@ -43,6 +43,16 @@ impl CreatureCondImmunity {
             .execute(conn)
     }
 
+    pub fn delete_creature_cond_immunities(
+        conn: &mut SqliteConnection,
+        parent_id: &i32,
+    ) -> QueryResult<usize> {
+        use crate::schema::creatures_condition_immunities::dsl::*;
+
+        diesel::delete(creatures_condition_immunities.filter(creature_id.eq(parent_id)))
+            .execute(conn)
+    }
+
     pub fn get_conditions_by_creature_id(creature_id: &i32) -> Vec<ConditionType> {
         use crate::schema::condition_types::dsl::*;
 

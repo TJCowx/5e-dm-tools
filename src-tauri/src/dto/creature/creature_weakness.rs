@@ -43,6 +43,15 @@ impl CreatureWeakness {
             .execute(conn)
     }
 
+    pub fn delete_creature_weaknesses(
+        conn: &mut SqliteConnection,
+        parent_id: &i32,
+    ) -> QueryResult<usize> {
+        use crate::schema::creatures_weaknesses::dsl::*;
+
+        diesel::delete(creatures_weaknesses.filter(creature_id.eq(parent_id))).execute(conn)
+    }
+
     pub fn get_weaknesses_by_creature_id(id: &i32) -> Vec<DamageType> {
         use crate::schema::damage_types::dsl::*;
 

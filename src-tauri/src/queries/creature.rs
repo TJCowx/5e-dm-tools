@@ -27,3 +27,19 @@ pub fn add_creature(new_creature: NewCreature) -> Result<(), String> {
         }
     }
 }
+
+#[tauri::command]
+pub fn delete_creature(id: i32) -> Result<(), String> {
+    println!("[server] Deleting creature");
+
+    match CreatureDto::delete(id) {
+        Ok(_) => {
+            println!("[server] Deleted creature");
+            Ok(())
+        }
+        Err(e) => {
+            println!("[server] Error deleting creature: {}", e);
+            Err("Error deleting creature".to_string())
+        }
+    }
+}
