@@ -29,6 +29,40 @@ pub fn add_creature(new_creature: NewCreature) -> Result<(), String> {
 }
 
 #[tauri::command]
+pub fn get_creature_by_id(id: i32) -> Result<Creature, String> {
+    println!("[server] Getting creature {}", id);
+
+    // TODO:Not sure how well this pulls from the creature
+
+    match CreatureDto::get_by_id(id) {
+        Some(creature) => {
+            println!("[server] Retrieved creature {}", id);
+            Ok(creature)
+        }
+        None => {
+            println!("[server] Error getting creature {}", id);
+            Err("Error getting creature".to_string())
+        }
+    }
+}
+
+#[tauri::command]
+pub fn update_creature(creature: Creature) -> Result<(), String> {
+    println!("[server] Updating creature {}", creature.id);
+    // TODO: This needs to actually save better
+    match CreatureDto::update(creature) {
+        Ok(_) => {
+            println!("[server] Updated creature {}", creature.id);
+            Ok(())
+        }
+        Err(e) => {
+            println!("[server] Error updating creature: {}", e);
+            Err("Error updating creature".to_string())
+        }
+    }
+}
+
+#[tauri::command]
 pub fn delete_creature(id: i32) -> Result<(), String> {
     println!("[server] Deleting creature");
 

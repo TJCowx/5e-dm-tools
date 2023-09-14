@@ -237,6 +237,10 @@ impl CreatureDto {
         })
     }
 
+    pub fn update_creature(creature: Creature) -> QueryResult<()> {
+        Ok(())
+    }
+
     pub fn delete(id: i32) -> QueryResult<()> {
         let conn = &mut connect_db();
 
