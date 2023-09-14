@@ -193,6 +193,7 @@ impl CreatureDto {
 
     pub fn insert_full_creature(creature: NewCreature) -> QueryResult<()> {
         let conn = &mut connect_db();
+        println!("{:?}", creature);
 
         conn.transaction(|connection| {
             let inserted_creature: CreatureDto = diesel::insert_into(creatures::table)

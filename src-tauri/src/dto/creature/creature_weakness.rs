@@ -52,13 +52,13 @@ impl CreatureWeakness {
         diesel::delete(creatures_weaknesses.filter(creature_id.eq(parent_id))).execute(conn)
     }
 
-    pub fn get_weaknesses_by_creature_id(id: &i32) -> Vec<DamageType> {
+    pub fn get_weaknesses_by_creature_id(creature_id: &i32) -> Vec<DamageType> {
         use crate::schema::damage_types::dsl::*;
 
         let conn = &mut crate::db::connect_db();
         damage_types
             .inner_join(crate::schema::creatures_weaknesses::dsl::creatures_weaknesses)
-            .filter(crate::schema::creatures_weaknesses::dsl::creature_id.eq(id))
+            .filter(crate::schema::creatures_weaknesses::dsl::creature_id.eq(creature_id))
             .select(damage_types::all_columns())
             .load::<DamageType>(conn)
             .expect("Error loading damage types")

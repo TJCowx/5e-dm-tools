@@ -2,7 +2,7 @@ use serde::{Deserialize, Serialize};
 
 use super::{base_creature_ability::BaseCreatureAbility, base_creature_action::BaseCreatureAction};
 
-#[derive(Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct NewCreature {
     pub name: String,

@@ -1,5 +1,5 @@
 use crate::models::base_creature_action::BaseCreatureAction;
-use diesel::{prelude::*, result::Error};
+use diesel::prelude::*;
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Serialize, Deserialize, Queryable)]

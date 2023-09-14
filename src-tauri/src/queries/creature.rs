@@ -8,6 +8,7 @@ pub fn get_all_creatures() -> Result<Vec<Creature>, String> {
     let creatures = CreatureDto::get_all();
 
     println!("[server] Retrieved {} creatures", creatures.len());
+    println!("{:?}", creatures);
 
     Ok(creatures)
 }
@@ -34,7 +35,7 @@ pub fn delete_creature(id: i32) -> Result<(), String> {
 
     match CreatureDto::delete(id) {
         Ok(_) => {
-            println!("[server] Deleted creature");
+            println!("[server] Deleted creature {}", id);
             Ok(())
         }
         Err(e) => {

@@ -48,13 +48,13 @@ impl CreatureAbility {
         diesel::delete(creature_abilities.filter(creature_id.eq(parent_id))).execute(conn)
     }
 
-    pub fn get_abilities_by_creature_id(id: &i32) -> Vec<CreatureAbility> {
+    pub fn get_abilities_by_creature_id(parent_id: &i32) -> Vec<CreatureAbility> {
         use crate::schema::creature_abilities::dsl::*;
 
         let conn = &mut crate::db::connect_db();
 
         creature_abilities
-            .filter(creature_id.eq(id))
+            .filter(creature_id.eq(parent_id))
             .load::<CreatureAbility>(conn)
             .expect("Error loading abilities")
     }

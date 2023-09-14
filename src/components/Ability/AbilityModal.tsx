@@ -2,7 +2,7 @@ import { Button, styled } from '@mui/material';
 import BasicTextField from 'components/Fields/Basic/BasicTextField';
 import Modal from 'components/Modal/Modal';
 import Ability from 'models/creature/Ability';
-import { FC, useState } from 'react';
+import { useState } from 'react';
 import { RequireMessage } from 'utils/validationMessages';
 import { object as yupObject, string as yupString, ValidationError } from 'yup';
 
@@ -36,11 +36,7 @@ const schema = yupObject().shape({
   }),
 });
 
-const AbilityModal: FC<Props> = ({
-  initialAbility = newAbility,
-  onSave,
-  onClose,
-}) => {
+function AbilityModal({ initialAbility = newAbility, onSave, onClose }: Props) {
   const [ability, setAbility] = useState<Ability>(initialAbility);
   const [errors, setErrors] = useState<ErrorSchema>({
     name: null,
@@ -108,6 +104,6 @@ const AbilityModal: FC<Props> = ({
       </Container>
     </Modal>
   );
-};
+}
 
 export default AbilityModal;

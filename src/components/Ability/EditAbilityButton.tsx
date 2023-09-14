@@ -2,7 +2,8 @@ import { faPen } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IconButton } from '@mui/material';
 import Ability from 'models/creature/Ability';
-import { FC, useState } from 'react';
+import { useState } from 'react';
+
 import AbilityModal from './AbilityModal';
 
 type Props = {
@@ -10,7 +11,7 @@ type Props = {
   onSave: (Ability: Ability) => void;
 };
 
-const EditAbilityButton: FC<Props> = ({ ability, onSave }) => {
+function EditAbilityButton({ ability, onSave }: Props) {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
@@ -31,6 +32,6 @@ const EditAbilityButton: FC<Props> = ({ ability, onSave }) => {
       )}
     </>
   );
-};
+}
 
 export default EditAbilityButton;

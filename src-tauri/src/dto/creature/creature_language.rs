@@ -52,13 +52,13 @@ impl CreatureLanguage {
         diesel::delete(creatures_languages.filter(creature_id.eq(parent_id))).execute(conn)
     }
 
-    pub fn get_languages_by_creature_id(id: &i32) -> Vec<Language> {
+    pub fn get_languages_by_creature_id(language_id: &i32) -> Vec<Language> {
         use crate::schema::languages::dsl::*;
 
         let conn = &mut crate::db::connect_db();
         languages
             .inner_join(crate::schema::creatures_languages::dsl::creatures_languages)
-            .filter(crate::schema::creatures_languages::dsl::creature_id.eq(id))
+            .filter(crate::schema::creatures_languages::dsl::creature_id.eq(language_id))
             .select(languages::all_columns())
             .load::<Language>(conn)
             .expect("Error loading languages")

@@ -2,7 +2,7 @@ use serde::{Deserialize, Serialize};
 
 use super::base_creature_action_damage::BaseCreatureActionDamage;
 
-#[derive(Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize)]
 pub struct BaseCreatureAction {
     pub name: String,
     pub description: String,

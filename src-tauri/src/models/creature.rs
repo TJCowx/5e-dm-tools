@@ -11,7 +11,7 @@ use crate::dto::condition_type::ConditionType;
 use crate::dto::proficiency::Proficiency;
 use crate::dto::size::Size;
 
-#[derive(Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Creature {
     pub id: i32,
