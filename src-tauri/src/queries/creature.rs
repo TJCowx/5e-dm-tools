@@ -35,11 +35,11 @@ pub fn get_creature_by_id(id: i32) -> Result<Creature, String> {
     // TODO:Not sure how well this pulls from the creature
 
     match CreatureDto::get_by_id(id) {
-        Some(creature) => {
+        Ok(creature) => {
             println!("[server] Retrieved creature {}", id);
             Ok(creature)
         }
-        None => {
+        Err(_) => {
             println!("[server] Error getting creature {}", id);
             Err("Error getting creature".to_string())
         }
@@ -50,9 +50,9 @@ pub fn get_creature_by_id(id: i32) -> Result<Creature, String> {
 pub fn update_creature(creature: Creature) -> Result<(), String> {
     println!("[server] Updating creature {}", creature.id);
     // TODO: This needs to actually save better
-    match CreatureDto::update(creature) {
+    match CreatureDto::update(&creature) {
         Ok(_) => {
-            println!("[server] Updated creature {}", creature.id);
+            println!("[server] Updated creature {}", &creature.id);
             Ok(())
         }
         Err(e) => {

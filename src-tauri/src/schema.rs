@@ -63,6 +63,7 @@ diesel::table! {
         to_hit -> Nullable<Integer>,
         reach -> Nullable<Integer>,
         attack_delivery_id -> Nullable<Integer>,
+        attack_type_id -> Nullable<Integer>,
         action_type_id -> Integer,
         creature_id -> Integer,
     }
@@ -201,10 +202,10 @@ diesel::joinable!(creature_action_damages -> creature_actions (action_id));
 diesel::joinable!(creature_action_damages -> damage_types (type_id));
 diesel::joinable!(creature_actions -> action_types (action_type_id));
 diesel::joinable!(creature_actions -> attack_deliveries (attack_delivery_id));
+diesel::joinable!(creature_actions -> attack_types (attack_type_id));
 diesel::joinable!(creature_actions -> creatures (creature_id));
 diesel::joinable!(creatures -> alignments (alignment_id));
 diesel::joinable!(creatures -> creature_types (creature_type_id));
-diesel::joinable!(creatures -> sizes (size_id));
 diesel::joinable!(creatures_condition_immunities -> condition_types (condition_type_id));
 diesel::joinable!(creatures_condition_immunities -> creatures (creature_id));
 diesel::joinable!(creatures_immunities -> creatures (creature_id));

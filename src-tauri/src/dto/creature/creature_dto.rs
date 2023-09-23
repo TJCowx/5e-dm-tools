@@ -181,14 +181,13 @@ impl CreatureDto {
             .collect()
     }
 
-    // TODO: Get all properties eventually
-    pub fn get_by_id(id: i32) -> CreatureDto {
+    pub fn get_by_id(id: i32) -> Result<Creature, String> {
         let conn = &mut connect_db();
 
-        all_creatures
-            .find(id)
-            .first::<CreatureDto>(conn)
-            .expect("Failed to get creature")
+        match all_creatures.find(id).first::<CreatureDto>(conn) {
+            Ok(found) => Ok(Self::map_display_creature(found)),
+            Err(e) => Err(format!("Error getting creature: {}", e)),
+        }
     }
 
     pub fn insert_full_creature(creature: NewCreature) -> QueryResult<()> {
@@ -237,7 +236,7 @@ impl CreatureDto {
         })
     }
 
-    pub fn update_creature(creature: Creature) -> QueryResult<()> {
+    pub fn update(creature: &Creature) -> QueryResult<()> {
         Ok(())
     }
 

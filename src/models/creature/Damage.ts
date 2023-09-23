@@ -1,8 +1,10 @@
 import DamageType from './DamageType';
 
 type Damage = {
-  damage: string;
-  damageDice: string;
+  id: number;
+  defaultDamage: string;
+  dice: string;
+  typeId: number;
   type: DamageType;
 };
 

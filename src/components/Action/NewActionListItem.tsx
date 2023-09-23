@@ -7,7 +7,7 @@ import {
   ListItemText,
 } from '@mui/material';
 import Action from 'models/creature/Action';
-import { FC, useState } from 'react';
+import { useState } from 'react';
 import ActionModal from './ActionModal';
 
 type Props = {
@@ -16,7 +16,7 @@ type Props = {
   onSave: (action: Action) => void;
 };
 
-const NewActionListItem: FC<Props> = ({ isLegendary, hasLair, onSave }) => {
+function NewActionListItem({ isLegendary, hasLair, onSave }: Props) {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
@@ -39,6 +39,6 @@ const NewActionListItem: FC<Props> = ({ isLegendary, hasLair, onSave }) => {
       )}
     </>
   );
-};
+}
 
 export default NewActionListItem;

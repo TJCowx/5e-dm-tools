@@ -15,38 +15,33 @@ import BasicNumberField from 'components/Fields/Basic/BasicNumberField';
 import BasicSelectField from 'components/Fields/Basic/BasicSelectField';
 import BasicSwitchField from 'components/Fields/Basic/BasicSwitchField';
 import BasicTextField from 'components/Fields/Basic/BasicTextField';
+import LazySelectField from 'components/Fields/Basic/LazySelectField';
 import ListItemText from 'components/List/ListItemText';
 import Modal from 'components/Modal/Modal';
 import Action from 'models/creature/Action';
-import ActionType, {
-  ActionTypeSelectOptions,
-} from 'models/creature/ActionType';
 import {
-  AttackDelivery,
   AttackDeliverySelectOptions,
-  AttackType,
   AttackTypeSelectOptions,
 } from 'models/creature/AttackType';
 import Damage from 'models/creature/Damage';
-import DamageType, {
-  DamageTypeSelectOptions,
-} from 'models/creature/DamageType';
-import { FC, useMemo, useState } from 'react';
+import DamageType from 'models/creature/DamageType';
+import { useState } from 'react';
 import { RequireMessage } from 'utils/validationMessages';
 import {
   array as yupArray,
   boolean as yupBoolean,
   number as yupNumber,
+  number,
   object as yupObject,
   string as yupString,
   ValidationError,
 } from 'yup';
 
 type Props = {
-  initialAction?: Action;
+  initialAction?: Partial<Action>;
   isLegendary: boolean;
   hasLair: boolean;
-  onSave: (action: Action) => void;
+  onSave: (action: Partial<Action>) => void;
   onClose: () => void;
 };
 
@@ -173,39 +168,30 @@ const StyledForm = styled('div')(() => ({
   },
 }));
 
-const newAction: Action = {
+const newAction: Partial<Action> = {
   name: '',
   description: '',
-  actionType: null,
+  actionTypeId: null,
   isAttack: false,
-  attackDelivery: null,
-  attackType: null,
+  attackDeliveryId: null,
+  attackTypeId: null,
   combatantsHit: 0,
   toHit: 0,
   damage: [],
   reach: 5,
 };
 
-const ActionModal: FC<Props> = ({
+function ActionModal({
   initialAction = newAction,
   isLegendary,
   hasLair,
   onSave,
   onClose,
-}) => {
-  const [action, setAction] = useState<Action>(initialAction);
+}: Props) {
+  const [action, setAction] = useState<Partial<Action>>(initialAction);
   const [errors, setErrors] = useState<Partial<ErrorSchema>>({});
 
-  const actionTypeOptions = useMemo(
-    () =>
-      ActionTypeSelectOptions.filter((type) => {
-        if (type.value === 'Legendary' && !isLegendary) return false;
-        if (type.value === 'Lair' && !hasLair) return false;
-
-        return true;
-      }),
-    [isLegendary, hasLair]
-  );
+  console.log('uhm');
 
   const handleClose = () => {
     setErrors({});
@@ -251,7 +237,7 @@ const ActionModal: FC<Props> = ({
     <Modal title="Add Action" isOpen onClose={handleClose}>
       <StyledForm>
         <BasicTextField
-          value={action.name}
+          value={action.name as string}
           className="mb-16"
           label="Name"
           error={errors.name}
@@ -261,7 +247,7 @@ const ActionModal: FC<Props> = ({
           onBlur={() => setErrors((prev) => ({ ...prev, name: null }))}
         />
         <BasicTextField
-          value={action.description}
+          value={action.description as string}
           className="mb-16"
           label="Description"
           isMultiline
@@ -271,14 +257,22 @@ const ActionModal: FC<Props> = ({
           }
           onBlur={() => setErrors((prev) => ({ ...prev, description: null }))}
         />
-        <BasicSelectField
+        <LazySelectField
           id="action-type-field"
-          value={action.actionType}
+          value={`${action.actionTypeId}`}
           className="mb-16"
           label="Action Type"
           error={errors.actionType}
-          options={actionTypeOptions}
-          onChange={(newVal: ActionType) =>
+          queryArgs={{
+            queryName: 'get_all_action_types',
+            textKey: 'name',
+            valueKey: 'id',
+            queryArgs: {
+              hasLegendary: isLegendary,
+              hasLair,
+            },
+          }}
+          onChange={(newVal) =>
             setAction((prev) => ({ ...prev, actionType: newVal }))
           }
           onBlur={() =>
@@ -286,7 +280,7 @@ const ActionModal: FC<Props> = ({
           }
         />
         <BasicSwitchField
-          value={action.isAttack}
+          value={action.isAttack as boolean}
           className="mb-16"
           label="Is Attack"
           onChange={(isChecked) =>
@@ -302,7 +296,7 @@ const ActionModal: FC<Props> = ({
                 label="Attack Delivery"
                 error={errors.attackDelivery}
                 options={AttackDeliverySelectOptions}
-                onChange={(newVal: AttackDelivery) =>
+                onChange={(newVal) =>
                   setAction((prev) => ({ ...prev, attackDelivery: newVal }))
                 }
                 onBlur={() =>
@@ -315,7 +309,7 @@ const ActionModal: FC<Props> = ({
                 value={action.attackType}
                 error={errors.actionType}
                 options={AttackTypeSelectOptions}
-                onChange={(newVal: AttackType) =>
+                onChange={(newVal) =>
                   setAction((prev) => ({ ...prev, attackType: newVal }))
                 }
                 onBlur={() =>
@@ -325,7 +319,7 @@ const ActionModal: FC<Props> = ({
             </div>
             <div className="grid mb-16">
               <BasicNumberField
-                value={action.toHit}
+                value={action.toHit ?? number}
                 label="To Hit"
                 min={0}
                 error={errors.toHit}
@@ -337,7 +331,7 @@ const ActionModal: FC<Props> = ({
                 }
               />
               <BasicNumberField
-                value={action.reach}
+                value={action.reach ?? null}
                 label="Reach"
                 min={0}
                 step={5}
@@ -351,7 +345,7 @@ const ActionModal: FC<Props> = ({
                 onBlur={() => setErrors((prev) => ({ ...prev, reach: null }))}
               />
               <BasicNumberField
-                value={action.combatantsHit}
+                value={action.combatantsHit ?? null}
                 label="Combatants Hit"
                 min={1}
                 error={errors.combatantsHit}
@@ -393,17 +387,17 @@ const ActionModal: FC<Props> = ({
                   <BasicTextField
                     className="damage-field"
                     label="Damage"
-                    value={damage.damage}
+                    value={damage.defaultDamage ?? null}
                     onChange={(newVal) =>
-                      updateDamageItem({ ...damage, damage: newVal }, i)
+                      updateDamageItem({ ...damage, defaultDamage: newVal }, i)
                     }
                   />
                   <BasicTextField
                     className="damage-dice-field"
                     label="Damage Dice"
-                    value={damage.damageDice}
+                    value={damage.dice}
                     onChange={(newVal) =>
-                      updateDamageItem({ ...damage, damageDice: newVal }, i)
+                      updateDamageItem({ ...damage, dice: newVal }, i)
                     }
                   />
                   <BasicSelectField
@@ -457,6 +451,6 @@ const ActionModal: FC<Props> = ({
       </StyledForm>
     </Modal>
   );
-};
+}
 
 export default ActionModal;

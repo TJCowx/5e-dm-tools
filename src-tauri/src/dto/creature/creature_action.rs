@@ -8,6 +8,7 @@ use serde::{Deserialize, Serialize};
 #[diesel(belongs_to(Creature))]
 #[diesel(belongs_to(ActionType))]
 #[diesel(belongs_to(AttackDelivery))]
+#[diesel(belongs_to(AttackType))]
 pub struct CreatureAction {
     id: i32,
     name: String,
@@ -16,6 +17,7 @@ pub struct CreatureAction {
     to_hit: Option<i32>,
     reach: Option<i32>,
     attack_delivery_id: Option<i32>,
+    attack_type_id: Option<i32>,
     action_type_id: i32,
     creature_id: i32,
 }
@@ -30,6 +32,7 @@ pub struct NewCreatureAction {
     pub to_hit: Option<i32>,
     pub reach: Option<i32>,
     pub attack_delivery_id: Option<i32>,
+    pub attack_type_id: Option<i32>,
     pub action_type_id: i32,
     pub creature_id: i32,
 }
@@ -50,6 +53,7 @@ impl CreatureAction {
                 to_hit: action.to_hit,
                 reach: action.reach,
                 attack_delivery_id: action.attack_delivery_id,
+                attack_type_id: action.attack_type_id,
                 action_type_id: action.action_type_id,
                 creature_id: parent_id.clone(),
             };

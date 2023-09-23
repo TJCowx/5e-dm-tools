@@ -10,6 +10,7 @@ pub struct BaseCreatureAction {
     pub to_hit: Option<i32>,
     pub reach: Option<i32>,
     pub attack_delivery_id: Option<i32>,
+    pub attack_type_id: Option<i32>,
     pub action_type_id: i32,
     pub damages: Vec<BaseCreatureActionDamage>,
 }

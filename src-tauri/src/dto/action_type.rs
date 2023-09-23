@@ -10,11 +10,21 @@ pub struct ActionType {
 }
 
 impl ActionType {
-    pub fn get_all() -> Vec<ActionType> {
+    pub fn get_all(has_legendary: bool, has_lair: bool) -> Vec<ActionType> {
         use crate::schema::action_types::dsl::*;
 
         let conn = &mut crate::db::connect_db();
-        let results = action_types
+        let mut query = action_types.into_boxed();
+
+        if !has_legendary {
+            query = query.filter(crate::schema::action_types::name.ne("Legendary"));
+        }
+
+        if !has_lair {
+            query = query.filter(crate::schema::action_types::name.ne("Lair"));
+        }
+
+        let results = query
             .load::<ActionType>(conn)
             .expect("Error loading action types");
 

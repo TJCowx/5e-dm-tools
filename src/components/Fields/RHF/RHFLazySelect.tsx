@@ -1,15 +1,9 @@
 import useInvoke from 'hooks/useInvoke';
+import SelectQueryArgs from 'models/SelectQueryArgs';
 import { useMemo } from 'react';
 import { Control, FieldPath, FieldValues } from 'react-hook-form';
 
 import RHFSelectField, { SelectOptions } from './RHFSelectField';
-
-// TODO: Move this into another file
-export type QueryArgs = {
-  queryName: string;
-  valueKey: string;
-  textKey: string;
-};
 
 type Props<T extends FieldValues> = {
   id: string;
@@ -18,7 +12,7 @@ type Props<T extends FieldValues> = {
   label: string;
   fieldName: FieldPath<T>;
   isRequired?: boolean;
-  queryArgs: QueryArgs;
+  queryArgs: SelectQueryArgs;
 };
 
 function RHFLazySelect<T extends FieldValues>({

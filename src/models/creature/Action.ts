@@ -3,16 +3,22 @@ import { AttackDelivery, AttackType } from './AttackType';
 import Damage from './Damage';
 
 type Action = {
+  id: number;
   name: string;
   description: string;
-  actionType: ActionType | null;
   isAttack: boolean;
-  attackDelivery: AttackDelivery | null;
-  attackType: AttackType | null;
   toHit: number | null;
   combatantsHit: number | null;
   damage: Damage[] | null;
   reach: number | null;
+
+  actionTypeId: number | null;
+  attackDeliveryId: number | null;
+  attackTypeId: number | null;
+
+  actionType: ActionType | null;
+  attackDelivery: AttackDelivery | null;
+  attackType: AttackType | null;
 };
 
 export default Action;

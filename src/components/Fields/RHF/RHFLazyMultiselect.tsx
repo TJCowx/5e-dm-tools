@@ -1,8 +1,8 @@
 import useInvoke from 'hooks/useInvoke';
+import SelectQueryArgs from 'models/SelectQueryArgs';
 import { useMemo } from 'react';
 import { Control, FieldPath, FieldValues } from 'react-hook-form';
 
-import { QueryArgs } from './RHFLazySelect';
 import RHFMultiselectField from './RHFMultiselectField';
 import { SelectOptions } from './RHFSelectField';
 
@@ -13,7 +13,7 @@ type Props<T extends FieldValues> = {
   label: string;
   fieldName: FieldPath<T>;
   isRequired?: boolean;
-  queryArgs: QueryArgs;
+  queryArgs: SelectQueryArgs;
 };
 
 function RHFLazyMultiselect<T extends FieldValues>({

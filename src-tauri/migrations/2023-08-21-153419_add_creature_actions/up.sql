@@ -14,10 +14,12 @@ CREATE TABLE creature_actions (
   to_hit INTEGER NULL,
   reach INTEGER NULL,
   attack_delivery_id INTEGER NULL,
+  attack_type_id INTEGER NULL,
   action_type_id INTEGER NOT NULL,
   creature_id INTEGER NOT NULL,
   FOREIGN KEY (attack_delivery_id) REFERENCES attack_deliveries(id) ON DELETE CASCADE,
   FOREIGN KEY (action_type_id) REFERENCES action_types(id) ON DELETE RESTRICT,
+  FOREIGN KEY (attack_type_id) REFERENCES attack_types(id) ON DELETE CASCADE,
   FOREIGN KEY (creature_id) REFERENCES creatures(id) ON DELETE CASCADE
 );
 CREATE TABLE creature_action_damages (
