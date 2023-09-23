@@ -12,6 +12,7 @@ type Props = {
   label: string;
   error?: string | null;
   queryArgs: SelectQueryArgs;
+  queryParams?: Record<string, unknown>;
   onChange: (newVal: string) => void;
   onBlur?: () => void;
 };
@@ -23,18 +24,19 @@ function LazySelectField({
   label,
   error: errorProp,
   queryArgs,
+  queryParams,
   onChange,
   onBlur,
 }: Props) {
   const { data, isLoading, error, invoke } = useInvoke(
     queryArgs.queryName,
-    queryArgs.queryArgs,
+    queryParams,
     false
   );
 
   useEffect(() => {
     invoke();
-  }, [queryArgs.queryArgs]);
+  }, [queryParams]);
 
   const options: SelectOptions[] = useMemo(() => {
     if (!data || !Array.isArray(data)) return [];

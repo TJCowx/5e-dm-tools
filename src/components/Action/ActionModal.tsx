@@ -19,19 +19,15 @@ import LazySelectField from 'components/Fields/Basic/LazySelectField';
 import ListItemText from 'components/List/ListItemText';
 import Modal from 'components/Modal/Modal';
 import Action from 'models/creature/Action';
-import {
-  AttackDeliverySelectOptions,
-  AttackTypeSelectOptions,
-} from 'models/creature/AttackType';
+import { AttackTypeSelectOptions } from 'models/creature/AttackType';
 import Damage from 'models/creature/Damage';
 import DamageType from 'models/creature/DamageType';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { RequireMessage } from 'utils/validationMessages';
 import {
   array as yupArray,
   boolean as yupBoolean,
   number as yupNumber,
-  number,
   object as yupObject,
   string as yupString,
   ValidationError,
@@ -53,28 +49,28 @@ const schema = yupObject().shape({
     field: 'description',
     message: RequireMessage,
   }),
-  actionType: yupString().nullable().required({
-    field: 'actionType',
+  actionTypeId: yupNumber().nullable().required({
+    field: 'actionTypeId',
     message: RequireMessage,
   }),
   isAttack: yupBoolean(),
-  attackDelivery: yupString()
+  attackDeliveryId: yupNumber()
     .nullable()
     .when('isAttack', {
       is: true,
       then: () =>
         yupString().required({
-          field: 'attackDelivery',
+          field: 'attackDeliveryId',
           message: RequireMessage,
         }),
     }),
-  attackType: yupString()
+  attackTypeId: yupNumber()
     .nullable()
     .when('isAttack', {
       is: true,
       then: () =>
         yupString().required({
-          field: 'attackType',
+          field: 'attackTypeId',
           message: RequireMessage,
         }),
     }),
@@ -191,7 +187,13 @@ function ActionModal({
   const [action, setAction] = useState<Partial<Action>>(initialAction);
   const [errors, setErrors] = useState<Partial<ErrorSchema>>({});
 
-  console.log('uhm');
+  const attackTypeParams = useMemo(
+    () => ({
+      hasLegendary: isLegendary,
+      hasLair,
+    }),
+    [isLegendary, hasLair]
+  );
 
   const handleClose = () => {
     setErrors({});
@@ -262,18 +264,18 @@ function ActionModal({
           value={`${action.actionTypeId}`}
           className="mb-16"
           label="Action Type"
-          error={errors.actionType}
+          error={errors.actionTypeId}
           queryArgs={{
             queryName: 'get_all_action_types',
             textKey: 'name',
             valueKey: 'id',
-            queryArgs: {
-              hasLegendary: isLegendary,
-              hasLair,
-            },
           }}
+          queryParams={attackTypeParams}
           onChange={(newVal) =>
-            setAction((prev) => ({ ...prev, actionType: newVal }))
+            setAction((prev) => ({
+              ...prev,
+              actionTypeId: newVal != null ? +newVal : null,
+            }))
           }
           onBlur={() =>
             setErrors((prev) => ({ ...prev, actionType: undefined }))
@@ -290,14 +292,21 @@ function ActionModal({
         {action.isAttack && (
           <>
             <div className="grid mb-16">
-              <BasicSelectField
+              <LazySelectField
                 id="attack-delivery-field"
-                value={action.attackDelivery}
+                value={`${action.attackDeliveryId}`}
                 label="Attack Delivery"
-                error={errors.attackDelivery}
-                options={AttackDeliverySelectOptions}
+                error={errors.attackDeliveryId}
+                queryArgs={{
+                  queryName: 'get_all_attack_deliveries',
+                  textKey: 'name',
+                  valueKey: 'id',
+                }}
                 onChange={(newVal) =>
-                  setAction((prev) => ({ ...prev, attackDelivery: newVal }))
+                  setAction((prev) => ({
+                    ...prev,
+                    attackDeliveryId: newVal != null ? +newVal : null,
+                  }))
                 }
                 onBlur={() =>
                   setErrors((prev) => ({ ...prev, attackDelivery: undefined }))
@@ -306,11 +315,14 @@ function ActionModal({
               <BasicSelectField
                 id="attack-type-field"
                 label="Attack Type"
-                value={action.attackType}
-                error={errors.actionType}
+                value={`${action.attackTypeId}`}
+                error={errors.actionTypeId}
                 options={AttackTypeSelectOptions}
                 onChange={(newVal) =>
-                  setAction((prev) => ({ ...prev, attackType: newVal }))
+                  setAction((prev) => ({
+                    ...prev,
+                    attackTypeId: newVal != null ? +newVal : null,
+                  }))
                 }
                 onBlur={() =>
                   setErrors((prev) => ({ ...prev, attackType: undefined }))
@@ -319,7 +331,7 @@ function ActionModal({
             </div>
             <div className="grid mb-16">
               <BasicNumberField
-                value={action.toHit ?? number}
+                value={action.toHit ?? null}
                 label="To Hit"
                 min={0}
                 error={errors.toHit}
