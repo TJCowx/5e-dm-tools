@@ -21,4 +21,27 @@ impl DamageType {
 
         results
     }
+
+    pub fn get_by_id(type_id: i32) -> DamageType {
+        use crate::schema::damage_types::dsl::*;
+
+        let conn = &mut crate::db::connect_db();
+        let result = damage_types
+            .filter(id.eq(type_id))
+            .first::<DamageType>(conn)
+            .expect("Error loading damage type");
+
+        result
+    }
+
+    pub fn get_by_ids(ids: Vec<i32>) -> Result<Vec<DamageType>, String> {
+        use crate::schema::damage_types::dsl::*;
+
+        let conn = &mut crate::db::connect_db();
+
+        match damage_types.filter(id.eq_any(ids)).load::<DamageType>(conn) {
+            Ok(results) => Ok(results),
+            Err(e) => Err(e.to_string()),
+        }
+    }
 }

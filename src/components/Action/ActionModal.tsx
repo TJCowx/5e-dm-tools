@@ -12,14 +12,12 @@ import {
   styled,
 } from '@mui/material';
 import BasicNumberField from 'components/Fields/Basic/BasicNumberField';
-import BasicSelectField from 'components/Fields/Basic/BasicSelectField';
 import BasicSwitchField from 'components/Fields/Basic/BasicSwitchField';
 import BasicTextField from 'components/Fields/Basic/BasicTextField';
 import LazySelectField from 'components/Fields/Basic/LazySelectField';
 import ListItemText from 'components/List/ListItemText';
 import Modal from 'components/Modal/Modal';
 import Action from 'models/creature/Action';
-import { AttackTypeSelectOptions } from 'models/creature/AttackType';
 import Damage from 'models/creature/Damage';
 import { useMemo, useState } from 'react';
 import { RequireMessage } from 'utils/validationMessages';
@@ -196,7 +194,7 @@ function ActionModal({
 
   const handleClose = () => {
     setErrors({});
-    // setAction(newAction());
+    setAction(newAction);
     onClose();
   };
 
@@ -260,7 +258,7 @@ function ActionModal({
         />
         <LazySelectField
           id="action-type-field"
-          value={`${action.actionTypeId}`}
+          value={action.actionTypeId ? `${action.actionTypeId}` : null}
           className="mb-16"
           label="Action Type"
           error={errors.actionTypeId}
@@ -293,7 +291,9 @@ function ActionModal({
             <div className="grid mb-16">
               <LazySelectField
                 id="attack-delivery-field"
-                value={`${action.attackDeliveryId}`}
+                value={
+                  action.attackDeliveryId ? `${action.attackDeliveryId}` : null
+                }
                 label="Attack Delivery"
                 error={errors.attackDeliveryId}
                 queryArgs={{
@@ -311,12 +311,16 @@ function ActionModal({
                   setErrors((prev) => ({ ...prev, attackDelivery: undefined }))
                 }
               />
-              <BasicSelectField
+              <LazySelectField
                 id="attack-type-field"
                 label="Attack Type"
-                value={`${action.attackTypeId}`}
+                value={action.attackTypeId ? `${action.attackTypeId}` : null}
                 error={errors.actionTypeId}
-                options={AttackTypeSelectOptions}
+                queryArgs={{
+                  queryName: 'get_all_attack_types',
+                  textKey: 'name',
+                  valueKey: 'id',
+                }}
                 onChange={(newVal) =>
                   setAction((prev) => ({
                     ...prev,

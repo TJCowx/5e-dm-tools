@@ -30,4 +30,16 @@ impl ActionType {
 
         results
     }
+
+    pub fn get_by_id(type_id: i32) -> ActionType {
+        use crate::schema::action_types::dsl::*;
+
+        let conn = &mut crate::db::connect_db();
+        let result = action_types
+            .filter(id.eq(type_id))
+            .first::<ActionType>(conn)
+            .expect("Error loading action type");
+
+        result
+    }
 }

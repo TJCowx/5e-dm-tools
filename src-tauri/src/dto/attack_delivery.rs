@@ -20,4 +20,16 @@ impl AttackDelivery {
 
         results
     }
+
+    pub fn get_by_id(delivery_id: i32) -> AttackDelivery {
+        use crate::schema::attack_deliveries::dsl::*;
+
+        let conn = &mut crate::db::connect_db();
+        let result = attack_deliveries
+            .filter(id.eq(delivery_id))
+            .first::<AttackDelivery>(conn)
+            .expect("Error loading attack delivery");
+
+        result
+    }
 }

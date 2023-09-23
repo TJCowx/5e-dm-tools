@@ -400,8 +400,8 @@ function CreatureForm({ control, onSubmit, watch }: Props) {
                 }
               >
                 <ListItemText
-                  primary={ability.name}
-                  secondary={ability.description}
+                  primary={ability.name ?? ''}
+                  secondary={ability.description ?? ''}
                 />
               </ListItemTwoSecondaryActions>
               <Divider />

@@ -12,3 +12,13 @@ pub fn get_all_attack_deliveries() -> Result<Vec<AttackDelivery>, String> {
 
     Ok(attack_deliveries)
 }
+
+#[tauri::command]
+pub fn get_attack_delivery_by_id(id: i32) -> Result<AttackDelivery, String> {
+    println!("[server] Getting attack delivery with id {}", id);
+    let attack_delivery = AttackDelivery::get_by_id(id);
+
+    println!("[server] Retrieved attack delivery with id {}", id);
+
+    Ok(attack_delivery)
+}

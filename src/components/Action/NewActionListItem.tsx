@@ -13,7 +13,7 @@ import ActionModal from './ActionModal';
 type Props = {
   isLegendary: boolean;
   hasLair: boolean;
-  onSave: (action: Action) => void;
+  onSave: (action: Partial<Action>) => void;
 };
 
 function NewActionListItem({ isLegendary, hasLair, onSave }: Props) {

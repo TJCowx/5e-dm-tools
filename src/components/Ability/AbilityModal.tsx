@@ -7,8 +7,8 @@ import { RequireMessage } from 'utils/validationMessages';
 import { object as yupObject, string as yupString, ValidationError } from 'yup';
 
 type Props = {
-  initialAbility?: Ability;
-  onSave: (ability: Ability) => void;
+  initialAbility?: Partial<Ability>;
+  onSave: (ability: Partial<Ability>) => void;
   onClose: () => void;
 };
 
@@ -23,7 +23,7 @@ const Container = styled('div')(() => ({
   },
 }));
 
-const newAbility: Ability = {
+const newAbility: Partial<Ability> = {
   name: '',
   description: '',
 };
@@ -37,7 +37,7 @@ const schema = yupObject().shape({
 });
 
 function AbilityModal({ initialAbility = newAbility, onSave, onClose }: Props) {
-  const [ability, setAbility] = useState<Ability>(initialAbility);
+  const [ability, setAbility] = useState<Partial<Ability>>(initialAbility);
   const [errors, setErrors] = useState<ErrorSchema>({
     name: null,
     description: null,
@@ -73,7 +73,7 @@ function AbilityModal({ initialAbility = newAbility, onSave, onClose }: Props) {
       <Container>
         <BasicTextField
           label="Name"
-          value={ability.name}
+          value={ability.name ?? ''}
           onChange={(newVal) =>
             setAbility((prev) => ({ ...prev, name: newVal }))
           }
@@ -82,7 +82,7 @@ function AbilityModal({ initialAbility = newAbility, onSave, onClose }: Props) {
         />
         <BasicTextField
           label="Description"
-          value={ability.description}
+          value={ability.description ?? ''}
           isMultiline
           onChange={(newVal) =>
             setAbility((prev) => ({ ...prev, description: newVal }))

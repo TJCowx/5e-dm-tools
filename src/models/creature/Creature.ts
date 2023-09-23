@@ -72,8 +72,8 @@ export type NewCreature = BaseCreature & {
   resistances: number[];
   weaknesses: number[];
 
-  abilities?: Ability[];
-  actions?: Action[];
+  abilities?: Partial<Ability>[];
+  actions?: Partial<Action>[];
 };
 
 export default Creature;

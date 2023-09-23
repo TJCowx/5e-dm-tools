@@ -12,3 +12,13 @@ pub fn get_all_action_types(
 
     Ok(action_types)
 }
+
+#[tauri::command]
+pub fn get_action_type_by_id(id: i32) -> Result<ActionType, String> {
+    println!("[server] Getting action type with id {}", id);
+    let action_type = ActionType::get_by_id(id);
+
+    println!("[server] Retrieved action type with id {}", id);
+
+    Ok(action_type)
+}

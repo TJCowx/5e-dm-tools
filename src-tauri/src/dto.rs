@@ -1,6 +1,7 @@
 pub mod action_type;
 pub mod alignment;
 pub mod attack_delivery;
+pub mod attack_type_dto;
 pub mod condition_type;
 pub mod creature;
 pub mod damage_type;

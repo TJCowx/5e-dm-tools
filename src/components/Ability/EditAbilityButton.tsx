@@ -7,8 +7,8 @@ import { useState } from 'react';
 import AbilityModal from './AbilityModal';
 
 type Props = {
-  ability: Ability;
-  onSave: (Ability: Ability) => void;
+  ability: Partial<Ability>;
+  onSave: (Ability: Partial<Ability>) => void;
 };
 
 function EditAbilityButton({ ability, onSave }: Props) {

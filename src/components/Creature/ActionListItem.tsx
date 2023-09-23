@@ -4,15 +4,26 @@ import { IconButton, Typography } from '@mui/material';
 import EditActionButton from 'components/Action/EditActionButton';
 import ListItemText from 'components/List/ListItemText';
 import ListItemTwoSecondaryActions from 'components/List/ListItemTwoSecondaryActions';
+import useInvoke from 'hooks/useInvoke';
 import Action from 'models/creature/Action';
+import ActionType from 'models/creature/ActionType';
+import { AttackDelivery, AttackType } from 'models/creature/AttackType';
+import Damage from 'models/creature/Damage';
+import DamageType from 'models/creature/DamageType';
 
 type Props = {
-  action: Action;
+  action: Partial<Action>;
   isLegendary: boolean;
   hasLair: boolean;
-  onEdit: (action: Action) => void;
+  onEdit: (action: Partial<Action>) => void;
   onDelete: (id: string) => void;
 };
+
+const mapDamageIds = (damage: Partial<Damage>[]) =>
+  damage?.reduce<number[]>((acc, dmg) => {
+    if (dmg?.typeId) acc.push(dmg.typeId);
+    return acc;
+  }, []);
 
 function ActionListItem({
   action,
@@ -21,14 +32,34 @@ function ActionListItem({
   onEdit,
   onDelete,
 }: Props) {
+  // These invoke spams are horrid, but I don't want to refactor everything when I'm going to migrate to svelte
+  const { data: damageTypes } = useInvoke<DamageType[]>(
+    'get_damage_types_by_ids',
+    {
+      ids: mapDamageIds(action.damage ?? []),
+    }
+  );
+
+  const { data: attackDelivery } = useInvoke<AttackDelivery>(
+    'get_attack_delivery_by_id',
+    {
+      id: action.attackDeliveryId as number,
+    }
+  );
+
+  const { data: attackType } = useInvoke<AttackType>('get_attack_type_by_id', {
+    id: action.attackDeliveryId as number,
+  });
+
+  const { data: actionType } = useInvoke<ActionType>('get_action_type_by_id', {
+    id: action.actionTypeId as number,
+  });
+
   const {
     id,
     name,
     description,
-    actionType,
     isAttack,
-    attackDelivery,
-    attackType,
     toHit,
     damage,
     reach,
@@ -36,11 +67,16 @@ function ActionListItem({
   } = action;
 
   const damageText = (damage ?? [])
-    .map((dmg) => `${dmg.defaultDamage} ${`TODO: Damage Type`} damage`)
+    .map(
+      (dmg) =>
+        `${dmg.defaultDamage} ${
+          damageTypes?.find((type) => type.id === dmg.typeId)?.name
+        } damage`
+    )
     .join(', ');
 
   const attackDescription = isAttack
-    ? ` - ${`TODO: attackDelivery`} ${`TODO: attackType`} Attack | +${toHit} to hit | Reach ${reach}ft | ${damageText} | ${combatantsHit} target`
+    ? ` - ${attackDelivery?.name} ${attackType?.name} Attack | +${toHit} to hit | Reach ${reach}ft | ${damageText} | ${combatantsHit} target`
     : '';
 
   return (
@@ -57,7 +93,7 @@ function ActionListItem({
             aria-label={`Delete ${name}`}
             edge="end"
             color="warning"
-            onClick={() => onDelete(id)}
+            onClick={() => onDelete(`${id}`)}
           >
             <FontAwesomeIcon icon={faTrash} />
           </IconButton>
@@ -65,11 +101,11 @@ function ActionListItem({
       }
     >
       <ListItemText
-        primary={name}
+        primary={name ?? ''}
         secondary={
           <>
             <Typography variant="body2">
-              TODO: ActionType
+              {actionType?.name}
               {attackDescription}
             </Typography>
             <Typography variant="body2">{description}</Typography>
