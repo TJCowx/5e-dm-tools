@@ -18,6 +18,7 @@ type NavItem = {
   text: string;
   icon: ReactNode;
   href: string;
+  activeMustMatch?: boolean;
 };
 
 const NavItems: NavItem[] = [
@@ -25,6 +26,7 @@ const NavItems: NavItem[] = [
     text: 'Home',
     icon: <FontAwesomeIcon icon={faHouse} />,
     href: '/',
+    activeMustMatch: true,
   },
   {
     text: 'Initiative',
@@ -53,14 +55,16 @@ function NavDrawer() {
   return (
     <StyledDrawer variant="permanent">
       <List>
-        {NavItems.map(({ text, icon, href }) => (
+        {NavItems.map(({ text, icon, href, activeMustMatch }) => (
           <ListItem key={text}>
             <Link href={href} passHref>
               <ListItemButton aria-label={text} component="a" href={href}>
                 <ListItemIcon
                   className={clsx({
                     'rail-icon': true,
-                    'is-active': router.pathname.startsWith(href),
+                    'is-active': activeMustMatch
+                      ? router.pathname === href
+                      : router.pathname.startsWith(href),
                   })}
                 >
                   {icon}
