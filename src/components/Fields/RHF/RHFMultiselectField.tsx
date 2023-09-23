@@ -79,7 +79,7 @@ function RHFMultiselectField<T extends FieldValues>({
           </InputLabel>
           <Select
             {...field}
-            value={field.value || ''}
+            value={field.value || []}
             labelId={id}
             label={label}
             error={fieldState.error != null}
@@ -95,7 +95,7 @@ function RHFMultiselectField<T extends FieldValues>({
               <MenuItem key={value} value={value} dense>
                 <Checkbox
                   checked={
-                    (field.value as Array<string | number>).indexOf(value) > -1
+                    (field.value as Array<string | number>)?.indexOf(value) > -1
                   }
                 />
                 <ListItemText primary={text} />

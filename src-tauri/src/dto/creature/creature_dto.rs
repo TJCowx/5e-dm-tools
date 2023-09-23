@@ -180,10 +180,10 @@ impl CreatureDto {
             .collect()
     }
 
-    pub fn get_by_id(id: i32) -> Result<Creature, String> {
+    pub fn get_by_id(creature_id: i32) -> Result<Creature, String> {
         let conn = &mut connect_db();
 
-        match all_creatures.find(id).first::<CreatureDto>(conn) {
+        match all_creatures.find(creature_id).first::<CreatureDto>(conn) {
             Ok(found) => Ok(Self::map_display_creature(found)),
             Err(e) => Err(format!("Error getting creature: {}", e)),
         }

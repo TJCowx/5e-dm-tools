@@ -30,7 +30,10 @@ pub fn add_creature(new_creature: NewCreature) -> Result<(), String> {
 
 #[tauri::command]
 pub fn get_creature_by_id(id: i32) -> Result<Creature, String> {
-    println!("[server] Getting creature {}", id);
+    println!(
+        "[server] G=================================================etting creature {}",
+        id
+    );
 
     match CreatureDto::get_by_id(id) {
         Ok(creature) => {

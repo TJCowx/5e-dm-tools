@@ -1,5 +1,4 @@
 import { styled } from '@mui/material';
-import { getCreatureById, updateCreature } from 'api/creatures';
 import CreatureForm from 'components/Creature/CreatureForm';
 import Layout from 'components/Layout/Layout';
 import NavBack from 'components/Links/NavBack';
@@ -8,9 +7,8 @@ import useConfirmBeforeExitPage from 'hooks/useConfirmBeforeExitPage';
 import useInvoke from 'hooks/useInvoke';
 import Creature from 'models/creature/Creature';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { logMessage } from 'utils/loggingUtils';
 
 const LoadingContainer = styled('div')(() => ({
   display: 'flex',
@@ -23,9 +21,9 @@ function EditCreature() {
   const router = useRouter();
   const { creatureId } = router.query;
 
-  const { data, isLoading, invoke, error } = useInvoke<Partial<Creature>>(
+  const { data, isLoading, error } = useInvoke<Partial<Creature>>(
     'get_creature_by_id',
-    { id: creatureId }
+    { id: parseInt(creatureId as string, 10) }
   );
 
   useConfirmBeforeExitPage();
@@ -33,10 +31,7 @@ function EditCreature() {
   const { handleSubmit, control, watch, reset } = useForm<Partial<Creature>>();
 
   useEffect(() => {
-    invoke();
-  }, []);
-
-  useEffect(() => {
+    console.log(data);
     if (data) {
       reset(data);
     }
