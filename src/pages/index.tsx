@@ -23,14 +23,6 @@ function Home() {
             />
           </ListItemButton>
         </NextLink>
-        <NextLink className="reset" href="/">
-          <ListItemButton>
-            <ListItemText
-              primary="Change Connection"
-              secondary="Go back and change your connection string."
-            />
-          </ListItemButton>
-        </NextLink>
       </List>
     </Layout>
   );
