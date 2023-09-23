@@ -1,6 +1,6 @@
 import { styled } from '@mui/material';
 import clsx from 'clsx';
-import { FC, PropsWithChildren } from 'react';
+import { PropsWithChildren } from 'react';
 import NavDrawer from './NavDrawer';
 
 const Root = styled('div')(() => ({

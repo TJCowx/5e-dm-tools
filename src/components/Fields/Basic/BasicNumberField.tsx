@@ -1,6 +1,6 @@
 import { TextField } from '@mui/material';
 import clsx from 'clsx';
-import { FC, useMemo } from 'react';
+import { useMemo } from 'react';
 
 type Props = {
   className?: string;
@@ -14,7 +14,7 @@ type Props = {
   onBlur?: () => void;
 };
 
-const BasicNumberField: FC<Props> = ({
+function BasicNumberField({
   className,
   value,
   label,
@@ -24,7 +24,7 @@ const BasicNumberField: FC<Props> = ({
   error,
   onChange,
   onBlur,
-}) => {
+}: Props) {
   const inputProps = useMemo(() => {
     if (min != null && max != null) return { inputProps: { min, max, step } };
     if (min != null && max == null) return { inputProps: { min, step } };
@@ -57,14 +57,6 @@ const BasicNumberField: FC<Props> = ({
       onBlur={onBlur}
     />
   );
-};
-
-BasicNumberField.defaultProps = {
-  className: undefined,
-  min: undefined,
-  max: undefined,
-  step: 1,
-  error: undefined,
-};
+}
 
 export default BasicNumberField;

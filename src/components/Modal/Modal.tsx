@@ -2,7 +2,7 @@ import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IconButton, Modal as MuiModal, Typography } from '@mui/material';
 import { styled } from '@mui/system';
-import { FC, ReactNode } from 'react';
+import { ReactNode } from 'react';
 
 type Props = {
   title: string;
@@ -51,30 +51,32 @@ const StyledModal = styled(MuiModal)(({ theme }) => ({
   },
 }));
 
-const Modal: FC<Props> = ({
+function Modal({
   title,
   isOpen,
   children,
   contentContainerStyle,
   onClose,
-}) => (
-  <StyledModal open={isOpen} onClose={onClose}>
-    <div className="modal-wrapper">
-      <div className="header-container">
-        <Typography variant="h5">{title}</Typography>
-        <IconButton aria-label="Close Modal" onClick={onClose}>
-          <FontAwesomeIcon icon={faXmark} />
-        </IconButton>
+}: Props) {
+  return (
+    <StyledModal open={isOpen} onClose={onClose}>
+      <div className="modal-wrapper">
+        <div className="header-container">
+          <Typography variant="h5">{title}</Typography>
+          <IconButton aria-label="Close Modal" onClick={onClose}>
+            <FontAwesomeIcon icon={faXmark} />
+          </IconButton>
+        </div>
+        <div
+          className="content-container scroll-enabled"
+          style={contentContainerStyle}
+        >
+          {children}
+        </div>
       </div>
-      <div
-        className="content-container scroll-enabled"
-        style={contentContainerStyle}
-      >
-        {children}
-      </div>
-    </div>
-  </StyledModal>
-);
+    </StyledModal>
+  );
+}
 
 Modal.defaultProps = {
   contentContainerStyle: undefined,

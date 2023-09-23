@@ -3,7 +3,6 @@ import { styled } from '@mui/system';
 import RHFIntegerField from 'components/Fields/RHF/RHFIntegerField';
 import RHFTextField from 'components/Fields/RHF/RHFTextField';
 import Combatant from 'models/initiative/Combatant';
-import { FC } from 'react';
 import { useForm } from 'react-hook-form';
 import { v4 } from 'uuid';
 
@@ -31,10 +30,7 @@ const StyledForm = styled('form')(() => ({
   },
 }));
 
-const AddPlayerCombatantForm: FC<Props> = ({
-  onSubmit: emitSubmit,
-  onCancel,
-}) => {
+function AddPlayerCombatantForm({ onSubmit: emitSubmit, onCancel }: Props) {
   const { handleSubmit, reset, control } = useForm<FormInputs>({
     defaultValues: { name: '', initiative: 0, initiativeModifier: 0 },
   });
@@ -91,6 +87,6 @@ const AddPlayerCombatantForm: FC<Props> = ({
       </div>
     </StyledForm>
   );
-};
+}
 
 export default AddPlayerCombatantForm;

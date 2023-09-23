@@ -1,7 +1,6 @@
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/system';
 import Action from 'models/creature/Action';
-import { FC } from 'react';
 
 type Props = {
   action: Action;
@@ -9,7 +8,7 @@ type Props = {
 
 const Container = styled('div')(() => ({}));
 
-const ActionItem: FC<Props> = ({ action }) => {
+function ActionItem({ action }: Props) {
   const {
     name,
     description,
@@ -39,6 +38,6 @@ const ActionItem: FC<Props> = ({ action }) => {
       </Typography>
     </Container>
   );
-};
+}
 
 export default ActionItem;

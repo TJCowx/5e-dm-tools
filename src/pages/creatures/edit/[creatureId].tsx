@@ -5,6 +5,7 @@ import Layout from 'components/Layout/Layout';
 import NavBack from 'components/Links/NavBack';
 import LoadingSpinner from 'components/LoadingSpinner/LoadingSpinner';
 import useConfirmBeforeExitPage from 'hooks/useConfirmBeforeExitPage';
+import useInvoke from 'hooks/useInvoke';
 import Creature from 'models/creature/Creature';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
@@ -18,41 +19,39 @@ const LoadingContainer = styled('div')(() => ({
   marginTop: '84px',
 }));
 
-const EditCreature = () => {
+function EditCreature() {
   const router = useRouter();
   const { creatureId } = router.query;
 
+  const { data, isLoading, invoke, error } = useInvoke<Partial<Creature>>(
+    'get_creature_by_id',
+    { id: creatureId }
+  );
+
   useConfirmBeforeExitPage();
 
-  const [creature, setCreature] = useState<Creature>();
-  const [isLoading, setIsLoading] = useState(true);
-
-  const { handleSubmit, control, watch, reset } = useForm<Creature>({
-    defaultValues: creature,
-  });
+  const { handleSubmit, control, watch, reset } = useForm<Partial<Creature>>();
 
   useEffect(() => {
-    getCreatureById(creatureId as string)
-      .then((res) => {
-        setCreature(res);
-        reset(res);
-        setIsLoading(false);
-      })
-      .catch((e) => {
-        logMessage('error', e);
-        setIsLoading(false);
-      });
+    invoke();
   }, []);
 
-  const onSubmit = (data: Creature) => {
-    updateCreature(data)
-      .then(() => {
-        router.push('/creatures');
-      })
-      .catch((err) => {
-        logMessage('error', err);
-        console.error(err);
-      });
+  useEffect(() => {
+    if (data) {
+      reset(data);
+    }
+  }, [data]);
+
+  const onSubmit = (formData: Partial<Creature>) => {
+    console.log('SUBITTED');
+    // updateCreature(formData)
+    //   .then(() => {
+    //     router.push('/creatures');
+    //   })
+    //   .catch((err) => {
+    //     logMessage('error', err);
+    //     console.error(err);
+    //   });
   };
 
   return (
@@ -75,6 +74,6 @@ const EditCreature = () => {
       )}
     </Layout>
   );
-};
+}
 
 export default EditCreature;

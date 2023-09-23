@@ -14,17 +14,19 @@ import RHFMultiselectField from 'components/Fields/RHF/RHFMultiselectField';
 import RHFTextField from 'components/Fields/RHF/RHFTextField';
 import ListItemText from 'components/List/ListItemText';
 import ListItemTwoSecondaryActions from 'components/List/ListItemTwoSecondaryActions';
+import Ability from 'models/creature/Ability';
+import Action from 'models/creature/Action';
 import { AttributeSelectOptions } from 'models/creature/Attribute';
-import { NewCreature } from 'models/creature/Creature';
+import Creature from 'models/creature/Creature';
 import { FormEventHandler, Fragment } from 'react';
 import { Control, useFieldArray, UseFormWatch } from 'react-hook-form';
 
 import ActionListItem from './ActionListItem';
 
 type Props = {
-  control: Control<NewCreature>;
+  control: Control<Partial<Creature>>;
   onSubmit: FormEventHandler<HTMLFormElement>;
-  watch: UseFormWatch<NewCreature>;
+  watch: UseFormWatch<Partial<Creature>>;
 };
 
 const StyledForm = styled('form')(() => ({
@@ -386,7 +388,7 @@ function CreatureForm({ control, onSubmit, watch }: Props) {
                   <>
                     <EditAbilityButton
                       ability={ability}
-                      onSave={(updated) => updateAbility(i, updated)}
+                      onSave={(updated) => updateAbility(i, updated as Ability)}
                     />
                     <IconButton
                       aria-label={`Delete ${ability.name}`}
@@ -422,14 +424,14 @@ function CreatureForm({ control, onSubmit, watch }: Props) {
               action={action}
               isLegendary={isLegendary}
               hasLair={hasLair}
-              onEdit={(updated) => updateAction(i, updated)}
+              onEdit={(updated) => updateAction(i, updated as Action)}
               onDelete={() => removeAction(i)}
             />
           ))}
           <NewActionListItem
             isLegendary={isLegendary}
             hasLair={hasLair}
-            onSave={(newAction) => appendAction(newAction)}
+            onSave={(newAction) => appendAction(newAction as Action)}
           />
         </List>
       </section>

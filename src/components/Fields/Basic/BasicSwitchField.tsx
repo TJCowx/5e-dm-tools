@@ -1,6 +1,5 @@
 import { FormControlLabel, Switch } from '@mui/material';
 import clsx from 'clsx';
-import { FC } from 'react';
 
 type Props = {
   value: boolean;
@@ -9,18 +8,16 @@ type Props = {
   onChange: (val: boolean) => void;
 };
 
-const BasicSwitchField: FC<Props> = ({ value, label, className, onChange }) => (
-  <FormControlLabel
-    label={label}
-    className={clsx({ [`${className}`]: className })}
-    control={
-      <Switch checked={value} onChange={(e) => onChange(e.target.checked)} />
-    }
-  />
-);
-
-BasicSwitchField.defaultProps = {
-  className: undefined,
-};
+function BasicSwitchField({ value, label, className, onChange }: Props) {
+  return (
+    <FormControlLabel
+      label={label}
+      className={clsx({ [`${className}`]: className })}
+      control={
+        <Switch checked={value} onChange={(e) => onChange(e.target.checked)} />
+      }
+    />
+  );
+}
 
 export default BasicSwitchField;

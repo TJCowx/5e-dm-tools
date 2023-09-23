@@ -43,6 +43,16 @@ type BaseCreature = {
   alignmentId: number;
   creatureTypeId: number;
   sizeId: number;
+
+  languageIds: number[];
+  proficiencyIds: number[];
+  savingThrowIds: number[];
+  immunityIds: number[];
+  condImmunityIds: number[];
+  resistanceIds: number[];
+
+  abilities: Partial<Ability>[];
+  actions: Partial<Action>[];
 };
 
 type Creature = BaseCreature & {
@@ -61,19 +71,6 @@ type Creature = BaseCreature & {
 
   abilities?: Ability[];
   actions?: Action[];
-};
-
-export type NewCreature = BaseCreature & {
-  languages: number[];
-  proficiencies: number[];
-  savingThrows: number[];
-  immunities: number[];
-  condImmunities: number[];
-  resistances: number[];
-  weaknesses: number[];
-
-  abilities?: Partial<Ability>[];
-  actions?: Partial<Action>[];
 };
 
 export default Creature;

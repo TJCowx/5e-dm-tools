@@ -1,7 +1,6 @@
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/system';
 import Attribute from 'models/creature/Attribute';
-import { FC } from 'react';
 import { getFormattedModifier } from 'utils/modifierUtils';
 
 type Props = {
@@ -15,7 +14,7 @@ const StatContainer = styled('div')(() => ({
   alignItems: 'center',
 }));
 
-const FormattedStat: FC<Props> = ({ label, value }) => {
+function FormattedStat({ label, value }: Props) {
   const modifier = getFormattedModifier(value);
 
   return (
@@ -28,6 +27,6 @@ const FormattedStat: FC<Props> = ({ label, value }) => {
       </Typography>
     </StatContainer>
   );
-};
+}
 
 export default FormattedStat;

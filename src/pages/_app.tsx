@@ -16,7 +16,7 @@ const muiCache = createCache({
   prepend: true,
 });
 
-const App = ({ Component, pageProps }: AppProps) => {
+function App({ Component, pageProps }: AppProps) {
   const { theme } = useTheme();
 
   return (
@@ -27,6 +27,6 @@ const App = ({ Component, pageProps }: AppProps) => {
       </ThemeProvider>
     </CacheProvider>
   );
-};
+}
 
 export default App;

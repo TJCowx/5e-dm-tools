@@ -4,7 +4,7 @@ import CreatureCombatantList from 'components/Initiative/CreatureCombatantList';
 import InitiativeList from 'components/Initiative/InitiativeList';
 import Layout from 'components/Layout/Layout';
 import Combatant from 'models/initiative/Combatant';
-import { FC, useState } from 'react';
+import { useState } from 'react';
 import { getCombatantName } from 'utils/creatureUtils';
 
 const PageContainer = styled('div')(() => ({
@@ -13,7 +13,7 @@ const PageContainer = styled('div')(() => ({
   height: '100%',
 }));
 
-const InitiativePage: FC = () => {
+function InitiativePage() {
   const [creatureCombatants, setCreatureCombatants] = useState(
     new Map<string, Combatant>([])
   );
@@ -104,6 +104,6 @@ const InitiativePage: FC = () => {
       </PageContainer>
     </Layout>
   );
-};
+}
 
 export default InitiativePage;

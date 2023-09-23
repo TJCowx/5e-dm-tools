@@ -1,7 +1,6 @@
 import { Typography } from '@mui/material';
 import clsx from 'clsx';
 import Action from 'models/creature/Action';
-import { FC } from 'react';
 
 import ActionItem from './ActionItem';
 
@@ -11,16 +10,18 @@ type Props = {
   className?: string;
 };
 
-const ActionList: FC<Props> = ({ label, actions, className }) => (
-  <div className={clsx({ [`${className}`]: className?.length })}>
-    <Typography variant="h6" className="mb-16">
-      {label}
-    </Typography>
-    {actions.map((action) => (
-      <ActionItem key={`action-${action.name}`} action={action} />
-    ))}
-  </div>
-);
+function ActionList({ label, actions, className }: Props) {
+  return (
+    <div className={clsx({ [`${className}`]: className?.length })}>
+      <Typography variant="h6" className="mb-16">
+        {label}
+      </Typography>
+      {actions.map((action) => (
+        <ActionItem key={`action-${action.name}`} action={action} />
+      ))}
+    </div>
+  );
+}
 
 ActionList.defaultProps = {
   className: undefined,

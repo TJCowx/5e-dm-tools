@@ -1,6 +1,6 @@
 import { ListItemText as MuiListItemText, styled } from '@mui/material';
 import clsx from 'clsx';
-import { FC, ReactNode } from 'react';
+import { ReactNode } from 'react';
 
 type Props = {
   primary: string;
@@ -14,22 +14,19 @@ const StyledListItem = styled(MuiListItemText)(({ theme }) => ({
   },
 }));
 
-const ListItemText: FC<Props> = ({ primary, secondary, className }) => (
-  <StyledListItem
-    className={clsx({ [`${className}`]: className })}
-    primary={primary}
-    secondary={secondary}
-    primaryTypographyProps={{ variant: 'body1' }}
-    secondaryTypographyProps={{
-      variant: 'body2',
-      className: 'secondary-text',
-    }}
-  />
-);
-
-ListItemText.defaultProps = {
-  secondary: undefined,
-  className: undefined,
-};
+function ListItemText({ primary, secondary, className }: Props) {
+  return (
+    <StyledListItem
+      className={clsx({ [`${className}`]: className })}
+      primary={primary}
+      secondary={secondary}
+      primaryTypographyProps={{ variant: 'body1' }}
+      secondaryTypographyProps={{
+        variant: 'body2',
+        className: 'secondary-text',
+      }}
+    />
+  );
+}
 
 export default ListItemText;

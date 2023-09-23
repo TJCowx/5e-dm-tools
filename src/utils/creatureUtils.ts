@@ -1,5 +1,5 @@
 /* eslint-disable import/prefer-default-export */
-import Creature, { NewCreature } from 'models/creature/Creature';
+import Creature from 'models/creature/Creature';
 
 import { getFormattedModifier, getSkillAttribute } from './modifierUtils';
 
@@ -12,7 +12,7 @@ import { getFormattedModifier, getSkillAttribute } from './modifierUtils';
  * @param creature The creature from the form
  * @returns the number fields parsed into numbers
  */
-export const convertCreatureFormToDB = (creature: Partial<NewCreature>) => {
+export const convertCreatureFormToDB = (creature: Partial<Creature>) => {
   const {
     armourClass,
     hitPoints,
@@ -60,6 +60,7 @@ export const convertCreatureFormToDB = (creature: Partial<NewCreature>) => {
     challengeRating: +(challengeRating ?? 0),
     rewardXp: +(rewardXp ?? 0),
     savingThrows: creature.savingThrows?.join(','),
+    actions,
   };
 };
 

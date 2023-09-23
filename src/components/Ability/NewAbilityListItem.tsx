@@ -7,14 +7,14 @@ import {
   ListItemText,
 } from '@mui/material';
 import Ability from 'models/creature/Ability';
-import { FC, useState } from 'react';
+import { useState } from 'react';
 import AbilityModal from './AbilityModal';
 
 type Props = {
-  onSave: (ability: Ability) => void;
+  onSave: (ability: Partial<Ability>) => void;
 };
 
-const NewAbilityListItem: FC<Props> = ({ onSave }) => {
+function NewAbilityListItem({ onSave }: Props) {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
@@ -32,6 +32,6 @@ const NewAbilityListItem: FC<Props> = ({ onSave }) => {
       )}
     </>
   );
-};
+}
 
 export default NewAbilityListItem;

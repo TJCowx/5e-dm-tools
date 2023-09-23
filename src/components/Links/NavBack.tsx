@@ -4,7 +4,6 @@ import { Tooltip } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import { styled } from '@mui/system';
 import Link from 'next/link';
-import { FC } from 'react';
 
 type Props = {
   href: string;
@@ -18,14 +17,16 @@ const StyledButton = styled(IconButton)(() => ({
   marginBottom: '16px',
 }));
 
-const NavBack: FC<Props> = ({ href, ariaLabel, tooltipText }) => (
-  <Link href={href}>
-    <Tooltip title={tooltipText}>
-      <StyledButton aria-label={ariaLabel}>
-        <FontAwesomeIcon icon={faArrowLeft} />
-      </StyledButton>
-    </Tooltip>
-  </Link>
-);
+function NavBack({ href, ariaLabel, tooltipText }: Props) {
+  return (
+    <Link href={href}>
+      <Tooltip title={tooltipText}>
+        <StyledButton aria-label={ariaLabel}>
+          <FontAwesomeIcon icon={faArrowLeft} />
+        </StyledButton>
+      </Tooltip>
+    </Link>
+  );
+}
 
 export default NavBack;

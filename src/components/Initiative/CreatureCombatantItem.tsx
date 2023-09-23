@@ -18,7 +18,7 @@ import LabelValueRow from 'components/LabelValue/LabelValueRow';
 import Action from 'models/creature/Action';
 import Creature from 'models/creature/Creature';
 import Combatant from 'models/initiative/Combatant';
-import { FC, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
   getProficienciesString,
   getSavingThrowsString,
@@ -68,11 +68,7 @@ const StyledAccordionDetails = styled(AccordionDetails)(() => ({
   },
 }));
 
-const CreatureCombatantItem: FC<Props> = ({
-  combatant,
-  isExpanded,
-  onChange,
-}) => {
+function CreatureCombatantItem({ combatant, isExpanded, onChange }: Props) {
   const { id, stats } = combatant;
   const panelHeaderId = `panel-${id}-header`;
   const panelContentId = `panel-${id}-content`;
@@ -279,6 +275,6 @@ const CreatureCombatantItem: FC<Props> = ({
       </StyledAccordionDetails>
     </StyledAccordion>
   );
-};
+}
 
 export default CreatureCombatantItem;

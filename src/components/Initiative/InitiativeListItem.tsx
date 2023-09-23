@@ -6,7 +6,6 @@ import clsx from 'clsx';
 import DeadIcon from 'components/Icons/DeadIcon';
 import ListItemText from 'components/List/ListItemText';
 import Combatant from 'models/initiative/Combatant';
-import { FC } from 'react';
 import CombatantOptions from './CombatantOptions';
 
 type Props = {
@@ -37,12 +36,7 @@ const StyledListItem = styled(ListItem)(({ theme }) => ({
   },
 }));
 
-const InitiativeListItem: FC<Props> = ({
-  combatant,
-  isActive,
-  onFlag,
-  onClick,
-}) => {
+function InitiativeListItem({ combatant, isActive, onFlag, onClick }: Props) {
   const { id, name, isPlayer, initiative, initiativeModifier, isDead } =
     combatant;
 
@@ -76,6 +70,6 @@ const InitiativeListItem: FC<Props> = ({
       </ListItemButton>
     </StyledListItem>
   );
-};
+}
 
 export default InitiativeListItem;

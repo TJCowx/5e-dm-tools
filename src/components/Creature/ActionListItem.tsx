@@ -13,8 +13,8 @@ import DamageType from 'models/creature/DamageType';
 
 type Props = {
   action: Partial<Action>;
-  isLegendary: boolean;
-  hasLair: boolean;
+  isLegendary?: boolean;
+  hasLair?: boolean;
   onEdit: (action: Partial<Action>) => void;
   onDelete: (id: string) => void;
 };
@@ -27,8 +27,8 @@ const mapDamageIds = (damage: Partial<Damage>[]) =>
 
 function ActionListItem({
   action,
-  isLegendary,
-  hasLair,
+  isLegendary = false,
+  hasLair = false,
   onEdit,
   onDelete,
 }: Props) {

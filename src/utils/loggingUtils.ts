@@ -10,6 +10,7 @@ export async function logMessage(logLevel: LogLevel, message: string) {
 
   // If it's development mode log to console
   if (process.env.NODE_ENV === 'development') {
+    // eslint-disable-next-line no-console
     console.log(`[${logLevel.toUpperCase()}] ${message}`);
   }
 

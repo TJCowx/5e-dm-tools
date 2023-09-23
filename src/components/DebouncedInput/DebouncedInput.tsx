@@ -2,7 +2,7 @@ import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { InputAdornment, TextField } from '@mui/material';
 import useDebounce from 'hooks/useDebounce';
-import { FC, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 type Props = {
   value: string;
@@ -11,12 +11,12 @@ type Props = {
   onChange: (val: string) => void;
 };
 
-const DebouncedInput: FC<Props> = ({
+function DebouncedInput({
   value: initialValue,
   label,
   debounceMs = 500,
   onChange,
-}) => {
+}: Props) {
   const [value, setValue] = useState<string>(initialValue);
 
   const debouncedValue = useDebounce(value, debounceMs);
@@ -45,7 +45,7 @@ const DebouncedInput: FC<Props> = ({
       onChange={(e) => setValue(e.target.value)}
     />
   );
-};
+}
 
 DebouncedInput.defaultProps = {
   debounceMs: 500,

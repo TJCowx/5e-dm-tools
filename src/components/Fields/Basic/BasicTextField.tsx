@@ -1,6 +1,5 @@
-import { TextField, TextFieldProps } from '@mui/material';
+import { TextField } from '@mui/material';
 import clsx from 'clsx';
-import { FC } from 'react';
 
 type Props = {
   id?: string;
@@ -13,7 +12,7 @@ type Props = {
   onBlur?: () => void;
 };
 
-const BasicTextField: FC<Props> = ({
+function BasicTextField({
   id,
   className,
   label,
@@ -22,28 +21,22 @@ const BasicTextField: FC<Props> = ({
   isMultiline,
   onChange,
   onBlur,
-}) => (
-  <TextField
-    id={id}
-    className={clsx({ [`${className}`]: className })}
-    value={value || ''}
-    InputLabelProps={{ shrink: true }}
-    size="small"
-    label={label}
-    error={!!error?.length}
-    helperText={error}
-    multiline={isMultiline}
-    onChange={(e) => onChange(e.target.value)}
-    onBlur={onBlur}
-  />
-);
-
-BasicTextField.defaultProps = {
-  id: undefined,
-  className: undefined,
-  error: undefined,
-  isMultiline: false,
-  onBlur: undefined,
-};
+}: Props) {
+  return (
+    <TextField
+      id={id}
+      className={clsx({ [`${className}`]: className })}
+      value={value || ''}
+      InputLabelProps={{ shrink: true }}
+      size="small"
+      label={label}
+      error={!!error?.length}
+      helperText={error}
+      multiline={isMultiline}
+      onChange={(e) => onChange(e.target.value)}
+      onBlur={onBlur}
+    />
+  );
+}
 
 export default BasicTextField;

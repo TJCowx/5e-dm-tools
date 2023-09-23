@@ -11,12 +11,16 @@ import { useState } from 'react';
 import ActionModal from './ActionModal';
 
 type Props = {
-  isLegendary: boolean;
-  hasLair: boolean;
+  isLegendary?: boolean;
+  hasLair?: boolean;
   onSave: (action: Partial<Action>) => void;
 };
 
-function NewActionListItem({ isLegendary, hasLair, onSave }: Props) {
+function NewActionListItem({
+  isLegendary = false,
+  hasLair = false,
+  onSave,
+}: Props) {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (

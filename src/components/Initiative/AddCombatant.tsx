@@ -4,7 +4,7 @@ import { Fab, Tab, Tabs } from '@mui/material';
 import { styled } from '@mui/system';
 import Modal from 'components/Modal/Modal';
 import Combatant from 'models/initiative/Combatant';
-import { FC, useState } from 'react';
+import { useState } from 'react';
 
 import AddCreatureCombatantForm from './AddCreatureCombatantForm';
 import AddPlayerCombatantForm from './AddPlayerCombatantForm';
@@ -23,7 +23,7 @@ const StyledFab = styled(Fab)(() => ({
   right: 16,
 }));
 
-const AddCombatant: FC<Props> = ({ onAddCombatants }) => {
+function AddCombatant({ onAddCombatants }: Props) {
   const [isOpen, setIsOpen] = useState(false);
   const [activeTab, setActiveTab] = useState(0);
 
@@ -81,5 +81,5 @@ const AddCombatant: FC<Props> = ({ onAddCombatants }) => {
       )}
     </>
   );
-};
+}
 export default AddCombatant;

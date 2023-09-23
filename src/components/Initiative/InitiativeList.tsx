@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import { Button, List, ListSubheader } from '@mui/material';
 import orderBy from 'lodash.orderby';
 import Combatant from 'models/initiative/Combatant';
-import { FC, Fragment, useEffect, useMemo, useState } from 'react';
+import { Fragment, useEffect, useMemo, useState } from 'react';
 import InitiativeListItem from './InitiativeListItem';
 
 type Props = {
@@ -68,11 +68,11 @@ function addLairAction(combatants: Combatant[]) {
   return [...combatants, lairCombatant];
 }
 
-const InitiativeList: FC<Props> = ({
+function InitiativeList({
   combatants,
   onCombatantAliveToggle,
   onCombatantClick,
-}) => {
+}: Props) {
   const [hasStarted, setHasStarted] = useState(false);
   const [activeId, setActiveId] = useState<string>();
 
@@ -133,6 +133,6 @@ const InitiativeList: FC<Props> = ({
       </div>
     </InitiativeContainer>
   );
-};
+}
 
 export default InitiativeList;

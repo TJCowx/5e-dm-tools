@@ -1,7 +1,7 @@
 import { faEllipsis } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IconButton, Menu, MenuItem } from '@mui/material';
-import { FC, useMemo, useRef, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import { v4 } from 'uuid';
 
 type Props = {
@@ -9,7 +9,7 @@ type Props = {
   onFlag: (isDead: boolean) => void;
 };
 
-const CombatantOptions: FC<Props> = ({ isDead, onFlag }) => {
+function CombatantOptions({ isDead, onFlag }: Props) {
   const id = useMemo(() => v4(), []);
 
   const [isOpen, setIsOpen] = useState(false);
@@ -61,6 +61,6 @@ const CombatantOptions: FC<Props> = ({ isDead, onFlag }) => {
       </Menu>
     </>
   );
-};
+}
 
 export default CombatantOptions;

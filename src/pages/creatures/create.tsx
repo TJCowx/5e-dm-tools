@@ -3,14 +3,14 @@ import { invoke } from '@tauri-apps/api/tauri';
 import CreatureForm from 'components/Creature/CreatureForm';
 import Layout from 'components/Layout/Layout';
 import NavBack from 'components/Links/NavBack';
-import Creature, { NewCreature } from 'models/creature/Creature';
+import Creature from 'models/creature/Creature';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { convertCreatureFormToDB } from 'utils/creatureUtils';
 import { logMessage } from 'utils/loggingUtils';
 
-const DefaultValues: Partial<NewCreature> = {
+const DefaultValues: Partial<Creature> = {
   name: '',
   sizeId: undefined,
   creatureTypeId: undefined,
@@ -62,11 +62,11 @@ function CreateCreature() {
 
   const [hasError, setHasError] = useState(false);
 
-  const { handleSubmit, control, watch } = useForm<NewCreature>({
+  const { handleSubmit, control, watch } = useForm<Partial<Creature>>({
     defaultValues: DefaultValues,
   });
 
-  const onSubmit = (data: NewCreature) => {
+  const onSubmit = (data: Partial<Creature>) => {
     setHasError(false);
     invoke('add_creature', { newCreature: convertCreatureFormToDB(data) })
       .then(() => {

@@ -1,6 +1,6 @@
 import { styled } from '@mui/system';
 import Combatant from 'models/initiative/Combatant';
-import { FC, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 
 import CreatureCombatantItem from './CreatureCombatantItem';
 
@@ -13,7 +13,7 @@ const CreatureContainer = styled('div')(() => ({
   paddingBottom: '44px',
 }));
 
-const CreatureCombatantList: FC<Props> = ({ combatants }) => {
+function CreatureCombatantList({ combatants }: Props) {
   const [expandedItem, setExpandedItem] = useState('');
 
   const combatantsList = useMemo(
@@ -39,6 +39,6 @@ const CreatureCombatantList: FC<Props> = ({ combatants }) => {
       </div>
     </CreatureContainer>
   );
-};
+}
 
 export default CreatureCombatantList;

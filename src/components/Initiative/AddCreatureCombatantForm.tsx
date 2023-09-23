@@ -12,7 +12,7 @@ import RHFSwitchField from 'components/Fields/RHF/RHFSwitchField';
 import FormattedStat from 'components/Creature/FormattedStat';
 import Combatant from 'models/initiative/Combatant';
 import Creature from 'models/creature/Creature';
-import { FC, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { getModifier } from 'utils/modifierUtils';
 import { rollD20 } from 'utils/rollUtils';
@@ -44,7 +44,7 @@ const StyledForm = styled('form')(() => ({
   },
 }));
 
-const AddCreatureCombatantForm: FC<Props> = ({ onSubmit, onCancel }) => {
+function AddCreatureCombatantForm({ onSubmit, onCancel }: Props) {
   const [isLoading, setIsLoading] = useState(false);
   const [hasError, setHasError] = useState(false);
   const [availableCreature, setAvailableCreature] = useState<Creature[]>([]);
@@ -247,6 +247,6 @@ const AddCreatureCombatantForm: FC<Props> = ({ onSubmit, onCancel }) => {
       </div>
     </StyledForm>
   );
-};
+}
 
 export default AddCreatureCombatantForm;
