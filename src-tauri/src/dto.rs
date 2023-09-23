@@ -7,4 +7,4 @@ pub mod creature;
 pub mod damage_type;
 pub mod language;
 pub mod proficiency;
-pub mod size;
+pub mod size_dto;

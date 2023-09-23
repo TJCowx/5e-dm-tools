@@ -9,7 +9,7 @@ use serde::{Deserialize, Serialize};
 use crate::dto::alignment::Alignment;
 use crate::dto::condition_type::ConditionType;
 use crate::dto::proficiency::Proficiency;
-use crate::dto::size::Size;
+use crate::dto::size_dto::SizeDto;
 
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
@@ -44,7 +44,7 @@ pub struct Creature {
 
     pub alignment: Alignment,
     pub creature_type: CreatureType,
-    pub size: Size,
+    pub size: SizeDto,
 
     pub proficiencies: Vec<Proficiency>,
     pub immunities: Vec<DamageType>,
