@@ -1,4 +1,7 @@
-use crate::models::base_creature_action::BaseCreatureAction;
+use crate::{
+    dto::creature::creature_action_damage_dto::CreatureActionDamageDto,
+    models::base_creature_action::BaseCreatureAction,
+};
 use diesel::prelude::*;
 use serde::{Deserialize, Serialize};
 
@@ -60,23 +63,11 @@ impl CreatureActionDto {
 
             let inserted_action: CreatureActionDto = diesel::insert_into(creature_actions)
                 .values(&new_action)
-                .get_result(conn)
-                .unwrap();
+                .get_result(conn)?;
 
-            // let mapped_damages: Vec<NewCreatureActionDamage> = action
-            //     .damages
-            //     .into_iter()
-            //     .map(|damage| NewCreatureActionDamage {
-            //         default_damage: damage.default_damage,
-            //         dice: damage.dice,
-            //         type_id: damage.type_id,
-            //         action_id: inserted_action.id,
-            //     })
-            //     .collect();
-
-            // diesel::insert_into(crate::schema::creature_action_damages::table)
-            //     .values(&mapped_damages)
-            //     .execute(conn)?;
+            if let Some(damages) = action.damages {
+                CreatureActionDamageDto::save_action_damages(conn, damages, &inserted_action.id)?;
+            }
         }
 
         Ok(())
