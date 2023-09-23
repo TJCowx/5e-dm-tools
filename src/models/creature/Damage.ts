@@ -4,7 +4,7 @@ type Damage = {
   id: number;
   defaultDamage: string;
   dice: string;
-  typeId: number;
+  typeId: number | null;
   type: DamageType;
 };
 

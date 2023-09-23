@@ -1,11 +1,10 @@
-import { faPen, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IconButton, Typography } from '@mui/material';
 import EditActionButton from 'components/Action/EditActionButton';
 import ListItemText from 'components/List/ListItemText';
 import ListItemTwoSecondaryActions from 'components/List/ListItemTwoSecondaryActions';
 import Action from 'models/creature/Action';
-import { FC } from 'react';
 
 type Props = {
   action: Action;
@@ -15,13 +14,13 @@ type Props = {
   onDelete: (id: string) => void;
 };
 
-const ActionListItem: FC<Props> = ({
+function ActionListItem({
   action,
   isLegendary,
   hasLair,
   onEdit,
   onDelete,
-}) => {
+}: Props) {
   const {
     id,
     name,
@@ -37,11 +36,11 @@ const ActionListItem: FC<Props> = ({
   } = action;
 
   const damageText = (damage ?? [])
-    .map((dmg) => `${dmg.damage} ${dmg.type} damage`)
+    .map((dmg) => `${dmg.defaultDamage} ${`TODO: Damage Type`} damage`)
     .join(', ');
 
   const attackDescription = isAttack
-    ? ` - ${attackDelivery} ${attackType} Attack | +${toHit} to hit | Reach ${reach}ft | ${damageText} | ${combatantsHit} target`
+    ? ` - ${`TODO: attackDelivery`} ${`TODO: attackType`} Attack | +${toHit} to hit | Reach ${reach}ft | ${damageText} | ${combatantsHit} target`
     : '';
 
   return (
@@ -70,7 +69,7 @@ const ActionListItem: FC<Props> = ({
         secondary={
           <>
             <Typography variant="body2">
-              {actionType}
+              TODO: ActionType
               {attackDescription}
             </Typography>
             <Typography variant="body2">{description}</Typography>
@@ -79,6 +78,6 @@ const ActionListItem: FC<Props> = ({
       />
     </ListItemTwoSecondaryActions>
   );
-};
+}
 
 export default ActionListItem;

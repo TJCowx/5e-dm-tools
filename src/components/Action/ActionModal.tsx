@@ -21,7 +21,6 @@ import Modal from 'components/Modal/Modal';
 import Action from 'models/creature/Action';
 import { AttackTypeSelectOptions } from 'models/creature/AttackType';
 import Damage from 'models/creature/Damage';
-import DamageType from 'models/creature/DamageType';
 import { useMemo, useState } from 'react';
 import { RequireMessage } from 'utils/validationMessages';
 import {
@@ -118,15 +117,15 @@ const schema = yupObject().shape({
     }),
   damage: yupArray(
     yupObject().shape({
-      damage: yupString().required({
+      defaultDamage: yupString().required({
         field: 'damage',
         message: 'Amount of Damage is required',
       }),
-      damageDice: yupString().required({
+      dice: yupString().required({
         field: 'damage',
         message: 'Damage Dice is required',
       }),
-      type: yupString().required({
+      typeId: yupString().required({
         field: 'damage',
         message: 'Damage Type is required',
       }),
@@ -222,7 +221,7 @@ function ActionModal({
       });
   };
 
-  const updateDamageItem = (damage: Damage, i: number) => {
+  const updateDamageItem = (damage: Partial<Damage>, i: number) => {
     const arrCopy = action.damage ?? [];
 
     arrCopy[i] = damage;
@@ -399,7 +398,7 @@ function ActionModal({
                   <BasicTextField
                     className="damage-field"
                     label="Damage"
-                    value={damage.defaultDamage ?? null}
+                    value={damage.defaultDamage ?? ''}
                     onChange={(newVal) =>
                       updateDamageItem({ ...damage, defaultDamage: newVal }, i)
                     }
@@ -407,19 +406,26 @@ function ActionModal({
                   <BasicTextField
                     className="damage-dice-field"
                     label="Damage Dice"
-                    value={damage.dice}
+                    value={damage.dice ?? ''}
                     onChange={(newVal) =>
                       updateDamageItem({ ...damage, dice: newVal }, i)
                     }
                   />
-                  <BasicSelectField
+                  <LazySelectField
                     id={`damage-${i}-type`}
                     className="damage-type-field"
                     label="Damage Type"
-                    options={DamageTypeSelectOptions}
-                    value={damage.type}
-                    onChange={(newVal: DamageType) =>
-                      updateDamageItem({ ...damage, type: newVal }, i)
+                    queryArgs={{
+                      queryName: 'get_all_damage_types',
+                      textKey: 'name',
+                      valueKey: 'id',
+                    }}
+                    value={damage.typeId ? `${damage.typeId}` : null}
+                    onChange={(newVal) =>
+                      updateDamageItem(
+                        { ...damage, typeId: newVal != null ? +newVal : null },
+                        i
+                      )
                     }
                   />
                 </ListItem>
@@ -431,11 +437,7 @@ function ActionModal({
                       ...prev,
                       damage: [
                         ...(prev.damage ?? []),
-                        {
-                          damage: '',
-                          damageDice: '',
-                          type: 'Non-Magical',
-                        },
+                        { damage: '', damageDice: '', typeId: null },
                       ],
                     }))
                   }

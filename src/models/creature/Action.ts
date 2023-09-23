@@ -9,7 +9,7 @@ type Action = {
   isAttack: boolean;
   toHit: number | null;
   combatantsHit: number | null;
-  damage: Damage[] | null;
+  damage: Partial<Damage>[] | null;
   reach: number | null;
 
   actionTypeId: number | null;
