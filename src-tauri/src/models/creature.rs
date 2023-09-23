@@ -8,7 +8,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::dto::alignment::Alignment;
 use crate::dto::condition_type::ConditionType;
-use crate::dto::proficiency::Proficiency;
+use crate::dto::proficiency_dto::ProficiencyDto;
 use crate::dto::size_dto::SizeDto;
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -46,7 +46,7 @@ pub struct Creature {
     pub creature_type: CreatureType,
     pub size: SizeDto,
 
-    pub proficiencies: Vec<Proficiency>,
+    pub proficiencies: Vec<ProficiencyDto>,
     pub immunities: Vec<DamageType>,
     pub cond_immunities: Vec<ConditionType>,
     pub resistances: Vec<DamageType>,

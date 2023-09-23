@@ -6,5 +6,5 @@ pub mod condition_type;
 pub mod creature;
 pub mod damage_type;
 pub mod language;
-pub mod proficiency;
+pub mod proficiency_dto;
 pub mod size_dto;

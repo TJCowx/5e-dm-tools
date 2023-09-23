@@ -1,7 +1,7 @@
 use diesel::prelude::*;
 use serde::{Deserialize, Serialize};
 
-use crate::dto::proficiency::Proficiency;
+use crate::dto::proficiency_dto::ProficiencyDto;
 
 #[derive(Queryable, Debug, Serialize, Deserialize)]
 #[diesel(table_name = crate::schema::creatures_proficiencies)]
@@ -52,7 +52,7 @@ impl CreatureProf {
         diesel::delete(creatures_proficiencies.filter(creature_id.eq(parent_id))).execute(conn)
     }
 
-    pub fn get_profs_by_creature_id(creature_id: &i32) -> Vec<Proficiency> {
+    pub fn get_profs_by_creature_id(creature_id: &i32) -> Vec<ProficiencyDto> {
         use crate::schema::proficiencies::dsl::*;
 
         let conn = &mut crate::db::connect_db();
@@ -60,7 +60,7 @@ impl CreatureProf {
             .inner_join(crate::schema::creatures_proficiencies::dsl::creatures_proficiencies)
             .filter(crate::schema::creatures_proficiencies::dsl::creature_id.eq(creature_id))
             .select(proficiencies::all_columns())
-            .load::<Proficiency>(conn)
+            .load::<ProficiencyDto>(conn)
             .expect("Error loading proficiencies")
     }
 }
