@@ -1,7 +1,6 @@
-// use crate::schema::creatures::dsl::creatures as all_creatures;
 use crate::{
     db::connect_db,
-    dto::{alignment::Alignment, size::Size},
+    dto::{alignment_dto::AlignmentDto, size_dto::SizeDto},
     models::creature::Creature,
     schema::creatures::{self, dsl::creatures as all_creatures},
 };
@@ -9,11 +8,11 @@ use diesel::prelude::*;
 use serde::{Deserialize, Serialize};
 
 use super::{
-    creature_ability::CreatureAbility, creature_action::CreatureAction,
-    creature_cond_immunity::CreatureCondImmunity, creature_immunity::CreatureImmunity,
-    creature_language::CreatureLanguage, creature_prof::CreatureProf,
-    creature_resistance::CreatureResistance, creature_type::CreatureType,
-    creature_weakness::CreatureWeakness,
+    creature_ability_dto::CreatureAbilityDto, creature_action_dto::CreatureActionDto,
+    creature_cond_immunity_dto::CreatureCondImmunityDto,
+    creature_immunity_dto::CreatureImmunityDto, creature_language_dto::CreatureLanguageDto,
+    creature_prof_dto::CreatureProfDto, creature_resistance_dto::CreatureResistanceDto,
+    creature_type_dto::CreatureTypeDto, creature_weakness_dto::CreatureWeaknessDto,
 };
 use crate::models::new_creature::NewCreature;
 
@@ -154,16 +153,16 @@ impl CreatureDto {
             reward_xp: creature.reward_xp,
             is_legendary: creature.is_legendary,
             has_lair: creature.has_lair,
-            alignment: Alignment::get_by_id(&creature.alignment_id),
-            creature_type: CreatureType::get_by_id(&creature.creature_type_id),
-            size: Size::get_by_id(&creature.size_id),
-            proficiencies: CreatureProf::get_profs_by_creature_id(&creature.id),
-            immunities: CreatureImmunity::get_immunities_by_creature_id(&creature.id),
-            cond_immunities: CreatureCondImmunity::get_conditions_by_creature_id(&creature.id),
-            resistances: CreatureResistance::get_resistances_by_creature_id(&creature.id),
-            weaknesses: CreatureWeakness::get_weaknesses_by_creature_id(&creature.id),
-            languages: CreatureLanguage::get_languages_by_creature_id(&creature.id),
-            abilities: CreatureAbility::get_abilities_by_creature_id(&creature.id),
+            alignment: AlignmentDto::get_by_id(&creature.alignment_id),
+            creature_type: CreatureTypeDto::get_by_id(&creature.creature_type_id),
+            size: SizeDto::get_by_id(&creature.size_id),
+            proficiencies: CreatureProfDto::get_profs_by_creature_id(&creature.id),
+            immunities: CreatureImmunityDto::get_immunities_by_creature_id(&creature.id),
+            cond_immunities: CreatureCondImmunityDto::get_conditions_by_creature_id(&creature.id),
+            resistances: CreatureResistanceDto::get_resistances_by_creature_id(&creature.id),
+            weaknesses: CreatureWeaknessDto::get_weaknesses_by_creature_id(&creature.id),
+            languages: CreatureLanguageDto::get_languages_by_creature_id(&creature.id),
+            abilities: CreatureAbilityDto::get_abilities_by_creature_id(&creature.id),
             actions: Vec::new(),
         }
     }
@@ -199,38 +198,42 @@ impl CreatureDto {
                 .values(Self::make_insert_creature(&creature))
                 .get_result(connection)?;
 
-            CreatureProf::save_creature_profs(
+            CreatureProfDto::save_creature_profs(
                 connection,
                 creature.proficiencies,
                 &inserted_creature.id,
             )?;
-            CreatureImmunity::save_creature_immunities(
+            CreatureImmunityDto::save_creature_immunities(
                 connection,
                 creature.immunities,
                 &inserted_creature.id,
             )?;
-            CreatureCondImmunity::save_creature_cond_immunities(
+            CreatureCondImmunityDto::save_creature_cond_immunities(
                 connection,
                 creature.cond_immunities,
                 &inserted_creature.id,
             )?;
-            CreatureResistance::save_creature_resistances(
+            CreatureResistanceDto::save_creature_resistances(
                 connection,
                 creature.resistances,
                 &inserted_creature.id,
             )?;
-            CreatureWeakness::save_creature_weaknesses(
+            CreatureWeaknessDto::save_creature_weaknesses(
                 connection,
                 creature.weaknesses,
                 &inserted_creature.id,
             )?;
-            CreatureLanguage::save_creature_languages(
+            CreatureLanguageDto::save_creature_languages(
                 connection,
                 creature.languages,
                 &inserted_creature.id,
             )?;
-            CreatureAbility::save_abilities(connection, creature.abilities, &inserted_creature.id)?;
-            CreatureAction::save_actions(connection, creature.actions, &inserted_creature.id)?;
+            CreatureAbilityDto::save_abilities(
+                connection,
+                creature.abilities,
+                &inserted_creature.id,
+            )?;
+            CreatureActionDto::save_actions(connection, creature.actions, &inserted_creature.id)?;
 
             Ok(())
         })
@@ -244,13 +247,13 @@ impl CreatureDto {
         let conn = &mut connect_db();
 
         conn.transaction(|connection| {
-            CreatureProf::delete_creature_profs(connection, &id)?;
-            CreatureImmunity::delete_creature_immunities(connection, &id)?;
-            CreatureCondImmunity::delete_creature_cond_immunities(connection, &id)?;
-            CreatureResistance::delete_creature_resistances(connection, &id)?;
-            CreatureWeakness::delete_creature_weaknesses(connection, &id)?;
-            CreatureLanguage::delete_creature_languages(connection, &id)?;
-            CreatureAbility::delete_abilities(connection, &id)?;
+            CreatureProfDto::delete_creature_profs(connection, &id)?;
+            CreatureImmunityDto::delete_creature_immunities(connection, &id)?;
+            CreatureCondImmunityDto::delete_creature_cond_immunities(connection, &id)?;
+            CreatureResistanceDto::delete_creature_resistances(connection, &id)?;
+            CreatureWeaknessDto::delete_creature_weaknesses(connection, &id)?;
+            CreatureLanguageDto::delete_creature_languages(connection, &id)?;
+            CreatureAbilityDto::delete_abilities(connection, &id)?;
             // CreatureAction::delete_actions(connection, &id)?; TODO: #3 implement action obviously
 
             diesel::delete(all_creatures.find(id)).execute(connection)?;

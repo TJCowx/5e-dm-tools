@@ -9,7 +9,7 @@ use serde::{Deserialize, Serialize};
 #[diesel(belongs_to(ActionType))]
 #[diesel(belongs_to(AttackDelivery))]
 #[diesel(belongs_to(AttackType))]
-pub struct CreatureAction {
+pub struct CreatureActionDto {
     id: i32,
     name: String,
     description: String,
@@ -25,7 +25,7 @@ pub struct CreatureAction {
 #[derive(Debug, Serialize, Deserialize, Insertable)]
 #[diesel(table_name = crate::schema::creature_actions)]
 #[diesel(check_for_backend(diesel::sqlite::Sqlite))]
-pub struct NewCreatureAction {
+pub struct NewCreatureActionDto {
     pub name: String,
     pub description: String,
     pub is_attack: bool,
@@ -37,7 +37,7 @@ pub struct NewCreatureAction {
     pub creature_id: i32,
 }
 
-impl CreatureAction {
+impl CreatureActionDto {
     pub fn save_actions(
         conn: &mut SqliteConnection,
         actions: Vec<BaseCreatureAction>,
@@ -46,7 +46,7 @@ impl CreatureAction {
         use crate::schema::creature_actions::dsl::*;
 
         for action in actions {
-            let new_action = NewCreatureAction {
+            let new_action = NewCreatureActionDto {
                 name: action.name,
                 description: action.description,
                 is_attack: action.is_attack,
@@ -58,7 +58,7 @@ impl CreatureAction {
                 creature_id: parent_id.clone(),
             };
 
-            let inserted_action: CreatureAction = diesel::insert_into(creature_actions)
+            let inserted_action: CreatureActionDto = diesel::insert_into(creature_actions)
                 .values(&new_action)
                 .get_result(conn)
                 .unwrap();

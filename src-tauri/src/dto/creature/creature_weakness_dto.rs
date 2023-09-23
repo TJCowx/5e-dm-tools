@@ -1,14 +1,14 @@
 use diesel::prelude::*;
 use serde::{Deserialize, Serialize};
 
-use crate::dto::damage_type::DamageType;
+use crate::dto::damage_type_dto::DamageTypeDto;
 
 #[derive(Queryable, Debug, Serialize, Deserialize)]
 #[diesel(table_name = crate::schema::creatures_weaknesses)]
 #[diesel(check_for_backend(diesel::sqlite::Sqlite))]
 #[diesel(belongs_to(CreatureDto))]
 #[diesel(belongs_to(DamageType))]
-pub struct CreatureWeakness {
+pub struct CreatureWeaknessDto {
     id: i32,
     creature_id: i32,
     damage_type_id: i32,
@@ -17,12 +17,12 @@ pub struct CreatureWeakness {
 #[derive(Debug, Serialize, Deserialize, Insertable)]
 #[diesel(table_name = crate::schema::creatures_weaknesses)]
 #[diesel(check_for_backend(diesel::sqlite::Sqlite))]
-pub struct NewCreatureWeakness {
+pub struct NewCreatureWeaknessDto {
     pub creature_id: i32,
     pub damage_type_id: i32,
 }
 
-impl CreatureWeakness {
+impl CreatureWeaknessDto {
     pub fn save_creature_weaknesses(
         conn: &mut SqliteConnection,
         weaknesses: Vec<i32>,
@@ -30,9 +30,9 @@ impl CreatureWeakness {
     ) -> QueryResult<usize> {
         use crate::schema::creatures_weaknesses::dsl::*;
 
-        let mapped_weaknesses: Vec<NewCreatureWeakness> = weaknesses
+        let mapped_weaknesses: Vec<NewCreatureWeaknessDto> = weaknesses
             .iter()
-            .map(|weakness_id| NewCreatureWeakness {
+            .map(|weakness_id| NewCreatureWeaknessDto {
                 creature_id: *parent_id,
                 damage_type_id: *weakness_id,
             })
@@ -52,7 +52,7 @@ impl CreatureWeakness {
         diesel::delete(creatures_weaknesses.filter(creature_id.eq(parent_id))).execute(conn)
     }
 
-    pub fn get_weaknesses_by_creature_id(creature_id: &i32) -> Vec<DamageType> {
+    pub fn get_weaknesses_by_creature_id(creature_id: &i32) -> Vec<DamageTypeDto> {
         use crate::schema::damage_types::dsl::*;
 
         let conn = &mut crate::db::connect_db();
@@ -60,7 +60,7 @@ impl CreatureWeakness {
             .inner_join(crate::schema::creatures_weaknesses::dsl::creatures_weaknesses)
             .filter(crate::schema::creatures_weaknesses::dsl::creature_id.eq(creature_id))
             .select(damage_types::all_columns())
-            .load::<DamageType>(conn)
+            .load::<DamageTypeDto>(conn)
             .expect("Error loading damage types")
     }
 }

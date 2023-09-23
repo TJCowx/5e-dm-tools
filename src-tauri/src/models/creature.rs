@@ -1,13 +1,13 @@
-use crate::dto::creature::creature_ability::CreatureAbility;
-use crate::dto::creature::creature_action::CreatureAction;
-use crate::dto::creature::creature_type::CreatureType;
-use crate::dto::damage_type::DamageType;
-use crate::dto::language::Language;
+use crate::dto::creature::creature_ability_dto::CreatureAbilityDto;
+use crate::dto::creature::creature_action_dto::CreatureActionDto;
+use crate::dto::creature::creature_type_dto::CreatureTypeDto;
+use crate::dto::damage_type_dto::DamageTypeDto;
+use crate::dto::language_dto::LanguageDto;
 
 use serde::{Deserialize, Serialize};
 
-use crate::dto::alignment::Alignment;
-use crate::dto::condition_type::ConditionType;
+use crate::dto::alignment_dto::AlignmentDto;
+use crate::dto::condition_type_dto::ConditionTypeDto;
 use crate::dto::proficiency_dto::ProficiencyDto;
 use crate::dto::size_dto::SizeDto;
 
@@ -42,16 +42,16 @@ pub struct Creature {
     pub is_legendary: bool,
     pub has_lair: bool,
 
-    pub alignment: Alignment,
-    pub creature_type: CreatureType,
+    pub alignment: AlignmentDto,
+    pub creature_type: CreatureTypeDto,
     pub size: SizeDto,
 
     pub proficiencies: Vec<ProficiencyDto>,
-    pub immunities: Vec<DamageType>,
-    pub cond_immunities: Vec<ConditionType>,
-    pub resistances: Vec<DamageType>,
-    pub weaknesses: Vec<DamageType>,
-    pub languages: Vec<Language>,
-    pub abilities: Vec<CreatureAbility>,
-    pub actions: Vec<CreatureAction>,
+    pub immunities: Vec<DamageTypeDto>,
+    pub cond_immunities: Vec<ConditionTypeDto>,
+    pub resistances: Vec<DamageTypeDto>,
+    pub weaknesses: Vec<DamageTypeDto>,
+    pub languages: Vec<LanguageDto>,
+    pub abilities: Vec<CreatureAbilityDto>,
+    pub actions: Vec<CreatureActionDto>,
 }

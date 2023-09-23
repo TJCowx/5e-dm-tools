@@ -8,7 +8,7 @@ use crate::dto::proficiency_dto::ProficiencyDto;
 #[diesel(check_for_backend(diesel::sqlite::Sqlite))]
 #[diesel(belongs_to(CreatureDto))]
 #[diesel(belongs_to(Proficiency))]
-pub struct CreatureProf {
+pub struct CreatureProfDto {
     id: i32,
     creature_id: i32,
     proficiency_id: i32,
@@ -17,12 +17,12 @@ pub struct CreatureProf {
 #[derive(Debug, Serialize, Deserialize, Insertable)]
 #[diesel(table_name = crate::schema::creatures_proficiencies)]
 #[diesel(check_for_backend(diesel::sqlite::Sqlite))]
-pub struct NewCreatureProf {
+pub struct NewCreatureProfDto {
     pub creature_id: i32,
     pub proficiency_id: i32,
 }
 
-impl CreatureProf {
+impl CreatureProfDto {
     pub fn save_creature_profs(
         conn: &mut SqliteConnection,
         proficiencies: Vec<i32>,
@@ -30,9 +30,9 @@ impl CreatureProf {
     ) -> QueryResult<usize> {
         use crate::schema::creatures_proficiencies::dsl::*;
 
-        let mapped_profs: Vec<NewCreatureProf> = proficiencies
+        let mapped_profs: Vec<NewCreatureProfDto> = proficiencies
             .iter()
-            .map(|prof_id| NewCreatureProf {
+            .map(|prof_id| NewCreatureProfDto {
                 creature_id: *parent_id,
                 proficiency_id: *prof_id,
             })

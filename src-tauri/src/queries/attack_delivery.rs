@@ -1,9 +1,9 @@
-use crate::dto::attack_delivery::AttackDelivery;
+use crate::dto::attack_delivery_dto::AttackDeliveryDto;
 
 #[tauri::command]
-pub fn get_all_attack_deliveries() -> Result<Vec<AttackDelivery>, String> {
+pub fn get_all_attack_deliveries() -> Result<Vec<AttackDeliveryDto>, String> {
     println!("[server] Getting all attack deliveries");
-    let attack_deliveries = AttackDelivery::get_all();
+    let attack_deliveries = AttackDeliveryDto::get_all();
 
     println!(
         "[server] Retrieved {} attack deliveries",
@@ -14,9 +14,9 @@ pub fn get_all_attack_deliveries() -> Result<Vec<AttackDelivery>, String> {
 }
 
 #[tauri::command]
-pub fn get_attack_delivery_by_id(id: i32) -> Result<AttackDelivery, String> {
+pub fn get_attack_delivery_by_id(id: i32) -> Result<AttackDeliveryDto, String> {
     println!("[server] Getting attack delivery with id {}", id);
-    let attack_delivery = AttackDelivery::get_by_id(id);
+    let attack_delivery = AttackDeliveryDto::get_by_id(id);
 
     println!("[server] Retrieved attack delivery with id {}", id);
 

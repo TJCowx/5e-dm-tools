@@ -1,9 +1,9 @@
-use crate::dto::condition_type::ConditionType;
+use crate::dto::condition_type_dto::ConditionTypeDto;
 
 #[tauri::command]
-pub fn get_all_condition_types() -> Result<Vec<ConditionType>, String> {
+pub fn get_all_condition_types() -> Result<Vec<ConditionTypeDto>, String> {
     println!("[server] Getting all condition types");
-    let condition_types = ConditionType::get_all();
+    let condition_types = ConditionTypeDto::get_all();
 
     println!(
         "[server] Retrieved {} condition types",

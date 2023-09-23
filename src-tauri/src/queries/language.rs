@@ -1,9 +1,9 @@
-use crate::dto::language::Language;
+use crate::dto::language_dto::LanguageDto;
 
 #[tauri::command]
-pub fn get_all_languages() -> Result<Vec<Language>, String> {
+pub fn get_all_languages() -> Result<Vec<LanguageDto>, String> {
     println!("[server] Getting all languages");
-    let languages = Language::get_all();
+    let languages = LanguageDto::get_all();
 
     println!("[server] Retrieved {} languages", languages.len());
 

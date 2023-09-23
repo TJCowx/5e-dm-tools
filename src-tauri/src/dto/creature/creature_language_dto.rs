@@ -1,14 +1,14 @@
 use diesel::prelude::*;
 use serde::{Deserialize, Serialize};
 
-use crate::dto::language::Language;
+use crate::dto::language_dto::LanguageDto;
 
 #[derive(Queryable, Debug, Serialize, Deserialize)]
 #[diesel(table_name = crate::schema::creatures_languages)]
 #[diesel(check_for_backend(diesel::sqlite::Sqlite))]
 #[diesel(belongs_to(CreatureDto))]
 #[diesel(belongs_to(Language))]
-pub struct CreatureLanguage {
+pub struct CreatureLanguageDto {
     id: i32,
     creature_id: i32,
     language_id: i32,
@@ -17,12 +17,12 @@ pub struct CreatureLanguage {
 #[derive(Debug, Serialize, Deserialize, Insertable)]
 #[diesel(table_name = crate::schema::creatures_languages)]
 #[diesel(check_for_backend(diesel::sqlite::Sqlite))]
-pub struct NewCreatureLanguage {
+pub struct NewCreatureLanguageDto {
     pub creature_id: i32,
     pub language_id: i32,
 }
 
-impl CreatureLanguage {
+impl CreatureLanguageDto {
     pub fn save_creature_languages(
         conn: &mut SqliteConnection,
         languages: Vec<i32>,
@@ -30,9 +30,9 @@ impl CreatureLanguage {
     ) -> QueryResult<usize> {
         use crate::schema::creatures_languages::dsl::*;
 
-        let mapped_languages: Vec<NewCreatureLanguage> = languages
+        let mapped_languages: Vec<NewCreatureLanguageDto> = languages
             .iter()
-            .map(|item_id| NewCreatureLanguage {
+            .map(|item_id| NewCreatureLanguageDto {
                 creature_id: *parent_id,
                 language_id: *item_id,
             })
@@ -52,7 +52,7 @@ impl CreatureLanguage {
         diesel::delete(creatures_languages.filter(creature_id.eq(parent_id))).execute(conn)
     }
 
-    pub fn get_languages_by_creature_id(language_id: &i32) -> Vec<Language> {
+    pub fn get_languages_by_creature_id(language_id: &i32) -> Vec<LanguageDto> {
         use crate::schema::languages::dsl::*;
 
         let conn = &mut crate::db::connect_db();
@@ -60,7 +60,7 @@ impl CreatureLanguage {
             .inner_join(crate::schema::creatures_languages::dsl::creatures_languages)
             .filter(crate::schema::creatures_languages::dsl::creature_id.eq(language_id))
             .select(languages::all_columns())
-            .load::<Language>(conn)
+            .load::<LanguageDto>(conn)
             .expect("Error loading languages")
     }
 }

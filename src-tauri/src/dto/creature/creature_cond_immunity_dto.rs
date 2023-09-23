@@ -1,14 +1,14 @@
 use diesel::prelude::*;
 use serde::{Deserialize, Serialize};
 
-use crate::dto::condition_type::ConditionType;
+use crate::dto::condition_type_dto::ConditionTypeDto;
 
 #[derive(Queryable, Debug, Serialize, Deserialize)]
 #[diesel(table_name = crate::schema::creatures_condition_immunities)]
 #[diesel(check_for_backend(diesel::sqlite::Sqlite))]
 #[diesel(belongs_to(CreatureDto))]
 #[diesel(belongs_to(ConditionType))]
-pub struct CreatureCondImmunity {
+pub struct CreatureCondImmunityDto {
     id: i32,
     creature_id: i32,
     condition_type_id: i32,
@@ -17,12 +17,12 @@ pub struct CreatureCondImmunity {
 #[derive(Debug, Serialize, Deserialize, Insertable)]
 #[diesel(table_name = crate::schema::creatures_condition_immunities)]
 #[diesel(check_for_backend(diesel::sqlite::Sqlite))]
-pub struct NewCreatureCondImmunity {
+pub struct NewCreatureCondImmunityDto {
     pub creature_id: i32,
     pub condition_type_id: i32,
 }
 
-impl CreatureCondImmunity {
+impl CreatureCondImmunityDto {
     pub fn save_creature_cond_immunities(
         conn: &mut SqliteConnection,
         cond_immunities: Vec<i32>,
@@ -30,9 +30,9 @@ impl CreatureCondImmunity {
     ) -> QueryResult<usize> {
         use crate::schema::creatures_condition_immunities::dsl::*;
 
-        let mapped_cond_immunities: Vec<NewCreatureCondImmunity> = cond_immunities
+        let mapped_cond_immunities: Vec<NewCreatureCondImmunityDto> = cond_immunities
             .iter()
-            .map(|cond_immunity_id| NewCreatureCondImmunity {
+            .map(|cond_immunity_id| NewCreatureCondImmunityDto {
                 creature_id: *parent_id,
                 condition_type_id: *cond_immunity_id,
             })
@@ -53,7 +53,7 @@ impl CreatureCondImmunity {
             .execute(conn)
     }
 
-    pub fn get_conditions_by_creature_id(creature_id: &i32) -> Vec<ConditionType> {
+    pub fn get_conditions_by_creature_id(creature_id: &i32) -> Vec<ConditionTypeDto> {
         use crate::schema::condition_types::dsl::*;
 
         let conn = &mut crate::db::connect_db();
@@ -63,7 +63,7 @@ impl CreatureCondImmunity {
             )
             .filter(crate::schema::creatures_condition_immunities::dsl::creature_id.eq(creature_id))
             .select(condition_types::all_columns())
-            .load::<ConditionType>(conn)
+            .load::<ConditionTypeDto>(conn)
             .expect("Error loading condition types")
     }
 }
