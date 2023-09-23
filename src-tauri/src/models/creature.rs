@@ -1,15 +1,16 @@
-use crate::dto::creature::creature_ability_dto::CreatureAbilityDto;
-use crate::dto::creature::creature_action_dto::CreatureActionDto;
-use crate::dto::creature::creature_type_dto::CreatureTypeDto;
-use crate::dto::damage_type_dto::DamageTypeDto;
-use crate::dto::language_dto::LanguageDto;
+use crate::dto::{
+    alignment_dto::AlignmentDto,
+    condition_type_dto::ConditionTypeDto,
+    creature::{creature_ability_dto::CreatureAbilityDto, creature_type_dto::CreatureTypeDto},
+    damage_type_dto::DamageTypeDto,
+    language_dto::LanguageDto,
+    proficiency_dto::ProficiencyDto,
+    size_dto::SizeDto,
+};
 
 use serde::{Deserialize, Serialize};
 
-use crate::dto::alignment_dto::AlignmentDto;
-use crate::dto::condition_type_dto::ConditionTypeDto;
-use crate::dto::proficiency_dto::ProficiencyDto;
-use crate::dto::size_dto::SizeDto;
+use super::creature_action::CreatureAction;
 
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
@@ -53,5 +54,5 @@ pub struct Creature {
     pub weaknesses: Vec<DamageTypeDto>,
     pub languages: Vec<LanguageDto>,
     pub abilities: Vec<CreatureAbilityDto>,
-    pub actions: Vec<CreatureActionDto>,
+    pub actions: Vec<CreatureAction>,
 }

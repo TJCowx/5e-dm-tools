@@ -163,7 +163,7 @@ impl CreatureDto {
             weaknesses: CreatureWeaknessDto::get_weaknesses_by_creature_id(&creature.id),
             languages: CreatureLanguageDto::get_languages_by_creature_id(&creature.id),
             abilities: CreatureAbilityDto::get_abilities_by_creature_id(&creature.id),
-            actions: Vec::new(),
+            actions: CreatureActionDto::get_actions_by_creature_id(&creature.id).unwrap(),
         }
     }
 

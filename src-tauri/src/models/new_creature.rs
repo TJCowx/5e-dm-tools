@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-use super::{base_creature_ability::BaseCreatureAbility, base_creature_action::BaseCreatureAction};
+use super::{creature_ability::BaseCreatureAbility, creature_action::BaseCreatureAction};
 
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]

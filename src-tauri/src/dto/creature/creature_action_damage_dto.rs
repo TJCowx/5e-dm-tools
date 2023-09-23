@@ -1,7 +1,10 @@
 use diesel::prelude::*;
 use serde::{Deserialize, Serialize};
 
-use crate::models::base_creature_action_damage::BaseCreatureActionDamage;
+use crate::{
+    dto::damage_type_dto::DamageTypeDto,
+    models::creature_action_damage::{BaseCreatureActionDamage, CreatureActionDamage},
+};
 
 #[derive(Debug, Serialize, Deserialize, Queryable)]
 #[diesel(table_name = crate::schema::creature_action_damages)]
@@ -10,7 +13,7 @@ use crate::models::base_creature_action_damage::BaseCreatureActionDamage;
 #[diesel(belongs_to(CreatureAction))]
 pub struct CreatureActionDamageDto {
     id: i32,
-    default_damage: String,
+    default_damage: i32,
     dice: String,
     type_id: i32,
     action_id: i32,
@@ -27,6 +30,16 @@ pub struct NewCreatureActionDamageDto {
 }
 
 impl CreatureActionDamageDto {
+    pub fn get_full_damage(damage: Self) -> CreatureActionDamage {
+        CreatureActionDamage {
+            id: damage.id,
+            default_damage: damage.default_damage,
+            dice: damage.dice.clone(),
+            type_id: damage.type_id,
+            damage_type: DamageTypeDto::get_by_id(damage.type_id),
+        }
+    }
+
     pub fn save_action_damages(
         conn: &mut SqliteConnection,
         damages: Vec<BaseCreatureActionDamage>,
@@ -48,5 +61,17 @@ impl CreatureActionDamageDto {
         }
 
         Ok(())
+    }
+
+    pub fn get_damages_by_action_id(parent_id: i32) -> Vec<CreatureActionDamage> {
+        use crate::schema::creature_action_damages::dsl::*;
+
+        let conn = &mut crate::db::connect_db();
+
+        let results = creature_action_damages
+            .load::<CreatureActionDamageDto>(conn)
+            .expect("Error loading damages");
+
+        results.into_iter().map(Self::get_full_damage).collect()
     }
 }

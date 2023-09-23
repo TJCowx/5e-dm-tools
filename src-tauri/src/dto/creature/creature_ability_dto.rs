@@ -1,4 +1,4 @@
-use crate::models::base_creature_ability::BaseCreatureAbility;
+use crate::models::creature_ability::BaseCreatureAbility;
 use diesel::prelude::*;
 use serde::{Deserialize, Serialize};
 
