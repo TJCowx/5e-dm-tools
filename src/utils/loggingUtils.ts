@@ -1,18 +1,25 @@
 /* eslint-disable import/prefer-default-export */
-import { writeTextFile, BaseDirectory } from '@tauri-apps/api/fs';
+import { error } from '@tauri-apps/plugin-log';
 
 type LogLevel = 'info' | 'warn' | 'error' | 'debug';
 
 export async function logMessage(logLevel: LogLevel, message: string) {
-  // Get file name
-  const date = new Date();
-  const fileName = `${logLevel}-${date.getFullYear()}-${date.getMonth()}-${date.getDate()}.log`;
-
   // If it's development mode log to console
   if (process.env.NODE_ENV === 'development') {
-    // eslint-disable-next-line no-console
-    console.log(`[${logLevel.toUpperCase()}] ${message}`);
+    switch (logLevel) {
+      case 'error':
+        console.error(message);
+        break;
+      case 'warn':
+        console.warn(message);
+        break;
+      default:
+        // eslint-disable-next-line no-console
+        console.log(message);
+    }
   }
 
-  await writeTextFile(fileName, message, { dir: BaseDirectory.AppData });
+  if (logLevel === 'error') {
+    error(message);
+  }
 }

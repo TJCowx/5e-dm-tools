@@ -3,6 +3,9 @@
     windows_subsystem = "windows"
 )]
 
+use log::LevelFilter;
+use tauri_plugin_log::LogTarget;
+
 mod db;
 pub mod dto;
 pub mod models;
@@ -11,6 +14,12 @@ pub mod schema;
 
 fn main() {
     tauri::Builder::default()
+        .plugin(
+            tauri_plugin_log::Builder::default()
+                .targets([LogTarget::LogDir, LogTarget::Stdout])
+                .level(LevelFilter::Error)
+                .build(),
+        )
         .invoke_handler(tauri::generate_handler![
             queries::creature::get_all_creatures,
             queries::creature::get_creature_by_id,
