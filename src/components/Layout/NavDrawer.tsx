@@ -57,20 +57,18 @@ function NavDrawer() {
       <List>
         {NavItems.map(({ text, icon, href, activeMustMatch }) => (
           <ListItem key={text}>
-            <Link href={href} passHref>
-              <ListItemButton aria-label={text} component="a" href={href}>
-                <ListItemIcon
-                  className={clsx({
-                    'rail-icon': true,
-                    'is-active': activeMustMatch
-                      ? router.pathname === href
-                      : router.pathname.startsWith(href),
-                  })}
-                >
-                  {icon}
-                </ListItemIcon>
-              </ListItemButton>
-            </Link>
+            <ListItemButton aria-label={text} component={Link} href={href}>
+              <ListItemIcon
+                className={clsx({
+                  'rail-icon': true,
+                  'is-active': activeMustMatch
+                    ? router.pathname === href
+                    : router.pathname.startsWith(href),
+                })}
+              >
+                {icon}
+              </ListItemIcon>
+            </ListItemButton>
           </ListItem>
         ))}
       </List>
