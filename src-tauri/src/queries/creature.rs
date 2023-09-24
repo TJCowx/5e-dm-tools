@@ -1,5 +1,5 @@
 use crate::dto::creature::creature_dto::CreatureDto;
-use crate::models::creature::Creature;
+use crate::models::creature::{Creature, EditableCreature};
 use crate::models::new_creature::NewCreature;
 
 #[tauri::command]
@@ -30,10 +30,7 @@ pub fn add_creature(new_creature: NewCreature) -> Result<(), String> {
 
 #[tauri::command]
 pub fn get_creature_by_id(id: i32) -> Result<Creature, String> {
-    println!(
-        "[server] G=================================================etting creature {}",
-        id
-    );
+    println!("[server] Getting creature {}", id);
 
     match CreatureDto::get_by_id(id) {
         Ok(creature) => {
@@ -43,6 +40,22 @@ pub fn get_creature_by_id(id: i32) -> Result<Creature, String> {
         Err(_) => {
             println!("[server] Error getting creature {}", id);
             Err("Error getting creature".to_string())
+        }
+    }
+}
+
+#[tauri::command]
+pub fn get_editable_creature_by_id(id: i32) -> Result<EditableCreature, String> {
+    println!("[server] Getting editable creature {}", id);
+
+    match CreatureDto::get_editable_by_id(id) {
+        Ok(creature) => {
+            println!("[server] Retrieved editable creature {}", id);
+            Ok(creature)
+        }
+        Err(_) => {
+            println!("[server] Error getting editable creature {}", id);
+            Err("Error getting editable creature".to_string())
         }
     }
 }

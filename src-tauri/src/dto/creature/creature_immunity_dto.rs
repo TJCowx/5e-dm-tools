@@ -63,4 +63,16 @@ impl CreatureImmunityDto {
             .load::<DamageTypeDto>(conn)
             .expect("Error loading damage types")
     }
+
+    pub fn get_immunity_ids_by_creature_id(creature_id: &i32) -> Vec<i32> {
+        use crate::schema::damage_types::dsl::*;
+
+        let conn = &mut crate::db::connect_db();
+        damage_types
+            .inner_join(crate::schema::creatures_immunities::dsl::creatures_immunities)
+            .filter(crate::schema::creatures_immunities::dsl::creature_id.eq(creature_id))
+            .select(id)
+            .load::<i32>(conn)
+            .expect("Error loading damage types")
+    }
 }

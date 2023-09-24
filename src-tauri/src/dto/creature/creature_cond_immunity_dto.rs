@@ -66,4 +66,18 @@ impl CreatureCondImmunityDto {
             .load::<ConditionTypeDto>(conn)
             .expect("Error loading condition types")
     }
+
+    pub fn get_cond_ids_by_creature_id(creature_id: &i32) -> Vec<i32> {
+        use crate::schema::condition_types::dsl::*;
+
+        let conn = &mut crate::db::connect_db();
+        condition_types
+            .inner_join(
+                crate::schema::creatures_condition_immunities::dsl::creatures_condition_immunities,
+            )
+            .filter(crate::schema::creatures_condition_immunities::dsl::creature_id.eq(creature_id))
+            .select(id)
+            .load::<i32>(conn)
+            .expect("Error loading condition types")
+    }
 }

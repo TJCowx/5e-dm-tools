@@ -1,7 +1,7 @@
 use crate::{
     db::connect_db,
-    dto::{alignment_dto::AlignmentDto, size_dto::SizeDto},
-    models::creature::Creature,
+    dto::{alignment_dto::AlignmentDto, proficiency_dto::ProficiencyDto, size_dto::SizeDto},
+    models::creature::{Creature, EditableCreature},
     schema::creatures::{self, dsl::creatures as all_creatures},
 };
 use diesel::prelude::*;
@@ -167,6 +167,49 @@ impl CreatureDto {
         }
     }
 
+    pub fn map_edit_creature(creature: Self) -> EditableCreature {
+        EditableCreature {
+            id: creature.id,
+            name: creature.name,
+            description: creature.description,
+            armour_class: creature.armour_class,
+            hit_points: creature.hit_points,
+            hit_die: creature.hit_die,
+            saving_throws: creature.saving_throws,
+            land_speed: creature.land_speed,
+            fly_speed: creature.fly_speed,
+            burrow_speed: creature.burrow_speed,
+            climb_speed: creature.climb_speed,
+            hover_speed: creature.hover_speed,
+            blindsight: creature.blindsight,
+            darkvision: creature.darkvision,
+            tremorsense: creature.tremorsense,
+            truesight: creature.truesight,
+            strength: creature.strength,
+            dexterity: creature.dexterity,
+            constitution: creature.constitution,
+            intelligence: creature.intelligence,
+            wisdom: creature.wisdom,
+            charisma: creature.charisma,
+            prof_bonus: creature.prof_bonus,
+            challenge_rating: creature.challenge_rating,
+            reward_xp: creature.reward_xp,
+            is_legendary: creature.is_legendary,
+            has_lair: creature.has_lair,
+            alignment_id: creature.alignment_id,
+            creature_type_id: creature.creature_type_id,
+            size_id: creature.size_id,
+            proficiency_ids: CreatureProfDto::get_prof_ids_by_creature_id(&creature.id),
+            immunity_ids: CreatureImmunityDto::get_immunity_ids_by_creature_id(&creature.id),
+            cond_immunity_ids: CreatureCondImmunityDto::get_cond_ids_by_creature_id(&creature.id),
+            resistance_ids: CreatureResistanceDto::get_resistance_ids_by_creature_id(&creature.id),
+            weakness_ids: CreatureWeaknessDto::get_weakness_ids_by_creature_id(&creature.id),
+            language_ids: CreatureLanguageDto::get_language_ids_by_creature_id(&creature.id),
+            abilities: CreatureAbilityDto::get_abilities_by_creature_id(&creature.id),
+            actions: CreatureActionDto::get_actions_by_creature_id(&creature.id).unwrap(),
+        }
+    }
+
     pub fn get_all() -> Vec<Creature> {
         let conn = &mut connect_db();
 
@@ -185,6 +228,15 @@ impl CreatureDto {
 
         match all_creatures.find(creature_id).first::<CreatureDto>(conn) {
             Ok(found) => Ok(Self::map_display_creature(found)),
+            Err(e) => Err(format!("Error getting creature: {}", e)),
+        }
+    }
+
+    pub fn get_editable_by_id(creature_id: i32) -> Result<EditableCreature, String> {
+        let conn = &mut connect_db();
+
+        match all_creatures.find(creature_id).first::<CreatureDto>(conn) {
+            Ok(found) => Ok(Self::map_edit_creature(found)),
             Err(e) => Err(format!("Error getting creature: {}", e)),
         }
     }

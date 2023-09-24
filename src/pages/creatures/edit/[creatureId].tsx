@@ -22,7 +22,7 @@ function EditCreature() {
   const { creatureId } = router.query;
 
   const { data, isLoading, error } = useInvoke<Partial<Creature>>(
-    'get_creature_by_id',
+    'get_editable_creature_by_id',
     { id: parseInt(creatureId as string, 10) }
   );
 

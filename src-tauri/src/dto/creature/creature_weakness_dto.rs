@@ -63,4 +63,16 @@ impl CreatureWeaknessDto {
             .load::<DamageTypeDto>(conn)
             .expect("Error loading damage types")
     }
+
+    pub fn get_weakness_ids_by_creature_id(creature_id: &i32) -> Vec<i32> {
+        use crate::schema::damage_types::dsl::*;
+
+        let conn = &mut crate::db::connect_db();
+        damage_types
+            .inner_join(crate::schema::creatures_weaknesses::dsl::creatures_weaknesses)
+            .filter(crate::schema::creatures_weaknesses::dsl::creature_id.eq(creature_id))
+            .select(id)
+            .load::<i32>(conn)
+            .expect("Error loading damage types")
+    }
 }

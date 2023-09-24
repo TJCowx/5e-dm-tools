@@ -52,15 +52,27 @@ impl CreatureLanguageDto {
         diesel::delete(creatures_languages.filter(creature_id.eq(parent_id))).execute(conn)
     }
 
-    pub fn get_languages_by_creature_id(language_id: &i32) -> Vec<LanguageDto> {
+    pub fn get_languages_by_creature_id(creature_id: &i32) -> Vec<LanguageDto> {
         use crate::schema::languages::dsl::*;
 
         let conn = &mut crate::db::connect_db();
         languages
             .inner_join(crate::schema::creatures_languages::dsl::creatures_languages)
-            .filter(crate::schema::creatures_languages::dsl::creature_id.eq(language_id))
+            .filter(crate::schema::creatures_languages::dsl::creature_id.eq(creature_id))
             .select(languages::all_columns())
             .load::<LanguageDto>(conn)
+            .expect("Error loading languages")
+    }
+
+    pub fn get_language_ids_by_creature_id(creature_id: &i32) -> Vec<i32> {
+        use crate::schema::languages::dsl::*;
+
+        let conn = &mut crate::db::connect_db();
+        languages
+            .inner_join(crate::schema::creatures_languages::dsl::creatures_languages)
+            .filter(crate::schema::creatures_languages::dsl::creature_id.eq(creature_id))
+            .select(id)
+            .load::<i32>(conn)
             .expect("Error loading languages")
     }
 }

@@ -23,6 +23,7 @@ fn main() {
         .invoke_handler(tauri::generate_handler![
             queries::creature::get_all_creatures,
             queries::creature::get_creature_by_id,
+            queries::creature::get_editable_creature_by_id,
             queries::creature::add_creature,
             queries::creature::update_creature,
             queries::creature::delete_creature,
