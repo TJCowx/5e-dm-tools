@@ -84,7 +84,7 @@ diesel::table! {
         armour_class -> Integer,
         hit_points -> Integer,
         hit_die -> Text,
-        saving_throws -> Nullable<Text>,
+        saving_throws -> Text,
         land_speed -> Nullable<Integer>,
         fly_speed -> Nullable<Integer>,
         burrow_speed -> Nullable<Integer>,

@@ -344,9 +344,9 @@ impl CreatureDto {
         let conn = &mut connect_db();
 
         conn.transaction(|connection| {
-            diesel::update(all_creatures.find(creature.id))
-                .set(Self::from(creature))
-                .execute(connection)?;
+            // diesel::update(all_creatures.find(creature.id))
+            //     .set(Self::make_insert_creature(creature))
+            //     .execute(connection)?;
 
             Ok(())
         })
