@@ -10,7 +10,7 @@ pub struct NewCreature {
     pub armour_class: i32,
     pub hit_points: i32,
     pub hit_die: String,
-    pub saving_throws: Option<String>,
+    pub saving_throws: String,
     pub land_speed: Option<i32>,
     pub fly_speed: Option<i32>,
     pub burrow_speed: Option<i32>,

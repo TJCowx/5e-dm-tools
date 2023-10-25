@@ -16,7 +16,7 @@ use super::{
 };
 use crate::models::new_creature::NewCreature;
 
-#[derive(Debug, Serialize, Deserialize, Queryable)]
+#[derive(Debug, Serialize, Deserialize, Queryable, Identifiable, AsChangeset)]
 #[diesel(table_name = crate::schema::creatures)]
 #[diesel(check_for_backend(diesel::sqlite::Sqlite))]
 pub struct CreatureDto {
@@ -26,7 +26,7 @@ pub struct CreatureDto {
     armour_class: i32,
     hit_points: i32,
     hit_die: String,
-    saving_throws: Option<String>,
+    saving_throws: String,
     land_speed: Option<i32>,
     fly_speed: Option<i32>,
     burrow_speed: Option<i32>,
@@ -61,7 +61,7 @@ struct NewCreatureDto {
     armour_class: i32,
     hit_points: i32,
     hit_die: String,
-    saving_throws: Option<String>,
+    saving_throws: String,
     land_speed: Option<i32>,
     fly_speed: Option<i32>,
     burrow_speed: Option<i32>,
@@ -85,6 +85,43 @@ struct NewCreatureDto {
     alignment_id: i32,
     creature_type_id: i32,
     size_id: i32,
+}
+
+impl From<Creature> for CreatureDto {
+    fn from(creature: Creature) -> Self {
+        CreatureDto {
+            id: creature.id,
+            name: creature.name,
+            description: creature.description,
+            armour_class: creature.armour_class,
+            hit_points: creature.hit_points,
+            hit_die: creature.hit_die,
+            saving_throws: creature.saving_throws.join(","),
+            land_speed: creature.land_speed,
+            fly_speed: creature.fly_speed,
+            burrow_speed: creature.burrow_speed,
+            climb_speed: creature.climb_speed,
+            hover_speed: creature.hover_speed,
+            blindsight: creature.blindsight,
+            darkvision: creature.darkvision,
+            tremorsense: creature.tremorsense,
+            truesight: creature.truesight,
+            strength: creature.strength,
+            dexterity: creature.dexterity,
+            constitution: creature.constitution,
+            intelligence: creature.intelligence,
+            wisdom: creature.wisdom,
+            charisma: creature.charisma,
+            prof_bonus: creature.prof_bonus,
+            challenge_rating: creature.challenge_rating,
+            reward_xp: creature.reward_xp,
+            is_legendary: creature.is_legendary,
+            has_lair: creature.has_lair,
+            alignment_id: creature.alignment_id,
+            creature_type_id: creature.creature_type_id,
+            size_id: creature.size_id,
+        }
+    }
 }
 
 impl CreatureDto {
@@ -132,7 +169,11 @@ impl CreatureDto {
             armour_class: creature.armour_class,
             hit_points: creature.hit_points,
             hit_die: creature.hit_die,
-            saving_throws: creature.saving_throws,
+            saving_throws: creature
+                .saving_throws
+                .split(',')
+                .map(|s| s.to_string())
+                .collect(),
             land_speed: creature.land_speed,
             fly_speed: creature.fly_speed,
             burrow_speed: creature.burrow_speed,
@@ -153,6 +194,9 @@ impl CreatureDto {
             reward_xp: creature.reward_xp,
             is_legendary: creature.is_legendary,
             has_lair: creature.has_lair,
+            alignment_id: creature.alignment_id,
+            creature_type_id: creature.creature_type_id,
+            size_id: creature.size_id,
             alignment: AlignmentDto::get_by_id(&creature.alignment_id),
             creature_type: CreatureTypeDto::get_by_id(&creature.creature_type_id),
             size: SizeDto::get_by_id(&creature.size_id),
@@ -167,6 +211,7 @@ impl CreatureDto {
         }
     }
 
+    // TODO: turn this into a trait
     pub fn map_edit_creature(creature: Self) -> EditableCreature {
         EditableCreature {
             id: creature.id,
@@ -175,7 +220,11 @@ impl CreatureDto {
             armour_class: creature.armour_class,
             hit_points: creature.hit_points,
             hit_die: creature.hit_die,
-            saving_throws: creature.saving_throws,
+            saving_throws: creature
+                .saving_throws
+                .split(',')
+                .map(|s| s.to_string())
+                .collect(),
             land_speed: creature.land_speed,
             fly_speed: creature.fly_speed,
             burrow_speed: creature.burrow_speed,
@@ -292,7 +341,15 @@ impl CreatureDto {
     }
 
     pub fn update(creature: &Creature) -> QueryResult<()> {
-        Ok(())
+        let conn = &mut connect_db();
+
+        conn.transaction(|connection| {
+            diesel::update(all_creatures.find(creature.id))
+                .set(Self::from(creature))
+                .execute(connection)?;
+
+            Ok(())
+        })
     }
 
     pub fn delete(id: i32) -> QueryResult<()> {

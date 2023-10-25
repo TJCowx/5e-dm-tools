@@ -5,7 +5,7 @@ CREATE TABLE creatures (
   armour_class INTEGER NOT NULL,
   hit_points INTEGER NOT NULL,
   hit_die TEXT NOT NULL,
-  saving_throws TEXT NULL,
+  saving_throws TEXT NOT NULL,
   land_speed INTEGER NULL,
   fly_speed INTEGER NULL,
   burrow_speed INTEGER NULL,
