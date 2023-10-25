@@ -169,11 +169,7 @@ impl CreatureDto {
             armour_class: creature.armour_class,
             hit_points: creature.hit_points,
             hit_die: creature.hit_die,
-            saving_throws: creature
-                .saving_throws
-                .split(',')
-                .map(|s| s.to_string())
-                .collect(),
+            saving_throws: creature.saving_throws.split(',').collect(),
             land_speed: creature.land_speed,
             fly_speed: creature.fly_speed,
             burrow_speed: creature.burrow_speed,
@@ -220,11 +216,7 @@ impl CreatureDto {
             armour_class: creature.armour_class,
             hit_points: creature.hit_points,
             hit_die: creature.hit_die,
-            saving_throws: creature
-                .saving_throws
-                .split(',')
-                .map(|s| s.to_string())
-                .collect(),
+            saving_throws: creature.saving_throws.split(',').collect(),
             land_speed: creature.land_speed,
             fly_speed: creature.fly_speed,
             burrow_speed: creature.burrow_speed,
