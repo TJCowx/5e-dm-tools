@@ -42,6 +42,10 @@ const StyledForm = styled('form')(() => ({
     display: 'flex',
     columnGap: '12px',
   },
+  '& .input-row': {
+    display: 'flex',
+    gap: '16px',
+  },
 }));
 
 function AddCreatureCombatantForm({ onSubmit, onCancel }: Props) {
@@ -150,7 +154,7 @@ function AddCreatureCombatantForm({ onSubmit, onCancel }: Props) {
             value={field.value ?? null}
             disablePortal
             loading={isLoading}
-            multiple={undefined}
+            // multiple={undefined}
             options={availableCreature}
             getOptionLabel={(opt) => (typeof opt === 'string' ? opt : opt.name)}
             size="small"
@@ -175,8 +179,9 @@ function AddCreatureCombatantForm({ onSubmit, onCancel }: Props) {
                   {creatureOpt.name}
                   <Typography variant="body2">
                     <i>
-                      CR: {creatureOpt.challengeRating} | {creatureOpt.size}{' '}
-                      {creatureOpt.creatureType} | {creatureOpt.alignment}
+                      CR: {creatureOpt.challengeRating} |{' '}
+                      {creatureOpt.size?.name} {creatureOpt.creatureType.name} |{' '}
+                      {creatureOpt.alignment.name}
                     </i>
                   </Typography>
                 </Typography>
@@ -205,7 +210,8 @@ function AddCreatureCombatantForm({ onSubmit, onCancel }: Props) {
           <div className="description-container mb-16">
             <Typography variant="body2">
               <i>
-                {creature.size} {creature.creatureType} | {creature.alignment}
+                {creature.size?.name} {creature.creatureType.name} |{' '}
+                {creature.alignment.name}
               </i>
             </Typography>
             <Typography variant="body2">

@@ -26,7 +26,12 @@ const StyledForm = styled('form')(() => ({
   '& .action-container': {
     marginTop: '16px',
     display: 'flex',
+    gap: '16px',
     justifyContent: 'flex-end',
+  },
+  '& .input-row': {
+    display: 'flex',
+    gap: '16px',
   },
 }));
 
