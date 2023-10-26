@@ -187,38 +187,38 @@ function CreatureCombatantItem({ combatant, isExpanded, onChange }: Props) {
           {!!stats?.immunities?.length && (
             <LabelValueRow
               label="Damage Immunities"
-              value={stats?.immunities?.join(' | ')}
+              value={stats?.immunities?.map(({ name }) => name).join(' | ')}
             />
           )}
           {!!stats?.condImmunities?.length && (
             <LabelValueRow
               label="Condition Immunities"
-              value={stats?.condImmunities?.join(' | ')}
+              value={stats?.condImmunities?.map(({ name }) => name).join(' | ')}
             />
           )}
           {!!stats?.resistances?.length && (
             <LabelValueRow
               label="Resistances"
-              value={stats?.resistances?.join(' | ')}
+              value={stats?.resistances?.map(({ name }) => name).join(' | ')}
             />
           )}
           {!!stats?.weaknesses?.length && (
             <LabelValueRow
               label="Weaknesses"
-              value={stats?.weaknesses?.join(' | ')}
+              value={stats?.weaknesses?.map(({ name }) => name).join(' | ')}
             />
           )}
           {!!stats?.languages?.length && (
             <LabelValueRow
               label="Languages"
-              value={stats?.languages?.join(' | ')}
+              value={stats?.languages?.map(({ name }) => name).join(' | ')}
             />
           )}
         </div>
         {(!!stats?.abilities?.length || stats?.isLegendary) && (
           <>
             <Divider className="my-16" />
-            <div className="abilities-container, m-16">
+            <div className="abilities-container m-16">
               {stats?.abilities.map((ability) => (
                 <AbilityFormat
                   key={`${combatant.id}-${ability.name}`}

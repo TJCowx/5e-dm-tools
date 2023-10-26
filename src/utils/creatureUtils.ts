@@ -150,7 +150,7 @@ export const getProficienciesString = (creature: Creature) => {
   return (proficiencies ?? [])
     .map(
       (prof) =>
-        `${prof} ${getFormattedModifier(
+        `${prof.name} ${getFormattedModifier(
           getSkillAttribute(prof, creature),
           profBonus
         )}`
