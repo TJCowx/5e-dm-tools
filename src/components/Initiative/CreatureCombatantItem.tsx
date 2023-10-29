@@ -110,6 +110,12 @@ function CreatureCombatantItem({ combatant, isExpanded, onChange }: Props) {
     setLairActions(newLairActions);
   }, [stats?.actions]);
 
+  useEffect(() => {
+    if (combatant.currentHp != null) {
+      setCurrentHp(`${combatant.currentHp}`);
+    }
+  }, [combatant.currentHp]);
+
   return (
     <StyledAccordion
       disableGutters

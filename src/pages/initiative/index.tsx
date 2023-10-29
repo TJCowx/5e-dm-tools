@@ -20,7 +20,6 @@ function InitiativePage() {
   const [combatants, setCombatants] = useState(new Map<string, Combatant>());
 
   const addCombatants = (addedCombatants: Combatant[]) => {
-    console.log(addedCombatants);
     const numCombatantsByType = new Map<string, number>();
 
     // Previous named combatants
@@ -70,9 +69,23 @@ function InitiativePage() {
     const combatant = prevCombatants.get(id);
     if (combatant) {
       combatant.isDead = newState;
+      combatant.currentHp = combatant.isDead ? 0 : 1;
       prevCombatants.set(id, combatant);
     }
+
     setCombatants(prevCombatants);
+
+    if (creatureCombatants.has(id)) {
+      console.log('creatureCombatants');
+      const prevCreatureCombatants = new Map(creatureCombatants);
+      const creatureCombatant = prevCreatureCombatants.get(id);
+      if (creatureCombatant) {
+        creatureCombatant.isDead = newState;
+        creatureCombatant.currentHp = creatureCombatant.isDead ? 0 : 1;
+        prevCreatureCombatants.set(id, creatureCombatant);
+      }
+      setCreatureCombatants(prevCreatureCombatants);
+    }
   };
 
   const highlightCreatureCombatant = (combatant: Combatant) => {

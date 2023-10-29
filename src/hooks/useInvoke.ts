@@ -12,10 +12,8 @@ export default function useInvoke<T>(
 
   function invoke() {
     setIsLoading(true);
-    console.log('Invoking...', query, queryArgs);
     tauriInvoke(query, queryArgs)
       .then((res) => {
-        console.log(query, res);
         setData(res as T);
         setIsLoading(false);
       })
