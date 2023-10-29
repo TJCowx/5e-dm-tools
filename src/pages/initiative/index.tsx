@@ -64,6 +64,7 @@ function InitiativePage() {
     setCreatureCombatants(updatedCreatureCombatants);
   };
 
+  // TODO: Make this a bit less messy
   const toggleAliveState = (id: string, newState: boolean) => {
     const prevCombatants = new Map(combatants);
     const combatant = prevCombatants.get(id);
@@ -76,7 +77,6 @@ function InitiativePage() {
     setCombatants(prevCombatants);
 
     if (creatureCombatants.has(id)) {
-      console.log('creatureCombatants');
       const prevCreatureCombatants = new Map(creatureCombatants);
       const creatureCombatant = prevCreatureCombatants.get(id);
       if (creatureCombatant) {

@@ -37,7 +37,7 @@ function findNextCombatant(currentIndex: number, initiativeOrder: Combatant[]) {
     currentIndex === initiativeOrder.length - 1 ? 0 : currentIndex + 1;
   let foundCombatant: Combatant | null = null;
 
-  while (nextIndex !== currentIndex && !foundCombatant) {
+  while (!foundCombatant) {
     const nextCombatant = initiativeOrder[nextIndex];
 
     if (!nextCombatant) {
