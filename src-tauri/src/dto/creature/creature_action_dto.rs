@@ -117,6 +117,8 @@ impl CreatureActionDto {
             .filter(creature_id.eq(parent_id))
             .load::<CreatureActionDto>(conn)?;
 
+        println!("actions: {:?}", actions);
+
         Ok(actions.into_iter().map(Self::map_creature_action).collect())
     }
 }

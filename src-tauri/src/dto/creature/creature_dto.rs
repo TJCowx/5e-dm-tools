@@ -363,7 +363,7 @@ impl CreatureDto {
             CreatureWeaknessDto::delete_creature_weaknesses(connection, &id)?;
             CreatureLanguageDto::delete_creature_languages(connection, &id)?;
             CreatureAbilityDto::delete_abilities(connection, &id)?;
-            // CreatureAction::delete_actions(connection, &id)?; TODO: #3 implement action obviously
+            // CreatureAction::delete_actions(connection, &id)?;
 
             diesel::delete(all_creatures.find(id)).execute(connection)?;
 

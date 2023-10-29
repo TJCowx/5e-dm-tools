@@ -21,9 +21,9 @@ function ActionItem({ action }: Props) {
     reach,
   } = action;
 
-  const damageString = damage.map(
+  const damageString = (damage ?? []).map(
     (damageItem) =>
-      `${damageItem.damage} (${damageItem.damageDice}) ${damageItem.type} damage`
+      `${damageItem?.defaultDamage} (${damageItem?.dice}) ${damageItem?.type?.name} damage`
   );
 
   return (
@@ -31,7 +31,9 @@ function ActionItem({ action }: Props) {
       <Typography variant="subtitle2">{name}</Typography>
       <Typography variant="body2">
         {isAttack &&
-          `${attackDelivery} ${attackType} Attack: +${toHit}, reach ${reach}ft., ${combatantsHit} target, Hit: ${damageString.join(
+          `${attackDelivery?.name} ${
+            attackType?.name
+          } Attack: +${toHit}, reach ${reach}ft., ${combatantsHit} target, Hit: ${damageString.join(
             ', '
           )}\n`}
         {description}

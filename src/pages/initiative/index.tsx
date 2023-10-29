@@ -20,6 +20,7 @@ function InitiativePage() {
   const [combatants, setCombatants] = useState(new Map<string, Combatant>());
 
   const addCombatants = (addedCombatants: Combatant[]) => {
+    console.log(addedCombatants);
     const numCombatantsByType = new Map<string, number>();
 
     // Previous named combatants

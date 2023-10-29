@@ -15,10 +15,11 @@ import FormattedStat from 'components/Creature/FormattedStat';
 import DeadIcon from 'components/Icons/DeadIcon';
 import AbilityFormat from 'components/LabelValue/AbilityFormat';
 import LabelValueRow from 'components/LabelValue/LabelValueRow';
+import ActionTypeEnum from 'models/ActionTypeEnum';
 import Action from 'models/creature/Action';
 import Creature from 'models/creature/Creature';
 import Combatant from 'models/initiative/Combatant';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   getProficienciesString,
   getSavingThrowsString,
@@ -85,18 +86,18 @@ function CreatureCombatantItem({ combatant, isExpanded, onChange }: Props) {
     const newLairActions: Action[] = [];
     const newReactions: Action[] = [];
 
-    (stats?.actions ?? []).forEach((act) => {
-      switch (act.actionType) {
-        case 'Action':
+    (stats?.actions ?? []).forEach((act: Action) => {
+      switch (act.actionTypeId) {
+        case ActionTypeEnum.ACTION:
           newActions.push(act);
           break;
-        case 'Reaction':
+        case ActionTypeEnum.REACTION:
           newReactions.push(act);
           break;
-        case 'Legendary':
+        case ActionTypeEnum.LEGENDARY:
           newLegendaryActions.push(act);
           break;
-        case 'Lair':
+        case ActionTypeEnum.LAIR:
           newLairActions.push(act);
           break;
         default:
