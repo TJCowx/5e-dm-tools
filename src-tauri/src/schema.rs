@@ -62,6 +62,7 @@ diesel::table! {
         is_attack -> Bool,
         to_hit -> Nullable<Integer>,
         reach -> Nullable<Integer>,
+        combatants_hit -> Nullable<Integer>,
         attack_delivery_id -> Nullable<Integer>,
         attack_type_id -> Nullable<Integer>,
         action_type_id -> Integer,

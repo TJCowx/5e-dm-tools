@@ -13,6 +13,7 @@ CREATE TABLE creature_actions (
   is_attack BOOLEAN NOT NULL,
   to_hit INTEGER NULL,
   reach INTEGER NULL,
+  combatants_hit INTEGER NULL,
   attack_delivery_id INTEGER NULL,
   attack_type_id INTEGER NULL,
   action_type_id INTEGER NOT NULL,

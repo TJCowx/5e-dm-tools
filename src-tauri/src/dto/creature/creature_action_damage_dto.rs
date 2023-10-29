@@ -69,8 +69,11 @@ impl CreatureActionDamageDto {
         let conn = &mut crate::db::connect_db();
 
         let results = creature_action_damages
+            .filter(action_id.eq(parent_id))
             .load::<CreatureActionDamageDto>(conn)
             .expect("Error loading damages");
+
+        // TODO: Get all the damage types associated with above and map to those results
 
         results.into_iter().map(Self::get_full_damage).collect()
     }
