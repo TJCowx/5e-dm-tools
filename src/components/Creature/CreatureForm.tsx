@@ -410,7 +410,7 @@ function CreatureForm({ control, onSubmit, watch }: Props) {
             </Fragment>
           ))}
           <NewAbilityListItem
-            onSave={(newAbility) => appendAbility(newAbility)}
+            onSave={(newAbility) => appendAbility(newAbility as Ability)}
           />
         </List>
       </section>

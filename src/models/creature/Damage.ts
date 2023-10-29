@@ -2,7 +2,7 @@ import DamageType from './DamageType';
 
 type Damage = {
   id: number;
-  defaultDamage: string;
+  defaultDamage: number;
   dice: string;
   typeId: number | null;
   type: DamageType;

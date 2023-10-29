@@ -170,7 +170,7 @@ const newAction: Partial<Action> = {
   attackTypeId: null,
   combatantsHit: 0,
   toHit: 0,
-  damage: [],
+  damages: [],
   reach: 5,
 };
 
@@ -220,14 +220,14 @@ function ActionModal({
   };
 
   const updateDamageItem = (damage: Partial<Damage>, i: number) => {
-    const arrCopy = action.damage ?? [];
+    const arrCopy = action?.damages ?? [];
 
     arrCopy[i] = damage;
     setAction((prev) => ({ ...prev, damage: arrCopy }));
   };
 
   const removeDamageItem = (i: number) => {
-    const arrCopy = action.damage ?? [];
+    const arrCopy = action?.damages ?? [];
     arrCopy.splice(i, 1);
     setAction((prev) => ({ ...prev, damage: arrCopy }));
   };
@@ -376,16 +376,16 @@ function ActionModal({
               />
             </div>
             <Divider />
-            {!!errors.damage?.length && (
+            {!!errors.damages?.length && (
               <Alert
                 severity="error"
                 sx={{ marginTop: '12px', marginBottom: '12px' }}
               >
-                {errors.damage}
+                {errors.damages}
               </Alert>
             )}
             <List dense>
-              {(action.damage ?? []).map((damage, i) => (
+              {(action.damages ?? []).map((damage, i) => (
                 <ListItem
                   // eslint-disable-next-line react/no-array-index-key
                   key={`damage-${i}`}
@@ -399,12 +399,15 @@ function ActionModal({
                     </IconButton>
                   }
                 >
-                  <BasicTextField
+                  <BasicNumberField
                     className="damage-field"
                     label="Damage"
                     value={damage.defaultDamage ?? ''}
                     onChange={(newVal) =>
-                      updateDamageItem({ ...damage, defaultDamage: newVal }, i)
+                      updateDamageItem(
+                        { ...damage, defaultDamage: +(newVal ?? 0) },
+                        i
+                      )
                     }
                   />
                   <BasicTextField
@@ -439,9 +442,9 @@ function ActionModal({
                   onClick={() =>
                     setAction((prev) => ({
                       ...prev,
-                      damage: [
-                        ...(prev.damage ?? []),
-                        { damage: '', damageDice: '', typeId: null },
+                      damages: [
+                        ...(prev.damages ?? []),
+                        { defaultDamage: 0, dice: '', typeId: null },
                       ],
                     }))
                   }
