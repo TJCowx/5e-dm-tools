@@ -1,0 +1,1 @@
+DROP TABLE damage_types;

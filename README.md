@@ -1,15 +1,13 @@
-### Install Dependencies
+This is an example on running a NextJS app on Tauri and how it can interact with a mongo instance.
 
-```
-$ npm install
-```
+## Getting Started
 
-### Use it
+First, run the development server:
 
-```
-# development mode
-$ npm run dev
-
-# production build
-$ npm run build
+```bash
+npm run dev
+# or
+yarn dev
+# or
+pnpm dev
 ```

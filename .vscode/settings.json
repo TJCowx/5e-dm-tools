@@ -1,11 +1,12 @@
 {
-  "cSpell.words": [
-    "blindsight",
-    "darkvision",
-    "Dwarvish",
-    "Halfling",
-    "tremorsense",
-    "truesight",
-    "Undercommon"
-  ]
+  "rust-analyzer.showUnlinkedFileNotification": false,
+  "sqltools.connections": [
+    {
+      "previewLimit": 50,
+      "driver": "SQLite",
+      "database": "${workspaceFolder:5e-dm-tools}/src-tauri/dev.db",
+      "name": "Dev DB"
+    }
+  ],
+  "sqltools.useNodeRuntime": true
 }
