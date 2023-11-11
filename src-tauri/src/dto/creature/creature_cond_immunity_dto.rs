@@ -43,6 +43,44 @@ impl CreatureCondImmunityDto {
             .execute(conn)
     }
 
+    pub fn update_creature_cond_immunities(
+        conn: &mut SqliteConnection,
+        new_cond_immunities: &Vec<i32>,
+        parent_id: &i32,
+    ) -> QueryResult<()> {
+        use crate::schema::creatures_condition_immunities::dsl::*;
+
+        let prev_cond_immunity_ids =
+            CreatureCondImmunityDto::get_cond_ids_by_creature_id(parent_id);
+        let mut to_delete: Vec<i32> = Vec::new();
+        let mut to_add: Vec<i32> = Vec::new();
+
+        for prev_cond_immunity_id in prev_cond_immunity_ids.iter() {
+            if !new_cond_immunities.contains(prev_cond_immunity_id) {
+                to_delete.push(*prev_cond_immunity_id);
+            }
+        }
+
+        for new_cond_immunity_id in new_cond_immunities.iter() {
+            if !prev_cond_immunity_ids.contains(new_cond_immunity_id) {
+                to_add.push(*new_cond_immunity_id);
+            }
+        }
+
+        diesel::delete(
+            creatures_condition_immunities.filter(
+                creature_id
+                    .eq(parent_id)
+                    .and(condition_type_id.eq_any(to_delete)),
+            ),
+        )
+        .execute(conn)?;
+
+        Self::save_creature_cond_immunities(conn, to_add, parent_id)?;
+
+        Ok(())
+    }
+
     pub fn delete_creature_cond_immunities(
         conn: &mut SqliteConnection,
         parent_id: &i32,

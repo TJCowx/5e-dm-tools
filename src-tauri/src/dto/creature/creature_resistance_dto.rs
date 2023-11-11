@@ -43,6 +43,44 @@ impl CreatureResistanceDto {
             .execute(conn)
     }
 
+    pub fn update_creature_resistances(
+        conn: &mut SqliteConnection,
+        new_resistances: &Vec<i32>,
+        parent_id: &i32,
+    ) -> QueryResult<()> {
+        use crate::schema::creatures_resistances::dsl::*;
+
+        let prev_resistance_ids =
+            CreatureResistanceDto::get_resistance_ids_by_creature_id(parent_id);
+        let mut to_delete: Vec<i32> = Vec::new();
+        let mut to_add: Vec<i32> = Vec::new();
+
+        for prev_resistance_id in prev_resistance_ids.iter() {
+            if !new_resistances.contains(prev_resistance_id) {
+                to_delete.push(*prev_resistance_id);
+            }
+        }
+
+        for new_resistance_id in new_resistances.iter() {
+            if !prev_resistance_ids.contains(new_resistance_id) {
+                to_add.push(*new_resistance_id);
+            }
+        }
+
+        diesel::delete(
+            creatures_resistances.filter(
+                creature_id
+                    .eq(parent_id)
+                    .and(damage_type_id.eq_any(to_delete)),
+            ),
+        )
+        .execute(conn)?;
+
+        Self::save_creature_resistances(conn, to_add, parent_id)?;
+
+        Ok(())
+    }
+
     pub fn delete_creature_resistances(
         conn: &mut SqliteConnection,
         parent_id: &i32,

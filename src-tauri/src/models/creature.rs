@@ -46,18 +46,18 @@ pub struct Creature {
     pub creature_type_id: i32,
     pub size_id: i32,
 
-    pub alignment: AlignmentDto,
-    pub creature_type: CreatureTypeDto,
-    pub size: SizeDto,
+    pub alignment: Option<AlignmentDto>,
+    pub creature_type: Option<CreatureTypeDto>,
+    pub size: Option<SizeDto>,
 
-    pub proficiencies: Vec<ProficiencyDto>,
-    pub immunities: Vec<DamageTypeDto>,
-    pub cond_immunities: Vec<ConditionTypeDto>,
-    pub resistances: Vec<DamageTypeDto>,
-    pub weaknesses: Vec<DamageTypeDto>,
-    pub languages: Vec<LanguageDto>,
-    pub abilities: Vec<CreatureAbilityDto>,
-    pub actions: Vec<CreatureAction>,
+    pub proficiencies: Option<Vec<ProficiencyDto>>,
+    pub immunities: Option<Vec<DamageTypeDto>>,
+    pub cond_immunities: Option<Vec<ConditionTypeDto>>,
+    pub resistances: Option<Vec<DamageTypeDto>>,
+    pub weaknesses: Option<Vec<DamageTypeDto>>,
+    pub languages: Option<Vec<LanguageDto>>,
+    pub abilities: Option<Vec<CreatureAbilityDto>>,
+    pub actions: Option<Vec<CreatureAction>>,
 }
 
 #[derive(Debug, Serialize, Deserialize)]

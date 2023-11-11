@@ -1,5 +1,6 @@
 import { invoke } from '@tauri-apps/api/tauri';
 import Creature from 'models/creature/Creature';
+import { convertCreatureFormToDB } from 'utils/creatureUtils';
 
 /**
  * Gets all the creatures
@@ -22,8 +23,10 @@ export function getCreatureById(creatureId: string) {
  * Updates a creature with the new values
  * @param creature The updated creature value
  */
-export function updateCreature(creature: Creature) {
-  return invoke('update_creature', { creature });
+export function updateCreature(creature: Partial<Creature>) {
+  return invoke('update_creature', {
+    creature: convertCreatureFormToDB(creature),
+  });
 }
 
 /**

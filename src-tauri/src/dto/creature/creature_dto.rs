@@ -1,6 +1,6 @@
 use crate::{
     db::connect_db,
-    dto::{alignment_dto::AlignmentDto, proficiency_dto::ProficiencyDto, size_dto::SizeDto},
+    dto::{alignment_dto::AlignmentDto, size_dto::SizeDto},
     models::creature::{Creature, EditableCreature},
     schema::creatures::{self, dsl::creatures as all_creatures},
 };
@@ -8,11 +8,15 @@ use diesel::prelude::*;
 use serde::{Deserialize, Serialize};
 
 use super::{
-    creature_ability_dto::CreatureAbilityDto, creature_action_dto::CreatureActionDto,
+    creature_ability_dto::CreatureAbilityDto,
+    creature_action_dto::CreatureActionDto,
     creature_cond_immunity_dto::CreatureCondImmunityDto,
-    creature_immunity_dto::CreatureImmunityDto, creature_language_dto::CreatureLanguageDto,
-    creature_prof_dto::CreatureProfDto, creature_resistance_dto::CreatureResistanceDto,
-    creature_type_dto::CreatureTypeDto, creature_weakness_dto::CreatureWeaknessDto,
+    creature_immunity_dto::CreatureImmunityDto,
+    creature_language_dto::CreatureLanguageDto,
+    creature_prof_dto::{self, CreatureProfDto},
+    creature_resistance_dto::CreatureResistanceDto,
+    creature_type_dto::CreatureTypeDto,
+    creature_weakness_dto::CreatureWeaknessDto,
 };
 use crate::models::new_creature::NewCreature;
 
@@ -160,6 +164,41 @@ impl CreatureDto {
         }
     }
 
+    fn from_editable_creature(creature: &EditableCreature) -> Self {
+        Self {
+            id: creature.id,
+            name: creature.name.clone(),
+            description: creature.description.clone(),
+            armour_class: creature.armour_class,
+            hit_points: creature.hit_points,
+            hit_die: creature.hit_die.clone(),
+            saving_throws: creature.saving_throws.join(","),
+            land_speed: creature.land_speed,
+            fly_speed: creature.fly_speed,
+            burrow_speed: creature.burrow_speed,
+            climb_speed: creature.climb_speed,
+            hover_speed: creature.hover_speed,
+            blindsight: creature.blindsight,
+            darkvision: creature.darkvision,
+            tremorsense: creature.tremorsense,
+            truesight: creature.truesight,
+            strength: creature.strength,
+            dexterity: creature.dexterity,
+            constitution: creature.constitution,
+            intelligence: creature.intelligence,
+            wisdom: creature.wisdom,
+            charisma: creature.charisma,
+            prof_bonus: creature.prof_bonus,
+            challenge_rating: creature.challenge_rating,
+            reward_xp: creature.reward_xp,
+            is_legendary: creature.is_legendary,
+            has_lair: creature.has_lair,
+            alignment_id: creature.alignment_id,
+            creature_type_id: creature.creature_type_id,
+            size_id: creature.size_id,
+        }
+    }
+
     // TODO: Maybe turn this ino a trait on creature
     fn map_display_creature(creature: Self) -> Creature {
         Creature {
@@ -197,17 +236,29 @@ impl CreatureDto {
             alignment_id: creature.alignment_id,
             creature_type_id: creature.creature_type_id,
             size_id: creature.size_id,
-            alignment: AlignmentDto::get_by_id(&creature.alignment_id),
-            creature_type: CreatureTypeDto::get_by_id(&creature.creature_type_id),
-            size: SizeDto::get_by_id(&creature.size_id),
-            proficiencies: CreatureProfDto::get_profs_by_creature_id(&creature.id),
-            immunities: CreatureImmunityDto::get_immunities_by_creature_id(&creature.id),
-            cond_immunities: CreatureCondImmunityDto::get_conditions_by_creature_id(&creature.id),
-            resistances: CreatureResistanceDto::get_resistances_by_creature_id(&creature.id),
-            weaknesses: CreatureWeaknessDto::get_weaknesses_by_creature_id(&creature.id),
-            languages: CreatureLanguageDto::get_languages_by_creature_id(&creature.id),
-            abilities: CreatureAbilityDto::get_abilities_by_creature_id(&creature.id),
-            actions: CreatureActionDto::get_actions_by_creature_id(&creature.id).unwrap(),
+            alignment: Some(AlignmentDto::get_by_id(&creature.alignment_id)),
+            creature_type: Some(CreatureTypeDto::get_by_id(&creature.creature_type_id)),
+            size: Some(SizeDto::get_by_id(&creature.size_id)),
+            proficiencies: Some(CreatureProfDto::get_profs_by_creature_id(&creature.id)),
+            immunities: Some(CreatureImmunityDto::get_immunities_by_creature_id(
+                &creature.id,
+            )),
+            cond_immunities: Some(CreatureCondImmunityDto::get_conditions_by_creature_id(
+                &creature.id,
+            )),
+            resistances: Some(CreatureResistanceDto::get_resistances_by_creature_id(
+                &creature.id,
+            )),
+            weaknesses: Some(CreatureWeaknessDto::get_weaknesses_by_creature_id(
+                &creature.id,
+            )),
+            languages: Some(CreatureLanguageDto::get_languages_by_creature_id(
+                &creature.id,
+            )),
+            abilities: Some(CreatureAbilityDto::get_abilities_by_creature_id(
+                &creature.id,
+            )),
+            actions: Some(CreatureActionDto::get_actions_by_creature_id(&creature.id).unwrap()),
         }
     }
 
@@ -340,13 +391,42 @@ impl CreatureDto {
         })
     }
 
-    pub fn update(creature: &Creature) -> QueryResult<()> {
+    pub fn update(creature: &EditableCreature) -> QueryResult<()> {
         let conn = &mut connect_db();
 
-        conn.transaction(|connection| {
-            // diesel::update(all_creatures.find(creature.id))
-            //     .set(Self::make_insert_creature(creature))
-            //     .execute(connection)?;
+        conn.transaction(|trans| {
+            diesel::update(all_creatures.find(creature.id))
+                .set(Self::from_editable_creature(creature))
+                .execute(trans)?;
+
+            CreatureProfDto::update_creature_profs(trans, &creature.proficiency_ids, &creature.id)?;
+            CreatureImmunityDto::update_creature_immunities(
+                trans,
+                &creature.immunity_ids,
+                &creature.id,
+            )?;
+            CreatureCondImmunityDto::update_creature_cond_immunities(
+                trans,
+                &creature.cond_immunity_ids,
+                &creature.id,
+            )?;
+            CreatureResistanceDto::update_creature_resistances(
+                trans,
+                &creature.resistance_ids,
+                &creature.id,
+            )?;
+            CreatureWeaknessDto::update_creature_weaknesses(
+                trans,
+                &creature.weakness_ids,
+                &creature.id,
+            )?;
+            CreatureLanguageDto::update_creature_languages(
+                trans,
+                &creature.language_ids,
+                &creature.id,
+            )?;
+            // TODO: Update change in abilities add/remove
+            // TODO: Update change in actions add/remove (also nested items)
 
             Ok(())
         })
@@ -363,6 +443,7 @@ impl CreatureDto {
             CreatureWeaknessDto::delete_creature_weaknesses(connection, &id)?;
             CreatureLanguageDto::delete_creature_languages(connection, &id)?;
             CreatureAbilityDto::delete_abilities(connection, &id)?;
+            // TODO: Make sure delete actions is done
             // CreatureAction::delete_actions(connection, &id)?;
 
             diesel::delete(all_creatures.find(id)).execute(connection)?;

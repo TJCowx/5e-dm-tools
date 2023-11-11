@@ -5,8 +5,8 @@ use serde::{Deserialize, Serialize};
 #[diesel(table_name = crate::schema::proficiencies)]
 #[diesel(check_for_backend(diesel::sqlite::Sqlite))]
 pub struct ProficiencyDto {
-    id: i32,
-    name: String,
+    pub id: i32,
+    pub name: String,
 }
 
 impl ProficiencyDto {

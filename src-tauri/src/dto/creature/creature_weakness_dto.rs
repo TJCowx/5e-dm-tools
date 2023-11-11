@@ -43,6 +43,43 @@ impl CreatureWeaknessDto {
             .execute(conn)
     }
 
+    pub fn update_creature_weaknesses(
+        conn: &mut SqliteConnection,
+        new_weaknesses: &Vec<i32>,
+        parent_id: &i32,
+    ) -> QueryResult<()> {
+        use crate::schema::creatures_weaknesses::dsl::*;
+
+        let prev_weakness_ids = CreatureWeaknessDto::get_weakness_ids_by_creature_id(parent_id);
+        let mut to_delete: Vec<i32> = Vec::new();
+        let mut to_add: Vec<i32> = Vec::new();
+
+        for prev_weakness_id in prev_weakness_ids.iter() {
+            if !new_weaknesses.contains(prev_weakness_id) {
+                to_delete.push(*prev_weakness_id);
+            }
+        }
+
+        for new_weakness_id in new_weaknesses.iter() {
+            if !prev_weakness_ids.contains(new_weakness_id) {
+                to_add.push(*new_weakness_id);
+            }
+        }
+
+        diesel::delete(
+            creatures_weaknesses.filter(
+                creature_id
+                    .eq(parent_id)
+                    .and(damage_type_id.eq_any(to_delete)),
+            ),
+        )
+        .execute(conn)?;
+
+        Self::update_creature_weaknesses(conn, &to_add, parent_id)?;
+
+        Ok(())
+    }
+
     pub fn delete_creature_weaknesses(
         conn: &mut SqliteConnection,
         parent_id: &i32,

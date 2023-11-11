@@ -9,9 +9,9 @@ use crate::dto::proficiency_dto::ProficiencyDto;
 #[diesel(belongs_to(CreatureDto))]
 #[diesel(belongs_to(Proficiency))]
 pub struct CreatureProfDto {
-    id: i32,
-    creature_id: i32,
-    proficiency_id: i32,
+    pub id: i32,
+    pub creature_id: i32,
+    pub proficiency_id: i32,
 }
 
 #[derive(Debug, Serialize, Deserialize, Insertable)]
@@ -41,6 +41,43 @@ impl CreatureProfDto {
         diesel::insert_into(creatures_proficiencies)
             .values(&mapped_profs)
             .execute(conn)
+    }
+
+    pub fn update_creature_profs(
+        conn: &mut SqliteConnection,
+        new_profs: &Vec<i32>,
+        parent_id: &i32,
+    ) -> QueryResult<()> {
+        use crate::schema::creatures_proficiencies::dsl::*;
+
+        let prev_prof_ids = CreatureProfDto::get_prof_ids_by_creature_id(parent_id);
+        let mut to_delete: Vec<i32> = Vec::new();
+        let mut to_add: Vec<i32> = Vec::new();
+
+        for prev_prof_id in prev_prof_ids.iter() {
+            if !new_profs.contains(prev_prof_id) {
+                to_delete.push(*prev_prof_id);
+            }
+        }
+
+        for new_prof_id in new_profs.iter() {
+            if !prev_prof_ids.contains(new_prof_id) {
+                to_add.push(*new_prof_id);
+            }
+        }
+
+        diesel::delete(
+            creatures_proficiencies.filter(
+                creature_id
+                    .eq(parent_id)
+                    .and(proficiency_id.eq_any(to_delete)),
+            ),
+        )
+        .execute(conn)?;
+
+        Self::save_creature_profs(conn, to_add, parent_id)?;
+
+        Ok(())
     }
 
     pub fn delete_creature_profs(

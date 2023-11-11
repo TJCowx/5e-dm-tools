@@ -9,10 +9,15 @@ import { getFormattedModifier, getSkillAttribute } from './modifierUtils';
  * This is created due to MUI's number input emitting the value
  * as strings.
  *
+ * TODO: this isEdit is a hack and bad
+ *
  * @param creature The creature from the form
  * @returns the number fields parsed into numbers
  */
-export const convertCreatureFormToDB = (creature: Partial<Creature>) => {
+export const convertCreatureFormToDB = (
+  creature: Partial<Creature>,
+  isEdit = false
+) => {
   const {
     armourClass,
     hitPoints,
@@ -59,7 +64,9 @@ export const convertCreatureFormToDB = (creature: Partial<Creature>) => {
     profBonus: +(profBonus ?? 0),
     challengeRating: +(challengeRating ?? 0),
     rewardXp: +(rewardXp ?? 0),
-    savingThrows: creature.savingThrows?.join(','),
+    savingThrows: isEdit
+      ? creature.savingThrows
+      : creature.savingThrows?.join(','),
     actions,
   };
 };

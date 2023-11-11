@@ -61,7 +61,7 @@ pub fn get_editable_creature_by_id(id: i32) -> Result<EditableCreature, String> 
 }
 
 #[tauri::command]
-pub fn update_creature(creature: Creature) -> Result<(), String> {
+pub fn update_creature(creature: EditableCreature) -> Result<(), String> {
     println!("[server] Updating creature {}", creature.id);
     // TODO: This needs to actually save better
     match CreatureDto::update(&creature) {

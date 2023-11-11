@@ -43,6 +43,40 @@ impl CreatureLanguageDto {
             .execute(conn)
     }
 
+    pub fn update_creature_languages(
+        conn: &mut SqliteConnection,
+        new_languages: &Vec<i32>,
+        parent_id: &i32,
+    ) -> QueryResult<()> {
+        use crate::schema::creatures_languages::dsl::*;
+
+        let prev_language_ids = CreatureLanguageDto::get_language_ids_by_creature_id(parent_id);
+        let mut to_delete: Vec<i32> = Vec::new();
+        let mut to_add: Vec<i32> = Vec::new();
+
+        for prev_language_id in prev_language_ids.iter() {
+            if !new_languages.contains(prev_language_id) {
+                to_delete.push(*prev_language_id);
+            }
+        }
+
+        for new_language_id in new_languages.iter() {
+            if !prev_language_ids.contains(new_language_id) {
+                to_add.push(*new_language_id);
+            }
+        }
+
+        diesel::delete(
+            creatures_languages
+                .filter(creature_id.eq(parent_id).and(language_id.eq_any(to_delete))),
+        )
+        .execute(conn)?;
+
+        Self::save_creature_languages(conn, to_add, parent_id)?;
+
+        Ok(())
+    }
+
     pub fn delete_creature_languages(
         conn: &mut SqliteConnection,
         parent_id: &i32,

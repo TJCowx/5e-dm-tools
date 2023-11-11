@@ -6,8 +6,8 @@ use serde::{Deserialize, Serialize};
 #[diesel(check_for_backend(diesel::sqlite::Sqlite))]
 #[diesel(belongs_to(Damage))]
 pub struct DamageTypeDto {
-    id: i32,
-    name: String,
+    pub id: i32,
+    pub name: String,
 }
 
 impl DamageTypeDto {

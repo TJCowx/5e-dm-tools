@@ -43,6 +43,43 @@ impl CreatureImmunityDto {
             .execute(conn)
     }
 
+    pub fn update_creature_immunities(
+        conn: &mut SqliteConnection,
+        new_immunities: &Vec<i32>,
+        parent_id: &i32,
+    ) -> QueryResult<()> {
+        use crate::schema::creatures_immunities::dsl::*;
+
+        let prev_immunity_ids = CreatureImmunityDto::get_immunity_ids_by_creature_id(parent_id);
+        let mut to_delete: Vec<i32> = Vec::new();
+        let mut to_add: Vec<i32> = Vec::new();
+
+        for prev_immunity_id in prev_immunity_ids.iter() {
+            if !new_immunities.contains(prev_immunity_id) {
+                to_delete.push(*prev_immunity_id);
+            }
+        }
+
+        for new_immunity_id in new_immunities.iter() {
+            if !prev_immunity_ids.contains(new_immunity_id) {
+                to_add.push(*new_immunity_id);
+            }
+        }
+
+        diesel::delete(
+            creatures_immunities.filter(
+                creature_id
+                    .eq(parent_id)
+                    .and(damage_type_id.eq_any(to_delete)),
+            ),
+        )
+        .execute(conn)?;
+
+        Self::save_creature_immunities(conn, to_add, parent_id)?;
+
+        Ok(())
+    }
+
     pub fn delete_creature_immunities(
         conn: &mut SqliteConnection,
         parent_id: &i32,
