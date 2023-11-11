@@ -23,7 +23,7 @@ function ActionItem({ action }: Props) {
 
   const damageString = (damages ?? []).map(
     (damageItem) =>
-      `${damageItem?.defaultDamage} (${damageItem?.dice}) ${damageItem?.type?.name} damage`
+      `${damageItem?.defaultDamage} (${damageItem?.dice}) ${damageItem?.damageType?.name} damage`
   );
 
   return (

@@ -2,7 +2,7 @@ use diesel::prelude::*;
 use serde::{Deserialize, Serialize};
 
 use crate::{
-    dto::damage_type_dto::DamageTypeDto,
+    dto::damage_type_dto::{self, DamageTypeDto},
     models::creature_action_damage::{BaseCreatureActionDamage, CreatureActionDamage},
 };
 
@@ -72,8 +72,6 @@ impl CreatureActionDamageDto {
             .filter(action_id.eq(parent_id))
             .load::<CreatureActionDamageDto>(conn)
             .expect("Error loading damages");
-
-        // TODO: Get all the damage types associated with above and map to those results
 
         results.into_iter().map(Self::get_full_damage).collect()
     }
