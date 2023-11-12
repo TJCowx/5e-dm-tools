@@ -73,14 +73,14 @@ function CreatureForm({ control, onSubmit, watch }: Props) {
     append: appendAbility,
     remove: removeAbility,
     update: updateAbility,
-  } = useFieldArray({ control, name: 'abilities' });
+  } = useFieldArray({ control, name: 'abilities', keyName: 'rhfKey' });
 
   const {
     fields: actions,
     append: appendAction,
     remove: removeAction,
     update: updateAction,
-  } = useFieldArray({ control, name: 'actions' });
+  } = useFieldArray({ control, name: 'actions', keyName: 'rhfKey' });
 
   const isLegendary = watch('isLegendary');
   const hasLair = watch('hasLair');

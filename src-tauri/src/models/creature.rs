@@ -10,7 +10,7 @@ use crate::dto::{
 
 use serde::{Deserialize, Serialize};
 
-use super::creature_action::CreatureAction;
+use super::{creature_ability::BaseCreatureAbility, creature_action::CreatureAction};
 
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
@@ -95,13 +95,13 @@ pub struct EditableCreature {
     pub creature_type_id: i32,
     pub size_id: i32,
 
-    pub proficiency_ids: Vec<i32>,
-    pub immunity_ids: Vec<i32>,
-    pub cond_immunity_ids: Vec<i32>,
-    pub resistance_ids: Vec<i32>,
-    pub weakness_ids: Vec<i32>,
-    pub language_ids: Vec<i32>,
+    pub proficiencies: Vec<i32>,
+    pub immunities: Vec<i32>,
+    pub cond_immunities: Vec<i32>,
+    pub resistances: Vec<i32>,
+    pub weaknesses: Vec<i32>,
+    pub languages: Vec<i32>,
 
-    pub abilities: Vec<CreatureAbilityDto>,
+    pub abilities: Vec<BaseCreatureAbility>,
     pub actions: Vec<CreatureAction>,
 }

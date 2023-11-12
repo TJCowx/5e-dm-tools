@@ -1,22 +1,21 @@
 use crate::{
     db::connect_db,
     dto::{alignment_dto::AlignmentDto, size_dto::SizeDto},
-    models::creature::{Creature, EditableCreature},
+    models::{
+        creature::{Creature, EditableCreature},
+        creature_ability::BaseCreatureAbility,
+    },
     schema::creatures::{self, dsl::creatures as all_creatures},
 };
 use diesel::prelude::*;
 use serde::{Deserialize, Serialize};
 
 use super::{
-    creature_ability_dto::CreatureAbilityDto,
-    creature_action_dto::CreatureActionDto,
+    creature_ability_dto::CreatureAbilityDto, creature_action_dto::CreatureActionDto,
     creature_cond_immunity_dto::CreatureCondImmunityDto,
-    creature_immunity_dto::CreatureImmunityDto,
-    creature_language_dto::CreatureLanguageDto,
-    creature_prof_dto::{self, CreatureProfDto},
-    creature_resistance_dto::CreatureResistanceDto,
-    creature_type_dto::CreatureTypeDto,
-    creature_weakness_dto::CreatureWeaknessDto,
+    creature_immunity_dto::CreatureImmunityDto, creature_language_dto::CreatureLanguageDto,
+    creature_prof_dto::CreatureProfDto, creature_resistance_dto::CreatureResistanceDto,
+    creature_type_dto::CreatureTypeDto, creature_weakness_dto::CreatureWeaknessDto,
 };
 use crate::models::new_creature::NewCreature;
 
@@ -299,13 +298,16 @@ impl CreatureDto {
             alignment_id: creature.alignment_id,
             creature_type_id: creature.creature_type_id,
             size_id: creature.size_id,
-            proficiency_ids: CreatureProfDto::get_prof_ids_by_creature_id(&creature.id),
-            immunity_ids: CreatureImmunityDto::get_immunity_ids_by_creature_id(&creature.id),
-            cond_immunity_ids: CreatureCondImmunityDto::get_cond_ids_by_creature_id(&creature.id),
-            resistance_ids: CreatureResistanceDto::get_resistance_ids_by_creature_id(&creature.id),
-            weakness_ids: CreatureWeaknessDto::get_weakness_ids_by_creature_id(&creature.id),
-            language_ids: CreatureLanguageDto::get_language_ids_by_creature_id(&creature.id),
-            abilities: CreatureAbilityDto::get_abilities_by_creature_id(&creature.id),
+            proficiencies: CreatureProfDto::get_prof_ids_by_creature_id(&creature.id),
+            immunities: CreatureImmunityDto::get_immunity_ids_by_creature_id(&creature.id),
+            cond_immunities: CreatureCondImmunityDto::get_cond_ids_by_creature_id(&creature.id),
+            resistances: CreatureResistanceDto::get_resistance_ids_by_creature_id(&creature.id),
+            weaknesses: CreatureWeaknessDto::get_weakness_ids_by_creature_id(&creature.id),
+            languages: CreatureLanguageDto::get_language_ids_by_creature_id(&creature.id),
+            abilities: CreatureAbilityDto::get_abilities_by_creature_id(&creature.id)
+                .into_iter()
+                .map(|a| BaseCreatureAbility::from(a))
+                .collect(),
             actions: CreatureActionDto::get_actions_by_creature_id(&creature.id).unwrap(),
         }
     }
@@ -399,33 +401,33 @@ impl CreatureDto {
                 .set(Self::from_editable_creature(creature))
                 .execute(trans)?;
 
-            CreatureProfDto::update_creature_profs(trans, &creature.proficiency_ids, &creature.id)?;
+            CreatureProfDto::update_creature_profs(trans, &creature.proficiencies, &creature.id)?;
             CreatureImmunityDto::update_creature_immunities(
                 trans,
-                &creature.immunity_ids,
+                &creature.immunities,
                 &creature.id,
             )?;
             CreatureCondImmunityDto::update_creature_cond_immunities(
                 trans,
-                &creature.cond_immunity_ids,
+                &creature.cond_immunities,
                 &creature.id,
             )?;
             CreatureResistanceDto::update_creature_resistances(
                 trans,
-                &creature.resistance_ids,
+                &creature.resistances,
                 &creature.id,
             )?;
             CreatureWeaknessDto::update_creature_weaknesses(
                 trans,
-                &creature.weakness_ids,
+                &creature.weaknesses,
                 &creature.id,
             )?;
             CreatureLanguageDto::update_creature_languages(
                 trans,
-                &creature.language_ids,
+                &creature.languages,
                 &creature.id,
             )?;
-            // TODO: Update change in abilities add/remove
+            CreatureAbilityDto::update_abilities(trans, &creature.abilities, &creature.id)?;
             // TODO: Update change in actions add/remove (also nested items)
 
             Ok(())

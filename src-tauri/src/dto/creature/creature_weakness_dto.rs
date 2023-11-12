@@ -75,7 +75,7 @@ impl CreatureWeaknessDto {
         )
         .execute(conn)?;
 
-        Self::update_creature_weaknesses(conn, &to_add, parent_id)?;
+        Self::save_creature_weaknesses(conn, to_add, parent_id)?;
 
         Ok(())
     }
