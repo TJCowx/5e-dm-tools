@@ -428,7 +428,7 @@ impl CreatureDto {
                 &creature.id,
             )?;
             CreatureAbilityDto::update_abilities(trans, &creature.abilities, &creature.id)?;
-            // TODO: Update change in actions add/remove (also nested items)
+            CreatureActionDto::update_actions(trans, &creature.actions, &creature.id)?;
 
             Ok(())
         })

@@ -7,10 +7,10 @@ use crate::dto::{
 
 use super::creature_action_damage::{BaseCreatureActionDamage, CreatureActionDamage};
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Clone)]
 #[serde(rename_all = "camelCase")]
 pub struct CreatureAction {
-    pub id: i32,
+    pub id: Option<i32>,
     pub name: String,
     pub description: String,
     pub is_attack: bool,
@@ -31,6 +31,7 @@ pub struct CreatureAction {
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct BaseCreatureAction {
+    pub id: Option<i32>,
     pub name: String,
     pub description: String,
     pub is_attack: bool,
@@ -40,5 +41,10 @@ pub struct BaseCreatureAction {
     pub combatants_hit: Option<i32>,
     pub attack_delivery_id: Option<i32>,
     pub attack_type_id: Option<i32>,
+    pub creature_id: Option<i32>,
+
     pub damages: Option<Vec<BaseCreatureActionDamage>>,
+    pub action_type: Option<ActionTypeDto>,
+    pub attack_delivery: Option<AttackDeliveryDto>,
+    pub attack_type: Option<AttackTypeDto>,
 }

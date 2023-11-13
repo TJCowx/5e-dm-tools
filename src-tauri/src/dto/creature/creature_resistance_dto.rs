@@ -102,12 +102,12 @@ impl CreatureResistanceDto {
             .expect("Error loading damage types")
     }
 
-    pub fn get_resistance_ids_by_creature_id(creature_id: &i32) -> Vec<i32> {
+    pub fn get_resistance_ids_by_creature_id(parent_id: &i32) -> Vec<i32> {
         use crate::schema::creatures_resistances::dsl::*;
 
         let conn = &mut crate::db::connect_db();
         creatures_resistances
-            .filter(creature_id.eq(creature_id))
+            .filter(creature_id.eq(parent_id))
             .select(damage_type_id)
             .load::<i32>(conn)
             .expect("Error loading damage types")

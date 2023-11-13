@@ -61,7 +61,7 @@ impl CreatureActionDto {
         };
 
         CreatureAction {
-            id: action.id,
+            id: Some(action.id),
             name: action.name,
             description: action.description,
             is_attack: action.is_attack,
@@ -81,7 +81,7 @@ impl CreatureActionDto {
 
     pub fn save_actions(
         conn: &mut SqliteConnection,
-        actions: Vec<BaseCreatureAction>,
+        actions: Vec<CreatureAction>,
         parent_id: &i32,
     ) -> QueryResult<()> {
         use crate::schema::creature_actions::dsl::*;
@@ -104,10 +104,99 @@ impl CreatureActionDto {
                 .values(&new_action)
                 .get_result(conn)?;
 
-            if let Some(damages) = action.damages {
-                CreatureActionDamageDto::save_action_damages(conn, damages, &inserted_action.id)?;
+            if action.damages.len() > 0 {
+                CreatureActionDamageDto::save_action_damages(
+                    conn,
+                    action.damages,
+                    &inserted_action.id,
+                )?;
             }
         }
+
+        Ok(())
+    }
+
+    fn update_action(
+        conn: &mut SqliteConnection,
+        action: CreatureAction,
+        parent_id: &i32,
+    ) -> QueryResult<()> {
+        use crate::schema::creature_actions::dsl::*;
+
+        // Update the damages in the action
+        CreatureActionDamageDto::update_action_damages(conn, Some(action.damages), parent_id)?;
+
+        // Update the action itself
+        diesel::update(creature_actions.filter(id.eq(action.id.unwrap())))
+            .set((
+                name.eq(&action.name),
+                description.eq(&action.description),
+                is_attack.eq(&action.is_attack),
+                to_hit.eq(&action.to_hit),
+                reach.eq(&action.reach),
+                combatants_hit.eq(&action.combatants_hit),
+                attack_delivery_id.eq(&action.attack_delivery_id),
+                attack_type_id.eq(&action.attack_type_id),
+                action_type_id.eq(&action.action_type_id),
+            ))
+            .execute(conn)?;
+
+        Ok(())
+    }
+
+    fn delete_action(conn: &mut SqliteConnection, action_id: &i32) -> QueryResult<()> {
+        use crate::schema::creature_actions::dsl::*;
+
+        CreatureActionDamageDto::delete_damages_by_action_id(conn, &action_id)?;
+
+        diesel::delete(creature_actions.filter(id.eq(action_id))).execute(conn)?;
+
+        Ok(())
+    }
+
+    pub fn update_actions(
+        conn: &mut SqliteConnection,
+        actions: &Vec<CreatureAction>,
+        parent_id: &i32,
+    ) -> QueryResult<()> {
+        use crate::schema::creature_actions::dsl::*;
+
+        let mut updating_actions: Vec<CreatureAction> = vec![];
+        let mut new_actions: Vec<CreatureAction> = vec![];
+
+        for action in actions {
+            if action.id.is_some() {
+                updating_actions.push(action.clone());
+            } else {
+                new_actions.push(action.clone());
+            }
+        }
+
+        // Get id of actions that are in the database but not in the list of existing ids
+        let ids_to_delete = creature_actions
+            .select(id)
+            .filter(
+                creature_id
+                    .eq(parent_id)
+                    .and(id.ne_all(updating_actions.iter().map(|a| a.id.unwrap()))),
+            )
+            .load::<i32>(conn)?;
+
+        // if there is delete them
+        if ids_to_delete.len() > 0 {
+            // Loop through Ids and delete them
+            for to_del_id in ids_to_delete {
+                Self::delete_action(conn, &to_del_id)?;
+            }
+        }
+
+        // Update any actions that already exist
+        for action in updating_actions {
+            Self::update_action(conn, action, parent_id)?;
+        }
+
+        // Insert any new actions
+        Self::save_actions(conn, new_actions, parent_id)?;
 
         Ok(())
     }

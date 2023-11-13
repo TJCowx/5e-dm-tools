@@ -1,7 +1,7 @@
 use diesel::prelude::*;
 use serde::{Deserialize, Serialize};
 
-#[derive(Debug, Serialize, Deserialize, Queryable)]
+#[derive(Debug, Serialize, Deserialize, Clone, Queryable)]
 #[diesel(table_name = crate::schema::attack_types)]
 #[diesel(check_for_backend(diesel::sqlite::Sqlite))]
 pub struct AttackTypeDto {
