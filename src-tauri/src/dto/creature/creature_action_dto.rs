@@ -4,7 +4,7 @@ use crate::{
         attack_type_dto::AttackTypeDto,
         creature::creature_action_damage_dto::CreatureActionDamageDto,
     },
-    models::creature_action::{BaseCreatureAction, CreatureAction},
+    models::creature_action::CreatureAction,
 };
 use diesel::prelude::*;
 use serde::{Deserialize, Serialize};
@@ -150,6 +150,24 @@ impl CreatureActionDto {
         CreatureActionDamageDto::delete_damages_by_action_id(conn, &action_id)?;
 
         diesel::delete(creature_actions.filter(id.eq(action_id))).execute(conn)?;
+
+        Ok(())
+    }
+
+    pub fn delete_actions_by_creature_id(
+        conn: &mut SqliteConnection,
+        parent_id: &i32,
+    ) -> QueryResult<()> {
+        use crate::schema::creature_actions::dsl::*;
+
+        let actions: Vec<i32> = creature_actions
+            .select(id)
+            .filter(creature_id.eq(parent_id))
+            .load(conn)?;
+
+        for action_id in actions {
+            Self::delete_action(conn, &action_id)?;
+        }
 
         Ok(())
     }
