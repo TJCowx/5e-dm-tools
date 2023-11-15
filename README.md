@@ -1,3 +1,5 @@
+<img align="left" width="80" height="80" src="src-tauri/icons/icon.png" alt="5e DM Tools Icon">
+
 # 5e DM Tools
 
 A set of tools to help a Dungeon Master for 5th Edition D&D.
