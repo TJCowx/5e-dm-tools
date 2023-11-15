@@ -53,5 +53,11 @@ fn db_file_exists() -> bool {
 fn get_db_path() -> String {
     let data_dir = dirs::data_dir().unwrap();
 
-    data_dir.to_str().unwrap().to_string() + "/5e-dm-tools/db.sqlite"
+    let db_name = if cfg!(debug_assertions) {
+        "db-dev.sqlite"
+    } else {
+        "db.sqlite"
+    };
+
+    data_dir.to_str().unwrap().to_string() + "/5e-dm-tools/" + db_name
 }
