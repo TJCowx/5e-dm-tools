@@ -1,6 +1,5 @@
 import { styled } from '@mui/material';
 import { invoke } from '@tauri-apps/api';
-import { updateCreature } from 'api/creatures';
 import CreatureForm from 'components/Creature/CreatureForm';
 import Layout from 'components/Layout/Layout';
 import NavBack from 'components/Links/NavBack';
@@ -25,7 +24,7 @@ function EditCreature() {
   const router = useRouter();
   const { creatureId } = router.query;
 
-  const { data, isLoading, error } = useInvoke<Partial<Creature>>(
+  const { data, isLoading } = useInvoke<Partial<Creature>>(
     'get_editable_creature_by_id',
     { id: parseInt(creatureId as string, 10) }
   );

@@ -10,10 +10,7 @@ use crate::dto::{
 
 use serde::{Deserialize, Serialize};
 
-use super::{
-    creature_ability::BaseCreatureAbility,
-    creature_action::{BaseCreatureAction, CreatureAction},
-};
+use super::{creature_ability::BaseCreatureAbility, creature_action::CreatureAction};
 
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]

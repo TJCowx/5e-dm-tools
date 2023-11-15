@@ -1,9 +1,8 @@
-use diesel::{prelude::*, sqlite::Sqlite};
+use diesel::prelude::*;
 use serde::{Deserialize, Serialize};
 
 use crate::{
-    dto::damage_type_dto::DamageTypeDto,
-    models::creature_action_damage::{BaseCreatureActionDamage, CreatureActionDamage},
+    dto::damage_type_dto::DamageTypeDto, models::creature_action_damage::CreatureActionDamage,
 };
 
 #[derive(Debug, Serialize, Deserialize, Queryable, AsChangeset)]

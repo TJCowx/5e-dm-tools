@@ -36,7 +36,7 @@ function ActionListItem({
   const { data: damageTypes } = useInvoke<DamageType[]>(
     'get_damage_types_by_ids',
     {
-      ids: mapDamageIds(action.damage ?? []),
+      ids: mapDamageIds(action.damages ?? []),
     }
   );
 
@@ -61,12 +61,12 @@ function ActionListItem({
     description,
     isAttack,
     toHit,
-    damage,
+    damages,
     reach,
     combatantsHit,
   } = action;
 
-  const damageText = (damage ?? [])
+  const damageText = (damages ?? [])
     .map(
       (dmg) =>
         `${dmg.defaultDamage} ${
