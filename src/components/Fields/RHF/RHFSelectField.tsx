@@ -72,7 +72,7 @@ function RHFSelectField<T extends FieldValues>({
             error={fieldState.error != null}
             autoWidth={false}
             notched
-            MenuProps={{ style: { maxHeight: '500px' } }}
+            MenuProps={{ PaperProps: { style: { maxHeight: '250px' } } }}
           >
             {options.map(({ value, text }) => (
               <MenuItem key={value} value={value}>
