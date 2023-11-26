@@ -34,6 +34,7 @@ function DebouncedInput({
       value={value}
       label={label}
       size="small"
+      autoComplete="off"
       InputLabelProps={{ shrink: true }}
       InputProps={{
         startAdornment: (
