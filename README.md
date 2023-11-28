@@ -17,7 +17,7 @@ A set of tools to help a Dungeon Master for 5th Edition D&D.
 
 ## Installation
 
-TODO: Will be followed up on release
+Click the "tags" on the right side under the release section. Click the most recent release and download the `.msi` file.
 
 ## Contribution
 
