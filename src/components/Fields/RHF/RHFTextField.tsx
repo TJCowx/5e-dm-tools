@@ -45,7 +45,7 @@ function RHFTextField<T extends FieldValues>({
           helperText={fieldState.error?.message}
           size="small"
           multiline={isMultiline}
-          autoComplete="off"
+          autoComplete="one-time-code" // disable autofill this way because chrome ignores autocomplete="off"
           InputLabelProps={{ shrink: true }}
         />
       )}

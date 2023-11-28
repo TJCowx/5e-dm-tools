@@ -1,5 +1,5 @@
 import { styled } from '@mui/material';
-import { invoke } from '@tauri-apps/api';
+import { updateCreature } from 'api/creatures';
 import CreatureForm from 'components/Creature/CreatureForm';
 import Layout from 'components/Layout/Layout';
 import NavBack from 'components/Links/NavBack';
@@ -10,7 +10,6 @@ import Creature from 'models/creature/Creature';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { convertCreatureFormToDB } from 'utils/creatureUtils';
 import { logMessage } from 'utils/loggingUtils';
 
 const LoadingContainer = styled('div')(() => ({
@@ -40,9 +39,7 @@ function EditCreature() {
   }, [data]);
 
   const onSubmit = (formData: Partial<Creature>) => {
-    invoke('update_creature', {
-      creature: convertCreatureFormToDB(formData, true),
-    })
+    updateCreature(formData)
       .then(() => {
         router.push('/creatures');
       })

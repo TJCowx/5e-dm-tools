@@ -7,7 +7,7 @@
     "distDir": "../out"
   },
   "package": {
-    "productName": "5e-dm-tools",
+    "productName": "5e DM Tools",
     "version": "0.1.0"
   },
   "tauri": {

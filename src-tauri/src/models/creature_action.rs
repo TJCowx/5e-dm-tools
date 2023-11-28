@@ -20,10 +20,10 @@ pub struct CreatureAction {
     pub attack_delivery_id: Option<i32>,
     pub attack_type_id: Option<i32>,
     pub action_type_id: i32,
-    pub creature_id: i32,
+    pub creature_id: Option<i32>,
 
     pub damages: Vec<CreatureActionDamage>,
-    pub action_type: ActionTypeDto,
+    pub action_type: Option<ActionTypeDto>,
     pub attack_delivery: Option<AttackDeliveryDto>,
     pub attack_type: Option<AttackTypeDto>,
 }

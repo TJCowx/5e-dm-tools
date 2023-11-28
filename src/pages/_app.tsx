@@ -7,9 +7,9 @@ import 'styles/globals.css';
 import createCache from '@emotion/cache';
 import { CacheProvider } from '@emotion/react';
 import { CssBaseline, ThemeProvider } from '@mui/material';
+import useTheme from 'hooks/useTheme';
 
 import type { AppProps } from 'next/app';
-import useTheme from 'hooks/useTheme';
 
 const muiCache = createCache({
   key: 'mui',

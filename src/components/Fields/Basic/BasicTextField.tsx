@@ -35,6 +35,7 @@ function BasicTextField({
       multiline={isMultiline}
       onChange={(e) => onChange(e.target.value)}
       onBlur={onBlur}
+      autoComplete="one-time-code" // disable autofill this way because chrome ignores autocomplete="off"
     />
   );
 }

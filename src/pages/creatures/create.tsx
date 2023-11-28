@@ -1,5 +1,5 @@
 import { Alert } from '@mui/material';
-import { invoke } from '@tauri-apps/api/tauri';
+import { addNewCreature } from 'api/creatures';
 import CreatureForm from 'components/Creature/CreatureForm';
 import Layout from 'components/Layout/Layout';
 import NavBack from 'components/Links/NavBack';
@@ -7,7 +7,6 @@ import Creature from 'models/creature/Creature';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { convertCreatureFormToDB } from 'utils/creatureUtils';
 import { logMessage } from 'utils/loggingUtils';
 
 const DefaultValues: Partial<Creature> = {
@@ -68,7 +67,7 @@ function CreateCreature() {
 
   const onSubmit = (data: Partial<Creature>) => {
     setHasError(false);
-    invoke('add_creature', { newCreature: convertCreatureFormToDB(data) })
+    addNewCreature(data)
       .then(() => {
         router.push('/creatures');
       })

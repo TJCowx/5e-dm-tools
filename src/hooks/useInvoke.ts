@@ -1,4 +1,3 @@
-import { invoke as tauriInvoke } from '@tauri-apps/api';
 import { useEffect, useState } from 'react';
 
 export default function useInvoke<T>(
@@ -10,7 +9,8 @@ export default function useInvoke<T>(
   const [data, setData] = useState<T | null>(null);
   const [error, setError] = useState<Error | null>(null);
 
-  function invoke() {
+  async function invoke() {
+    const { invoke: tauriInvoke } = await import('@tauri-apps/api/tauri');
     setIsLoading(true);
     tauriInvoke(query, queryArgs)
       .then((res) => {

@@ -23,7 +23,7 @@
     "@mui/material": "^5.11.14",
     "@mui/system": "^5.11.15",
     "@next/font": "13.1.6",
-    "@tauri-apps/api": "^1.2.0",
+    "@tauri-apps/api": "^1.5.1",
     "@tauri-apps/plugin-log": "^2.0.0-alpha.1",
     "@types/node": "18.13.0",
     "@types/react": "18.0.28",

@@ -15,6 +15,7 @@ type Action = {
   actionTypeId: number | null;
   attackDeliveryId: number | null;
   attackTypeId: number | null;
+  creatureId?: number;
 
   actionType: ActionType | null;
   attackDelivery: AttackDelivery | null;

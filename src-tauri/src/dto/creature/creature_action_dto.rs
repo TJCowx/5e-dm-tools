@@ -71,9 +71,9 @@ impl CreatureActionDto {
             attack_delivery_id: action.attack_delivery_id,
             attack_type_id: action.attack_type_id,
             action_type_id: action.action_type_id,
-            creature_id: action.creature_id,
+            creature_id: Some(action.creature_id),
             damages,
-            action_type: ActionTypeDto::get_by_id(action.action_type_id),
+            action_type: Some(ActionTypeDto::get_by_id(action.action_type_id)),
             attack_delivery: delivery,
             attack_type,
         }
