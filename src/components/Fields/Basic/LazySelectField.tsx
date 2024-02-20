@@ -2,11 +2,12 @@ import useInvoke from 'hooks/useInvoke';
 import SelectQueryArgs from 'models/SelectQueryArgs';
 import { useEffect, useMemo } from 'react';
 
+import { v4 } from 'uuid';
 import { SelectOptions } from '../RHF/RHFSelectField';
 import BasicSelectField from './BasicSelectField';
 
 type Props = {
-  id: string;
+  id?: string;
   className?: string;
   value: string | null;
   label: string;
@@ -28,11 +29,9 @@ function LazySelectField({
   onChange,
   onBlur,
 }: Props) {
-  const { data, isLoading, error, invoke } = useInvoke(
-    queryArgs.queryName,
-    queryParams,
-    false
-  );
+  const { data, isLoading, error, invoke } = useInvoke(queryArgs.queryName, queryParams, false);
+
+  const selectId = useMemo(() => id ?? v4(), [id]);
 
   useEffect(() => {
     invoke();
@@ -49,7 +48,7 @@ function LazySelectField({
 
   return (
     <BasicSelectField
-      id={id}
+      id={selectId}
       value={value}
       className={className}
       label={label}

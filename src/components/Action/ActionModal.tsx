@@ -1,10 +1,9 @@
-import { faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   Alert,
   Button,
   Divider,
-  IconButton,
   List,
   ListItem,
   ListItemButton,
@@ -19,16 +18,10 @@ import ListItemText from 'components/List/ListItemText';
 import Modal from 'components/Modal/Modal';
 import Action from 'models/creature/Action';
 import Damage from 'models/creature/Damage';
-import { useMemo, useState } from 'react';
-import { RequireMessage } from 'utils/validationMessages';
-import {
-  array as yupArray,
-  boolean as yupBoolean,
-  number as yupNumber,
-  object as yupObject,
-  string as yupString,
-  ValidationError,
-} from 'yup';
+import { useMemo, useRef, useState } from 'react';
+import { ValidationError } from 'yup';
+import { SCHEMA } from './constants';
+import DamageListItem from './DamageListItem';
 
 type Props = {
   initialAction?: Partial<Action>;
@@ -39,103 +32,6 @@ type Props = {
 };
 
 type ErrorSchema = Record<keyof Action, string | null>;
-
-const schema = yupObject().shape({
-  name: yupString().required({ field: 'name', message: RequireMessage }),
-  description: yupString()
-    .nullable()
-    .when('isAttack', {
-      is: false,
-      then: () =>
-        yupString().required({
-          field: 'description',
-          message: RequireMessage,
-        }),
-    }),
-  actionTypeId: yupNumber().nullable().required({
-    field: 'actionTypeId',
-    message: RequireMessage,
-  }),
-  isAttack: yupBoolean(),
-  attackDeliveryId: yupNumber()
-    .nullable()
-    .when('isAttack', {
-      is: true,
-      then: () =>
-        yupString().required({
-          field: 'attackDeliveryId',
-          message: RequireMessage,
-        }),
-    }),
-  attackTypeId: yupNumber()
-    .nullable()
-    .when('isAttack', {
-      is: true,
-      then: () =>
-        yupString().required({
-          field: 'attackTypeId',
-          message: RequireMessage,
-        }),
-    }),
-  toHit: yupNumber()
-    .transform((value) => (Number.isNaN(value) ? null : value))
-    .nullable()
-    .when('isAttack', {
-      is: true,
-      then: () =>
-        yupNumber()
-          .transform((value) => (Number.isNaN(value) ? null : value))
-          .required({ field: 'toHit', message: RequireMessage })
-          .min(0, {
-            field: 'toHit',
-            message: 'Must be greater than or equal to 0',
-          }),
-    }),
-  reach: yupNumber()
-    .transform((value) => (Number.isNaN(value) ? null : value))
-    .nullable()
-    .when('isAttack', {
-      is: true,
-      then: () =>
-        yupNumber()
-          .transform((value) => (Number.isNaN(value) ? null : value))
-          .required({ field: 'reach', message: RequireMessage })
-          .min(0, {
-            field: 'reach',
-            message: 'Must be greater than or equal to 0',
-          }),
-    }),
-  combatantsHit: yupNumber()
-    .transform((value) => (Number.isNaN(value) ? null : value))
-    .nullable()
-    .when('isAttack', {
-      is: true,
-      then: () =>
-        yupNumber()
-          .transform((value) => (Number.isNaN(value) ? null : value))
-          .required({ field: 'combatantsHit', message: RequireMessage })
-          .min(1, {
-            field: 'combatantsHit',
-            message: 'Must be greater than or equal to 1',
-          }),
-    }),
-  damage: yupArray(
-    yupObject().shape({
-      defaultDamage: yupString().required({
-        field: 'damage',
-        message: 'Amount of Damage is required',
-      }),
-      dice: yupString().required({
-        field: 'damage',
-        message: 'Damage Dice is required',
-      }),
-      typeId: yupString().required({
-        field: 'damage',
-        message: 'Damage Type is required',
-      }),
-    }),
-  ),
-});
 
 const StyledForm = styled('div')(() => ({
   display: 'flex',
@@ -184,6 +80,8 @@ function ActionModal({ initialAction = newAction, isLegendary, hasLair, onSave, 
   const [action, setAction] = useState<Partial<Action>>(initialAction);
   const [errors, setErrors] = useState<Partial<ErrorSchema>>({});
 
+  const damageListRef = useRef<HTMLUListElement | null>(null);
+
   const attackTypeParams = useMemo(
     () => ({
       hasLegendary: isLegendary,
@@ -199,8 +97,7 @@ function ActionModal({ initialAction = newAction, isLegendary, hasLair, onSave, 
   };
 
   const onSubmit = () => {
-    schema
-      .validate(action, { abortEarly: false })
+    SCHEMA.validate(action, { abortEarly: false })
       .then(() => {
         onSave(action);
         onClose();
@@ -230,6 +127,32 @@ function ActionModal({ initialAction = newAction, isLegendary, hasLair, onSave, 
     const arrCopy = action?.damages ?? [];
     arrCopy.splice(i, 1);
     setAction((prev) => ({ ...prev, damage: arrCopy }));
+  };
+
+  const addNewDamage = () => {
+    setAction((prev) => ({
+      ...prev,
+      damages: [
+        ...(prev.damages ?? []),
+        {
+          defaultDamage: 0,
+          dice: '',
+          typeId: null,
+        },
+      ],
+    }));
+
+    setTimeout(() => {
+      if (damageListRef.current) {
+        const damageItems = damageListRef.current.querySelectorAll<HTMLInputElement>(
+          '.damage-list-item .damage-field input',
+        );
+
+        if (damageItems.length) {
+          damageItems[damageItems.length - 1].focus();
+        }
+      }
+    }, 1);
   };
 
   return (
@@ -361,58 +284,18 @@ function ActionModal({ initialAction = newAction, isLegendary, hasLair, onSave, 
                 {errors.damages}
               </Alert>
             )}
-            <List dense>
+            <List ref={damageListRef} dense>
               {(action.damages ?? []).map((damage, i) => (
-                <ListItem
+                <DamageListItem
                   // eslint-disable-next-line react/no-array-index-key
                   key={`damage-${i}`}
-                  className="damage-list-item pl-0"
-                  secondaryAction={
-                    <IconButton onClick={() => removeDamageItem(i)} color="warning">
-                      <FontAwesomeIcon icon={faTrash} />
-                    </IconButton>
-                  }>
-                  <BasicNumberField
-                    className="damage-field"
-                    label="Damage"
-                    value={damage.defaultDamage ?? ''}
-                    onChange={(newVal) =>
-                      updateDamageItem({ ...damage, defaultDamage: +(newVal ?? 0) }, i)
-                    }
-                  />
-                  <BasicTextField
-                    className="damage-dice-field"
-                    label="Damage Dice"
-                    value={damage.dice ?? ''}
-                    onChange={(newVal) => updateDamageItem({ ...damage, dice: newVal }, i)}
-                  />
-                  <LazySelectField
-                    id={`damage-${i}-type`}
-                    className="damage-type-field"
-                    label="Damage Type"
-                    queryArgs={{
-                      queryName: 'get_all_damage_types',
-                      textKey: 'name',
-                      valueKey: 'id',
-                    }}
-                    value={damage.typeId ? `${damage.typeId}` : null}
-                    onChange={(newVal) =>
-                      updateDamageItem({ ...damage, typeId: newVal != null ? +newVal : null }, i)
-                    }
-                  />
-                </ListItem>
+                  damage={damage}
+                  updateDamageItem={(newVal) => updateDamageItem(newVal, 1)}
+                  removeDamageItem={() => removeDamageItem(i)}
+                />
               ))}
               <ListItem className="pl-0">
-                <ListItemButton
-                  onClick={() =>
-                    setAction((prev) => ({
-                      ...prev,
-                      damages: [
-                        ...(prev.damages ?? []),
-                        { defaultDamage: 0, dice: '', typeId: null },
-                      ],
-                    }))
-                  }>
+                <ListItemButton onClick={addNewDamage}>
                   <ListItemIcon>
                     <FontAwesomeIcon icon={faPlus} />
                   </ListItemIcon>
