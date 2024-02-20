@@ -42,10 +42,16 @@ type ErrorSchema = Record<keyof Action, string | null>;
 
 const schema = yupObject().shape({
   name: yupString().required({ field: 'name', message: RequireMessage }),
-  description: yupString().required({
-    field: 'description',
-    message: RequireMessage,
-  }),
+  description: yupString()
+    .nullable()
+    .when('isAttack', {
+      is: false,
+      then: () =>
+        yupString().required({
+          field: 'description',
+          message: RequireMessage,
+        }),
+    }),
   actionTypeId: yupNumber().nullable().required({
     field: 'actionTypeId',
     message: RequireMessage,
@@ -127,7 +133,7 @@ const schema = yupObject().shape({
         field: 'damage',
         message: 'Damage Type is required',
       }),
-    })
+    }),
   ),
 });
 
@@ -174,13 +180,7 @@ const newAction: Partial<Action> = {
   reach: 5,
 };
 
-function ActionModal({
-  initialAction = newAction,
-  isLegendary,
-  hasLair,
-  onSave,
-  onClose,
-}: Props) {
+function ActionModal({ initialAction = newAction, isLegendary, hasLair, onSave, onClose }: Props) {
   const [action, setAction] = useState<Partial<Action>>(initialAction);
   const [errors, setErrors] = useState<Partial<ErrorSchema>>({});
 
@@ -189,7 +189,7 @@ function ActionModal({
       hasLegendary: isLegendary,
       hasLair,
     }),
-    [isLegendary, hasLair]
+    [isLegendary, hasLair],
   );
 
   const handleClose = () => {
@@ -209,11 +209,11 @@ function ActionModal({
         const newErrors: Partial<ErrorSchema> = {};
 
         // Casting because `e.errors` is incorrectly types `string[]`
-        (
-          e.errors as unknown as { field: keyof Action; message: string }[]
-        ).forEach(({ field, message }) => {
-          newErrors[field] = message;
-        });
+        (e.errors as unknown as { field: keyof Action; message: string }[]).forEach(
+          ({ field, message }) => {
+            newErrors[field] = message;
+          },
+        );
 
         setErrors(newErrors);
       });
@@ -240,9 +240,7 @@ function ActionModal({
           className="mb-16"
           label="Name"
           error={errors.name}
-          onChange={(newVal) =>
-            setAction((prev) => ({ ...prev, name: newVal }))
-          }
+          onChange={(newVal) => setAction((prev) => ({ ...prev, name: newVal }))}
           onBlur={() => setErrors((prev) => ({ ...prev, name: null }))}
         />
         <BasicTextField
@@ -251,9 +249,7 @@ function ActionModal({
           label="Description"
           isMultiline
           error={errors.description}
-          onChange={(newVal) =>
-            setAction((prev) => ({ ...prev, description: newVal }))
-          }
+          onChange={(newVal) => setAction((prev) => ({ ...prev, description: newVal }))}
           onBlur={() => setErrors((prev) => ({ ...prev, description: null }))}
         />
         <LazySelectField
@@ -274,26 +270,20 @@ function ActionModal({
               actionTypeId: newVal != null ? +newVal : null,
             }))
           }
-          onBlur={() =>
-            setErrors((prev) => ({ ...prev, actionType: undefined }))
-          }
+          onBlur={() => setErrors((prev) => ({ ...prev, actionType: undefined }))}
         />
         <BasicSwitchField
           value={action.isAttack as boolean}
           className="mb-16"
           label="Is Attack"
-          onChange={(isChecked) =>
-            setAction((prev) => ({ ...prev, isAttack: isChecked }))
-          }
+          onChange={(isChecked) => setAction((prev) => ({ ...prev, isAttack: isChecked }))}
         />
         {action.isAttack && (
           <>
             <div className="grid mb-16">
               <LazySelectField
                 id="attack-delivery-field"
-                value={
-                  action.attackDeliveryId ? `${action.attackDeliveryId}` : null
-                }
+                value={action.attackDeliveryId ? `${action.attackDeliveryId}` : null}
                 label="Attack Delivery"
                 error={errors.attackDeliveryId}
                 queryArgs={{
@@ -307,9 +297,7 @@ function ActionModal({
                     attackDeliveryId: newVal != null ? +newVal : null,
                   }))
                 }
-                onBlur={() =>
-                  setErrors((prev) => ({ ...prev, attackDelivery: undefined }))
-                }
+                onBlur={() => setErrors((prev) => ({ ...prev, attackDelivery: undefined }))}
               />
               <LazySelectField
                 id="attack-type-field"
@@ -327,9 +315,7 @@ function ActionModal({
                     attackTypeId: newVal != null ? +newVal : null,
                   }))
                 }
-                onBlur={() =>
-                  setErrors((prev) => ({ ...prev, attackType: undefined }))
-                }
+                onBlur={() => setErrors((prev) => ({ ...prev, attackType: undefined }))}
               />
             </div>
             <div className="grid mb-16">
@@ -338,12 +324,8 @@ function ActionModal({
                 label="To Hit"
                 min={0}
                 error={errors.toHit}
-                onChange={(newVal) =>
-                  setAction((prev) => ({ ...prev, toHit: newVal }))
-                }
-                onBlur={() =>
-                  setErrors((prev) => ({ ...prev, toHit: undefined }))
-                }
+                onChange={(newVal) => setAction((prev) => ({ ...prev, toHit: newVal }))}
+                onBlur={() => setErrors((prev) => ({ ...prev, toHit: undefined }))}
               />
               <BasicNumberField
                 value={action.reach ?? null}
@@ -370,17 +352,12 @@ function ActionModal({
                     combatantsHit: Number(newVal),
                   }))
                 }
-                onBlur={() =>
-                  setErrors((prev) => ({ ...prev, combatantsHit: null }))
-                }
+                onBlur={() => setErrors((prev) => ({ ...prev, combatantsHit: null }))}
               />
             </div>
             <Divider />
             {!!errors.damages?.length && (
-              <Alert
-                severity="error"
-                sx={{ marginTop: '12px', marginBottom: '12px' }}
-              >
+              <Alert severity="error" sx={{ marginTop: '12px', marginBottom: '12px' }}>
                 {errors.damages}
               </Alert>
             )}
@@ -391,32 +368,23 @@ function ActionModal({
                   key={`damage-${i}`}
                   className="damage-list-item pl-0"
                   secondaryAction={
-                    <IconButton
-                      onClick={() => removeDamageItem(i)}
-                      color="warning"
-                    >
+                    <IconButton onClick={() => removeDamageItem(i)} color="warning">
                       <FontAwesomeIcon icon={faTrash} />
                     </IconButton>
-                  }
-                >
+                  }>
                   <BasicNumberField
                     className="damage-field"
                     label="Damage"
                     value={damage.defaultDamage ?? ''}
                     onChange={(newVal) =>
-                      updateDamageItem(
-                        { ...damage, defaultDamage: +(newVal ?? 0) },
-                        i
-                      )
+                      updateDamageItem({ ...damage, defaultDamage: +(newVal ?? 0) }, i)
                     }
                   />
                   <BasicTextField
                     className="damage-dice-field"
                     label="Damage Dice"
                     value={damage.dice ?? ''}
-                    onChange={(newVal) =>
-                      updateDamageItem({ ...damage, dice: newVal }, i)
-                    }
+                    onChange={(newVal) => updateDamageItem({ ...damage, dice: newVal }, i)}
                   />
                   <LazySelectField
                     id={`damage-${i}-type`}
@@ -429,10 +397,7 @@ function ActionModal({
                     }}
                     value={damage.typeId ? `${damage.typeId}` : null}
                     onChange={(newVal) =>
-                      updateDamageItem(
-                        { ...damage, typeId: newVal != null ? +newVal : null },
-                        i
-                      )
+                      updateDamageItem({ ...damage, typeId: newVal != null ? +newVal : null }, i)
                     }
                   />
                 </ListItem>
@@ -447,8 +412,7 @@ function ActionModal({
                         { defaultDamage: 0, dice: '', typeId: null },
                       ],
                     }))
-                  }
-                >
+                  }>
                   <ListItemIcon>
                     <FontAwesomeIcon icon={faPlus} />
                   </ListItemIcon>
@@ -460,12 +424,7 @@ function ActionModal({
         )}
         <div className="actions-container">
           <Button onClick={handleClose}>Cancel</Button>
-          <Button
-            variant="contained"
-            disableElevation
-            type="button"
-            onClick={onSubmit}
-          >
+          <Button variant="contained" disableElevation type="button" onClick={onSubmit}>
             Save
           </Button>
         </div>

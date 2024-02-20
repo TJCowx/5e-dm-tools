@@ -19,7 +19,7 @@ use serde::{Deserialize, Serialize};
 pub struct CreatureActionDto {
     id: i32,
     name: String,
-    description: String,
+    description: Option<String>,
     is_attack: bool,
     to_hit: Option<i32>,
     reach: Option<i32>,
@@ -35,7 +35,7 @@ pub struct CreatureActionDto {
 #[diesel(check_for_backend(diesel::sqlite::Sqlite))]
 pub struct NewCreatureActionDto {
     pub name: String,
-    pub description: String,
+    pub description: Option<String>,
     pub is_attack: bool,
     pub to_hit: Option<i32>,
     pub reach: Option<i32>,

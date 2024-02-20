@@ -58,7 +58,7 @@ diesel::table! {
     creature_actions (id) {
         id -> Integer,
         name -> Text,
-        description -> Text,
+        description -> Nullable<Text>,
         is_attack -> Bool,
         to_hit -> Nullable<Integer>,
         reach -> Nullable<Integer>,

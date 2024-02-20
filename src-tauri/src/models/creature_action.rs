@@ -12,7 +12,7 @@ use super::creature_action_damage::{BaseCreatureActionDamage, CreatureActionDama
 pub struct CreatureAction {
     pub id: Option<i32>,
     pub name: String,
-    pub description: String,
+    pub description: Option<String>,
     pub is_attack: bool,
     pub to_hit: Option<i32>,
     pub reach: Option<i32>,
@@ -33,7 +33,7 @@ pub struct CreatureAction {
 pub struct BaseCreatureAction {
     pub id: Option<i32>,
     pub name: String,
-    pub description: String,
+    pub description: Option<String>,
     pub is_attack: bool,
     pub action_type_id: i32,
     pub to_hit: Option<i32>,
