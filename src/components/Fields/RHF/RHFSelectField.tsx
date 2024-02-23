@@ -11,6 +11,7 @@ import clsx from 'clsx';
 import { useMemo } from 'react';
 import { Control, Controller, FieldPath, FieldValues } from 'react-hook-form';
 import { RequireMessage } from 'utils/validationMessages';
+import { v4 } from 'uuid';
 
 export interface SelectOptions {
   value: string | number;
@@ -18,7 +19,7 @@ export interface SelectOptions {
 }
 
 type Props<T extends FieldValues> = {
-  id: string;
+  id?: string;
   className?: string;
   control: Control<T>;
   fieldName: FieldPath<T>;
@@ -30,7 +31,7 @@ type Props<T extends FieldValues> = {
 };
 
 function RHFSelectField<T extends FieldValues>({
-  id,
+  id: idProp,
   control,
   className,
   fieldName,
@@ -40,6 +41,8 @@ function RHFSelectField<T extends FieldValues>({
   isLoading = false,
   error,
 }: Props<T>) {
+  const id = useMemo(() => idProp ?? v4(), [idProp]);
+
   const rules = useMemo(
     () =>
       isRequired
@@ -48,7 +51,7 @@ function RHFSelectField<T extends FieldValues>({
             minLength: { value: 0, message: RequireMessage },
           }
         : undefined,
-    [isRequired]
+    [isRequired],
   );
 
   return (
@@ -59,8 +62,7 @@ function RHFSelectField<T extends FieldValues>({
       render={({ field, fieldState }) => (
         <FormControl
           className={clsx({ 'form-select': true, [`${className}`]: className })}
-          size="small"
-        >
+          size="small">
           <InputLabel id={id} shrink error={fieldState.error != null}>
             {label}
           </InputLabel>
@@ -72,8 +74,7 @@ function RHFSelectField<T extends FieldValues>({
             error={fieldState.error != null}
             autoWidth={false}
             notched
-            MenuProps={{ PaperProps: { style: { maxHeight: '250px' } } }}
-          >
+            MenuProps={{ PaperProps: { style: { maxHeight: '250px' } } }}>
             {options.map(({ value, text }) => (
               <MenuItem key={value} value={value}>
                 {text}

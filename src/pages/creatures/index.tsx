@@ -24,6 +24,7 @@ import ListItemTwoSecondaryActions from 'components/List/ListItemTwoSecondaryAct
 import Creature from 'models/creature/Creature';
 import Link from 'next/link';
 import { Fragment, useEffect, useState } from 'react';
+import { getCRFormatted } from 'utils/creatureUtils';
 import { logMessage } from 'utils/loggingUtils';
 
 const ActionContainer = styled('div')(() => ({
@@ -44,9 +45,7 @@ function Creatures() {
   const [creatures, setCreatures] = useState<Creature[]>([]);
   const [filteredCreatures, setFilteredCreatures] = useState<Creature[]>([]);
   const [filterText, setFilterText] = useState('');
-  const [deleteCreatureActionId, setDeleteCreatureActionId] = useState<
-    string | null
-  >(null);
+  const [deleteCreatureActionId, setDeleteCreatureActionId] = useState<string | null>(null);
 
   const loadCreatures = () => {
     setHasError(false);
@@ -90,12 +89,10 @@ function Creatures() {
       creatures.filter(
         ({ name, challengeRating, size, creatureType: type }) =>
           name.toLowerCase().includes(filterText.toLowerCase()) ||
-          `${challengeRating}`
-            .toLowerCase()
-            .includes(filterText.toLowerCase()) ||
+          `${challengeRating}`.toLowerCase().includes(filterText.toLowerCase()) ||
           size?.name.toLowerCase().includes(filterText.toLowerCase()) ||
-          type?.name.toLowerCase().includes(filterText.toLowerCase())
-      )
+          type?.name.toLowerCase().includes(filterText.toLowerCase()),
+      ),
     );
   }, [filterText, creatures]);
 
@@ -110,11 +107,7 @@ function Creatures() {
         </StyledAlert>
       )}
       <ActionContainer>
-        <DebouncedInput
-          value={filterText}
-          label="Search"
-          onChange={(val) => setFilterText(val)}
-        />
+        <DebouncedInput value={filterText} label="Search" onChange={(val) => setFilterText(val)} />
         <Link href="/creatures/create" passHref>
           <IconButton aria-label="Create new creature">
             <FontAwesomeIcon icon={faPlus} />{' '}
@@ -136,44 +129,40 @@ function Creatures() {
         </List>
       ) : (
         <List dense>
-          {filteredCreatures.map(
-            ({ id, name, creatureType: type, size, challengeRating }) => (
-              <Fragment key={id}>
-                <ListItemTwoSecondaryActions
-                  secondaryAction={
-                    <>
-                      <Link href={`/creatures/edit/${id}`} passHref>
-                        <IconButton aria-label={`Edit ${name}`}>
-                          <FontAwesomeIcon size="xs" icon={faPen} />
-                        </IconButton>
-                      </Link>
-                      <IconButton
-                        edge="end"
-                        aria-label={`Delete ${name}`}
-                        color="warning"
-                        onClick={() => openDialog(id)}
-                      >
-                        <FontAwesomeIcon size="xs" icon={faTrash} />
+          {filteredCreatures.map(({ id, name, creatureType: type, size, challengeRating }) => (
+            <Fragment key={id}>
+              <ListItemTwoSecondaryActions
+                secondaryAction={
+                  <>
+                    <Link href={`/creatures/edit/${id}`} passHref>
+                      <IconButton aria-label={`Edit ${name}`}>
+                        <FontAwesomeIcon size="xs" icon={faPen} />
                       </IconButton>
+                    </Link>
+                    <IconButton
+                      edge="end"
+                      aria-label={`Delete ${name}`}
+                      color="warning"
+                      onClick={() => openDialog(id)}>
+                      <FontAwesomeIcon size="xs" icon={faTrash} />
+                    </IconButton>
+                  </>
+                }>
+                <ListItemText
+                  primary={name}
+                  secondary={
+                    <>
+                      CR: {getCRFormatted(challengeRating)} |{' '}
+                      <i>
+                        {size?.name} {type.name}
+                      </i>
                     </>
                   }
-                >
-                  <ListItemText
-                    primary={name}
-                    secondary={
-                      <>
-                        CR: {challengeRating} |{' '}
-                        <i>
-                          {size?.name} {type.name}
-                        </i>
-                      </>
-                    }
-                  />
-                </ListItemTwoSecondaryActions>
-                <Divider component="li" />
-              </Fragment>
-            )
-          )}
+                />
+              </ListItemTwoSecondaryActions>
+              <Divider component="li" />
+            </Fragment>
+          ))}
         </List>
       )}
       {deleteCreatureActionId != null && (
@@ -181,20 +170,16 @@ function Creatures() {
           <DialogTitle>Confirm Delete Creature</DialogTitle>
           <DialogContent>
             <DialogContentText>
-              This will <strong>permanently</strong> delete the creature. Do you
-              want to continue?
+              This will <strong>permanently</strong> delete the creature. Do you want to continue?
             </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <Button onClick={() => setDeleteCreatureActionId(null)}>
-              Cancel
-            </Button>
+            <Button onClick={() => setDeleteCreatureActionId(null)}>Cancel</Button>
             <Button
               variant="contained"
               color="warning"
               disableElevation
-              onClick={() => handleDelete(deleteCreatureActionId)}
-            >
+              onClick={() => handleDelete(deleteCreatureActionId)}>
               Delete
             </Button>
           </DialogActions>

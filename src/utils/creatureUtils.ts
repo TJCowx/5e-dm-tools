@@ -14,10 +14,7 @@ import { getFormattedModifier, getSkillAttribute } from './modifierUtils';
  * @param creature The creature from the form
  * @returns the number fields parsed into numbers
  */
-export const convertCreatureFormToDB = (
-  creature: Partial<Creature>,
-  isEdit = false
-) => {
+export const convertCreatureFormToDB = (creature: Partial<Creature>, isEdit = false) => {
   const {
     armourClass,
     hitPoints,
@@ -64,9 +61,7 @@ export const convertCreatureFormToDB = (
     profBonus: +(profBonus ?? 0),
     challengeRating: +(challengeRating ?? 0),
     rewardXp: +(rewardXp ?? 0),
-    savingThrows: isEdit
-      ? creature.savingThrows
-      : creature.savingThrows?.join(','),
+    savingThrows: isEdit ? creature.savingThrows : creature.savingThrows?.join(','),
     actions,
   };
 };
@@ -115,34 +110,22 @@ export const getSavingThrowsString = (creature: Creature) => {
   (savingThrows ?? []).forEach((savingThrow) => {
     switch (savingThrow) {
       case 'Strength':
-        proficientSavingThrows.push(
-          `Str ${getFormattedModifier(strength, profBonus)}`
-        );
+        proficientSavingThrows.push(`Str ${getFormattedModifier(strength, profBonus)}`);
         break;
       case 'Dexterity':
-        proficientSavingThrows.push(
-          `Dex ${getFormattedModifier(dexterity, profBonus)}`
-        );
+        proficientSavingThrows.push(`Dex ${getFormattedModifier(dexterity, profBonus)}`);
         break;
       case 'Constitution':
-        proficientSavingThrows.push(
-          `Con ${getFormattedModifier(constitution, profBonus)}`
-        );
+        proficientSavingThrows.push(`Con ${getFormattedModifier(constitution, profBonus)}`);
         break;
       case 'Intelligence':
-        proficientSavingThrows.push(
-          `Int ${getFormattedModifier(intelligence, profBonus)}`
-        );
+        proficientSavingThrows.push(`Int ${getFormattedModifier(intelligence, profBonus)}`);
         break;
       case 'Wisdom':
-        proficientSavingThrows.push(
-          `Wis ${getFormattedModifier(wisdom, profBonus)}`
-        );
+        proficientSavingThrows.push(`Wis ${getFormattedModifier(wisdom, profBonus)}`);
         break;
       case 'Charisma':
-        proficientSavingThrows.push(
-          `Cha ${getFormattedModifier(charisma, profBonus)}`
-        );
+        proficientSavingThrows.push(`Cha ${getFormattedModifier(charisma, profBonus)}`);
         break;
       default:
     }
@@ -157,10 +140,20 @@ export const getProficienciesString = (creature: Creature) => {
   return (proficiencies ?? [])
     .map(
       (prof) =>
-        `${prof.name} ${getFormattedModifier(
-          getSkillAttribute(prof, creature),
-          profBonus
-        )}`
+        `${prof.name} ${getFormattedModifier(getSkillAttribute(prof, creature), profBonus)}`,
     )
     .join(' | ');
+};
+
+export const getCRFormatted = (val: number) => {
+  switch (val) {
+    case 0.125:
+      return '1/8';
+    case 0.25:
+      return '1/4';
+    case 0.5:
+      return '1/2';
+    default:
+      return `${val}`;
+  }
 };
