@@ -8,7 +8,7 @@
   },
   "package": {
     "productName": "5e DM Tools",
-    "version": "0.1.0"
+    "version": "0.1.1"
   },
   "tauri": {
     "bundle": {
@@ -37,7 +37,7 @@
       },
       "resources": [],
       "shortDescription": "",
-      "targets": "all",
+      "targets": ["deb", "msi", "app", "dmg", "updater"],
       "windows": {
         "certificateThumbprint": null,
         "digestAlgorithm": "sha256",

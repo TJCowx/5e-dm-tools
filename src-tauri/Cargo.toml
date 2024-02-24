@@ -1,6 +1,6 @@
 [package]
 name = "app"
-version = "0.1.0"
+version = "0.1.1"
 description = "Tools to help a Dungeon Master for D&D 5e"
 authors = ["Travis Cowx"]
 license = ""
