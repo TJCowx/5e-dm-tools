@@ -19,6 +19,7 @@ type Props<T extends FieldValues> = {
   min?: number | null;
   max?: number | null;
   isRequired?: boolean;
+  step?: number;
 };
 
 const createRules = (
@@ -60,6 +61,7 @@ function RHFIntegerField<T extends FieldValues>({
   min = null,
   max = null,
   isRequired = false,
+  step = 1,
 }: Props<T>) {
   const rules = useMemo(
     () => createRules(min, max, isRequired),
@@ -67,13 +69,11 @@ function RHFIntegerField<T extends FieldValues>({
   );
 
   const inputProps = useMemo(() => {
-    const stepProp = { step: 1 };
-    if (min != null && max != null)
-      return { inputProps: { min, max, ...stepProp } };
-    if (min != null && max == null) return { inputProps: { min, ...stepProp } };
-    if (max != null && min == null) return { inputProps: { max, ...stepProp } };
+    if (min != null && max != null) return { inputProps: { min, max, step } };
+    if (min != null && max == null) return { inputProps: { min, step } };
+    if (max != null && min == null) return { inputProps: { max, step } };
 
-    return { inputProps: stepProp };
+    return { inputProps: { step } };
   }, [min, max]);
 
   return (

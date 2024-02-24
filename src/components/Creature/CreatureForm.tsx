@@ -191,26 +191,36 @@ function CreatureForm({ control, onSubmit, watch }: Props) {
             control={control}
             label="Land Speed"
             fieldName="landSpeed"
+            step={5}
+            min={0}
           />
           <RHFIntegerField
             control={control}
             label="Fly Speed"
             fieldName="flySpeed"
+            step={5}
+            min={0}
           />
           <RHFIntegerField
             control={control}
             label="Burrow Speed"
             fieldName="burrowSpeed"
+            step={5}
+            min={0}
           />
           <RHFIntegerField
             control={control}
             label="Climb Speed"
             fieldName="climbSpeed"
+            step={5}
+            min={0}
           />
           <RHFIntegerField
             control={control}
             label="Hover Speed"
             fieldName="hoverSpeed"
+            step={5}
+            min={0}
           />
         </div>
       </section>
@@ -222,21 +232,29 @@ function CreatureForm({ control, onSubmit, watch }: Props) {
             control={control}
             label="Darkvision"
             fieldName="darkvision"
+            step={5}
+            min={0}
           />
           <RHFIntegerField
             control={control}
             label="Blindsight"
             fieldName="blindsight"
+            step={5}
+            min={0}
           />
           <RHFIntegerField
             control={control}
             label="Tremorsense"
             fieldName="tremorsense"
+            step={5}
+            min={0}
           />
           <RHFIntegerField
             control={control}
             label="Truesight"
             fieldName="truesight"
+            step={5}
+            min={0}
           />
         </div>
       </section>
@@ -396,13 +414,11 @@ function CreatureForm({ control, onSubmit, watch }: Props) {
                       aria-label={`Delete ${ability.name}`}
                       edge="end"
                       color="warning"
-                      onClick={() => removeAbility(i)}
-                    >
+                      onClick={() => removeAbility(i)}>
                       <FontAwesomeIcon icon={faTrash} />
                     </IconButton>
                   </>
-                }
-              >
+                }>
                 <ListItemText
                   primary={ability.name ?? ''}
                   secondary={ability.description ?? ''}
@@ -442,8 +458,7 @@ function CreatureForm({ control, onSubmit, watch }: Props) {
           variant="contained"
           disableElevation
           type="submit"
-          className="right-align"
-        >
+          className="right-align">
           Save
         </Button>
       </div>
