@@ -15,7 +15,10 @@ type Props = {
 };
 
 const BasicNumberField = forwardRef<HTMLInputElement, Props>(
-  ({ className, value, label, min, max, step, error, onChange, onBlur }, ref) => {
+  (
+    { className, value, label, min, max, step, error, onChange, onBlur },
+    ref,
+  ) => {
     const inputProps = useMemo(() => {
       if (min != null && max != null) return { inputProps: { min, max, step } };
       if (min != null && max == null) return { inputProps: { min, step } };
@@ -40,7 +43,11 @@ const BasicNumberField = forwardRef<HTMLInputElement, Props>(
         InputLabelProps={{ shrink: true }}
         size="small"
         onChange={(e) =>
-          onChange(Number.isNaN(Number(e.target.value)) ? undefined : Number(e.target.value))
+          onChange(
+            Number.isNaN(Number(e.target.value))
+              ? undefined
+              : Number(e.target.value),
+          )
         }
         onBlur={onBlur}
       />

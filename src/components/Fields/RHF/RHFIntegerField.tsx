@@ -24,7 +24,7 @@ type Props<T extends FieldValues> = {
 const createRules = (
   min: number | null,
   max: number | null,
-  isRequired = false
+  isRequired = false,
 ) => {
   const rules: RegisterOptions = {
     pattern: {
@@ -63,7 +63,7 @@ function RHFIntegerField<T extends FieldValues>({
 }: Props<T>) {
   const rules = useMemo(
     () => createRules(min, max, isRequired),
-    [min, max, isRequired]
+    [min, max, isRequired],
   );
 
   const inputProps = useMemo(() => {

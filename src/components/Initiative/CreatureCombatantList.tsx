@@ -18,7 +18,7 @@ function CreatureCombatantList({ combatants }: Props) {
 
   const combatantsList = useMemo(
     () => Array.from(combatants.values()),
-    [combatants]
+    [combatants],
   );
 
   const handleChange = (clickedPanel: string) => {

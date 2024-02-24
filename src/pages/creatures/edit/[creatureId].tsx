@@ -25,7 +25,7 @@ function EditCreature() {
 
   const { data, isLoading } = useInvoke<Partial<Creature>>(
     'get_editable_creature_by_id',
-    { id: parseInt(creatureId as string, 10) }
+    { id: parseInt(creatureId as string, 10) },
   );
 
   useConfirmBeforeExitPage();

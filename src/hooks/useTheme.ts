@@ -37,7 +37,7 @@ export default function useTheme() {
   const preferDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
 
   const [mode, setMode] = useState<PaletteMode>(
-    preferDarkMode ? 'dark' : 'light'
+    preferDarkMode ? 'dark' : 'light',
   );
 
   useEffect(() => {

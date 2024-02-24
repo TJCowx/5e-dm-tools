@@ -29,13 +29,21 @@ export const SCHEMA = yupObject().shape({
     .nullable()
     .when('isAttack', {
       is: true,
-      then: () => yupString().required({ field: 'attackDeliveryId', message: RequireMessage }),
+      then: () =>
+        yupString().required({
+          field: 'attackDeliveryId',
+          message: RequireMessage,
+        }),
     }),
   attackTypeId: yupNumber()
     .nullable()
     .when('isAttack', {
       is: true,
-      then: () => yupString().required({ field: 'attackTypeId', message: RequireMessage }),
+      then: () =>
+        yupString().required({
+          field: 'attackTypeId',
+          message: RequireMessage,
+        }),
     }),
   toHit: yupNumber()
     .transform((value) => (Number.isNaN(value) ? null : value))

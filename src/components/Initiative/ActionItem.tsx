@@ -23,7 +23,7 @@ function ActionItem({ action }: Props) {
 
   const damageString = (damages ?? []).map(
     (damageItem) =>
-      `${damageItem?.defaultDamage} (${damageItem?.dice}) ${damageItem?.damageType?.name} damage`
+      `${damageItem?.defaultDamage} (${damageItem?.dice}) ${damageItem?.damageType?.name} damage`,
   );
 
   return (
@@ -34,7 +34,7 @@ function ActionItem({ action }: Props) {
           `${attackDelivery?.name} ${
             attackType?.name
           } Attack: +${toHit}, reach ${reach}ft., ${combatantsHit} target, Hit: ${damageString.join(
-            ', '
+            ', ',
           )}`}
         <br />
         {description}

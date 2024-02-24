@@ -12,7 +12,8 @@ function Icon() {
       className={clsx({
         'rail-icon': true,
         'is-active': router.pathname === '/settings',
-      })}>
+      })}
+    >
       <FontAwesomeIcon icon={faGear} />
     </ListItemIcon>
   );

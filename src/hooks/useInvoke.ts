@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 export default function useInvoke<T>(
   query: string,
   queryArgs?: Record<string, unknown>,
-  invokeOnMount = true
+  invokeOnMount = true,
 ) {
   const [isLoading, setIsLoading] = useState(false);
   const [data, setData] = useState<T | null>(null);

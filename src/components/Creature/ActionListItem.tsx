@@ -37,14 +37,14 @@ function ActionListItem({
     'get_damage_types_by_ids',
     {
       ids: mapDamageIds(action.damages ?? []),
-    }
+    },
   );
 
   const { data: attackDelivery } = useInvoke<AttackDelivery>(
     'get_attack_delivery_by_id',
     {
       id: action.attackDeliveryId as number,
-    }
+    },
   );
 
   const { data: attackType } = useInvoke<AttackType>('get_attack_type_by_id', {
@@ -71,7 +71,7 @@ function ActionListItem({
       (dmg) =>
         `${dmg.defaultDamage} ${
           damageTypes?.find((type) => type.id === dmg.typeId)?.name
-        } damage`
+        } damage`,
     )
     .join(', ');
 

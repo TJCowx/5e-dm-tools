@@ -1,4 +1,11 @@
-import { Alert, Autocomplete, Button, Divider, TextField, Typography } from '@mui/material';
+import {
+  Alert,
+  Autocomplete,
+  Button,
+  Divider,
+  TextField,
+  Typography,
+} from '@mui/material';
 import { styled } from '@mui/system';
 import RHFIntegerField from 'components/Fields/RHF/RHFIntegerField';
 import RHFSwitchField from 'components/Fields/RHF/RHFSwitchField';
@@ -47,13 +54,15 @@ function AddCreatureCombatantForm({ onSubmit, onCancel }: Props) {
   const [hasError, setHasError] = useState(false);
   const [availableCreature, setAvailableCreature] = useState<Creature[]>([]);
 
-  const { handleSubmit, reset, setValue, watch, control } = useForm<FormInputs>({
-    defaultValues: {
-      groupInitiativeRoll: true,
-      creatureCount: 1,
-      newCreature: null,
+  const { handleSubmit, reset, setValue, watch, control } = useForm<FormInputs>(
+    {
+      defaultValues: {
+        groupInitiativeRoll: true,
+        creatureCount: 1,
+        newCreature: null,
+      },
     },
-  });
+  );
 
   useEffect(() => {
     setIsLoading(true);
@@ -87,7 +96,9 @@ function AddCreatureCombatantForm({ onSubmit, onCancel }: Props) {
       newCombatants.push({
         id: v4(),
         name: newCreature.name,
-        initiative: groupInitiativeRoll ? groupInitiative : rollD20(initiativeModifier),
+        initiative: groupInitiativeRoll
+          ? groupInitiative
+          : rollD20(initiativeModifier),
         initiativeModifier,
         isPlayer: false,
         isDead: false,
@@ -106,7 +117,9 @@ function AddCreatureCombatantForm({ onSubmit, onCancel }: Props) {
     onCancel();
   };
 
-  const handleAutocompleteChange = (val: (string | Creature)[] | Creature | string) => {
+  const handleAutocompleteChange = (
+    val: (string | Creature)[] | Creature | string,
+  ) => {
     let newVal: Creature | undefined;
 
     // Autocomplete component is expecting (string | Creature)[] even though it's
@@ -148,10 +161,18 @@ function AddCreatureCombatantForm({ onSubmit, onCancel }: Props) {
             size="small"
             onChange={(_, val) => handleAutocompleteChange(val as Creature)}
             isOptionEqualToValue={(opt: Creature, val: string | Creature) =>
-              val == null ? false : typeof val === 'string' ? opt.id === val : opt.id === val.id
+              val == null
+                ? false
+                : typeof val === 'string'
+                ? opt.id === val
+                : opt.id === val.id
             }
             renderInput={(params) => (
-              <TextField {...params} label="Creature" InputLabelProps={{ shrink: true }} />
+              <TextField
+                {...params}
+                label="Creature"
+                InputLabelProps={{ shrink: true }}
+              />
             )}
             renderOption={(optProps, creatureOpt: Creature) => (
               <li {...optProps}>
@@ -159,8 +180,9 @@ function AddCreatureCombatantForm({ onSubmit, onCancel }: Props) {
                   {creatureOpt.name}
                   <Typography variant="body2">
                     <i>
-                      CR: {getCRFormatted(creatureOpt.challengeRating)} | {creatureOpt.size?.name}{' '}
-                      {creatureOpt.creatureType.name} | {creatureOpt.alignment.name}
+                      CR: {getCRFormatted(creatureOpt.challengeRating)} |{' '}
+                      {creatureOpt.size?.name} {creatureOpt.creatureType.name} |{' '}
+                      {creatureOpt.alignment.name}
                     </i>
                   </Typography>
                 </Typography>
@@ -189,7 +211,8 @@ function AddCreatureCombatantForm({ onSubmit, onCancel }: Props) {
           <div className="description-container mb-16">
             <Typography variant="body2">
               <i>
-                {creature.size?.name} {creature.creatureType.name} | {creature.alignment.name}
+                {creature.size?.name} {creature.creatureType.name} |{' '}
+                {creature.alignment.name}
               </i>
             </Typography>
             <Typography variant="body2">

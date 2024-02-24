@@ -12,6 +12,6 @@ export const AttributeSelectOptions = AllAttributes.map((att) => ({
   text: att,
 }));
 
-type Attribute = typeof AllAttributes[number];
+type Attribute = (typeof AllAttributes)[number];
 
 export default Attribute;

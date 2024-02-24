@@ -15,7 +15,7 @@ const PageContainer = styled('div')(() => ({
 
 function InitiativePage() {
   const [creatureCombatants, setCreatureCombatants] = useState(
-    new Map<string, Combatant>([])
+    new Map<string, Combatant>([]),
   );
   const [combatants, setCombatants] = useState(new Map<string, Combatant>());
 
@@ -92,7 +92,7 @@ function InitiativePage() {
     if (combatant.isPlayer) return;
 
     const creaturePanel = document.getElementById(
-      `panel-${combatant.id}-header`
+      `panel-${combatant.id}-header`,
     );
 
     if (!creaturePanel) return;

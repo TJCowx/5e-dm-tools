@@ -47,7 +47,7 @@ function RHFMultiselectField<T extends FieldValues>({
             minLength: { value: 0, message: RequireMessage },
           }
         : undefined,
-    [isRequired]
+    [isRequired],
   );
 
   const formatDisplayValue = useCallback(
@@ -58,7 +58,7 @@ function RHFMultiselectField<T extends FieldValues>({
         }
         return acc;
       }, ''),
-    [options]
+    [options],
   );
 
   return (

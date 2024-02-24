@@ -29,7 +29,11 @@ function LazySelectField({
   onChange,
   onBlur,
 }: Props) {
-  const { data, isLoading, error, invoke } = useInvoke(queryArgs.queryName, queryParams, false);
+  const { data, isLoading, error, invoke } = useInvoke(
+    queryArgs.queryName,
+    queryParams,
+    false,
+  );
 
   const selectId = useMemo(() => id ?? v4(), [id]);
 

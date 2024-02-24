@@ -20,7 +20,8 @@ function DamageListItem({ damage, removeDamageItem, updateDamageItem }: Props) {
         <IconButton onClick={removeDamageItem} color="warning">
           <FontAwesomeIcon icon={faTrash} />
         </IconButton>
-      }>
+      }
+    >
       <BasicNumberField
         className="damage-field"
         label="Damage"
@@ -48,7 +49,10 @@ function DamageListItem({ damage, removeDamageItem, updateDamageItem }: Props) {
         }}
         value={damage.typeId ? `${damage.typeId}` : null}
         onChange={(newVal) =>
-          updateDamageItem({ ...damage, typeId: newVal != null ? +newVal : null })
+          updateDamageItem({
+            ...damage,
+            typeId: newVal != null ? +newVal : null,
+          })
         }
       />
     </ListItem>

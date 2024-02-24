@@ -71,7 +71,8 @@ function NavDrawer() {
                   'is-active': activeMustMatch
                     ? router.pathname === href
                     : router.pathname.startsWith(href),
-                })}>
+                })}
+              >
                 {icon}
               </ListItemIcon>
             </ListItemButton>

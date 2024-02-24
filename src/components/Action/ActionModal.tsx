@@ -76,7 +76,13 @@ const newAction: Partial<Action> = {
   reach: 5,
 };
 
-function ActionModal({ initialAction = newAction, isLegendary, hasLair, onSave, onClose }: Props) {
+function ActionModal({
+  initialAction = newAction,
+  isLegendary,
+  hasLair,
+  onSave,
+  onClose,
+}: Props) {
   const [action, setAction] = useState<Partial<Action>>(initialAction);
   const [errors, setErrors] = useState<Partial<ErrorSchema>>({});
 
@@ -106,11 +112,11 @@ function ActionModal({ initialAction = newAction, isLegendary, hasLair, onSave, 
         const newErrors: Partial<ErrorSchema> = {};
 
         // Casting because `e.errors` is incorrectly types `string[]`
-        (e.errors as unknown as { field: keyof Action; message: string }[]).forEach(
-          ({ field, message }) => {
-            newErrors[field] = message;
-          },
-        );
+        (
+          e.errors as unknown as { field: keyof Action; message: string }[]
+        ).forEach(({ field, message }) => {
+          newErrors[field] = message;
+        });
 
         setErrors(newErrors);
       });
@@ -144,9 +150,10 @@ function ActionModal({ initialAction = newAction, isLegendary, hasLair, onSave, 
 
     setTimeout(() => {
       if (damageListRef.current) {
-        const damageItems = damageListRef.current.querySelectorAll<HTMLInputElement>(
-          '.damage-list-item .damage-field input',
-        );
+        const damageItems =
+          damageListRef.current.querySelectorAll<HTMLInputElement>(
+            '.damage-list-item .damage-field input',
+          );
 
         if (damageItems.length) {
           damageItems[damageItems.length - 1].focus();
@@ -163,7 +170,9 @@ function ActionModal({ initialAction = newAction, isLegendary, hasLair, onSave, 
           className="mb-16"
           label="Name"
           error={errors.name}
-          onChange={(newVal) => setAction((prev) => ({ ...prev, name: newVal }))}
+          onChange={(newVal) =>
+            setAction((prev) => ({ ...prev, name: newVal }))
+          }
           onBlur={() => setErrors((prev) => ({ ...prev, name: null }))}
         />
         <BasicTextField
@@ -172,7 +181,9 @@ function ActionModal({ initialAction = newAction, isLegendary, hasLair, onSave, 
           label="Description"
           isMultiline
           error={errors.description}
-          onChange={(newVal) => setAction((prev) => ({ ...prev, description: newVal }))}
+          onChange={(newVal) =>
+            setAction((prev) => ({ ...prev, description: newVal }))
+          }
           onBlur={() => setErrors((prev) => ({ ...prev, description: null }))}
         />
         <LazySelectField
@@ -193,20 +204,26 @@ function ActionModal({ initialAction = newAction, isLegendary, hasLair, onSave, 
               actionTypeId: newVal != null ? +newVal : null,
             }))
           }
-          onBlur={() => setErrors((prev) => ({ ...prev, actionType: undefined }))}
+          onBlur={() =>
+            setErrors((prev) => ({ ...prev, actionType: undefined }))
+          }
         />
         <BasicSwitchField
           value={action.isAttack as boolean}
           className="mb-16"
           label="Is Attack"
-          onChange={(isChecked) => setAction((prev) => ({ ...prev, isAttack: isChecked }))}
+          onChange={(isChecked) =>
+            setAction((prev) => ({ ...prev, isAttack: isChecked }))
+          }
         />
         {action.isAttack && (
           <>
             <div className="grid mb-16">
               <LazySelectField
                 id="attack-delivery-field"
-                value={action.attackDeliveryId ? `${action.attackDeliveryId}` : null}
+                value={
+                  action.attackDeliveryId ? `${action.attackDeliveryId}` : null
+                }
                 label="Attack Delivery"
                 error={errors.attackDeliveryId}
                 queryArgs={{
@@ -220,7 +237,9 @@ function ActionModal({ initialAction = newAction, isLegendary, hasLair, onSave, 
                     attackDeliveryId: newVal != null ? +newVal : null,
                   }))
                 }
-                onBlur={() => setErrors((prev) => ({ ...prev, attackDelivery: undefined }))}
+                onBlur={() =>
+                  setErrors((prev) => ({ ...prev, attackDelivery: undefined }))
+                }
               />
               <LazySelectField
                 id="attack-type-field"
@@ -238,7 +257,9 @@ function ActionModal({ initialAction = newAction, isLegendary, hasLair, onSave, 
                     attackTypeId: newVal != null ? +newVal : null,
                   }))
                 }
-                onBlur={() => setErrors((prev) => ({ ...prev, attackType: undefined }))}
+                onBlur={() =>
+                  setErrors((prev) => ({ ...prev, attackType: undefined }))
+                }
               />
             </div>
             <div className="grid mb-16">
@@ -247,8 +268,12 @@ function ActionModal({ initialAction = newAction, isLegendary, hasLair, onSave, 
                 label="To Hit"
                 min={0}
                 error={errors.toHit}
-                onChange={(newVal) => setAction((prev) => ({ ...prev, toHit: newVal }))}
-                onBlur={() => setErrors((prev) => ({ ...prev, toHit: undefined }))}
+                onChange={(newVal) =>
+                  setAction((prev) => ({ ...prev, toHit: newVal }))
+                }
+                onBlur={() =>
+                  setErrors((prev) => ({ ...prev, toHit: undefined }))
+                }
               />
               <BasicNumberField
                 value={action.reach ?? null}
@@ -275,12 +300,17 @@ function ActionModal({ initialAction = newAction, isLegendary, hasLair, onSave, 
                     combatantsHit: Number(newVal),
                   }))
                 }
-                onBlur={() => setErrors((prev) => ({ ...prev, combatantsHit: null }))}
+                onBlur={() =>
+                  setErrors((prev) => ({ ...prev, combatantsHit: null }))
+                }
               />
             </div>
             <Divider />
             {!!errors.damages?.length && (
-              <Alert severity="error" sx={{ marginTop: '12px', marginBottom: '12px' }}>
+              <Alert
+                severity="error"
+                sx={{ marginTop: '12px', marginBottom: '12px' }}
+              >
                 {errors.damages}
               </Alert>
             )}
@@ -307,7 +337,12 @@ function ActionModal({ initialAction = newAction, isLegendary, hasLair, onSave, 
         )}
         <div className="actions-container">
           <Button onClick={handleClose}>Cancel</Button>
-          <Button variant="contained" disableElevation type="button" onClick={onSubmit}>
+          <Button
+            variant="contained"
+            disableElevation
+            type="button"
+            onClick={onSubmit}
+          >
             Save
           </Button>
         </div>

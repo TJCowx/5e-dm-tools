@@ -93,11 +93,28 @@ function CreatureForm({ control, onSubmit, watch }: Props) {
         <Typography variant="h6">Description</Typography>
         <Divider />
         <div className="grid mb-16">
-          <RHFTextField fieldName="name" label="Name" control={control} isRequired />
-          <RHFTextField fieldName="description" label="Description" control={control} />
+          <RHFTextField
+            fieldName="name"
+            label="Name"
+            control={control}
+            isRequired
+          />
+          <RHFTextField
+            fieldName="description"
+            label="Description"
+            control={control}
+          />
           <div className="row-of-fields align-start">
-            <RHFCheckboxField fieldName="isLegendary" label="Is Legendary" control={control} />
-            <RHFCheckboxField fieldName="hasLair" label="Has Lair" control={control} />
+            <RHFCheckboxField
+              fieldName="isLegendary"
+              label="Is Legendary"
+              control={control}
+            />
+            <RHFCheckboxField
+              fieldName="hasLair"
+              label="Has Lair"
+              control={control}
+            />
           </div>
         </div>
         <div className="grid mb-16">
@@ -170,33 +187,93 @@ function CreatureForm({ control, onSubmit, watch }: Props) {
         <Typography variant="h6">Movement</Typography>
         <Divider />
         <div className="row-of-fields">
-          <RHFIntegerField control={control} label="Land Speed" fieldName="landSpeed" />
-          <RHFIntegerField control={control} label="Fly Speed" fieldName="flySpeed" />
-          <RHFIntegerField control={control} label="Burrow Speed" fieldName="burrowSpeed" />
-          <RHFIntegerField control={control} label="Climb Speed" fieldName="climbSpeed" />
-          <RHFIntegerField control={control} label="Hover Speed" fieldName="hoverSpeed" />
+          <RHFIntegerField
+            control={control}
+            label="Land Speed"
+            fieldName="landSpeed"
+          />
+          <RHFIntegerField
+            control={control}
+            label="Fly Speed"
+            fieldName="flySpeed"
+          />
+          <RHFIntegerField
+            control={control}
+            label="Burrow Speed"
+            fieldName="burrowSpeed"
+          />
+          <RHFIntegerField
+            control={control}
+            label="Climb Speed"
+            fieldName="climbSpeed"
+          />
+          <RHFIntegerField
+            control={control}
+            label="Hover Speed"
+            fieldName="hoverSpeed"
+          />
         </div>
       </section>
       <section>
         <Typography variant="h6">Senses</Typography>
         <Divider />
         <div className="row-of-fields">
-          <RHFIntegerField control={control} label="Darkvision" fieldName="darkvision" />
-          <RHFIntegerField control={control} label="Blindsight" fieldName="blindsight" />
-          <RHFIntegerField control={control} label="Tremorsense" fieldName="tremorsense" />
-          <RHFIntegerField control={control} label="Truesight" fieldName="truesight" />
+          <RHFIntegerField
+            control={control}
+            label="Darkvision"
+            fieldName="darkvision"
+          />
+          <RHFIntegerField
+            control={control}
+            label="Blindsight"
+            fieldName="blindsight"
+          />
+          <RHFIntegerField
+            control={control}
+            label="Tremorsense"
+            fieldName="tremorsense"
+          />
+          <RHFIntegerField
+            control={control}
+            label="Truesight"
+            fieldName="truesight"
+          />
         </div>
       </section>
       <section>
         <Typography variant="h6">Stats</Typography>
         <Divider />
         <div className="row-of-fields mb-16">
-          <RHFAttributeField fieldName="strength" label="Strength" control={control} />
-          <RHFAttributeField fieldName="dexterity" label="Dexterity" control={control} />
-          <RHFAttributeField fieldName="constitution" label="Constitution" control={control} />
-          <RHFAttributeField fieldName="intelligence" label="Intelligence" control={control} />
-          <RHFAttributeField fieldName="wisdom" label="Wisdom" control={control} />
-          <RHFAttributeField fieldName="charisma" label="Charisma" control={control} />
+          <RHFAttributeField
+            fieldName="strength"
+            label="Strength"
+            control={control}
+          />
+          <RHFAttributeField
+            fieldName="dexterity"
+            label="Dexterity"
+            control={control}
+          />
+          <RHFAttributeField
+            fieldName="constitution"
+            label="Constitution"
+            control={control}
+          />
+          <RHFAttributeField
+            fieldName="intelligence"
+            label="Intelligence"
+            control={control}
+          />
+          <RHFAttributeField
+            fieldName="wisdom"
+            label="Wisdom"
+            control={control}
+          />
+          <RHFAttributeField
+            fieldName="charisma"
+            label="Charisma"
+            control={control}
+          />
         </div>
         <div className="grid">
           <RHFIntegerField
@@ -220,7 +297,12 @@ function CreatureForm({ control, onSubmit, watch }: Props) {
             min={0}
             isRequired
           />
-          <RHFTextField fieldName="hitDie" label="Hit Die" control={control} isRequired />
+          <RHFTextField
+            fieldName="hitDie"
+            label="Hit Die"
+            control={control}
+            isRequired
+          />
         </div>
       </section>
       <section>
@@ -314,17 +396,24 @@ function CreatureForm({ control, onSubmit, watch }: Props) {
                       aria-label={`Delete ${ability.name}`}
                       edge="end"
                       color="warning"
-                      onClick={() => removeAbility(i)}>
+                      onClick={() => removeAbility(i)}
+                    >
                       <FontAwesomeIcon icon={faTrash} />
                     </IconButton>
                   </>
-                }>
-                <ListItemText primary={ability.name ?? ''} secondary={ability.description ?? ''} />
+                }
+              >
+                <ListItemText
+                  primary={ability.name ?? ''}
+                  secondary={ability.description ?? ''}
+                />
               </ListItemTwoSecondaryActions>
               <Divider />
             </Fragment>
           ))}
-          <NewAbilityListItem onSave={(newAbility) => appendAbility(newAbility as Ability)} />
+          <NewAbilityListItem
+            onSave={(newAbility) => appendAbility(newAbility as Ability)}
+          />
         </List>
       </section>
       <section>
@@ -349,7 +438,12 @@ function CreatureForm({ control, onSubmit, watch }: Props) {
         </List>
       </section>
       <div className="action-container">
-        <Button variant="contained" disableElevation type="submit" className="right-align">
+        <Button
+          variant="contained"
+          disableElevation
+          type="submit"
+          className="right-align"
+        >
           Save
         </Button>
       </div>

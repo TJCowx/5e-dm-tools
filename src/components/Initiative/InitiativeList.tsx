@@ -81,9 +81,9 @@ function InitiativeList({
       orderBy(
         addLairAction(Array.from(combatants.values())),
         ['initiative', 'isLair', 'initiativeModifier', 'name'],
-        ['desc', 'asc', 'desc', 'asc']
+        ['desc', 'asc', 'desc', 'asc'],
       ),
-    [combatants]
+    [combatants],
   );
 
   const startInitiative = () => {
