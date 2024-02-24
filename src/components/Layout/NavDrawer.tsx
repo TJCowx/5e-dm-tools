@@ -13,6 +13,7 @@ import clsx from 'clsx';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { ReactNode } from 'react';
+import SettingsNavItem from './SettingsNavItem';
 
 type NavItem = {
   text: string;
@@ -41,12 +42,18 @@ const NavItems: NavItem[] = [
 ];
 
 const StyledDrawer = styled(Drawer)(({ theme }) => ({
+  '& .MuiList-root': {
+    height: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+  },
   '& .MuiListItem-root': { padding: 0 },
   '& .MuiListItemButton-root': { padding: '12px 16px' },
   '& .MuiListItemIcon-root.rail-icon': {
     minWidth: 0,
     '&.is-active svg': { color: theme.palette.primary.main },
   },
+  '& .end': { marginTop: 'auto' },
 }));
 
 function NavDrawer() {
@@ -64,13 +71,13 @@ function NavDrawer() {
                   'is-active': activeMustMatch
                     ? router.pathname === href
                     : router.pathname.startsWith(href),
-                })}
-              >
+                })}>
                 {icon}
               </ListItemIcon>
             </ListItemButton>
           </ListItem>
         ))}
+        <SettingsNavItem />
       </List>
     </StyledDrawer>
   );
