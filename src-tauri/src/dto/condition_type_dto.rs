@@ -15,6 +15,7 @@ impl ConditionTypeDto {
 
         let conn = &mut crate::db::connect_db();
         let results = condition_types
+            .order(name.asc())
             .load::<ConditionTypeDto>(conn)
             .expect("Error loading condition types");
 

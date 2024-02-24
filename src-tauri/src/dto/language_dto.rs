@@ -15,6 +15,7 @@ impl LanguageDto {
 
         let conn = &mut crate::db::connect_db();
         let results = languages
+            .order(name.asc())
             .load::<LanguageDto>(conn)
             .expect("Error loading languages");
 

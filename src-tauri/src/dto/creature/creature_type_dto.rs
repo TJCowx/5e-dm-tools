@@ -15,6 +15,7 @@ impl CreatureTypeDto {
 
         let conn = &mut crate::db::connect_db();
         let results = creature_types
+            .order(name.asc())
             .load::<CreatureTypeDto>(conn)
             .expect("Error loading creature types");
 

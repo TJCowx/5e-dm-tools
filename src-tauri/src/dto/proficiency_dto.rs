@@ -15,6 +15,7 @@ impl ProficiencyDto {
 
         let conn = &mut crate::db::connect_db();
         let results = proficiencies
+            .order(name.asc())
             .load::<ProficiencyDto>(conn)
             .expect("Error loading proficiencies");
 

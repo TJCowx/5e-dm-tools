@@ -16,6 +16,7 @@ impl DamageTypeDto {
 
         let conn = &mut crate::db::connect_db();
         let results = damage_types
+            .order(name.asc())
             .load::<DamageTypeDto>(conn)
             .expect("Error loading damage types");
 
