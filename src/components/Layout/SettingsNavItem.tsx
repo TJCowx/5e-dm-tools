@@ -4,16 +4,17 @@ import { Badge, ListItem, ListItemButton, ListItemIcon } from '@mui/material';
 import clsx from 'clsx';
 import useNewestRelease from 'hooks/useNewestRelease';
 import Link from 'next/link';
-import router from 'next/router';
+import { useRouter } from 'next/router';
 
 function Icon() {
+  const router = useRouter();
+
   return (
     <ListItemIcon
       className={clsx({
         'rail-icon': true,
         'is-active': router.pathname === '/settings',
-      })}
-    >
+      })}>
       <FontAwesomeIcon icon={faGear} />
     </ListItemIcon>
   );
