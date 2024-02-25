@@ -1,5 +1,6 @@
 use crate::dto::creature::creature_dto::CreatureDto;
-use crate::models::creature::{Creature, EditableCreature};
+use crate::models::creature::Creature;
+use crate::models::editable_creature::EditableCreature;
 use crate::models::new_creature::NewCreature;
 
 #[tauri::command]
@@ -63,7 +64,6 @@ pub fn get_editable_creature_by_id(id: i32) -> Result<EditableCreature, String> 
 #[tauri::command]
 pub fn update_creature(creature: EditableCreature) -> Result<(), String> {
     println!("[server] Updating creature {}", creature.id);
-    // TODO: This needs to actually save better
     match CreatureDto::update(&creature) {
         Ok(_) => {
             println!("[server] Updated creature {}", &creature.id);

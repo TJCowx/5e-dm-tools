@@ -9,3 +9,4 @@ pub mod creature_prof_dto;
 pub mod creature_resistance_dto;
 pub mod creature_type_dto;
 pub mod creature_weakness_dto;
+pub mod new_creature_dto;
