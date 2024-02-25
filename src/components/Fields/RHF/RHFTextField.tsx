@@ -1,4 +1,3 @@
-/* eslint-disable react/function-component-definition */
 import { TextField as MuiTextField } from '@mui/material';
 import clsx from 'clsx';
 import { Control, Controller, FieldPath, FieldValues } from 'react-hook-form';

@@ -1,4 +1,3 @@
-/* eslint-disable react/function-component-definition */
 import {
   CircularProgress,
   FormControl,
@@ -63,8 +62,7 @@ function RHFSelectField<T extends FieldValues>({
       render={({ field, fieldState }) => (
         <FormControl
           className={clsx({ 'form-select': true, [`${className}`]: className })}
-          size="small"
-        >
+          size="small">
           <InputLabel id={id} shrink error={fieldState.error != null}>
             {label}
           </InputLabel>
@@ -76,8 +74,7 @@ function RHFSelectField<T extends FieldValues>({
             error={fieldState.error != null}
             autoWidth={false}
             notched
-            MenuProps={{ PaperProps: { style: { maxHeight: '250px' } } }}
-          >
+            MenuProps={{ PaperProps: { style: { maxHeight: '250px' } } }}>
             {options.map(({ value, text }) => (
               <MenuItem key={value} value={value}>
                 {text}

@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-
 /* type Props = {
   href: string;
   ariaLabel: string;
@@ -12,7 +10,6 @@
   marginBottom: '16px',
 })); */
 
-// eslint-disable-next-line no-empty-pattern
 function NavBack() {
   return <div />;
   // TODO: Fix link

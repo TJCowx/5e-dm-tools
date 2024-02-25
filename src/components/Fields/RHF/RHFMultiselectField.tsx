@@ -1,4 +1,3 @@
-/* eslint-disable react/function-component-definition */
 import {
   Checkbox,
   CircularProgress,
@@ -73,8 +72,7 @@ function RHFMultiselectField<T extends FieldValues>({
             'form-multiselect': true,
             [`${className}`]: className,
           })}
-          size="small"
-        >
+          size="small">
           <InputLabel id={id} shrink>
             {label}
           </InputLabel>
@@ -90,8 +88,7 @@ function RHFMultiselectField<T extends FieldValues>({
             }
             multiple
             notched
-            MenuProps={{ PaperProps: { style: { maxHeight: '250px' } } }}
-          >
+            MenuProps={{ PaperProps: { style: { maxHeight: '250px' } } }}>
             {options.map(({ value, text }) => (
               <MenuItem key={value} value={value} dense>
                 <Checkbox

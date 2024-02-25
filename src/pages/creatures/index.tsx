@@ -16,13 +16,14 @@ import {
   Skeleton,
   styled,
 } from '@mui/material';
+import { Fragment, useEffect, useState } from 'react';
+
 import { deleteCreature, getAllCreatures } from 'api/creatures';
 import DebouncedInput from 'components/DebouncedInput/DebouncedInput';
 import Layout from 'components/Layout/Layout';
 import ListItemText from 'components/List/ListItemText';
 import ListItemTwoSecondaryActions from 'components/List/ListItemTwoSecondaryActions';
 import Creature from 'models/creature/Creature';
-import { Fragment, useEffect, useState } from 'react';
 import { getCRFormatted } from 'utils/creatureUtils';
 import { logMessage } from 'utils/loggingUtils';
 
