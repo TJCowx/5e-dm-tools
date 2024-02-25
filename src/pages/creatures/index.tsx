@@ -1,4 +1,4 @@
-import { faPen, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   Alert,
@@ -10,21 +10,19 @@ import {
   DialogTitle,
   Divider,
   IconButton,
-  Link as MuiLink,
   List,
   ListItem,
+  Link as MuiLink,
   Skeleton,
   styled,
 } from '@mui/material';
-import Link from 'next/link';
-import { Fragment, useEffect, useState } from 'react';
-
 import { deleteCreature, getAllCreatures } from 'api/creatures';
 import DebouncedInput from 'components/DebouncedInput/DebouncedInput';
 import Layout from 'components/Layout/Layout';
 import ListItemText from 'components/List/ListItemText';
 import ListItemTwoSecondaryActions from 'components/List/ListItemTwoSecondaryActions';
 import Creature from 'models/creature/Creature';
+import { Fragment, useEffect, useState } from 'react';
 import { getCRFormatted } from 'utils/creatureUtils';
 import { logMessage } from 'utils/loggingUtils';
 
@@ -117,11 +115,12 @@ function Creatures() {
           label="Search"
           onChange={(val) => setFilterText(val)}
         />
-        <Link href="/creatures/create" passHref>
+        {/* TODO: Fix */}
+        {/* <Link href="/creatures/create" passHref>
           <IconButton aria-label="Create new creature">
             <FontAwesomeIcon icon={faPlus} />{' '}
           </IconButton>
-        </Link>
+        </Link> */}
       </ActionContainer>
       <Divider className="mt-16" />
       {isLoading ? (
@@ -144,22 +143,21 @@ function Creatures() {
                 <ListItemTwoSecondaryActions
                   secondaryAction={
                     <>
-                      <Link href={`/creatures/edit/${id}`} passHref>
+                      {/* TODO: Fix */}
+                      {/*                       <Link href={`/creatures/edit/${id}`} passHref>
                         <IconButton aria-label={`Edit ${name}`}>
                           <FontAwesomeIcon size="xs" icon={faPen} />
                         </IconButton>
-                      </Link>
+                      </Link> */}
                       <IconButton
                         edge="end"
                         aria-label={`Delete ${name}`}
                         color="warning"
-                        onClick={() => openDialog(id)}
-                      >
+                        onClick={() => openDialog(id)}>
                         <FontAwesomeIcon size="xs" icon={faTrash} />
                       </IconButton>
                     </>
-                  }
-                >
+                  }>
                   <ListItemText
                     primary={name}
                     secondary={
@@ -195,8 +193,7 @@ function Creatures() {
               variant="contained"
               color="warning"
               disableElevation
-              onClick={() => handleDelete(deleteCreatureActionId)}
-            >
+              onClick={() => handleDelete(deleteCreatureActionId)}>
               Delete
             </Button>
           </DialogActions>

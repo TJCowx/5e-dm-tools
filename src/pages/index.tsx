@@ -1,14 +1,12 @@
-import { List, ListItemButton } from '@mui/material';
-import NextLink from 'next/link';
-
+import { List } from '@mui/material';
 import Layout from 'components/Layout/Layout';
-import ListItemText from 'components/List/ListItemText';
 
 function Home() {
   return (
     <Layout disablePadding>
       <List>
-        <NextLink className="reset" href="/initiative">
+        {/* TODO: fix */}
+        {/*         <NextLink className="reset" href="/initiative">
           <ListItemButton>
             <ListItemText
               primary="Initiative Tracker"
@@ -23,7 +21,7 @@ function Home() {
               secondary="View, create, and edit creatures."
             />
           </ListItemButton>
-        </NextLink>
+        </NextLink> */}
       </List>
     </Layout>
   );

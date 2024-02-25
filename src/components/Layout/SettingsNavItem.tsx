@@ -1,16 +1,13 @@
-import { faGear } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Badge, ListItem, ListItemButton, ListItemIcon } from '@mui/material';
-import clsx from 'clsx';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
+import { ListItem } from '@mui/material';
 
-import useNewestRelease from 'hooks/useNewestRelease';
+// TODO: Fix
+/* function Icon() {
+  // TODO: Update router
+  // const router = useRouter();
 
-function Icon() {
-  const router = useRouter();
-
-  return (
+  return <div>temp</div>;
+  // TODO: Fix
+  /*  return (
     <ListItemIcon
       className={clsx({
         'rail-icon': true,
@@ -19,15 +16,16 @@ function Icon() {
     >
       <FontAwesomeIcon icon={faGear} />
     </ListItemIcon>
-  );
-}
+   ); 
+} */
 
 export default function SettingsNavItem() {
-  const { isUpdateAvailable } = useNewestRelease();
+  // const { isUpdateAvailable } = useNewestRelease();
 
   return (
     <ListItem className="end">
-      <ListItemButton aria-label="Settings" component={Link} href="/settings">
+      {/* TODO: Update link */}
+      {/*       <ListItemButton aria-label="Settings" component={Link} href="/settings">
         {isUpdateAvailable ? (
           <Badge variant="dot" color="secondary">
             <Icon />
@@ -35,7 +33,7 @@ export default function SettingsNavItem() {
         ) : (
           <Icon />
         )}
-      </ListItemButton>
+      </ListItemButton> */}
     </ListItem>
   );
 }
