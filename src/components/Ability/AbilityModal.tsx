@@ -7,7 +7,6 @@ import Modal from 'components/Modal/Modal';
 import Ability from 'models/creature/Ability';
 import { RequireMessage } from 'utils/validationMessages';
 
-
 type Props = {
   initialAbility?: Partial<Ability>;
   onSave: (ability: Partial<Ability>) => void;

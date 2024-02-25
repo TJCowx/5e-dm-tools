@@ -22,8 +22,6 @@ import { logMessage } from 'utils/loggingUtils';
 import { getModifier } from 'utils/modifierUtils';
 import { rollD20 } from 'utils/rollUtils';
 
-
-
 type FormInputs = {
   newCreature: Creature | null;
   groupInitiativeRoll: boolean;

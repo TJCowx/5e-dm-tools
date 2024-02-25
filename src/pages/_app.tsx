@@ -11,7 +11,6 @@ import type { AppProps } from 'next/app';
 
 import useTheme from 'hooks/useTheme';
 
-
 const muiCache = createCache({
   key: 'mui',
   prepend: true,

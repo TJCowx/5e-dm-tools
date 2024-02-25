@@ -22,7 +22,8 @@ function EditActionButton({ action, isLegendary, hasLair, onSave }: Props) {
       <IconButton
         aria-label={`Edit ${action?.name}`}
         edge="end"
-        onClick={() => setIsModalOpen(true)}>
+        onClick={() => setIsModalOpen(true)}
+      >
         <FontAwesomeIcon icon={faPen} />
       </IconButton>
       {isModalOpen && (

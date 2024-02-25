@@ -23,7 +23,6 @@ import Action from 'models/creature/Action';
 import { AttributeSelectOptions } from 'models/creature/Attribute';
 import Creature from 'models/creature/Creature';
 
-
 import ActionListItem from './ActionListItem';
 import { CR_OPTS } from './constants';
 
@@ -416,11 +415,13 @@ function CreatureForm({ control, onSubmit, watch }: Props) {
                       aria-label={`Delete ${ability.name}`}
                       edge="end"
                       color="warning"
-                      onClick={() => removeAbility(i)}>
+                      onClick={() => removeAbility(i)}
+                    >
                       <FontAwesomeIcon icon={faTrash} />
                     </IconButton>
                   </>
-                }>
+                }
+              >
                 <ListItemText
                   primary={ability.name ?? ''}
                   secondary={ability.description ?? ''}
@@ -460,7 +461,8 @@ function CreatureForm({ control, onSubmit, watch }: Props) {
           variant="contained"
           disableElevation
           type="submit"
-          className="right-align">
+          className="right-align"
+        >
           Save
         </Button>
       </div>
