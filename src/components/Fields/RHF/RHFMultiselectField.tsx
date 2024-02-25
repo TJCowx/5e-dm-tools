@@ -9,10 +9,11 @@ import {
   Select,
 } from '@mui/material';
 import clsx from 'clsx';
-import ListItemText from 'components/List/ListItemText';
-import { RequireMessage } from 'constants/validationMessages';
 import { useCallback, useMemo } from 'react';
 import { Control, Controller, FieldPath, FieldValues } from 'react-hook-form';
+
+import ListItemText from 'components/List/ListItemText';
+import { RequireMessage } from 'constants/validationMessages';
 
 import { SelectOptions } from './RHFSelectField';
 

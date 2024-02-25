@@ -1,10 +1,12 @@
 import { Button, styled } from '@mui/material';
+import { useState } from 'react';
+import { object as yupObject, string as yupString, ValidationError } from 'yup';
+
 import BasicTextField from 'components/Fields/Basic/BasicTextField';
 import Modal from 'components/Modal/Modal';
 import Ability from 'models/creature/Ability';
-import { useState } from 'react';
 import { RequireMessage } from 'utils/validationMessages';
-import { object as yupObject, string as yupString, ValidationError } from 'yup';
+
 
 type Props = {
   initialAbility?: Partial<Ability>;

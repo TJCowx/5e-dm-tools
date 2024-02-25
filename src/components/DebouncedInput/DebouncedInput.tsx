@@ -1,8 +1,9 @@
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { InputAdornment, TextField } from '@mui/material';
-import useDebounce from 'hooks/useDebounce';
 import { useEffect, useState } from 'react';
+
+import useDebounce from 'hooks/useDebounce';
 
 type Props = {
   value: string;

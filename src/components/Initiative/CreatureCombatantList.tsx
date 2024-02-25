@@ -1,6 +1,7 @@
 import { styled } from '@mui/system';
-import Combatant from 'models/initiative/Combatant';
 import { useMemo, useState } from 'react';
+
+import Combatant from 'models/initiative/Combatant';
 
 import CreatureCombatantItem from './CreatureCombatantItem';
 

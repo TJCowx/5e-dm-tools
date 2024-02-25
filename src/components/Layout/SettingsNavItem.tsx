@@ -2,9 +2,10 @@ import { faGear } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Badge, ListItem, ListItemButton, ListItemIcon } from '@mui/material';
 import clsx from 'clsx';
-import useNewestRelease from 'hooks/useNewestRelease';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+
+import useNewestRelease from 'hooks/useNewestRelease';
 
 function Icon() {
   const router = useRouter();

@@ -1,8 +1,9 @@
 import { faPen } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IconButton } from '@mui/material';
-import Action from 'models/creature/Action';
 import { useState } from 'react';
+
+import Action from 'models/creature/Action';
 
 import ActionModal from './ActionModal';
 
@@ -21,8 +22,7 @@ function EditActionButton({ action, isLegendary, hasLair, onSave }: Props) {
       <IconButton
         aria-label={`Edit ${action?.name}`}
         edge="end"
-        onClick={() => setIsModalOpen(true)}
-      >
+        onClick={() => setIsModalOpen(true)}>
         <FontAwesomeIcon icon={faPen} />
       </IconButton>
       {isModalOpen && (

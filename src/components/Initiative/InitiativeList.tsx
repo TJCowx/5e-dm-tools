@@ -1,8 +1,10 @@
 import styled from '@emotion/styled';
 import { Button, List, ListSubheader } from '@mui/material';
 import orderBy from 'lodash.orderby';
-import Combatant from 'models/initiative/Combatant';
 import { Fragment, useEffect, useMemo, useState } from 'react';
+
+import Combatant from 'models/initiative/Combatant';
+
 import InitiativeListItem from './InitiativeListItem';
 
 type Props = {

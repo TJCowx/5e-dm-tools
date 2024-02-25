@@ -1,8 +1,9 @@
 import { faPen } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IconButton } from '@mui/material';
-import Ability from 'models/creature/Ability';
 import { useState } from 'react';
+
+import Ability from 'models/creature/Ability';
 
 import AbilityModal from './AbilityModal';
 

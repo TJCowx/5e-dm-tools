@@ -9,7 +9,9 @@
     "next:export": "next export",
     "dev": "tauri dev",
     "tauri": "tauri",
-    "lint": "next lint"
+    "lint": "next lint",
+    "lint:fix": "next lint --fix",
+    "prettier:fix": "prettier ./src --write"
   },
   "dependencies": {
     "@emotion/cache": "^11.10.5",
@@ -52,7 +54,7 @@
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-airbnb-typescript": "^17.0.0",
     "eslint-config-prettier": "^8.8.0",
-    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-import": "^2.29.1",
     "eslint-plugin-jsx-a11y": "^6.7.1",
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-react": "^7.32.2",

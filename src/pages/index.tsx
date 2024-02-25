@@ -1,7 +1,8 @@
 import { List, ListItemButton } from '@mui/material';
+import NextLink from 'next/link';
+
 import Layout from 'components/Layout/Layout';
 import ListItemText from 'components/List/ListItemText';
-import NextLink from 'next/link';
 
 function Home() {
   return (

@@ -10,6 +10,9 @@ import {
   ListItemIcon,
   styled,
 } from '@mui/material';
+import { useMemo, useRef, useState } from 'react';
+import { ValidationError } from 'yup';
+
 import BasicNumberField from 'components/Fields/Basic/BasicNumberField';
 import BasicSwitchField from 'components/Fields/Basic/BasicSwitchField';
 import BasicTextField from 'components/Fields/Basic/BasicTextField';
@@ -18,8 +21,7 @@ import ListItemText from 'components/List/ListItemText';
 import Modal from 'components/Modal/Modal';
 import Action from 'models/creature/Action';
 import Damage from 'models/creature/Damage';
-import { useMemo, useRef, useState } from 'react';
-import { ValidationError } from 'yup';
+
 import { SCHEMA } from './constants';
 import DamageListItem from './DamageListItem';
 

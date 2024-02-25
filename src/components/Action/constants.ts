@@ -1,5 +1,4 @@
 /* eslint-disable import/prefer-default-export */
-import { RequireMessage } from 'constants/validationMessages';
 import {
   array as yupArray,
   boolean as yupBoolean,
@@ -7,6 +6,8 @@ import {
   object as yupObject,
   string as yupString,
 } from 'yup';
+
+import { RequireMessage } from 'constants/validationMessages';
 
 export const SCHEMA = yupObject().shape({
   name: yupString().required({ field: 'name', message: RequireMessage }),

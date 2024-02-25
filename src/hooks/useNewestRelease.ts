@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useState } from 'react';
 import { gt } from 'semver';
+
 import { logMessage } from 'utils/loggingUtils';
+
 import useVersion from './useVersion';
 
 export default function useNewestRelease() {

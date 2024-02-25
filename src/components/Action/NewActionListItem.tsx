@@ -6,8 +6,10 @@ import {
   ListItemIcon,
   ListItemText,
 } from '@mui/material';
-import Action from 'models/creature/Action';
 import { useState } from 'react';
+
+import Action from 'models/creature/Action';
+
 import ActionModal from './ActionModal';
 
 type Props = {

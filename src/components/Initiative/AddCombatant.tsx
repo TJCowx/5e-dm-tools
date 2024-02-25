@@ -2,9 +2,10 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Fab, Tab, Tabs } from '@mui/material';
 import { styled } from '@mui/system';
+import { useState } from 'react';
+
 import Modal from 'components/Modal/Modal';
 import Combatant from 'models/initiative/Combatant';
-import { useState } from 'react';
 
 import AddCreatureCombatantForm from './AddCreatureCombatantForm';
 import AddPlayerCombatantForm from './AddPlayerCombatantForm';

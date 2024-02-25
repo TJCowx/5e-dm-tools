@@ -1,7 +1,8 @@
 import { Button, Divider, Typography, styled } from '@mui/material';
+import { open } from '@tauri-apps/api/shell';
+
 import Layout from 'components/Layout/Layout';
 import useNewestRelease from 'hooks/useNewestRelease';
-import { open } from '@tauri-apps/api/shell';
 
 const HeaderDivider = styled(Divider)(() => ({
   marginTop: '8px',

@@ -1,4 +1,8 @@
 import { styled } from '@mui/material';
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
+import { useForm } from 'react-hook-form';
+
 import { updateCreature } from 'api/creatures';
 import CreatureForm from 'components/Creature/CreatureForm';
 import Layout from 'components/Layout/Layout';
@@ -7,9 +11,6 @@ import LoadingSpinner from 'components/LoadingSpinner/LoadingSpinner';
 import useConfirmBeforeExitPage from 'hooks/useConfirmBeforeExitPage';
 import useInvoke from 'hooks/useInvoke';
 import Creature from 'models/creature/Creature';
-import { useRouter } from 'next/router';
-import { useEffect } from 'react';
-import { useForm } from 'react-hook-form';
 import { logMessage } from 'utils/loggingUtils';
 
 const LoadingContainer = styled('div')(() => ({

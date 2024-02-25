@@ -1,10 +1,11 @@
 import { Button } from '@mui/material';
 import { styled } from '@mui/system';
+import { useForm } from 'react-hook-form';
+import { v4 } from 'uuid';
+
 import RHFIntegerField from 'components/Fields/RHF/RHFIntegerField';
 import RHFTextField from 'components/Fields/RHF/RHFTextField';
 import Combatant from 'models/initiative/Combatant';
-import { useForm } from 'react-hook-form';
-import { v4 } from 'uuid';
 
 type Props = {
   onSubmit: (combatant: Combatant) => void;

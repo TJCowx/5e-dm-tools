@@ -11,6 +11,8 @@ import {
   Typography,
 } from '@mui/material';
 import { grey } from '@mui/material/colors';
+import { useEffect, useState } from 'react';
+
 import FormattedStat from 'components/Creature/FormattedStat';
 import DeadIcon from 'components/Icons/DeadIcon';
 import AbilityFormat from 'components/LabelValue/AbilityFormat';
@@ -19,7 +21,6 @@ import ActionTypeEnum from 'models/ActionTypeEnum';
 import Action from 'models/creature/Action';
 import Creature from 'models/creature/Creature';
 import Combatant from 'models/initiative/Combatant';
-import { useEffect, useState } from 'react';
 import {
   getProficienciesString,
   getSavingThrowsString,

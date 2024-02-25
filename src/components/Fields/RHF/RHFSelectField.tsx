@@ -10,8 +10,9 @@ import {
 import clsx from 'clsx';
 import { useMemo } from 'react';
 import { Control, Controller, FieldPath, FieldValues } from 'react-hook-form';
-import { RequireMessage } from 'utils/validationMessages';
 import { v4 } from 'uuid';
+
+import { RequireMessage } from 'utils/validationMessages';
 
 export interface SelectOptions {
   value: string | number;
