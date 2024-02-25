@@ -1,4 +1,3 @@
-/* eslint-disable react/function-component-definition */
 import { TextField } from '@mui/material';
 import clsx from 'clsx';
 import { useMemo } from 'react';

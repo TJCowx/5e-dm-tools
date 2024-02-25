@@ -1,4 +1,3 @@
-/* eslint-disable react/function-component-definition */
 import clsx from 'clsx';
 import { Control, FieldPath, FieldValues } from 'react-hook-form';
 

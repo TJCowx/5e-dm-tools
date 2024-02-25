@@ -1,6 +1,3 @@
-/* eslint-disable no-alert */
-/* eslint-disable no-restricted-globals */
-
 // TODO: Fix
 
 /* const ConfirmText =

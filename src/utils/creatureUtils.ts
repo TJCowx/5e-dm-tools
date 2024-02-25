@@ -1,4 +1,3 @@
-/* eslint-disable import/prefer-default-export */
 import Creature from 'models/creature/Creature';
 
 import { getFormattedModifier, getSkillAttribute } from './modifierUtils';
