@@ -1,6 +1,5 @@
 {
   "extends": [
-    "next/core-web-vitals",
     "airbnb",
     "airbnb-typescript",
     "plugin:jsx-a11y/recommended",
@@ -8,14 +7,15 @@
     "airbnb/hooks",
     "plugin:@typescript-eslint/recommended",
     "plugin:react/jsx-runtime",
-    "plugin:react/recommended"
+    "plugin:react/recommended",
+    "plugin:react-hooks/recommended"
   ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "project": "./tsconfig.json"
   },
   "plugins": ["@typescript-eslint", "jsx-a11y", "prettier", "react", "import"],
-  "ignorePatterns": ["out", "node_modules", "src-tauri", ".next"],
+  "ignorePatterns": ["node_modules", "src-tauri", "dist", "vite.config.ts"],
   "rules": {
     "import/no-extraneous-dependencies": "off",
     "react/react-in-jsx-scope": "off",
