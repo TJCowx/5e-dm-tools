@@ -1,8 +1,4 @@
 import { styled } from '@mui/material';
-import { useRouter } from 'next/router';
-import { useEffect } from 'react';
-import { useForm } from 'react-hook-form';
-
 import { updateCreature } from 'api/creatures';
 import CreatureForm from 'components/Creature/CreatureForm';
 import Layout from 'components/Layout/Layout';
@@ -11,6 +7,8 @@ import LoadingSpinner from 'components/LoadingSpinner/LoadingSpinner';
 import useConfirmBeforeExitPage from 'hooks/useConfirmBeforeExitPage';
 import useInvoke from 'hooks/useInvoke';
 import Creature from 'models/creature/Creature';
+import { useEffect } from 'react';
+import { useForm } from 'react-hook-form';
 import { logMessage } from 'utils/loggingUtils';
 
 const LoadingContainer = styled('div')(() => ({
@@ -21,8 +19,10 @@ const LoadingContainer = styled('div')(() => ({
 }));
 
 function EditCreature() {
-  const router = useRouter();
-  const { creatureId } = router.query;
+  // TODO: Fix router
+  // const router = useRouter();
+  // const { creatureId } = router.query;
+  const creatureId = '1';
 
   const { data, isLoading } = useInvoke<Partial<Creature>>(
     'get_editable_creature_by_id',
@@ -42,7 +42,8 @@ function EditCreature() {
   const onSubmit = (formData: Partial<Creature>) => {
     updateCreature(formData)
       .then(() => {
-        router.push('/creatures');
+        // TODO: Fix this
+        // router.push('/creatures');
       })
       .catch((err) => {
         logMessage('error', err);
@@ -53,9 +54,10 @@ function EditCreature() {
   return (
     <Layout>
       <NavBack
-        href="/creatures"
+      // TODO: Uncomment
+      /*         href="/creatures"
         ariaLabel="Navigate to creature list"
-        tooltipText="Back to creatures list"
+        tooltipText="Back to creatures list" */
       />
 
       {isLoading ? (

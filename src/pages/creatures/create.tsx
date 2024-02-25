@@ -1,13 +1,11 @@
 import { Alert } from '@mui/material';
-import { useRouter } from 'next/router';
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-
 import { addNewCreature } from 'api/creatures';
 import CreatureForm from 'components/Creature/CreatureForm';
 import Layout from 'components/Layout/Layout';
 import NavBack from 'components/Links/NavBack';
 import Creature from 'models/creature/Creature';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
 import { logMessage } from 'utils/loggingUtils';
 
 const DefaultValues: Partial<Creature> = {
@@ -58,7 +56,8 @@ const DefaultValues: Partial<Creature> = {
 };
 
 function CreateCreature() {
-  const router = useRouter();
+  // TODO: Fix router
+  // const router = useRouter();
 
   const [hasError, setHasError] = useState(false);
 
@@ -70,7 +69,8 @@ function CreateCreature() {
     setHasError(false);
     addNewCreature(data)
       .then(() => {
-        router.push('/creatures');
+        // TODO: Fix this
+        // router.push('/creatures');
       })
       .catch((e) => {
         logMessage('error', e);
@@ -81,9 +81,10 @@ function CreateCreature() {
   return (
     <Layout>
       <NavBack
-        href="/creatures"
+      // TODO: uncomment
+      /*         href="/creatures"
         ariaLabel="Go to creature list"
-        tooltipText="Back to creatures list"
+        tooltipText="Back to creatures list" */
       />
       {hasError && (
         <Alert severity="error" className="mb-16">

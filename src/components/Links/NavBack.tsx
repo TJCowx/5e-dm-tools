@@ -1,24 +1,22 @@
-import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Tooltip } from '@mui/material';
-import IconButton from '@mui/material/IconButton';
-import { styled } from '@mui/system';
-import Link from 'next/link';
+/* eslint-disable @typescript-eslint/no-unused-vars */
 
-type Props = {
+/* type Props = {
   href: string;
   ariaLabel: string;
   tooltipText: string;
-};
+}; */
 
-const StyledButton = styled(IconButton)(() => ({
+/* const StyledButton = styled(IconButton)(() => ({
   position: 'relative',
   left: '-8px',
   marginBottom: '16px',
-}));
+})); */
 
-function NavBack({ href, ariaLabel, tooltipText }: Props) {
-  return (
+// eslint-disable-next-line no-empty-pattern
+function NavBack() {
+  return <div />;
+  // TODO: Fix link
+  /* return (
     <Link href={href}>
       <Tooltip title={tooltipText}>
         <StyledButton aria-label={ariaLabel}>
@@ -26,7 +24,7 @@ function NavBack({ href, ariaLabel, tooltipText }: Props) {
         </StyledButton>
       </Tooltip>
     </Link>
-  );
+  ); */
 }
 
 export default NavBack;
