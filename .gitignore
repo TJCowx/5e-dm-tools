@@ -19,3 +19,7 @@ dev.db
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Script outputs
+scripts/source_parsing/out/
+scripts/source_parsing/source/
