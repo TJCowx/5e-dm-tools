@@ -9,7 +9,6 @@ export const getFormattedModifier = (value: number, profBonus = 0) => {
   return modifier >= 0 ? `+${modifier}` : `${modifier}`;
 };
 
-// TODO: This is trash
 export const getSkillAttribute = (prof: Proficiency, creature: Creature) => {
   const { strength, dexterity, intelligence, wisdom, charisma } = creature;
 

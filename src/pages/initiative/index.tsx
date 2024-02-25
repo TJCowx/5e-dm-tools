@@ -64,7 +64,6 @@ function InitiativePage() {
     setCreatureCombatants(updatedCreatureCombatants);
   };
 
-  // TODO: Make this a bit less messy
   const toggleAliveState = (id: string, newState: boolean) => {
     const prevCombatants = new Map(combatants);
     const combatant = prevCombatants.get(id);
