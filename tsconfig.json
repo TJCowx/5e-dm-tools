@@ -21,7 +21,7 @@
       "@models/*": ["models/*"],
       "@pages/*": ["pages/*"],
       "@styles/*": ["styles/*"],
-      "@utils/*": ["utls/*"]
+      "@utils/*": ["utils/*"]
     }
   },
   "include": ["src"],

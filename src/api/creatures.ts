@@ -1,5 +1,5 @@
-import Creature from 'models/creature/Creature';
-import { convertCreatureFormToDB } from 'utils/creatureUtils';
+import Creature from '@models/creature/Creature';
+import { convertCreatureFormToDB } from '@utils/creatureUtils';
 
 /**
  * Gets all the creatures
