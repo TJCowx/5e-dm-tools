@@ -1,17 +1,31 @@
-import { Drawer, List, styled } from '@mui/material';
+import {
+  faDragon,
+  faHouse,
+  faListAlt,
+} from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+  Drawer,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  styled,
+} from '@mui/material';
+import clsx from 'clsx';
+import { ReactNode } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 
 import SettingsNavItem from './SettingsNavItem';
 
-// TODO: Fix
-/* type NavItem = {
+type NavItem = {
   text: string;
   icon: ReactNode;
   href: string;
   activeMustMatch?: boolean;
-}; */
+};
 
-// TODO: Fix
-/* const NavItems: NavItem[] = [
+const NavItems: NavItem[] = [
   {
     text: 'Home',
     icon: <FontAwesomeIcon icon={faHouse} />,
@@ -28,7 +42,7 @@ import SettingsNavItem from './SettingsNavItem';
     icon: <FontAwesomeIcon icon={faDragon} />,
     href: '/creatures',
   },
-]; */
+];
 
 const StyledDrawer = styled(Drawer)(({ theme }) => ({
   '& .MuiList-root': {
@@ -46,29 +60,27 @@ const StyledDrawer = styled(Drawer)(({ theme }) => ({
 }));
 
 function NavDrawer() {
-  // TODO: Updated router
-  // const router = useRouter();
+  const { pathname } = useLocation();
 
   return (
     <StyledDrawer variant="permanent">
       <List>
         {/* TODO: Update link */}
-        {/* {NavItems.map(({ text, icon, href, activeMustMatch }) => (
+        {NavItems.map(({ text, icon, href, activeMustMatch }) => (
           <ListItem key={text}>
-            <ListItemButton aria-label={text} component={Link} href={href}>
+            <ListItemButton aria-label={text} component={Link} to={href}>
               <ListItemIcon
                 className={clsx({
                   'rail-icon': true,
                   'is-active': activeMustMatch
-                    ? router.pathname === href
-                    : router.pathname.startsWith(href),
-                })}
-              >
+                    ? pathname === href
+                    : pathname.startsWith(href),
+                })}>
                 {icon}
               </ListItemIcon>
             </ListItemButton>
           </ListItem>
-        ))} */}
+        ))}
         <SettingsNavItem />
       </List>
     </StyledDrawer>

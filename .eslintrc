@@ -45,6 +45,14 @@
           "sibling",
           "index"
         ],
+        "pathGroups": [
+          {
+            "pattern": "{@api,@components,@constants,@hooks,@models,@pages,@styles,@utils}/**",
+            "group": "internal",
+            "position": "after"
+          }
+        ],
+        "pathGroupsExcludedImportTypes": ["internal"],
         "newlines-between": "always",
         "alphabetize": {
           "order": "asc",
