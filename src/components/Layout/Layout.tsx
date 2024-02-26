@@ -1,5 +1,4 @@
 import { styled } from '@mui/material';
-import clsx from 'clsx';
 import { Outlet } from 'react-router-dom';
 
 import NavDrawer from './NavDrawer';
@@ -13,24 +12,13 @@ const ContentContainer = styled('main')(() => ({
   marginLeft: '48px',
   overflow: 'auto',
   height: '100%',
-  '&:not(.no-padding)': {
-    padding: '24px 16px 48px',
-  },
 }));
 
-type Props = {
-  disablePadding?: boolean;
-};
-
-function Layout({ disablePadding = false }: Props) {
+function Layout() {
   return (
     <Root>
       <NavDrawer />
-      <ContentContainer
-        className={clsx({
-          'content-container': true,
-          'no-padding': disablePadding,
-        })}>
+      <ContentContainer className="content-container">
         <Outlet />
       </ContentContainer>
     </Root>
