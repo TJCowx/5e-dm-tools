@@ -2,6 +2,7 @@ import {
   PropsWithChildren,
   createContext,
   useContext,
+  useEffect,
   useMemo,
   useState,
 } from 'react';
@@ -20,6 +21,10 @@ export const useLayout = () => useContext(LayoutContext);
 
 export default function LayoutProvider({ children }: PropsWithChildren) {
   const [shouldPad, setShouldPad] = useState(false);
+
+  useEffect(() => {
+    console.log('PAD UPDATE: ', shouldPad);
+  }, [shouldPad]);
 
   const contextVal = useMemo(
     () => ({

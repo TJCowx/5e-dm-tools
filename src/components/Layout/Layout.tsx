@@ -1,5 +1,6 @@
 import { styled } from '@mui/material';
 import clsx from 'clsx';
+import { useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
 
 import NavDrawer from './NavDrawer';
@@ -15,13 +16,17 @@ const ContentContainer = styled('main')(() => ({
   marginLeft: '48px',
   overflow: 'auto',
   height: '100%',
-  'content-padding': {
+  '&.content-padding': {
     padding: '24px 16px 48px',
   },
 }));
 
 function Layout() {
   const { shouldPadContainer } = useLayout();
+
+  useEffect(() => {
+    console.log('IN LAYOUT: ', shouldPadContainer);
+  }, [shouldPadContainer]);
 
   return (
     <Root>
