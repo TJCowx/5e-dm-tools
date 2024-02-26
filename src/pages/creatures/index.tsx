@@ -12,20 +12,20 @@ import {
   IconButton,
   List,
   ListItem,
+  ListItemText,
   Link as MuiLink,
   Skeleton,
   styled,
 } from '@mui/material';
 import { Fragment, useEffect, useState } from 'react';
 
-import { deleteCreature, getAllCreatures } from 'api/creatures';
-import DebouncedInput from 'components/DebouncedInput/DebouncedInput';
-import Layout from 'components/Layout/Layout';
-import ListItemText from 'components/List/ListItemText';
-import ListItemTwoSecondaryActions from 'components/List/ListItemTwoSecondaryActions';
-import Creature from 'models/creature/Creature';
-import { getCRFormatted } from 'utils/creatureUtils';
-import { logMessage } from 'utils/loggingUtils';
+import { deleteCreature, getAllCreatures } from '@api/creatures';
+import DebouncedInput from '@components/DebouncedInput';
+import ListItemTwoSecondaryActions from '@components/List/ListItemTwoSecondaryActions';
+import useSetPagePadding from '@hooks/useSetPagePadding';
+import Creature from '@models/creature/Creature';
+import { getCRFormatted } from '@utils/creatureUtils';
+import { logMessage } from '@utils/loggingUtils';
 
 const ActionContainer = styled('div')(() => ({
   display: 'flex',
@@ -40,6 +40,8 @@ const StyledAlert = styled(Alert)(() => ({
 }));
 
 function Creatures() {
+  useSetPagePadding(true);
+
   const [isLoading, setIsLoading] = useState(false);
   const [hasError, setHasError] = useState(false);
   const [creatures, setCreatures] = useState<Creature[]>([]);
@@ -101,7 +103,7 @@ function Creatures() {
   }, [filterText, creatures]);
 
   return (
-    <Layout>
+    <>
       {hasError && (
         <StyledAlert severity="error" className="mb-16">
           There was an error loading the creatures. Please{' '}
@@ -200,7 +202,7 @@ function Creatures() {
           </DialogActions>
         </Dialog>
       )}
-    </Layout>
+    </>
   );
 }
 

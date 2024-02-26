@@ -1,7 +1,11 @@
 import { List, ListItemButton, ListItemText } from '@mui/material';
 import { Link } from 'react-router-dom';
 
+import useSetPagePadding from '@hooks/useSetPagePadding';
+
 function Home() {
+  useSetPagePadding(false);
+
   return (
     <List>
       <Link className="reset" to="/initiative">

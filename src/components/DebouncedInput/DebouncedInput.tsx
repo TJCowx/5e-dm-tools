@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { InputAdornment, TextField } from '@mui/material';
 import { useEffect, useState } from 'react';
 
-import useDebounce from 'hooks/useDebounce';
+import useDebounce from '@hooks/useDebounce';
 
 type Props = {
   value: string;

@@ -14,3 +14,18 @@ for source in data:
 
 print("Finished separating")
 
+# ____________________________________________________________________
+
+sentences = []
+words_list = []
+
+while True:
+    # Do your readnig into the list
+    break;
+
+for sentence in sentences:
+    # Here is the iterating over each sentence
+    # here you want to split the sentence into words
+    # then you want to "extend" (that's your hint)
+    # your words_list with the words you got
+    print(sentence)

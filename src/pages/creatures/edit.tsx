@@ -2,15 +2,14 @@ import { styled } from '@mui/material';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
-import { updateCreature } from 'api/creatures';
-import CreatureForm from 'components/Creature/CreatureForm';
-import Layout from 'components/Layout/Layout';
-import NavBack from 'components/Links/NavBack';
-import LoadingSpinner from 'components/LoadingSpinner/LoadingSpinner';
-import useConfirmBeforeExitPage from 'hooks/useConfirmBeforeExitPage';
-import useInvoke from 'hooks/useInvoke';
-import Creature from 'models/creature/Creature';
-import { logMessage } from 'utils/loggingUtils';
+import { updateCreature } from '@api/creatures';
+import CreatureForm from '@components/Creature/CreatureForm';
+import NavBack from '@components/Links/NavBack';
+import LoadingSpinner from '@components/LoadingSpinner/LoadingSpinner';
+import useConfirmBeforeExitPage from '@hooks/useConfirmBeforeExitPage';
+import useInvoke from '@hooks/useInvoke';
+import Creature from '@models/creature/Creature';
+import { logMessage } from '@utils/loggingUtils';
 
 const LoadingContainer = styled('div')(() => ({
   display: 'flex',
@@ -53,14 +52,13 @@ function EditCreature() {
   };
 
   return (
-    <Layout>
+    <>
       <NavBack
       // TODO: Uncomment
       /*         href="/creatures"
         ariaLabel="Navigate to creature list"
         tooltipText="Back to creatures list" */
       />
-
       {isLoading ? (
         <LoadingContainer>
           <LoadingSpinner />
@@ -72,7 +70,7 @@ function EditCreature() {
           onSubmit={handleSubmit(onSubmit)}
         />
       )}
-    </Layout>
+    </>
   );
 }
 

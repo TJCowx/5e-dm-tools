@@ -9,8 +9,9 @@ import { CacheProvider } from '@emotion/react';
 import { CssBaseline, ThemeProvider } from '@mui/material';
 import { Route, Routes } from 'react-router-dom';
 
-import Layout from '@components/Layout/Layout';
+import { Layout, LayoutProvider } from '@components/Layout';
 import useTheme from '@hooks/useTheme';
+import Creatures from '@pages/creatures';
 import Home from '@pages/home';
 
 const muiCache = createCache({
@@ -24,12 +25,17 @@ function App() {
   return (
     <CacheProvider value={muiCache}>
       <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <Routes>
-          <Route path="/" element={<Layout />}>
-            <Route index element={<Home />} />
-          </Route>
-        </Routes>
+        <LayoutProvider>
+          <CssBaseline />
+          <Routes>
+            <Route path="/" element={<Layout />}>
+              <Route index element={<Home />} />
+              <Route path="/creatures">
+                <Route index element={<Creatures />} />
+              </Route>
+            </Route>
+          </Routes>
+        </LayoutProvider>
       </ThemeProvider>
     </CacheProvider>
   );
