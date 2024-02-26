@@ -11,16 +11,16 @@ import { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { v4 } from 'uuid';
 
-import { getAllCreatures } from 'api/creatures';
-import FormattedStat from 'components/Creature/FormattedStat';
-import RHFIntegerField from 'components/Fields/RHF/RHFIntegerField';
-import RHFSwitchField from 'components/Fields/RHF/RHFSwitchField';
-import Creature from 'models/creature/Creature';
-import Combatant from 'models/initiative/Combatant';
-import { getCRFormatted } from 'utils/creatureUtils';
-import { logMessage } from 'utils/loggingUtils';
-import { getModifier } from 'utils/modifierUtils';
-import { rollD20 } from 'utils/rollUtils';
+import { getAllCreatures } from '@api/creatures';
+import FormattedStat from '@components/Creature/FormattedStat';
+import RHFIntegerField from '@components/Fields/RHF/RHFIntegerField';
+import RHFSwitchField from '@components/Fields/RHF/RHFSwitchField';
+import Creature from '@models/creature/Creature';
+import Combatant from '@models/initiative/Combatant';
+import { getCRFormatted } from '@utils/creatureUtils';
+import { logMessage } from '@utils/loggingUtils';
+import { getModifier } from '@utils/modifierUtils';
+import { rollD20 } from '@utils/rollUtils';
 
 type FormInputs = {
   newCreature: Creature | null;

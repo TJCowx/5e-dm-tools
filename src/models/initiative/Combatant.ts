@@ -1,4 +1,4 @@
-import Creature from 'models/creature/Creature';
+import Creature from '@models/creature/Creature';
 
 type Combatant = {
   id: string;

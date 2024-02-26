@@ -1,4 +1,4 @@
-import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   Alert,
@@ -18,6 +18,7 @@ import {
   styled,
 } from '@mui/material';
 import { Fragment, useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 
 import { deleteCreature, getAllCreatures } from '@api/creatures';
 import DebouncedInput from '@components/DebouncedInput';
@@ -118,12 +119,12 @@ function Creatures() {
           label="Search"
           onChange={(val) => setFilterText(val)}
         />
-        {/* TODO: Fix */}
-        {/* <Link href="/creatures/create" passHref>
-          <IconButton aria-label="Create new creature">
-            <FontAwesomeIcon icon={faPlus} />{' '}
-          </IconButton>
-        </Link> */}
+        <IconButton
+          aria-label="Create new creature"
+          component={Link}
+          to="create">
+          <FontAwesomeIcon icon={faPlus} />{' '}
+        </IconButton>
       </ActionContainer>
       <Divider className="mt-16" />
       {isLoading ? (

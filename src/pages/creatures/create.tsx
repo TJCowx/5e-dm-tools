@@ -2,12 +2,12 @@ import { Alert } from '@mui/material';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
-import { addNewCreature } from 'api/creatures';
-import CreatureForm from 'components/Creature/CreatureForm';
-import Layout from 'components/Layout/Layout';
-import NavBack from 'components/Links/NavBack';
-import Creature from 'models/creature/Creature';
-import { logMessage } from 'utils/loggingUtils';
+import { addNewCreature } from '@api/creatures';
+import CreatureForm from '@components/Creature/CreatureForm';
+import NavBack from '@components/Links/NavBack';
+import useSetPagePadding from '@hooks/useSetPagePadding';
+import Creature from '@models/creature/Creature';
+import { logMessage } from '@utils/loggingUtils';
 
 const DefaultValues: Partial<Creature> = {
   name: '',
@@ -57,6 +57,7 @@ const DefaultValues: Partial<Creature> = {
 };
 
 function CreateCreature() {
+  useSetPagePadding(true);
   // TODO: Fix router
   // const router = useRouter();
 
@@ -80,7 +81,7 @@ function CreateCreature() {
   };
 
   return (
-    <Layout>
+    <>
       <NavBack
       // TODO: uncomment
       /*         href="/creatures"
@@ -97,7 +98,7 @@ function CreateCreature() {
         watch={watch}
         onSubmit={handleSubmit(onSubmit)}
       />
-    </Layout>
+    </>
   );
 }
 

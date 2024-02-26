@@ -4,8 +4,8 @@ import { Fab, Tab, Tabs } from '@mui/material';
 import { styled } from '@mui/system';
 import { useState } from 'react';
 
-import Modal from 'components/Modal/Modal';
-import Combatant from 'models/initiative/Combatant';
+import Modal from '@components/Modal/Modal';
+import Combatant from '@models/initiative/Combatant';
 
 import AddCreatureCombatantForm from './AddCreatureCombatantForm';
 import AddPlayerCombatantForm from './AddPlayerCombatantForm';
@@ -34,8 +34,7 @@ function AddCombatant({ onAddCombatants }: Props) {
         color="primary"
         aria-label="Add Combatant"
         size="small"
-        onClick={() => setIsOpen(true)}
-      >
+        onClick={() => setIsOpen(true)}>
         <FontAwesomeIcon icon={faPlus} />
       </StyledFab>
       {isOpen && (
@@ -43,12 +42,10 @@ function AddCombatant({ onAddCombatants }: Props) {
           title="Add Combatant"
           isOpen={isOpen}
           contentContainerStyle={{ paddingTop: '0px' }}
-          onClose={() => setIsOpen(false)}
-        >
+          onClose={() => setIsOpen(false)}>
           <StyledTabs
             value={activeTab}
-            onChange={(_, newVal) => setActiveTab(newVal)}
-          >
+            onChange={(_, newVal) => setActiveTab(newVal)}>
             <Tab id="player-tab" aria-controls="player-panel" label="Player" />
             <Tab
               id="creature-tab"
@@ -60,8 +57,7 @@ function AddCombatant({ onAddCombatants }: Props) {
             id="player-panel"
             role="tabpanel"
             hidden={activeTab !== 0}
-            aria-labelledby="player-tab"
-          >
+            aria-labelledby="player-tab">
             <AddPlayerCombatantForm
               onSubmit={(combatant) => onAddCombatants([combatant])}
               onCancel={() => setIsOpen(false)}
@@ -71,8 +67,7 @@ function AddCombatant({ onAddCombatants }: Props) {
             id="creature-panel"
             role="tabpanel"
             hidden={activeTab !== 1}
-            aria-labelledby="creature-tab"
-          >
+            aria-labelledby="creature-tab">
             <AddCreatureCombatantForm
               onSubmit={onAddCombatants}
               onCancel={() => setIsOpen(false)}

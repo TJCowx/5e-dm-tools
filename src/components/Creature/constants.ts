@@ -1,5 +1,5 @@
 /* eslint-disable import/prefer-default-export */
-import { SelectOptions } from 'components/Fields/RHF/RHFSelectField';
+import { SelectOptions } from '@components/Fields/RHF/RHFSelectField';
 
 export const CR_OPTS: SelectOptions[] = [
   { value: 0, text: '0' },

@@ -8,7 +8,7 @@ import {
 } from '@mui/material';
 import { useState } from 'react';
 
-import Ability from 'models/creature/Ability';
+import Ability from '@models/creature/Ability';
 
 import AbilityModal from './AbilityModal';
 

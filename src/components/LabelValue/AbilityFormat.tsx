@@ -1,6 +1,6 @@
 import { Typography } from '@mui/material';
 
-import Ability from 'models/creature/Ability';
+import Ability from '@models/creature/Ability';
 
 type Props = {
   ability: Partial<Ability>;

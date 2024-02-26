@@ -12,6 +12,7 @@ import { Route, Routes } from 'react-router-dom';
 import { Layout, LayoutProvider } from '@components/Layout';
 import useTheme from '@hooks/useTheme';
 import Creatures from '@pages/creatures';
+import CreateCreature from '@pages/creatures/create';
 import Home from '@pages/home';
 
 const muiCache = createCache({
@@ -32,6 +33,7 @@ function App() {
               <Route index element={<Home />} />
               <Route path="/creatures">
                 <Route index element={<Creatures />} />
+                <Route path="create" element={<CreateCreature />} />
               </Route>
             </Route>
           </Routes>
