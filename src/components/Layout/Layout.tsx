@@ -2,9 +2,8 @@ import { styled } from '@mui/material';
 import clsx from 'clsx';
 import { Outlet } from 'react-router-dom';
 
+import { useLayout } from './LayoutContext';
 import NavDrawer from './NavDrawer';
-
-import { useLayout } from '.';
 
 const Root = styled('div')(() => ({
   height: '100%',

@@ -7,7 +7,7 @@ import {
   string as yupString,
 } from 'yup';
 
-import { RequireMessage } from 'constants/validationMessages';
+import { RequireMessage } from '@constants/validationMessages';
 
 export const SCHEMA = yupObject().shape({
   name: yupString().required({ field: 'name', message: RequireMessage }),

@@ -1,12 +1,12 @@
 import styled from '@emotion/styled';
 import { useState } from 'react';
 
-import AddCombatant from 'components/Initiative/AddCombatant';
-import CreatureCombatantList from 'components/Initiative/CreatureCombatantList';
-import InitiativeList from 'components/Initiative/InitiativeList';
-import Layout from 'components/Layout/Layout';
-import Combatant from 'models/initiative/Combatant';
-import { getCombatantName } from 'utils/creatureUtils';
+import AddCombatant from '@components/Initiative/AddCombatant';
+import CreatureCombatantList from '@components/Initiative/CreatureCombatantList';
+import InitiativeList from '@components/Initiative/InitiativeList';
+import { Layout } from '@components/Layout';
+import Combatant from '@models/initiative/Combatant';
+import { getCombatantName } from '@utils/creatureUtils';
 
 const PageContainer = styled('div')(() => ({
   display: 'flex',

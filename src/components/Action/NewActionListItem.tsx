@@ -8,7 +8,7 @@ import {
 } from '@mui/material';
 import { useState } from 'react';
 
-import Action from 'models/creature/Action';
+import Action from '@models/creature/Action';
 
 import ActionModal from './ActionModal';
 

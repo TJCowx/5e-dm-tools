@@ -3,7 +3,7 @@ import { Button, List, ListSubheader } from '@mui/material';
 import orderBy from 'lodash.orderby';
 import { Fragment, useEffect, useMemo, useState } from 'react';
 
-import Combatant from 'models/initiative/Combatant';
+import Combatant from '@models/initiative/Combatant';
 
 import InitiativeListItem from './InitiativeListItem';
 
@@ -111,8 +111,7 @@ function InitiativeList({
       <List
         className="scroll-enabled"
         dense
-        subheader={<ListSubheader>Initiative</ListSubheader>}
-      >
+        subheader={<ListSubheader>Initiative</ListSubheader>}>
         {order.map((combatant) => (
           <Fragment key={combatant.id}>
             <InitiativeListItem
@@ -128,8 +127,7 @@ function InitiativeList({
         <Button
           variant="contained"
           disabled={combatants.size <= 1}
-          onClick={hasStarted ? nextInitiative : startInitiative}
-        >
+          onClick={hasStarted ? nextInitiative : startInitiative}>
           {hasStarted ? 'Next' : 'Start'}
         </Button>
       </div>

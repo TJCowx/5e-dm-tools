@@ -4,9 +4,9 @@ import { ListItem, ListItemButton, ListItemIcon, styled } from '@mui/material';
 import { cyan, grey, red } from '@mui/material/colors';
 import clsx from 'clsx';
 
-import DeadIcon from 'components/Icons/DeadIcon';
-import ListItemText from 'components/List/ListItemText';
-import Combatant from 'models/initiative/Combatant';
+import DeadIcon from '@components/Icons/DeadIcon';
+import ListItemText from '@components/List/ListItemText';
+import Combatant from '@models/initiative/Combatant';
 
 import CombatantOptions from './CombatantOptions';
 
@@ -52,8 +52,7 @@ function InitiativeListItem({ combatant, isActive, onFlag, onClick }: Props) {
       })}
       secondaryAction={
         <CombatantOptions isDead={isDead} onFlag={(flag) => onFlag(id, flag)} />
-      }
-    >
+      }>
       <ListItemButton onClick={() => onClick(combatant)}>
         {isActive && (
           <ListItemIcon>

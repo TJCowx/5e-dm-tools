@@ -8,19 +8,19 @@ import {
   ListItem,
   ListItemButton,
   ListItemIcon,
+  ListItemText,
   styled,
 } from '@mui/material';
 import { useMemo, useRef, useState } from 'react';
 import { ValidationError } from 'yup';
 
-import BasicNumberField from 'components/Fields/Basic/BasicNumberField';
-import BasicSwitchField from 'components/Fields/Basic/BasicSwitchField';
-import BasicTextField from 'components/Fields/Basic/BasicTextField';
-import LazySelectField from 'components/Fields/Basic/LazySelectField';
-import ListItemText from 'components/List/ListItemText';
-import Modal from 'components/Modal/Modal';
-import Action from 'models/creature/Action';
-import Damage from 'models/creature/Damage';
+import BasicNumberField from '@components/Fields/Basic/BasicNumberField';
+import BasicSwitchField from '@components/Fields/Basic/BasicSwitchField';
+import BasicTextField from '@components/Fields/Basic/BasicTextField';
+import LazySelectField from '@components/Fields/Basic/LazySelectField';
+import Modal from '@components/Modal/Modal';
+import Action from '@models/creature/Action';
+import Damage from '@models/creature/Damage';
 
 import { SCHEMA } from './constants';
 import DamageListItem from './DamageListItem';
@@ -311,8 +311,7 @@ function ActionModal({
             {!!errors.damages?.length && (
               <Alert
                 severity="error"
-                sx={{ marginTop: '12px', marginBottom: '12px' }}
-              >
+                sx={{ marginTop: '12px', marginBottom: '12px' }}>
                 {errors.damages}
               </Alert>
             )}
@@ -343,8 +342,7 @@ function ActionModal({
             variant="contained"
             disableElevation
             type="button"
-            onClick={onSubmit}
-          >
+            onClick={onSubmit}>
             Save
           </Button>
         </div>

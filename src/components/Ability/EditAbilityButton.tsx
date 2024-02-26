@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IconButton } from '@mui/material';
 import { useState } from 'react';
 
-import Ability from 'models/creature/Ability';
+import Ability from '@models/creature/Ability';
 
 import AbilityModal from './AbilityModal';
 
@@ -20,8 +20,7 @@ function EditAbilityButton({ ability, onSave }: Props) {
       <IconButton
         aria-label={`Edit ${ability.name}`}
         edge="end"
-        onClick={() => setIsModalOpen(true)}
-      >
+        onClick={() => setIsModalOpen(true)}>
         <FontAwesomeIcon icon={faPen} />
       </IconButton>
       {isModalOpen && (

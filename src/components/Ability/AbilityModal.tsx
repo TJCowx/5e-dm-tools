@@ -2,10 +2,10 @@ import { Button, styled } from '@mui/material';
 import { useState } from 'react';
 import { object as yupObject, string as yupString, ValidationError } from 'yup';
 
-import BasicTextField from 'components/Fields/Basic/BasicTextField';
-import Modal from 'components/Modal/Modal';
-import Ability from 'models/creature/Ability';
-import { RequireMessage } from 'utils/validationMessages';
+import BasicTextField from '@components/Fields/Basic/BasicTextField';
+import Modal from '@components/Modal/Modal';
+import Ability from '@models/creature/Ability';
+import { RequireMessage } from '@utils/validationMessages';
 
 type Props = {
   initialAbility?: Partial<Ability>;
@@ -97,8 +97,7 @@ function AbilityModal({ initialAbility = newAbility, onSave, onClose }: Props) {
             variant="contained"
             disableElevation
             type="button"
-            onClick={() => onSubmit()}
-          >
+            onClick={() => onSubmit()}>
             Save
           </Button>
         </div>

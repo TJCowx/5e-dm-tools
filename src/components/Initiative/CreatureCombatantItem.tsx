@@ -13,19 +13,19 @@ import {
 import { grey } from '@mui/material/colors';
 import { useEffect, useState } from 'react';
 
-import FormattedStat from 'components/Creature/FormattedStat';
-import DeadIcon from 'components/Icons/DeadIcon';
-import AbilityFormat from 'components/LabelValue/AbilityFormat';
-import LabelValueRow from 'components/LabelValue/LabelValueRow';
-import ActionTypeEnum from 'models/ActionTypeEnum';
-import Action from 'models/creature/Action';
-import Creature from 'models/creature/Creature';
-import Combatant from 'models/initiative/Combatant';
+import FormattedStat from '@components/Creature/FormattedStat';
+import DeadIcon from '@components/Icons/DeadIcon';
+import AbilityFormat from '@components/LabelValue/AbilityFormat';
+import LabelValueRow from '@components/LabelValue/LabelValueRow';
+import ActionTypeEnum from '@models/ActionTypeEnum';
+import Action from '@models/creature/Action';
+import Creature from '@models/creature/Creature';
+import Combatant from '@models/initiative/Combatant';
 import {
-  getProficienciesString,
-  getSavingThrowsString,
   getSpeedString,
-} from 'utils/creatureUtils';
+  getSavingThrowsString,
+  getProficienciesString,
+} from '@utils/creatureUtils';
 
 import ActionList from './ActionList';
 
@@ -123,13 +123,11 @@ function CreatureCombatantItem({ combatant, isExpanded, onChange }: Props) {
       elevation={0}
       square
       expanded={isExpanded}
-      onChange={onChange}
-    >
+      onChange={onChange}>
       <StyledAccordionSummary
         id={panelHeaderId}
         aria-controls={panelContentId}
-        expandIcon={<FontAwesomeIcon icon={faChevronDown} />}
-      >
+        expandIcon={<FontAwesomeIcon icon={faChevronDown} />}>
         <SummaryContent>
           <span className="name-container">
             {combatant.isDead && <DeadIcon />}

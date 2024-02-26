@@ -1,27 +1,33 @@
 import styled from '@emotion/styled';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Button, Divider, IconButton, List, Typography } from '@mui/material';
+import {
+  Button,
+  Divider,
+  IconButton,
+  List,
+  ListItemText,
+  Typography,
+} from '@mui/material';
 import { FormEventHandler, Fragment } from 'react';
 import { Control, useFieldArray, UseFormWatch } from 'react-hook-form';
 
-import EditAbilityButton from 'components/Ability/EditAbilityButton';
-import NewAbilityListItem from 'components/Ability/NewAbilityListItem';
-import NewActionListItem from 'components/Action/NewActionListItem';
-import RHFAttributeField from 'components/Fields/RHF/RHFAttributeField';
-import RHFCheckboxField from 'components/Fields/RHF/RHFCheckboxField';
-import RHFIntegerField from 'components/Fields/RHF/RHFIntegerField';
-import RHFLazyMultiselect from 'components/Fields/RHF/RHFLazyMultiselect';
-import RHFLazySelect from 'components/Fields/RHF/RHFLazySelect';
-import RHFMultiselectField from 'components/Fields/RHF/RHFMultiselectField';
-import RHFSelectField from 'components/Fields/RHF/RHFSelectField';
-import RHFTextField from 'components/Fields/RHF/RHFTextField';
-import ListItemText from 'components/List/ListItemText';
-import ListItemTwoSecondaryActions from 'components/List/ListItemTwoSecondaryActions';
-import Ability from 'models/creature/Ability';
-import Action from 'models/creature/Action';
-import { AttributeSelectOptions } from 'models/creature/Attribute';
-import Creature from 'models/creature/Creature';
+import EditAbilityButton from '@components/Ability/EditAbilityButton';
+import NewAbilityListItem from '@components/Ability/NewAbilityListItem';
+import NewActionListItem from '@components/Action/NewActionListItem';
+import RHFAttributeField from '@components/Fields/RHF/RHFAttributeField';
+import RHFCheckboxField from '@components/Fields/RHF/RHFCheckboxField';
+import RHFIntegerField from '@components/Fields/RHF/RHFIntegerField';
+import RHFLazyMultiselect from '@components/Fields/RHF/RHFLazyMultiselect';
+import RHFLazySelect from '@components/Fields/RHF/RHFLazySelect';
+import RHFMultiselectField from '@components/Fields/RHF/RHFMultiselectField';
+import RHFSelectField from '@components/Fields/RHF/RHFSelectField';
+import RHFTextField from '@components/Fields/RHF/RHFTextField';
+import { ListItemTwoSecondaryActions } from '@components/List';
+import Ability from '@models/creature/Ability';
+import Action from '@models/creature/Action';
+import { AttributeSelectOptions } from '@models/creature/Attribute';
+import Creature from '@models/creature/Creature';
 
 import ActionListItem from './ActionListItem';
 import { CR_OPTS } from './constants';
@@ -415,13 +421,11 @@ function CreatureForm({ control, onSubmit, watch }: Props) {
                       aria-label={`Delete ${ability.name}`}
                       edge="end"
                       color="warning"
-                      onClick={() => removeAbility(i)}
-                    >
+                      onClick={() => removeAbility(i)}>
                       <FontAwesomeIcon icon={faTrash} />
                     </IconButton>
                   </>
-                }
-              >
+                }>
                 <ListItemText
                   primary={ability.name ?? ''}
                   secondary={ability.description ?? ''}
@@ -461,8 +465,7 @@ function CreatureForm({ control, onSubmit, watch }: Props) {
           variant="contained"
           disableElevation
           type="submit"
-          className="right-align"
-        >
+          className="right-align">
           Save
         </Button>
       </div>

@@ -1,8 +1,8 @@
 import { useEffect, useMemo } from 'react';
 import { v4 } from 'uuid';
 
-import useInvoke from 'hooks/useInvoke';
-import SelectQueryArgs from 'models/SelectQueryArgs';
+import useInvoke from '@hooks/useInvoke';
+import SelectQueryArgs from '@models/SelectQueryArgs';
 
 import { SelectOptions } from '../RHF/RHFSelectField';
 

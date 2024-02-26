@@ -11,8 +11,8 @@ import clsx from 'clsx';
 import { useCallback, useMemo } from 'react';
 import { Control, Controller, FieldPath, FieldValues } from 'react-hook-form';
 
-import ListItemText from 'components/List/ListItemText';
-import { RequireMessage } from 'constants/validationMessages';
+import ListItemText from '@components/List/ListItemText';
+import { RequireMessage } from '@constants/validationMessages';
 
 import { SelectOptions } from './RHFSelectField';
 

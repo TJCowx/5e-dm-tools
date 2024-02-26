@@ -9,7 +9,7 @@ import {
   RegisterOptions,
 } from 'react-hook-form';
 
-import { RequireMessage } from 'utils/validationMessages';
+import { RequireMessage } from '@utils/validationMessages';
 
 type Props<T extends FieldValues> = {
   className?: string;

@@ -1,11 +1,11 @@
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { ListItem, IconButton } from '@mui/material';
+import { IconButton, ListItem } from '@mui/material';
 
-import BasicNumberField from 'components/Fields/Basic/BasicNumberField';
-import BasicTextField from 'components/Fields/Basic/BasicTextField';
-import LazySelectField from 'components/Fields/Basic/LazySelectField';
-import Damage from 'models/creature/Damage';
+import BasicNumberField from '@components/Fields/Basic/BasicNumberField';
+import BasicTextField from '@components/Fields/Basic/BasicTextField';
+import LazySelectField from '@components/Fields/Basic/LazySelectField';
+import Damage from '@models/creature/Damage';
 
 interface Props {
   damage: Partial<Damage>;
@@ -21,8 +21,7 @@ function DamageListItem({ damage, removeDamageItem, updateDamageItem }: Props) {
         <IconButton onClick={removeDamageItem} color="warning">
           <FontAwesomeIcon icon={faTrash} />
         </IconButton>
-      }
-    >
+      }>
       <BasicNumberField
         className="damage-field"
         label="Damage"

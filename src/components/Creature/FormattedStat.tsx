@@ -1,8 +1,8 @@
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/system';
 
-import Attribute from 'models/creature/Attribute';
-import { getFormattedModifier } from 'utils/modifierUtils';
+import Attribute from '@models/creature/Attribute';
+import { getFormattedModifier } from '@utils/modifierUtils';
 
 type Props = {
   label: Attribute;

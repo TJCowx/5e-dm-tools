@@ -2,7 +2,7 @@ import { TextField as MuiTextField } from '@mui/material';
 import clsx from 'clsx';
 import { Control, Controller, FieldPath, FieldValues } from 'react-hook-form';
 
-import { RequireMessage } from 'constants/validationMessages';
+import { RequireMessage } from '@constants/validationMessages';
 
 type Props<T extends FieldValues> = {
   id?: string;

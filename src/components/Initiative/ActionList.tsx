@@ -1,7 +1,7 @@
 import { Typography } from '@mui/material';
 import clsx from 'clsx';
 
-import Action from 'models/creature/Action';
+import Action from '@models/creature/Action';
 
 import ActionItem from './ActionItem';
 
