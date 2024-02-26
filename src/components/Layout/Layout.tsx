@@ -1,6 +1,6 @@
 import { styled } from '@mui/material';
 import clsx from 'clsx';
-import { PropsWithChildren } from 'react';
+import { Outlet } from 'react-router-dom';
 
 import NavDrawer from './NavDrawer';
 
@@ -22,10 +22,7 @@ type Props = {
   disablePadding?: boolean;
 };
 
-function Layout({
-  children,
-  disablePadding = false,
-}: PropsWithChildren<Props>) {
+function Layout({ disablePadding = false }: Props) {
   return (
     <Root>
       <NavDrawer />
@@ -33,9 +30,8 @@ function Layout({
         className={clsx({
           'content-container': true,
           'no-padding': disablePadding,
-        })}
-      >
-        {children}
+        })}>
+        <Outlet />
       </ContentContainer>
     </Root>
   );
