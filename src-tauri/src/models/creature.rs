@@ -12,6 +12,7 @@ use crate::dto::{
     language_dto::LanguageDto,
     proficiency_dto::ProficiencyDto,
     size_dto::SizeDto,
+    source::source_dto::SourceDto,
 };
 
 use serde::{Deserialize, Serialize};
@@ -51,10 +52,12 @@ pub struct Creature {
     pub alignment_id: i32,
     pub creature_type_id: i32,
     pub size_id: i32,
+    pub source_abbr: Option<String>,
 
     pub alignment: Option<AlignmentDto>,
     pub creature_type: Option<CreatureTypeDto>,
     pub size: Option<SizeDto>,
+    pub source: Option<SourceDto>,
 
     pub proficiencies: Option<Vec<ProficiencyDto>>,
     pub immunities: Option<Vec<DamageTypeDto>>,
@@ -68,6 +71,12 @@ pub struct Creature {
 
 impl From<CreatureDto> for Creature {
     fn from(creature: CreatureDto) -> Self {
+        let source = if let Some(ref abbr) = creature.source_abbr {
+            Some(SourceDto::get_by_id(&abbr))
+        } else {
+            None
+        };
+
         Self {
             id: creature.id,
             name: creature.name,
@@ -103,6 +112,7 @@ impl From<CreatureDto> for Creature {
             alignment_id: creature.alignment_id,
             creature_type_id: creature.creature_type_id,
             size_id: creature.size_id,
+            source_abbr: creature.source_abbr,
             alignment: Some(AlignmentDto::get_by_id(&creature.alignment_id)),
             creature_type: Some(CreatureTypeDto::get_by_id(&creature.creature_type_id)),
             size: Some(SizeDto::get_by_id(&creature.size_id)),
@@ -126,6 +136,7 @@ impl From<CreatureDto> for Creature {
                 &creature.id,
             )),
             actions: Some(CreatureActionDto::get_actions_by_creature_id(&creature.id).unwrap()),
+            source,
         }
     }
 }
