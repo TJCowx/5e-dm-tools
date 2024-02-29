@@ -8,7 +8,7 @@ import {
 } from '@mui/material';
 import clsx from 'clsx';
 
-import { SelectOptions } from '../RHF/RHFSelectField';
+import { SelectOptions } from '../RHF';
 
 type Props = {
   id: string;
@@ -36,8 +36,7 @@ function BasicSelectField({
   return (
     <FormControl
       className={clsx({ 'form-select': true, [`${className}`]: className })}
-      size="small"
-    >
+      size="small">
       <InputLabel id={id} shrink error={!!error?.length}>
         {label}
       </InputLabel>
@@ -50,8 +49,7 @@ function BasicSelectField({
         notched
         onChange={(e) => onChange(e.target.value)}
         onBlur={onBlur}
-        MenuProps={{ style: { maxHeight: '500px' } }}
-      >
+        MenuProps={{ style: { maxHeight: '500px' } }}>
         {options.map(({ value: optVal, text }) => (
           <MenuItem key={optVal} value={optVal}>
             {text}

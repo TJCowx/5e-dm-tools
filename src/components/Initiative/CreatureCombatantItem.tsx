@@ -13,18 +13,17 @@ import {
 import { grey } from '@mui/material/colors';
 import { useEffect, useState } from 'react';
 
-import FormattedStat from '@components/Creature/FormattedStat';
+import { FormattedStat } from '@components/Creature';
 import DeadIcon from '@components/Icons/DeadIcon';
-import AbilityFormat from '@components/LabelValue/AbilityFormat';
-import LabelValueRow from '@components/LabelValue/LabelValueRow';
+import { AbilityFormat, LabelValueRow } from '@components/LabelValue';
 import ActionTypeEnum from '@models/ActionTypeEnum';
 import Action from '@models/creature/Action';
 import Creature from '@models/creature/Creature';
 import Combatant from '@models/initiative/Combatant';
 import {
-  getSpeedString,
-  getSavingThrowsString,
   getProficienciesString,
+  getSavingThrowsString,
+  getSpeedString,
 } from '@utils/creatureUtils';
 
 import ActionList from './ActionList';

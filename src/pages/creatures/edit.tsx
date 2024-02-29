@@ -3,9 +3,9 @@ import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { updateCreature } from '@api/creatures';
-import CreatureForm from '@components/Creature/CreatureForm';
-import NavBack from '@components/Links/NavBack';
-import LoadingSpinner from '@components/LoadingSpinner/LoadingSpinner';
+import { CreatureForm } from '@components/Creature';
+import { NavBack } from '@components/Links';
+import { LoadingSpinner } from '@components/LoadingSpinner';
 import useConfirmBeforeExitPage from '@hooks/useConfirmBeforeExitPage';
 import useInvoke from '@hooks/useInvoke';
 import Creature from '@models/creature/Creature';

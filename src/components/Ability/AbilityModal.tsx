@@ -1,8 +1,8 @@
 import { Button, styled } from '@mui/material';
 import { useState } from 'react';
-import { object as yupObject, string as yupString, ValidationError } from 'yup';
+import { ValidationError, object as yupObject, string as yupString } from 'yup';
 
-import BasicTextField from '@components/Fields/Basic/BasicTextField';
+import { BasicTextField } from '@components/Fields/Basic';
 import Modal from '@components/Modal/Modal';
 import Ability from '@models/creature/Ability';
 import { RequireMessage } from '@utils/validationMessages';

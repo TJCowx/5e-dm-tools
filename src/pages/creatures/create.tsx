@@ -3,8 +3,8 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { addNewCreature } from '@api/creatures';
-import CreatureForm from '@components/Creature/CreatureForm';
-import NavBack from '@components/Links/NavBack';
+import { CreatureForm } from '@components/Creature';
+import { NavBack } from '@components/Links';
 import useSetPagePadding from '@hooks/useSetPagePadding';
 import Creature from '@models/creature/Creature';
 import { logMessage } from '@utils/loggingUtils';

@@ -4,7 +4,7 @@ import { Fab, Tab, Tabs } from '@mui/material';
 import { styled } from '@mui/system';
 import { useState } from 'react';
 
-import Modal from '@components/Modal/Modal';
+import { Modal } from '@components/Modal';
 import Combatant from '@models/initiative/Combatant';
 
 import AddCreatureCombatantForm from './AddCreatureCombatantForm';
