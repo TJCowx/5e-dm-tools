@@ -6,7 +6,6 @@ import { updateCreature } from '@api/creatures';
 import { CreatureForm } from '@components/Creature';
 import { NavBack } from '@components/Links';
 import { LoadingSpinner } from '@components/LoadingSpinner';
-import useConfirmBeforeExitPage from '@hooks/useConfirmBeforeExitPage';
 import useInvoke from '@hooks/useInvoke';
 import Creature from '@models/creature/Creature';
 import { logMessage } from '@utils/loggingUtils';
@@ -28,8 +27,6 @@ function EditCreature() {
     'get_editable_creature_by_id',
     { id: parseInt(creatureId as string, 10) },
   );
-
-  useConfirmBeforeExitPage();
 
   const { handleSubmit, control, watch, reset } = useForm<Partial<Creature>>();
 
