@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { gt } from 'semver';
 
-import { logMessage } from 'utils/loggingUtils';
+import { logMessage } from '@utils/loggingUtils';
 
 import useVersion from './useVersion';
 

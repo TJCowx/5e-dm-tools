@@ -1,31 +1,31 @@
-import { ListItem } from '@mui/material';
+import { faGear } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Badge, ListItem, ListItemButton, ListItemIcon } from '@mui/material';
+import clsx from 'clsx';
+import { Link, useLocation } from 'react-router-dom';
 
-// TODO: Fix
-/* function Icon() {
-  // TODO: Update router
-  // const router = useRouter();
+import useNewestRelease from '@hooks/useNewestRelease';
 
-  return <div>temp</div>;
-  // TODO: Fix
-  /*  return (
+function Icon() {
+  const { pathname } = useLocation();
+
+  return (
     <ListItemIcon
       className={clsx({
         'rail-icon': true,
-        'is-active': router.pathname === '/settings',
-      })}
-    >
+        'is-active': pathname === '/settings',
+      })}>
       <FontAwesomeIcon icon={faGear} />
     </ListItemIcon>
-   ); 
-} */
+  );
+}
 
 export default function SettingsNavItem() {
-  // const { isUpdateAvailable } = useNewestRelease();
+  const { isUpdateAvailable } = useNewestRelease();
 
   return (
     <ListItem className="end">
-      {/* TODO: Update link */}
-      {/*       <ListItemButton aria-label="Settings" component={Link} href="/settings">
+      <ListItemButton aria-label="Settings" component={Link} to="/settings">
         {isUpdateAvailable ? (
           <Badge variant="dot" color="secondary">
             <Icon />
@@ -33,7 +33,7 @@ export default function SettingsNavItem() {
         ) : (
           <Icon />
         )}
-      </ListItemButton> */}
+      </ListItemButton>
     </ListItem>
   );
 }

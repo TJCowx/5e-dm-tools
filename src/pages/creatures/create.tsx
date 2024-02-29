@@ -1,6 +1,7 @@
 import { Alert } from '@mui/material';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
 
 import { addNewCreature } from '@api/creatures';
 import { CreatureForm } from '@components/Creature';
@@ -58,8 +59,7 @@ const DefaultValues: Partial<Creature> = {
 
 function CreateCreature() {
   useSetPagePadding(true);
-  // TODO: Fix router
-  // const router = useRouter();
+  const navigate = useNavigate();
 
   const [hasError, setHasError] = useState(false);
 
@@ -71,8 +71,7 @@ function CreateCreature() {
     setHasError(false);
     addNewCreature(data)
       .then(() => {
-        // TODO: Fix this
-        // router.push('/creatures');
+        navigate('/creatures');
       })
       .catch((e) => {
         logMessage('error', e);
@@ -83,10 +82,9 @@ function CreateCreature() {
   return (
     <>
       <NavBack
-      // TODO: uncomment
-      /*         href="/creatures"
+        href="/creatures"
         ariaLabel="Go to creature list"
-        tooltipText="Back to creatures list" */
+        tooltipText="Back to creatures list"
       />
       {hasError && (
         <Alert severity="error" className="mb-16">
