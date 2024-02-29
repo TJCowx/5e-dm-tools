@@ -1,6 +1,7 @@
 import { styled } from '@mui/material';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import { updateCreature } from '@api/creatures';
 import { CreatureForm } from '@components/Creature';
@@ -18,10 +19,8 @@ const LoadingContainer = styled('div')(() => ({
 }));
 
 function EditCreature() {
-  // TODO: Fix router
-  // const router = useRouter();
-  // const { creatureId } = router.query;
-  const creatureId = '1';
+  const navigate = useNavigate();
+  const { creatureId } = useParams();
 
   const { data, isLoading } = useInvoke<Partial<Creature>>(
     'get_editable_creature_by_id',
@@ -39,8 +38,7 @@ function EditCreature() {
   const onSubmit = (formData: Partial<Creature>) => {
     updateCreature(formData)
       .then(() => {
-        // TODO: Fix this
-        // router.push('/creatures');
+        navigate('/creatures');
       })
       .catch((err) => {
         logMessage('error', err);
@@ -51,10 +49,9 @@ function EditCreature() {
   return (
     <>
       <NavBack
-      // TODO: Uncomment
-      /*         href="/creatures"
+        href="/creatures"
         ariaLabel="Navigate to creature list"
-        tooltipText="Back to creatures list" */
+        tooltipText="Back to creatures list"
       />
       {isLoading ? (
         <LoadingContainer>

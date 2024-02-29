@@ -1,4 +1,4 @@
-import { faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faPen, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   Alert,
@@ -147,12 +147,11 @@ function Creatures() {
                 <ListItemTwoSecondaryActions
                   secondaryAction={
                     <>
-                      {/* TODO: Fix */}
-                      {/*                       <Link href={`/creatures/edit/${id}`} passHref>
+                      <Link to={`edit/${id}`}>
                         <IconButton aria-label={`Edit ${name}`}>
                           <FontAwesomeIcon size="xs" icon={faPen} />
                         </IconButton>
-                      </Link> */}
+                      </Link>
                       <IconButton
                         edge="end"
                         aria-label={`Delete ${name}`}

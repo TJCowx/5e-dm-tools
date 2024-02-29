@@ -65,7 +65,6 @@ function NavDrawer() {
   return (
     <StyledDrawer variant="permanent">
       <List>
-        {/* TODO: Update link */}
         {NavItems.map(({ text, icon, href, activeMustMatch }) => (
           <ListItem key={text}>
             <ListItemButton aria-label={text} component={Link} to={href}>
