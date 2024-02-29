@@ -4,7 +4,7 @@ import { v4 } from 'uuid';
 import useInvoke from '@hooks/useInvoke';
 import SelectQueryArgs from '@models/SelectQueryArgs';
 
-import { SelectOptions } from '../RHF/RHFSelectField';
+import { SelectOptions } from '../RHF';
 
 import BasicSelectField from './BasicSelectField';
 

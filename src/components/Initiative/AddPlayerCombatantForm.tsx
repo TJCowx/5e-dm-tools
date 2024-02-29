@@ -3,8 +3,7 @@ import { styled } from '@mui/system';
 import { useForm } from 'react-hook-form';
 import { v4 } from 'uuid';
 
-import RHFIntegerField from '@components/Fields/RHF/RHFIntegerField';
-import RHFTextField from '@components/Fields/RHF/RHFTextField';
+import { RHFIntegerField, RHFTextField } from '@components/Fields/RHF';
 import Combatant from '@models/initiative/Combatant';
 
 type Props = {

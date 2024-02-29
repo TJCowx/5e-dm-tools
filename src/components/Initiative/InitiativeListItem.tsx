@@ -5,7 +5,7 @@ import { cyan, grey, red } from '@mui/material/colors';
 import clsx from 'clsx';
 
 import DeadIcon from '@components/Icons/DeadIcon';
-import ListItemText from '@components/List/ListItemText';
+import { ListItemText } from '@components/List';
 import Combatant from '@models/initiative/Combatant';
 
 import CombatantOptions from './CombatantOptions';

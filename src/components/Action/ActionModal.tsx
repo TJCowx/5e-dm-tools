@@ -14,11 +14,13 @@ import {
 import { useMemo, useRef, useState } from 'react';
 import { ValidationError } from 'yup';
 
-import BasicNumberField from '@components/Fields/Basic/BasicNumberField';
-import BasicSwitchField from '@components/Fields/Basic/BasicSwitchField';
-import BasicTextField from '@components/Fields/Basic/BasicTextField';
-import LazySelectField from '@components/Fields/Basic/LazySelectField';
-import Modal from '@components/Modal/Modal';
+import {
+  BasicNumberField,
+  BasicSwitchField,
+  BasicTextField,
+  LazySelectField,
+} from '@components/Fields/Basic';
+import { Modal } from '@components/Modal';
 import Action from '@models/creature/Action';
 import Damage from '@models/creature/Damage';
 

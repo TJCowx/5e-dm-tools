@@ -12,9 +12,8 @@ import { Controller, useForm } from 'react-hook-form';
 import { v4 } from 'uuid';
 
 import { getAllCreatures } from '@api/creatures';
-import FormattedStat from '@components/Creature/FormattedStat';
-import RHFIntegerField from '@components/Fields/RHF/RHFIntegerField';
-import RHFSwitchField from '@components/Fields/RHF/RHFSwitchField';
+import { FormattedStat } from '@components/Creature';
+import { RHFIntegerField, RHFSwitchField } from '@components/Fields/RHF';
 import Creature from '@models/creature/Creature';
 import Combatant from '@models/initiative/Combatant';
 import { getCRFormatted } from '@utils/creatureUtils';

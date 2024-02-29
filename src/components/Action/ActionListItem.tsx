@@ -2,7 +2,6 @@ import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IconButton, ListItemText, Typography } from '@mui/material';
 
-import EditActionButton from '@components/Action/EditActionButton';
 import { ListItemTwoSecondaryActions } from '@components/List';
 import useInvoke from '@hooks/useInvoke';
 import Action from '@models/creature/Action';
@@ -10,6 +9,8 @@ import ActionType from '@models/creature/ActionType';
 import { AttackDelivery, AttackType } from '@models/creature/AttackType';
 import Damage from '@models/creature/Damage';
 import DamageType from '@models/creature/DamageType';
+
+import { EditActionButton } from '.';
 
 type Props = {
   action: Partial<Action>;

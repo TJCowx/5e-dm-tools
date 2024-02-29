@@ -1,8 +1,8 @@
 import { Button, Divider, Typography, styled } from '@mui/material';
 import { open } from '@tauri-apps/api/shell';
 
-import Layout from '@components/Layout/Layout';
 import useNewestRelease from '@hooks/useNewestRelease';
+import useSetPagePadding from '@hooks/useSetPagePadding';
 
 const HeaderDivider = styled(Divider)(() => ({
   marginTop: '8px',
@@ -20,6 +20,7 @@ const VersionContainer = styled('div')(() => ({
 }));
 
 function SettingsPage() {
+  useSetPagePadding(true);
   const { loading, currVer, version, isUpdateAvailable, htmlUrl } =
     useNewestRelease();
 
@@ -28,7 +29,7 @@ function SettingsPage() {
   };
 
   return (
-    <Layout>
+    <>
       <Typography variant="h5">Settings</Typography>
       <HeaderDivider />
       <VersionContainer>
@@ -44,7 +45,7 @@ function SettingsPage() {
           </Button>
         )}
       </VersionContainer>
-    </Layout>
+    </>
   );
 }
 

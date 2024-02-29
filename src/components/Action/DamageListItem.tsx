@@ -2,9 +2,11 @@ import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IconButton, ListItem } from '@mui/material';
 
-import BasicNumberField from '@components/Fields/Basic/BasicNumberField';
-import BasicTextField from '@components/Fields/Basic/BasicTextField';
-import LazySelectField from '@components/Fields/Basic/LazySelectField';
+import {
+  BasicNumberField,
+  BasicTextField,
+  LazySelectField,
+} from '@components/Fields/Basic';
 import Damage from '@models/creature/Damage';
 
 interface Props {

@@ -1,10 +1,12 @@
 import styled from '@emotion/styled';
 import { useState } from 'react';
 
-import AddCombatant from '@components/Initiative/AddCombatant';
-import CreatureCombatantList from '@components/Initiative/CreatureCombatantList';
-import InitiativeList from '@components/Initiative/InitiativeList';
-import { Layout } from '@components/Layout';
+import {
+  AddCombatant,
+  CreatureCombatantList,
+  InitiativeList,
+} from '@components/Initiative';
+import useSetPagePadding from '@hooks/useSetPagePadding';
 import Combatant from '@models/initiative/Combatant';
 import { getCombatantName } from '@utils/creatureUtils';
 
@@ -15,6 +17,7 @@ const PageContainer = styled('div')(() => ({
 }));
 
 function InitiativePage() {
+  useSetPagePadding(false);
   const [creatureCombatants, setCreatureCombatants] = useState(
     new Map<string, Combatant>([]),
   );
@@ -106,17 +109,15 @@ function InitiativePage() {
   };
 
   return (
-    <Layout disablePadding>
-      <PageContainer>
-        <InitiativeList
-          combatants={combatants}
-          onCombatantAliveToggle={toggleAliveState}
-          onCombatantClick={highlightCreatureCombatant}
-        />
-        <CreatureCombatantList combatants={creatureCombatants} />
-        <AddCombatant onAddCombatants={addCombatants} />
-      </PageContainer>
-    </Layout>
+    <PageContainer>
+      <InitiativeList
+        combatants={combatants}
+        onCombatantAliveToggle={toggleAliveState}
+        onCombatantClick={highlightCreatureCombatant}
+      />
+      <CreatureCombatantList combatants={creatureCombatants} />
+      <AddCombatant onAddCombatants={addCombatants} />
+    </PageContainer>
   );
 }
 

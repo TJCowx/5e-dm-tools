@@ -79,7 +79,8 @@ function RHFIntegerField<T extends FieldValues>({
   return (
     <Controller
       name={fieldName}
-      control={control}
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      control={control as any} // I have no idea why the type doesn't work only in this scenario
       rules={rules}
       render={({ field, fieldState }) => (
         <TextField
