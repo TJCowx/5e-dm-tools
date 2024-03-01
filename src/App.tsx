@@ -16,6 +16,7 @@ import CreateCreature from '@pages/creatures/create';
 import EditCreature from '@pages/creatures/edit';
 import Home from '@pages/home';
 import SettingsPage from '@pages/settings';
+import SourcesPage from '@pages/sources';
 
 const muiCache = createCache({
   key: 'mui',
@@ -39,6 +40,7 @@ function App() {
                 <Route path="edit/:creatureId" element={<EditCreature />} />
               </Route>
               <Route path="/settings" element={<SettingsPage />} />
+              <Route path="/sources" element={<SourcesPage />} />
             </Route>
           </Routes>
         </LayoutProvider>
