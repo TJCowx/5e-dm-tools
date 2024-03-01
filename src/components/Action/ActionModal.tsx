@@ -2,7 +2,6 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   Alert,
-  Button,
   Divider,
   List,
   ListItem,
@@ -20,7 +19,7 @@ import {
   BasicTextField,
   LazySelectField,
 } from '@components/Fields/Basic';
-import { Modal } from '@components/Modal';
+import { Modal, ModalActions } from '@components/Modal';
 import Action from '@models/creature/Action';
 import Damage from '@models/creature/Damage';
 
@@ -42,9 +41,6 @@ const StyledForm = styled('div')(() => ({
   flexDirection: 'column',
   '& .mb-16': { marginBottom: '16px' },
   '& .mb-12': { marginBottom: '12px' },
-  '& .actions-container > *:not(:last-of-type)': {
-    marginRight: '16px',
-  },
   '& .grid': {
     display: 'grid',
     gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
@@ -313,7 +309,8 @@ function ActionModal({
             {!!errors.damages?.length && (
               <Alert
                 severity="error"
-                sx={{ marginTop: '12px', marginBottom: '12px' }}>
+                sx={{ marginTop: '12px', marginBottom: '12px' }}
+              >
                 {errors.damages}
               </Alert>
             )}
@@ -338,16 +335,7 @@ function ActionModal({
             </List>
           </>
         )}
-        <div className="actions-container">
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button
-            variant="contained"
-            disableElevation
-            type="button"
-            onClick={onSubmit}>
-            Save
-          </Button>
-        </div>
+        <ModalActions onCancel={handleClose} onSubmit={onSubmit} />
       </StyledForm>
     </Modal>
   );

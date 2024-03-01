@@ -4,6 +4,7 @@ import { IconButton, Tooltip } from '@mui/material';
 import { useState } from 'react';
 
 import { PageHeader } from '@components/Layout';
+import { AddSourceModal } from '@components/Sources';
 
 export default function SourcesPage() {
   const [isAddOpen, setIsAddOpen] = useState(false);
@@ -26,7 +27,7 @@ export default function SourcesPage() {
         }
       />
       <div>This is where stuff goes</div>
-      {isAddOpen && <div>TODO:</div>}
+      <AddSourceModal isOpen={isAddOpen} onClose={() => setIsAddOpen(false)} />
     </>
   );
 }
