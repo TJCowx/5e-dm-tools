@@ -5,10 +5,13 @@ pub fn get_sources_list() -> Result<Vec<SourceListItem>, ()> {
     println!("[server] Getting sources list...");
 
     let sources = SourceDto::get_all();
-    let list_items = sources
+    let list_items: Vec<SourceListItem> = sources
         .into_iter()
         .map(|s| SourceListItem::from(s))
         .collect();
+
+    println!("[server] Retrieved {} sources", list_items.len());
+
     Ok(list_items)
 }
 
@@ -27,6 +30,8 @@ pub fn add_source(new_source: SourceDto) -> Result<(), String> {
         false => {
             println!("[server] Source doesn't exist, creating...");
             SourceDto::insert(new_source);
+
+            println!("[server] Successfully added new source!");
 
             Ok(())
         }

@@ -3,6 +3,7 @@ use serde::{Deserialize, Serialize};
 use crate::dto::{creature::creature_dto::CreatureDto, source::source_dto::SourceDto};
 
 #[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct SourceListItem {
     pub abbreviation: String,
     pub name: String,

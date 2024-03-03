@@ -273,10 +273,14 @@ impl CreatureDto {
     pub fn get_count_by_source_abbr(abbr: &String) -> i64 {
         let conn = &mut connect_db();
 
-        all_creatures
+        let c_count = all_creatures
             .filter(source_abbr.eq(abbr))
             .select(count(source_abbr))
             .get_result::<i64>(conn)
-            .expect("Error getting creatures count")
+            .expect("Error getting creatures count");
+
+        println!("[server] {} creatures on {}", c_count, abbr);
+
+        c_count
     }
 }

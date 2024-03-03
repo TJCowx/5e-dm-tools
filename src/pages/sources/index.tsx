@@ -1,6 +1,13 @@
 import { faPen, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Divider, IconButton, List, Tooltip } from '@mui/material';
+import {
+  Alert,
+  Divider,
+  IconButton,
+  Link as MuiLink,
+  List,
+  Tooltip,
+} from '@mui/material';
 import { Fragment, useState } from 'react';
 import { Link } from 'react-router-dom';
 
@@ -19,7 +26,6 @@ export default function SourcesPage() {
   useSetPagePadding(true);
   const [isAddOpen, setIsAddOpen] = useState(false);
 
-  // TODO: Get list of sources
   const { isLoading, data, error, invoke } =
     useInvoke<SourceListItem[]>('get_sources_list');
 
@@ -27,6 +33,7 @@ export default function SourcesPage() {
     <>
       <PageHeader
         title="Sources"
+        topMarginOnly
         endSlotComponent={
           <Tooltip title="Add new source">
             <IconButton
@@ -39,6 +46,14 @@ export default function SourcesPage() {
           </Tooltip>
         }
       />
+      {error && (
+        <Alert severity="error" className="mb-16">
+          There was an error loading sources. Please{' '}
+          <MuiLink component="button" onClick={invoke}>
+            try again.
+          </MuiLink>
+        </Alert>
+      )}
       {isLoading ? (
         <SkeletonList />
       ) : (
