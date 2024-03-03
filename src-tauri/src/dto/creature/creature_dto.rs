@@ -4,7 +4,7 @@ use crate::{
     models::{creature::Creature, editable_creature::EditableCreature},
     schema::creatures::{self, dsl::creatures as all_creatures, source_abbr},
 };
-use diesel::{dsl::count, prelude::*, sql_types::BigInt};
+use diesel::{dsl::count, prelude::*};
 use serde::{Deserialize, Serialize};
 
 use super::{

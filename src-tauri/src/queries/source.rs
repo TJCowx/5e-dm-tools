@@ -1,11 +1,6 @@
 use crate::{dto::source::source_dto::SourceDto, models::source::list_item::SourceListItem};
 
 #[tauri::command]
-pub fn get_all_sources() -> Result<Vec<SourceDto>, String> {
-    Ok(vec![])
-}
-
-#[tauri::command]
 pub fn get_sources_list() -> Result<Vec<SourceListItem>, ()> {
     println!("[server] Getting sources list...");
 

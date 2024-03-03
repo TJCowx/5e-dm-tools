@@ -43,7 +43,6 @@ fn main() {
             queries::proficiency::get_all_proficiencies,
             queries::size::get_all_sizes,
             queries::source::add_source,
-            queries::source::get_all_sources,
             queries::source::get_sources_list
         ])
         .setup(|_app| {
