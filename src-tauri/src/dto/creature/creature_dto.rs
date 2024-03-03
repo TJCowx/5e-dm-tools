@@ -2,9 +2,9 @@ use crate::{
     db::connect_db,
     dto::creature::new_creature_dto::NewCreatureDto,
     models::{creature::Creature, editable_creature::EditableCreature},
-    schema::creatures::{self, dsl::creatures as all_creatures},
+    schema::creatures::{self, dsl::creatures as all_creatures, source_abbr},
 };
-use diesel::prelude::*;
+use diesel::{dsl::count, prelude::*, sql_types::BigInt};
 use serde::{Deserialize, Serialize};
 
 use super::{
@@ -268,5 +268,15 @@ impl CreatureDto {
 
             Ok(())
         })
+    }
+
+    pub fn get_count_by_source_abbr(abbr: &String) -> i64 {
+        let conn = &mut connect_db();
+
+        all_creatures
+            .filter(source_abbr.eq(abbr))
+            .select(count(source_abbr))
+            .get_result::<i64>(conn)
+            .expect("Error getting creatures count")
     }
 }

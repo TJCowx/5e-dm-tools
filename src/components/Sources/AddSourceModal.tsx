@@ -1,9 +1,13 @@
+import Alert from '@mui/material/Alert';
 import { styled } from '@mui/system';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
+import { addNewSource } from '@api/sources';
 import { RHFTextField } from '@components/Fields/RHF';
 import { Modal, ModalActions } from '@components/Modal';
 import Source from '@models/Source';
+import { logMessage } from '@utils/loggingUtils';
 
 const StyledForm = styled('form')(() => ({
   display: 'flex',
@@ -22,9 +26,13 @@ const DefaultValues: Source = {
 };
 
 export default function AddSourceModal({ isOpen, onClose }: Props) {
-  const { control, handleSubmit, reset } = useForm<Source>({
+  const [error, setError] = useState<string>();
+
+  const { control, handleSubmit, reset, watch } = useForm<Source>({
     defaultValues: DefaultValues,
   });
+
+  const abbr = watch('abbreviation');
 
   const handleClose = () => {
     reset();
@@ -32,12 +40,28 @@ export default function AddSourceModal({ isOpen, onClose }: Props) {
   };
 
   const onSubmit = (data: Source) => {
-    // TODO: Call
-    console.log(data);
+    addNewSource(data)
+      .then(() => {
+        reset();
+        onClose();
+      })
+      .catch((e) => {
+        logMessage('error', e);
+        setError(e);
+      });
   };
+
+  useEffect(() => {
+    if (error) setError(undefined);
+  }, [abbr]);
 
   return (
     <Modal title="Add Source" isOpen={isOpen} onClose={handleClose}>
+      {error && (
+        <Alert severity="error" className="mb-16">
+          {error}
+        </Alert>
+      )}
       <StyledForm onSubmit={handleSubmit(onSubmit)}>
         <RHFTextField
           fieldName="abbreviation"

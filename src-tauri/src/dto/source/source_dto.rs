@@ -1,12 +1,12 @@
-use diesel::prelude::*;
+use diesel::{dsl::exists, prelude::*, select};
 use serde::{Deserialize, Serialize};
 
-#[derive(Debug, Deserialize, Serialize, Queryable)]
-#[diesel(table_name = crate::schema::alignments)]
+#[derive(Debug, Deserialize, Serialize, Insertable, Queryable)]
+#[diesel(table_name = crate::schema::sources)]
 #[diesel(check_for_backend(diesel::sqlite::Sqlite))]
 pub struct SourceDto {
-    abbreviation: String,
-    name: String,
+    pub abbreviation: String,
+    pub name: String,
 }
 
 impl SourceDto {
@@ -29,5 +29,26 @@ impl SourceDto {
             .filter(abbreviation.eq(source_abbr))
             .first::<SourceDto>(conn)
             .expect("Error loading source")
+    }
+
+    pub fn does_abbr_exist(abbr: &String) -> bool {
+        use crate::schema::sources::dsl::*;
+
+        let conn = &mut crate::db::connect_db();
+
+        select(exists(sources.filter(abbreviation.eq(abbr))))
+            .get_result::<bool>(conn)
+            .expect("Error getting id")
+    }
+
+    pub fn insert(source: SourceDto) -> usize {
+        use crate::schema::sources::dsl::*;
+
+        let conn = &mut crate::db::connect_db();
+
+        diesel::insert_into(sources)
+            .values(source)
+            .execute(conn)
+            .expect("Error saving source")
     }
 }
