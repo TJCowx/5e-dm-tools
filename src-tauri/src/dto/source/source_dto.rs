@@ -62,4 +62,12 @@ impl SourceDto {
             .set(source)
             .execute(conn)
     }
+
+    pub fn delete(abbr: &String) -> Result<usize, diesel::result::Error> {
+        use crate::schema::sources::dsl::*;
+
+        let conn = &mut crate::db::connect_db();
+
+        diesel::delete(sources.find(abbr)).execute(conn)
+    }
 }

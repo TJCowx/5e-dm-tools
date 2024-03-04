@@ -16,7 +16,11 @@ export async function addNewSource(source: Source) {
 export async function updateSource(source: Source) {
   const { invoke } = await import('@tauri-apps/api/tauri');
 
-  return invoke('edit_source', {
-    source,
-  });
+  return invoke('edit_source', { source });
+}
+
+export async function deleteSource(abbr: string) {
+  const { invoke } = await import('@tauri-apps/api/tauri');
+
+  return invoke('remove_source', { abbr });
 }

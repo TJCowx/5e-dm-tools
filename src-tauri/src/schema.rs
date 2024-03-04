@@ -138,41 +138,6 @@ diesel::table! {
 }
 
 diesel::table! {
-    creatures_old (id) {
-        id -> Integer,
-        name -> Text,
-        description -> Nullable<Text>,
-        armour_class -> Integer,
-        hit_points -> Integer,
-        hit_die -> Text,
-        saving_throws -> Text,
-        land_speed -> Nullable<Integer>,
-        fly_speed -> Nullable<Integer>,
-        burrow_speed -> Nullable<Integer>,
-        climb_speed -> Nullable<Integer>,
-        hover_speed -> Nullable<Integer>,
-        blindsight -> Nullable<Integer>,
-        darkvision -> Nullable<Integer>,
-        tremorsense -> Nullable<Integer>,
-        truesight -> Nullable<Integer>,
-        strength -> Integer,
-        dexterity -> Integer,
-        constitution -> Integer,
-        intelligence -> Integer,
-        wisdom -> Integer,
-        charisma -> Integer,
-        prof_bonus -> Integer,
-        challenge_rating -> Float,
-        reward_xp -> Integer,
-        is_legendary -> Bool,
-        has_lair -> Bool,
-        alignment_id -> Integer,
-        creature_type_id -> Integer,
-        size_id -> Integer,
-    }
-}
-
-diesel::table! {
     creatures_proficiencies (id) {
         id -> Integer,
         creature_id -> Integer,
@@ -231,29 +196,19 @@ diesel::table! {
     }
 }
 
-diesel::joinable!(creature_abilities -> creatures_old (creature_id));
 diesel::joinable!(creature_action_damages -> creature_actions (action_id));
 diesel::joinable!(creature_action_damages -> damage_types (type_id));
 diesel::joinable!(creature_actions -> action_types (action_type_id));
 diesel::joinable!(creature_actions -> attack_deliveries (attack_delivery_id));
 diesel::joinable!(creature_actions -> attack_types (attack_type_id));
-diesel::joinable!(creature_actions -> creatures_old (creature_id));
 diesel::joinable!(creatures -> alignments (alignment_id));
 diesel::joinable!(creatures -> creature_types (creature_type_id));
 diesel::joinable!(creatures -> sources (source_abbr));
 diesel::joinable!(creatures_condition_immunities -> condition_types (condition_type_id));
-diesel::joinable!(creatures_condition_immunities -> creatures_old (creature_id));
-diesel::joinable!(creatures_immunities -> creatures_old (creature_id));
 diesel::joinable!(creatures_immunities -> damage_types (damage_type_id));
-diesel::joinable!(creatures_languages -> creatures_old (creature_id));
 diesel::joinable!(creatures_languages -> languages (language_id));
-diesel::joinable!(creatures_old -> alignments (alignment_id));
-diesel::joinable!(creatures_old -> creature_types (creature_type_id));
-diesel::joinable!(creatures_proficiencies -> creatures_old (creature_id));
 diesel::joinable!(creatures_proficiencies -> proficiencies (proficiency_id));
-diesel::joinable!(creatures_resistances -> creatures_old (creature_id));
 diesel::joinable!(creatures_resistances -> damage_types (damage_type_id));
-diesel::joinable!(creatures_weaknesses -> creatures_old (creature_id));
 diesel::joinable!(creatures_weaknesses -> damage_types (damage_type_id));
 
 diesel::allow_tables_to_appear_in_same_query!(
@@ -270,7 +225,6 @@ diesel::allow_tables_to_appear_in_same_query!(
     creatures_condition_immunities,
     creatures_immunities,
     creatures_languages,
-    creatures_old,
     creatures_proficiencies,
     creatures_resistances,
     creatures_weaknesses,

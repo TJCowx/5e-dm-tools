@@ -64,3 +64,19 @@ pub fn edit_source(source: SourceDto) -> Result<(), String> {
         }
     }
 }
+
+#[tauri::command]
+pub fn remove_source(abbr: String) -> Result<(), String> {
+    println!("[server] Removing source {}", abbr);
+
+    match SourceDto::delete(&abbr) {
+        Ok(_) => {
+            println!("[server] Source {} successfully removed!", abbr);
+            Ok(())
+        }
+        Err(e) => {
+            println!("[server] Error removing source... {}", e);
+            Err("Error deleting the source".to_string())
+        }
+    }
+}

@@ -165,47 +165,65 @@ impl CreatureDto {
         println!("{:?}", creature);
 
         conn.transaction(|connection| {
+            println!("[server] [CREATURE] Inserting creature...");
             let inserted_creature: CreatureDto = diesel::insert_into(creatures::table)
                 .values(NewCreatureDto::from(&creature))
                 .get_result(connection)?;
+
+            println!("[server] [CREATURE] Creature inserted successfully!");
 
             CreatureProfDto::save_creature_profs(
                 connection,
                 creature.proficiencies,
                 &inserted_creature.id,
             )?;
+            println!("[server] [CREATURE] Proficiencies inserted successfully!");
+
             CreatureImmunityDto::save_creature_immunities(
                 connection,
                 creature.immunities,
                 &inserted_creature.id,
             )?;
+            println!("[server] [CREATURE] immunities inserted successfully!");
+
             CreatureCondImmunityDto::save_creature_cond_immunities(
                 connection,
                 creature.cond_immunities,
                 &inserted_creature.id,
             )?;
+            println!("[server] [CREATURE] Cond immunities inserted successfully!");
+
             CreatureResistanceDto::save_creature_resistances(
                 connection,
                 creature.resistances,
                 &inserted_creature.id,
             )?;
+            println!("[server] [CREATURE] Resistances inserted successfully!");
+
             CreatureWeaknessDto::save_creature_weaknesses(
                 connection,
                 creature.weaknesses,
                 &inserted_creature.id,
             )?;
+            println!("[server] [CREATURE] weaknesses inserted successfully!");
+
             CreatureLanguageDto::save_creature_languages(
                 connection,
                 creature.languages,
                 &inserted_creature.id,
             )?;
+            println!("[server] [CREATURE] languages inserted successfully!");
+
             CreatureAbilityDto::save_abilities(
                 connection,
                 creature.abilities,
                 &inserted_creature.id,
             )?;
+            println!("[server] [CREATURE] Abilities saved successfully!");
+
             CreatureActionDto::save_actions(connection, creature.actions, &inserted_creature.id)?;
 
+            println!("[server] [CREATURE] Actions saved successfully!");
             Ok(())
         })
     }
