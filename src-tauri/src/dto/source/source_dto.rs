@@ -1,7 +1,7 @@
 use diesel::{dsl::exists, prelude::*, select};
 use serde::{Deserialize, Serialize};
 
-#[derive(Debug, Deserialize, Serialize, Insertable, Queryable)]
+#[derive(Clone, Debug, Deserialize, Serialize, Insertable, Queryable, AsChangeset)]
 #[diesel(table_name = crate::schema::sources)]
 #[diesel(check_for_backend(diesel::sqlite::Sqlite))]
 pub struct SourceDto {
@@ -50,5 +50,15 @@ impl SourceDto {
             .values(source)
             .execute(conn)
             .expect("Error saving source")
+    }
+
+    pub fn update(source: SourceDto) -> Result<usize, diesel::result::Error> {
+        use crate::schema::sources::dsl::*;
+
+        let conn = &mut crate::db::connect_db();
+
+        diesel::update(sources.find(source.abbreviation.clone()))
+            .set(source)
+            .execute(conn)
     }
 }

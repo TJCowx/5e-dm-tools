@@ -1,3 +1,5 @@
+use std::fmt::format;
+
 use crate::{dto::source::source_dto::SourceDto, models::source::list_item::SourceListItem};
 
 #[tauri::command]
@@ -21,7 +23,7 @@ pub fn add_source(new_source: SourceDto) -> Result<(), String> {
 
     match SourceDto::does_abbr_exist(&new_source.abbreviation) {
         true => {
-            println!("[server[ Source already exists");
+            println!("[server] Source already exists");
             Err(format!(
                 "There is already a source with the abbreviation of {}",
                 &new_source.abbreviation
@@ -34,6 +36,22 @@ pub fn add_source(new_source: SourceDto) -> Result<(), String> {
             println!("[server] Successfully added new source!");
 
             Ok(())
+        }
+    }
+}
+
+#[tauri::command]
+pub fn edit_source(source: SourceDto) -> Result<(), String> {
+    println!("[server] Updating source...");
+
+    match SourceDto::update(source) {
+        Ok(_) => {
+            println!("[server] Successfully updated the source!");
+            Ok(())
+        }
+        Err(e) => {
+            println!("[server] Error updating the source! {}", e);
+            Err("There was an error updating your source".to_string())
         }
     }
 }

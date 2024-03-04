@@ -4,8 +4,8 @@ import {
   Alert,
   Divider,
   IconButton,
-  Link as MuiLink,
   List,
+  Link as MuiLink,
   Tooltip,
 } from '@mui/material';
 import { Fragment, useState } from 'react';
@@ -17,17 +17,25 @@ import {
   ListItemTwoSecondaryActions,
   SkeletonList,
 } from '@components/List';
-import { AddSourceModal } from '@components/Sources';
+import { SourceModal } from '@components/Sources';
 import useInvoke from '@hooks/useInvoke';
 import useSetPagePadding from '@hooks/useSetPagePadding';
+import Source from '@models/source/Source';
 import SourceListItem from '@models/source/SourceListItem';
 
 export default function SourcesPage() {
   useSetPagePadding(true);
   const [isAddOpen, setIsAddOpen] = useState(false);
+  const [edittingSource, setEdittingSource] = useState<Source | null>();
 
   const { isLoading, data, error, invoke } =
     useInvoke<SourceListItem[]>('get_sources_list');
+
+  const handleSuccessfulUpdate = () => {
+    setIsAddOpen(false);
+    setEdittingSource(null);
+    invoke();
+  };
 
   return (
     <>
@@ -63,11 +71,12 @@ export default function SourcesPage() {
               <ListItemTwoSecondaryActions
                 secondaryAction={
                   <>
-                    <Link to={`edit/${abbreviation}`}>
-                      <IconButton aria-label={`Edit ${name}`}>
-                        <FontAwesomeIcon size="xs" icon={faPen} />
-                      </IconButton>
-                    </Link>
+                    <IconButton
+                      aria-label={`Edit ${name}`}
+                      onClick={() => setEdittingSource({ abbreviation, name })}
+                    >
+                      <FontAwesomeIcon size="xs" icon={faPen} />
+                    </IconButton>
                     <IconButton
                       edge="end"
                       aria-label={`Delete ${name}`}
@@ -89,7 +98,19 @@ export default function SourcesPage() {
           ))}
         </List>
       )}
-      <AddSourceModal isOpen={isAddOpen} onClose={() => setIsAddOpen(false)} />
+      <SourceModal
+        isOpen={isAddOpen}
+        mode="create"
+        onSuccess={handleSuccessfulUpdate}
+        onClose={() => setIsAddOpen(false)}
+      />
+      <SourceModal
+        isOpen={edittingSource != null}
+        initialValue={edittingSource}
+        mode="edit"
+        onSuccess={handleSuccessfulUpdate}
+        onClose={() => setEdittingSource(null)}
+      />
     </>
   );
 }

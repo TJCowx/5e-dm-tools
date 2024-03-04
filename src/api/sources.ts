@@ -1,4 +1,4 @@
-import Source from '@models/Source';
+import Source from '@models/source/Source';
 
 export async function getAllSources(): Promise<Source[]> {
   const { invoke } = await import('@tauri-apps/api/tauri');
@@ -10,5 +10,13 @@ export async function addNewSource(source: Source) {
 
   return invoke('add_source', {
     newSource: source,
+  });
+}
+
+export async function updateSource(source: Source) {
+  const { invoke } = await import('@tauri-apps/api/tauri');
+
+  return invoke('edit_source', {
+    source,
   });
 }

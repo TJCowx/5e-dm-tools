@@ -43,7 +43,8 @@ fn main() {
             queries::proficiency::get_all_proficiencies,
             queries::size::get_all_sizes,
             queries::source::add_source,
-            queries::source::get_sources_list
+            queries::source::get_sources_list,
+            queries::source::edit_source
         ])
         .setup(|_app| {
             db::init();

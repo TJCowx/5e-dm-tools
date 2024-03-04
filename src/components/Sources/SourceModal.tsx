@@ -1,12 +1,12 @@
 import Alert from '@mui/material/Alert';
 import { styled } from '@mui/system';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
-import { addNewSource } from '@api/sources';
+import { addNewSource, updateSource } from '@api/sources';
 import { RHFTextField } from '@components/Fields/RHF';
 import { Modal, ModalActions } from '@components/Modal';
-import Source from '@models/Source';
+import Source from '@models/source/Source';
 import { logMessage } from '@utils/loggingUtils';
 
 const StyledForm = styled('form')(() => ({
@@ -17,6 +17,9 @@ const StyledForm = styled('form')(() => ({
 
 interface Props {
   isOpen: boolean;
+  initialValue?: Source;
+  mode: 'create' | 'edit';
+  onSuccess: () => void;
   onClose: () => void;
 }
 
@@ -25,11 +28,22 @@ const DefaultValues: Source = {
   name: '',
 };
 
-export default function AddSourceModal({ isOpen, onClose }: Props) {
+export default function AddSourceModal({
+  isOpen,
+  initialValue = DefaultValues,
+  mode,
+  onSuccess,
+  onClose,
+}: Props) {
+  const saveFn = useMemo(
+    () => (mode === 'create' ? addNewSource : updateSource),
+    [mode],
+  );
+
   const [error, setError] = useState<string>();
 
   const { control, handleSubmit, reset, watch } = useForm<Source>({
-    defaultValues: DefaultValues,
+    defaultValues: initialValue,
   });
 
   const abbr = watch('abbreviation');
@@ -40,10 +54,10 @@ export default function AddSourceModal({ isOpen, onClose }: Props) {
   };
 
   const onSubmit = (data: Source) => {
-    addNewSource(data)
+    saveFn(data)
       .then(() => {
         reset();
-        onClose();
+        onSuccess();
       })
       .catch((e) => {
         logMessage('error', e);
@@ -54,6 +68,12 @@ export default function AddSourceModal({ isOpen, onClose }: Props) {
   useEffect(() => {
     if (error) setError(undefined);
   }, [abbr]);
+
+  useEffect(() => {
+    if (isOpen && initialValue) {
+      reset(initialValue);
+    }
+  }, [initialValue, isOpen]);
 
   return (
     <Modal title="Add Source" isOpen={isOpen} onClose={handleClose}>
