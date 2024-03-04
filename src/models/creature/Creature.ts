@@ -1,3 +1,5 @@
+import Source from '@models/source/Source';
+
 import Ability from './Ability';
 import Action from './Action';
 import Alignment from './Alignment';
@@ -43,6 +45,7 @@ type BaseCreature = {
   alignmentId: number;
   creatureTypeId: number;
   sizeId: number;
+  sourceAbbr?: string | null;
 
   languageIds: number[];
   proficiencyIds: number[];
@@ -53,6 +56,7 @@ type BaseCreature = {
 
   abilities: Partial<Ability>[];
   actions: Partial<Action>[];
+  source?: Source | null;
 };
 
 type Creature = BaseCreature & {
@@ -60,7 +64,8 @@ type Creature = BaseCreature & {
 
   creatureType: CreatureType;
   alignment: Alignment;
-  size?: CreatureSize;
+  size: CreatureSize;
+  source?: Source;
   proficiencies?: Proficiency[];
   savingThrows?: Attribute[];
   immunities?: DamageType[];

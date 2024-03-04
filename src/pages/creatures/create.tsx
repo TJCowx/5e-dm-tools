@@ -15,6 +15,7 @@ const DefaultValues: Partial<Creature> = {
   sizeId: undefined,
   creatureTypeId: undefined,
   alignmentId: undefined,
+  sourceAbbr: null,
 
   armourClass: undefined,
   hitPoints: undefined,

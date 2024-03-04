@@ -1,4 +1,9 @@
-import { faPen, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
+import {
+  faBook,
+  faPen,
+  faPlus,
+  faTrash,
+} from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   Alert,
@@ -15,6 +20,7 @@ import {
   ListItemText,
   Link as MuiLink,
   Skeleton,
+  Tooltip,
   styled,
 } from '@mui/material';
 import { Fragment, useEffect, useState } from 'react';
@@ -30,7 +36,10 @@ import { logMessage } from '@utils/loggingUtils';
 
 const ActionContainer = styled('div')(() => ({
   display: 'flex',
-  justifyContent: 'space-between',
+  columnGap: '16px',
+  '& .new-creature-btn': {
+    marginLeft: 'auto',
+  },
   '& .MuiButtonBase-root': {
     alignSelf: 'center',
   },
@@ -119,7 +128,15 @@ function Creatures() {
           label="Search"
           onChange={(val) => setFilterText(val)}
         />
+        <Tooltip title="Sources">
+          <Link to="/sources">
+            <IconButton aria-label="Sources" color="primary">
+              <FontAwesomeIcon icon={faBook} />
+            </IconButton>
+          </Link>
+        </Tooltip>
         <IconButton
+          className="new-creature-btn"
           aria-label="Create new creature"
           component={Link}
           to="create">

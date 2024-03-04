@@ -43,6 +43,7 @@ pub struct EditableCreature {
     pub alignment_id: i32,
     pub creature_type_id: i32,
     pub size_id: i32,
+    pub source_abbr: Option<String>,
 
     pub proficiencies: Vec<i32>,
     pub immunities: Vec<i32>,
@@ -92,6 +93,7 @@ impl From<CreatureDto> for EditableCreature {
             alignment_id: creature.alignment_id,
             creature_type_id: creature.creature_type_id,
             size_id: creature.size_id,
+            source_abbr: creature.source_abbr,
             proficiencies: CreatureProfDto::get_prof_ids_by_creature_id(&creature.id),
             immunities: CreatureImmunityDto::get_immunity_ids_by_creature_id(&creature.id),
             cond_immunities: CreatureCondImmunityDto::get_cond_ids_by_creature_id(&creature.id),

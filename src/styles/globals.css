@@ -50,3 +50,7 @@ a.reset {
   margin-top: 16px;
   margin-bottom: 16px;
 }
+
+.mb-16 {
+  margin-bottom: 16px;
+}

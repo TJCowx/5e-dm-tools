@@ -1,13 +1,12 @@
-import { Button, Divider, Typography, styled } from '@mui/material';
+import { faBook } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Button, Typography, styled } from '@mui/material';
 import { open } from '@tauri-apps/api/shell';
+import { useNavigate } from 'react-router-dom';
 
+import { PageHeader } from '@components/Layout';
 import useNewestRelease from '@hooks/useNewestRelease';
 import useSetPagePadding from '@hooks/useSetPagePadding';
-
-const HeaderDivider = styled(Divider)(() => ({
-  marginTop: '8px',
-  marginBottom: '16px',
-}));
 
 const VersionContainer = styled('div')(() => ({
   display: 'flex',
@@ -21,6 +20,7 @@ const VersionContainer = styled('div')(() => ({
 
 function SettingsPage() {
   useSetPagePadding(true);
+  const navigate = useNavigate();
   const { loading, currVer, version, isUpdateAvailable, htmlUrl } =
     useNewestRelease();
 
@@ -30,8 +30,14 @@ function SettingsPage() {
 
   return (
     <>
-      <Typography variant="h5">Settings</Typography>
-      <HeaderDivider />
+      <PageHeader title="Settings" />
+      <Button
+        className="mb-16"
+        variant="outlined"
+        startIcon={<FontAwesomeIcon icon={faBook} />}
+        onClick={() => navigate('/sources')}>
+        Sources
+      </Button>
       <VersionContainer>
         <div className="version">
           <Typography variant="subtitle1">Version:&nbsp;</Typography>

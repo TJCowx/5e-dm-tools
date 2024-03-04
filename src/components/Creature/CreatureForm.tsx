@@ -189,6 +189,16 @@ function CreatureForm({ control, onSubmit, watch }: Props) {
             min={0}
             isRequired
           />
+          <RHFLazySelect
+            control={control}
+            fieldName="sourceAbbr"
+            label="Source"
+            queryArgs={{
+              queryName: 'get_all_sources',
+              valueKey: 'abbreviation',
+              textKey: 'name',
+            }}
+          />
         </div>
       </section>
       <section>
@@ -422,11 +432,13 @@ function CreatureForm({ control, onSubmit, watch }: Props) {
                       aria-label={`Delete ${ability.name}`}
                       edge="end"
                       color="warning"
-                      onClick={() => removeAbility(i)}>
+                      onClick={() => removeAbility(i)}
+                    >
                       <FontAwesomeIcon icon={faTrash} />
                     </IconButton>
                   </>
-                }>
+                }
+              >
                 <ListItemText
                   primary={ability.name ?? ''}
                   secondary={ability.description ?? ''}
@@ -466,7 +478,8 @@ function CreatureForm({ control, onSubmit, watch }: Props) {
           variant="contained"
           disableElevation
           type="submit"
-          className="right-align">
+          className="right-align"
+        >
           Save
         </Button>
       </div>

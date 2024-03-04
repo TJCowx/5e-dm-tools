@@ -1,3 +1,5 @@
+use std::error::Error;
+
 use crate::dto::creature::creature_dto::CreatureDto;
 use crate::models::creature::Creature;
 use crate::models::editable_creature::EditableCreature;
@@ -24,6 +26,7 @@ pub fn add_creature(new_creature: NewCreature) -> Result<(), String> {
         }
         Err(e) => {
             println!("[server] Error adding creature: {}", e);
+            println!("[server] Trace: {:#?}", e.source());
             Err("Error adding creature".to_string())
         }
     }

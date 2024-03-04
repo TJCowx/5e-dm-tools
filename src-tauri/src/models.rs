@@ -4,3 +4,4 @@ pub mod creature_action;
 pub mod creature_action_damage;
 pub mod editable_creature;
 pub mod new_creature;
+pub mod source;

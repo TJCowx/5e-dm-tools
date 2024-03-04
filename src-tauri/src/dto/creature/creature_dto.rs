@@ -2,9 +2,9 @@ use crate::{
     db::connect_db,
     dto::creature::new_creature_dto::NewCreatureDto,
     models::{creature::Creature, editable_creature::EditableCreature},
-    schema::creatures::{self, dsl::creatures as all_creatures},
+    schema::creatures::{self, dsl::creatures as all_creatures, source_abbr},
 };
-use diesel::prelude::*;
+use diesel::{dsl::count, prelude::*};
 use serde::{Deserialize, Serialize};
 
 use super::{
@@ -51,11 +51,13 @@ pub struct CreatureDto {
     pub alignment_id: i32,
     pub creature_type_id: i32,
     pub size_id: i32,
+
+    pub source_abbr: Option<String>,
 }
 
 impl From<Creature> for CreatureDto {
     fn from(creature: Creature) -> Self {
-        CreatureDto {
+        Self {
             id: creature.id,
             name: creature.name,
             description: creature.description,
@@ -86,6 +88,7 @@ impl From<Creature> for CreatureDto {
             alignment_id: creature.alignment_id,
             creature_type_id: creature.creature_type_id,
             size_id: creature.size_id,
+            source_abbr: creature.source_abbr,
         }
     }
 }
@@ -123,6 +126,7 @@ impl From<&EditableCreature> for CreatureDto {
             alignment_id: creature.alignment_id,
             creature_type_id: creature.creature_type_id,
             size_id: creature.size_id,
+            source_abbr: creature.source_abbr.clone(),
         }
     }
 }
@@ -161,47 +165,65 @@ impl CreatureDto {
         println!("{:?}", creature);
 
         conn.transaction(|connection| {
+            println!("[server] [CREATURE] Inserting creature...");
             let inserted_creature: CreatureDto = diesel::insert_into(creatures::table)
                 .values(NewCreatureDto::from(&creature))
                 .get_result(connection)?;
+
+            println!("[server] [CREATURE] Creature inserted successfully!");
 
             CreatureProfDto::save_creature_profs(
                 connection,
                 creature.proficiencies,
                 &inserted_creature.id,
             )?;
+            println!("[server] [CREATURE] Proficiencies inserted successfully!");
+
             CreatureImmunityDto::save_creature_immunities(
                 connection,
                 creature.immunities,
                 &inserted_creature.id,
             )?;
+            println!("[server] [CREATURE] immunities inserted successfully!");
+
             CreatureCondImmunityDto::save_creature_cond_immunities(
                 connection,
                 creature.cond_immunities,
                 &inserted_creature.id,
             )?;
+            println!("[server] [CREATURE] Cond immunities inserted successfully!");
+
             CreatureResistanceDto::save_creature_resistances(
                 connection,
                 creature.resistances,
                 &inserted_creature.id,
             )?;
+            println!("[server] [CREATURE] Resistances inserted successfully!");
+
             CreatureWeaknessDto::save_creature_weaknesses(
                 connection,
                 creature.weaknesses,
                 &inserted_creature.id,
             )?;
+            println!("[server] [CREATURE] weaknesses inserted successfully!");
+
             CreatureLanguageDto::save_creature_languages(
                 connection,
                 creature.languages,
                 &inserted_creature.id,
             )?;
+            println!("[server] [CREATURE] languages inserted successfully!");
+
             CreatureAbilityDto::save_abilities(
                 connection,
                 creature.abilities,
                 &inserted_creature.id,
             )?;
+            println!("[server] [CREATURE] Abilities saved successfully!");
+
             CreatureActionDto::save_actions(connection, creature.actions, &inserted_creature.id)?;
 
+            println!("[server] [CREATURE] Actions saved successfully!");
             Ok(())
         })
     }
@@ -264,5 +286,19 @@ impl CreatureDto {
 
             Ok(())
         })
+    }
+
+    pub fn get_count_by_source_abbr(abbr: &String) -> i64 {
+        let conn = &mut connect_db();
+
+        let c_count = all_creatures
+            .filter(source_abbr.eq(abbr))
+            .select(count(source_abbr))
+            .get_result::<i64>(conn)
+            .expect("Error getting creatures count");
+
+        println!("[server] {} creatures on {}", c_count, abbr);
+
+        c_count
     }
 }
