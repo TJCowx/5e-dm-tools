@@ -19,9 +19,9 @@ type Props = {
 
 const StyledListItem = styled(ListItem)(({ theme }) => ({
   '&.active': {
-    background: red[50],
+    background: theme.palette.mode === 'light' ? red[50] : red[900],
     '&.is-player': {
-      background: cyan[50],
+      background: theme.palette.mode === 'light' ? cyan[50] : cyan[900],
     },
   },
   '&.is-dead': {
@@ -52,7 +52,8 @@ function InitiativeListItem({ combatant, isActive, onFlag, onClick }: Props) {
       })}
       secondaryAction={
         <CombatantOptions isDead={isDead} onFlag={(flag) => onFlag(id, flag)} />
-      }>
+      }
+    >
       <ListItemButton onClick={() => onClick(combatant)}>
         {isActive && (
           <ListItemIcon>
