@@ -35,6 +35,7 @@ pub struct NewCreature {
     pub alignment_id: i32,
     pub creature_type_id: i32,
     pub size_id: i32,
+    pub source_abbr: Option<String>,
 
     pub proficiencies: Vec<i32>,
     pub immunities: Vec<i32>,

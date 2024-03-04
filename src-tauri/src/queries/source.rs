@@ -1,6 +1,15 @@
-use std::fmt::format;
-
 use crate::{dto::source::source_dto::SourceDto, models::source::list_item::SourceListItem};
+
+#[tauri::command]
+pub fn get_all_sources() -> Result<Vec<SourceDto>, ()> {
+    println!("[source] Getting all sources");
+
+    let sources = SourceDto::get_all();
+
+    println!("[source] Returning {} source", sources.len());
+
+    Ok(sources)
+}
 
 #[tauri::command]
 pub fn get_sources_list() -> Result<Vec<SourceListItem>, ()> {

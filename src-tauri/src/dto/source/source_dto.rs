@@ -15,6 +15,7 @@ impl SourceDto {
 
         let conn = &mut crate::db::connect_db();
         let results = sources
+            .order(name.asc())
             .load::<SourceDto>(conn)
             .expect("Error loading sources");
 

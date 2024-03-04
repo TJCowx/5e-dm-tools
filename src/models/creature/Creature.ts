@@ -1,4 +1,4 @@
-import Source from '@models/Source';
+import Source from '@models/source/Source';
 
 import Ability from './Ability';
 import Action from './Action';
@@ -45,7 +45,7 @@ type BaseCreature = {
   alignmentId: number;
   creatureTypeId: number;
   sizeId: number;
-  sourceAbbr?: string;
+  sourceAbbr?: string | null;
 
   languageIds: number[];
   proficiencyIds: number[];
@@ -56,6 +56,7 @@ type BaseCreature = {
 
   abilities: Partial<Ability>[];
   actions: Partial<Action>[];
+  source?: Source | null;
 };
 
 type Creature = BaseCreature & {

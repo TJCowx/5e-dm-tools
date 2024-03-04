@@ -35,6 +35,7 @@ pub struct NewCreatureDto {
     alignment_id: i32,
     creature_type_id: i32,
     size_id: i32,
+    source_abbr: Option<String>,
 }
 
 impl From<&NewCreature> for NewCreatureDto {
@@ -69,6 +70,7 @@ impl From<&NewCreature> for NewCreatureDto {
             alignment_id: creature.alignment_id,
             creature_type_id: creature.creature_type_id,
             size_id: creature.size_id,
+            source_abbr: creature.source_abbr.clone(),
         }
     }
 }
