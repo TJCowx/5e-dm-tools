@@ -14,6 +14,7 @@ type Props<T extends FieldValues> = {
   label: string;
   fieldName: FieldPath<T>;
   isRequired?: boolean;
+  allowNone?: boolean;
   queryArgs: SelectQueryArgs;
 };
 
@@ -24,6 +25,7 @@ function RHFLazyMultiselect<T extends FieldValues>({
   label,
   fieldName,
   isRequired,
+  allowNone = false,
   queryArgs,
   ...other
 }: Props<T>) {
@@ -32,11 +34,16 @@ function RHFLazyMultiselect<T extends FieldValues>({
   const options: SelectOptions[] = useMemo(() => {
     if (!data || !Array.isArray(data)) return [];
 
-    return data.map((item) => ({
-      value: item[queryArgs.valueKey],
-      text: `${item[queryArgs.textKey]}`,
-    }));
-  }, [data]);
+    const emptyOpts = allowNone ? [{ value: '', text: 'None' }] : [];
+
+    return [
+      ...emptyOpts,
+      ...data.map((item) => ({
+        value: item[queryArgs.valueKey],
+        text: `${item[queryArgs.textKey]}`,
+      })),
+    ];
+  }, [data, allowNone]);
 
   return (
     <RHFMultiselectField

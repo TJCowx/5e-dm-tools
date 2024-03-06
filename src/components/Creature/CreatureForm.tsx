@@ -192,6 +192,7 @@ function CreatureForm({ control, onSubmit, watch }: Props) {
           <RHFLazySelect
             control={control}
             fieldName="sourceAbbr"
+            allowNone
             label="Source"
             queryArgs={{
               queryName: 'get_all_sources',

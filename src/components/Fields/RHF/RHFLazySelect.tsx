@@ -15,7 +15,7 @@ type Props<T extends FieldValues> = {
   fieldName: FieldPath<T>;
   isRequired?: boolean;
   queryArgs: SelectQueryArgs;
-  nullable?: boolean;
+  allowNone?: boolean;
 };
 
 function RHFLazySelect<T extends FieldValues>({
@@ -26,7 +26,7 @@ function RHFLazySelect<T extends FieldValues>({
   label,
   isRequired,
   queryArgs,
-  nullable = false,
+  allowNone: nullable = false,
   ...other
 }: Props<T>) {
   const id = useMemo(() => idProp ?? v4(), [idProp]);
