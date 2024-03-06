@@ -1,5 +1,5 @@
 import { Button, styled } from '@mui/material';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { ValidationError, object as yupObject, string as yupString } from 'yup';
 
 import { BasicTextField } from '@components/Fields/Basic';
@@ -9,6 +9,7 @@ import { RequireMessage } from '@utils/validationMessages';
 
 type Props = {
   initialAbility?: Partial<Ability>;
+  isOpen?: boolean;
   onSave: (ability: Partial<Ability>) => void;
   onClose: () => void;
 };
@@ -37,7 +38,13 @@ const schema = yupObject().shape({
   }),
 });
 
-function AbilityModal({ initialAbility = newAbility, onSave, onClose }: Props) {
+function AbilityModal({
+  initialAbility = newAbility,
+  isOpen = false,
+  onSave,
+  onClose,
+}: Props) {
+  const nameRef = useRef<HTMLDivElement | null>(null);
   const [ability, setAbility] = useState<Partial<Ability>>(initialAbility);
   const [errors, setErrors] = useState<ErrorSchema>({
     name: null,
@@ -69,10 +76,19 @@ function AbilityModal({ initialAbility = newAbility, onSave, onClose }: Props) {
       });
   };
 
+  useEffect(() => {
+    if (isOpen) {
+      setTimeout(() => {
+        nameRef?.current.querySelector('input').focus();
+      }, 1);
+    }
+  }, [isOpen]);
+
   return (
-    <Modal title="Add Ability" isOpen onClose={onCancel}>
+    <Modal title="Add Ability" isOpen={isOpen} onClose={onCancel}>
       <Container>
         <BasicTextField
+          ref={nameRef}
           label="Name"
           value={ability.name ?? ''}
           onChange={(newVal) =>
@@ -97,7 +113,8 @@ function AbilityModal({ initialAbility = newAbility, onSave, onClose }: Props) {
             variant="contained"
             disableElevation
             type="button"
-            onClick={() => onSubmit()}>
+            onClick={() => onSubmit()}
+          >
             Save
           </Button>
         </div>

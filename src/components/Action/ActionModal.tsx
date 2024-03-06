@@ -10,7 +10,7 @@ import {
   ListItemText,
   styled,
 } from '@mui/material';
-import { useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { ValidationError } from 'yup';
 
 import {
@@ -30,6 +30,7 @@ type Props = {
   initialAction?: Partial<Action>;
   isLegendary: boolean;
   hasLair: boolean;
+  isOpen?: boolean;
   onSave: (action: Partial<Action>) => void;
   onClose: () => void;
 };
@@ -80,9 +81,11 @@ function ActionModal({
   initialAction = newAction,
   isLegendary,
   hasLair,
+  isOpen = false,
   onSave,
   onClose,
 }: Props) {
+  const nameRef = useRef<HTMLInputElement | null>(null);
   const [action, setAction] = useState<Partial<Action>>(initialAction);
   const [errors, setErrors] = useState<Partial<ErrorSchema>>({});
 
@@ -162,10 +165,19 @@ function ActionModal({
     }, 1);
   };
 
+  useEffect(() => {
+    if (isOpen) {
+      setTimeout(() => {
+        nameRef?.current.querySelector('input').focus();
+      }, 1);
+    }
+  }, [isOpen]);
+
   return (
-    <Modal title="Add Action" isOpen onClose={handleClose}>
+    <Modal title="Add Action" isOpen={isOpen} onClose={handleClose}>
       <StyledForm>
         <BasicTextField
+          ref={nameRef}
           value={action.name as string}
           className="mb-16"
           label="Name"

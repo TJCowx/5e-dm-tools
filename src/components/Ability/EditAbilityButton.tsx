@@ -20,16 +20,16 @@ function EditAbilityButton({ ability, onSave }: Props) {
       <IconButton
         aria-label={`Edit ${ability.name}`}
         edge="end"
-        onClick={() => setIsModalOpen(true)}>
+        onClick={() => setIsModalOpen(true)}
+      >
         <FontAwesomeIcon icon={faPen} />
       </IconButton>
-      {isModalOpen && (
-        <AbilityModal
-          initialAbility={ability}
-          onSave={onSave}
-          onClose={() => setIsModalOpen(false)}
-        />
-      )}
+      <AbilityModal
+        isOpen={isModalOpen}
+        initialAbility={ability}
+        onSave={onSave}
+        onClose={() => setIsModalOpen(false)}
+      />
     </>
   );
 }

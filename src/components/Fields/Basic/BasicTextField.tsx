@@ -1,5 +1,6 @@
 import { TextField } from '@mui/material';
 import clsx from 'clsx';
+import { forwardRef } from 'react';
 
 type Props = {
   id?: string;
@@ -8,23 +9,29 @@ type Props = {
   value: string;
   error?: string | null;
   isMultiline?: boolean;
+  autoFocus?: boolean;
   onChange: (newVal: string) => void;
   onBlur?: () => void;
 };
 
-function BasicTextField({
-  id,
-  className,
-  label,
-  value,
-  error,
-  isMultiline,
-  onChange,
-  onBlur,
-}: Props) {
-  return (
+const BasicTextField = forwardRef<HTMLDivElement, Props>(
+  (
+    {
+      id,
+      className,
+      label,
+      value,
+      error,
+      isMultiline,
+      autoFocus = false,
+      onChange,
+      onBlur,
+    },
+    ref,
+  ) => (
     <TextField
       id={id}
+      ref={ref}
       className={clsx({ [`${className}`]: className })}
       value={value || ''}
       InputLabelProps={{ shrink: true }}
@@ -35,9 +42,12 @@ function BasicTextField({
       multiline={isMultiline}
       onChange={(e) => onChange(e.target.value)}
       onBlur={onBlur}
+      autoFocus={autoFocus}
       autoComplete="one-time-code" // disable autofill this way because chrome ignores autocomplete="off"
     />
-  );
-}
+  ),
+);
+
+BasicTextField.displayName = 'BasicTextField';
 
 export default BasicTextField;

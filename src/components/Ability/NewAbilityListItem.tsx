@@ -29,9 +29,11 @@ function NewAbilityListItem({ onSave }: Props) {
           <ListItemText primary="Add ability" className="mb-0" />
         </ListItemButton>
       </ListItem>
-      {isModalOpen && (
-        <AbilityModal onSave={onSave} onClose={() => setIsModalOpen(false)} />
-      )}
+      <AbilityModal
+        isOpen={isModalOpen}
+        onSave={onSave}
+        onClose={() => setIsModalOpen(false)}
+      />
     </>
   );
 }

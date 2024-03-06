@@ -35,14 +35,13 @@ function NewActionListItem({
           <ListItemText primary="Add action" className="mb-0" />
         </ListItemButton>
       </ListItem>
-      {isModalOpen && (
-        <ActionModal
-          isLegendary={isLegendary}
-          hasLair={hasLair}
-          onSave={onSave}
-          onClose={() => setIsModalOpen(false)}
-        />
-      )}
+      <ActionModal
+        isOpen={isModalOpen}
+        isLegendary={isLegendary}
+        hasLair={hasLair}
+        onSave={onSave}
+        onClose={() => setIsModalOpen(false)}
+      />
     </>
   );
 }
