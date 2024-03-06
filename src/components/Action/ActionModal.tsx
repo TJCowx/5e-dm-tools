@@ -320,7 +320,7 @@ function ActionModal({
                   // eslint-disable-next-line react/no-array-index-key
                   key={`damage-${i}`}
                   damage={damage}
-                  updateDamageItem={(newVal) => updateDamageItem(newVal, 1)}
+                  updateDamageItem={(newVal) => updateDamageItem(newVal, i)}
                   removeDamageItem={() => removeDamageItem(i)}
                 />
               ))}
