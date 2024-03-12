@@ -1,9 +1,11 @@
 use std::error::Error;
 
-use crate::dto::creature::creature_dto::CreatureDto;
-use crate::models::creature::Creature;
-use crate::models::editable_creature::EditableCreature;
-use crate::models::new_creature::NewCreature;
+use crate::{
+    dto::creature::creature_dto::CreatureDto,
+    models::creature::{
+        creature::Creature, editable_creature::EditableCreature, new_creature::NewCreature,
+    },
+};
 
 #[tauri::command]
 pub fn get_all_creatures() -> Result<Vec<Creature>, String> {

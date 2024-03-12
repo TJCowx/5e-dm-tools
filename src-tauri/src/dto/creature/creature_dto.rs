@@ -1,7 +1,9 @@
 use crate::{
     db::connect_db,
     dto::creature::new_creature_dto::NewCreatureDto,
-    models::{creature::Creature, editable_creature::EditableCreature},
+    models::creature::{
+        creature::Creature, editable_creature::EditableCreature, new_creature::NewCreature,
+    },
     schema::creatures::{self, dsl::creatures as all_creatures, source_abbr},
 };
 use diesel::{dsl::count, prelude::*};
@@ -14,7 +16,6 @@ use super::{
     creature_prof_dto::CreatureProfDto, creature_resistance_dto::CreatureResistanceDto,
     creature_weakness_dto::CreatureWeaknessDto,
 };
-use crate::models::new_creature::NewCreature;
 
 #[derive(Debug, Serialize, Deserialize, Queryable, Identifiable, AsChangeset)]
 #[diesel(table_name = crate::schema::creatures)]

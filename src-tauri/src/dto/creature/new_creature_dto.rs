@@ -1,7 +1,7 @@
 use diesel::prelude::*;
 use serde::{Deserialize, Serialize};
 
-use crate::models::new_creature::NewCreature;
+use crate::models::creature::new_creature::NewCreature;
 
 #[derive(Debug, Deserialize, Serialize, Insertable)]
 #[diesel(table_name = crate::schema::creatures)]

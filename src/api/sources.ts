@@ -24,3 +24,9 @@ export async function deleteSource(abbr: string) {
 
   return invoke('remove_source', { abbr });
 }
+
+export async function exportSource(abbr: string) {
+  const { invoke } = await import('@tauri-apps/api/tauri');
+
+  return invoke('export_source', { abbr });
+}

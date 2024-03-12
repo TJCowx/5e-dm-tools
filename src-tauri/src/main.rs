@@ -46,7 +46,8 @@ fn main() {
             queries::source::get_all_sources,
             queries::source::get_sources_list,
             queries::source::edit_source,
-            queries::source::remove_source
+            queries::source::remove_source,
+            queries::source::export_source
         ])
         .setup(|_app| {
             db::init();

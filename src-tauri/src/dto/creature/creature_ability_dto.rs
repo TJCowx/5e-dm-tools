@@ -1,6 +1,7 @@
-use crate::models::creature_ability::BaseCreatureAbility;
 use diesel::prelude::*;
 use serde::{Deserialize, Serialize};
+
+use crate::models::creature::creature_ability::BaseCreatureAbility;
 
 #[derive(Queryable, Debug, Serialize, Deserialize)]
 #[diesel(table_name = crate::schema::creature_abilities)]

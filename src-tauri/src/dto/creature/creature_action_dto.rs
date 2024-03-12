@@ -4,7 +4,7 @@ use crate::{
         attack_type_dto::AttackTypeDto,
         creature::creature_action_damage_dto::CreatureActionDamageDto,
     },
-    models::creature_action::CreatureAction,
+    models::creature::creature_action::CreatureAction,
 };
 use diesel::prelude::*;
 use serde::{Deserialize, Serialize};

@@ -1,4 +1,9 @@
-import { faPen, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
+import {
+  faFileDownload,
+  faPen,
+  faPlus,
+  faTrash,
+} from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   Alert,
@@ -16,7 +21,7 @@ import {
 } from '@mui/material';
 import { Fragment, useState } from 'react';
 
-import { deleteSource } from '@api/sources';
+import { deleteSource, exportSource } from '@api/sources';
 import { PageHeader } from '@components/Layout';
 import {
   ListItemText,
@@ -60,6 +65,16 @@ export default function SourcesPage() {
       });
   };
 
+  const handleSourceExport = (abbr: string) => {
+    exportSource(abbr)
+      .then(() => {
+        console.log('Exported');
+      })
+      .catch((e) => {
+        logMessage('error', e);
+      });
+  };
+
   return (
     <>
       <PageHeader
@@ -94,6 +109,14 @@ export default function SourcesPage() {
               <ListItemTwoSecondaryActions
                 secondaryAction={
                   <>
+                    <Tooltip title={`Export ${name} source`}>
+                      <IconButton
+                        aria-label={`Export ${name} source`}
+                        onClick={() => handleSourceExport(abbreviation)}
+                      >
+                        <FontAwesomeIcon icon={faFileDownload} />
+                      </IconButton>
+                    </Tooltip>
                     <IconButton
                       aria-label={`Edit ${name}`}
                       onClick={() => setEdittingSource({ abbreviation, name })}
