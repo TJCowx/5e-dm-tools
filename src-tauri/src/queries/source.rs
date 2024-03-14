@@ -1,4 +1,9 @@
-use crate::{dto::source::source_dto::SourceDto, models::source::list_item::SourceListItem};
+use crate::{
+    dto::source::source_dto::SourceDto,
+    models::{
+        import_export::import_export_source::ImportExportSource, source::list_item::SourceListItem,
+    },
+};
 
 #[tauri::command]
 pub fn get_all_sources() -> Result<Vec<SourceDto>, ()> {
@@ -84,6 +89,13 @@ pub fn remove_source(abbr: String) -> Result<(), String> {
 #[tauri::command]
 pub fn export_source(abbr: String) -> Result<(), String> {
     println!("[server] Exporting source {}", abbr);
+
+    Ok(())
+}
+
+#[tauri::command]
+pub fn import_source(source: ImportExportSource) -> Result<(), String> {
+    println!("[server] Importing source {:?}", source);
 
     Ok(())
 }
