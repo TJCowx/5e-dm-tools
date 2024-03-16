@@ -9,8 +9,13 @@ import {
   ListItemText,
   Typography,
 } from '@mui/material';
-import { FormEventHandler, Fragment } from 'react';
-import { Control, UseFormWatch, useFieldArray } from 'react-hook-form';
+import { FormEventHandler, Fragment, useEffect } from 'react';
+import {
+  Control,
+  UseFormSetValue,
+  UseFormWatch,
+  useFieldArray,
+} from 'react-hook-form';
 
 import { EditAbilityButton, NewAbilityListItem } from '@components/Ability';
 import {
@@ -28,14 +33,16 @@ import Ability from '@models/creature/Ability';
 import Action from '@models/creature/Action';
 import { AttributeSelectOptions } from '@models/creature/Attribute';
 import Creature from '@models/creature/Creature';
+import { getProfBonusByCR } from '@utils/creatureUtils';
 
 import { ActionListItem, NewActionListItem } from '../Action';
 
-import { CR_OPTS } from './constants';
+import { CR_OPTS, XP_BY_CR } from './constants';
 
 type Props = {
   control: Control<Partial<Creature>>;
   onSubmit: FormEventHandler<HTMLFormElement>;
+  onValueChange: UseFormSetValue<Partial<Creature>>;
   watch: UseFormWatch<Partial<Creature>>;
 };
 
@@ -77,7 +84,7 @@ const StyledForm = styled('form')(() => ({
   },
 }));
 
-function CreatureForm({ control, onSubmit, watch }: Props) {
+function CreatureForm({ control, onSubmit, onValueChange, watch }: Props) {
   const {
     fields: abilities,
     append: appendAbility,
@@ -94,6 +101,14 @@ function CreatureForm({ control, onSubmit, watch }: Props) {
 
   const isLegendary = watch('isLegendary');
   const hasLair = watch('hasLair');
+  const cr = watch('challengeRating');
+
+  useEffect(() => {
+    if (cr != null) {
+      onValueChange('rewardXp', XP_BY_CR[cr]);
+      onValueChange('profBonus', getProfBonusByCR(cr));
+    }
+  }, [cr]);
 
   return (
     <StyledForm className="pb-40" onSubmit={onSubmit}>

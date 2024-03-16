@@ -27,7 +27,8 @@ function EditCreature() {
     { id: parseInt(creatureId as string, 10) },
   );
 
-  const { handleSubmit, control, watch, reset } = useForm<Partial<Creature>>();
+  const { handleSubmit, control, watch, reset, setValue } =
+    useForm<Partial<Creature>>();
 
   useEffect(() => {
     if (data) {
@@ -61,6 +62,7 @@ function EditCreature() {
         <CreatureForm
           control={control}
           watch={watch}
+          onValueChange={setValue}
           onSubmit={handleSubmit(onSubmit)}
         />
       )}

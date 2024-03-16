@@ -64,9 +64,11 @@ function CreateCreature() {
 
   const [hasError, setHasError] = useState(false);
 
-  const { handleSubmit, control, watch } = useForm<Partial<Creature>>({
-    defaultValues: DefaultValues,
-  });
+  const { handleSubmit, control, watch, setValue } = useForm<Partial<Creature>>(
+    {
+      defaultValues: DefaultValues,
+    },
+  );
 
   const onSubmit = (data: Partial<Creature>) => {
     setHasError(false);
@@ -95,6 +97,7 @@ function CreateCreature() {
       <CreatureForm
         control={control}
         watch={watch}
+        onValueChange={setValue}
         onSubmit={handleSubmit(onSubmit)}
       />
     </>
