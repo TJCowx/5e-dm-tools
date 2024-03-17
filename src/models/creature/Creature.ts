@@ -48,14 +48,6 @@ type BaseCreature = {
   sizeId: number;
   sourceAbbr?: string | null;
 
-  languageIds: number[];
-  proficiencyIds: number[];
-  savingThrowIds: number[];
-  immunityIds: number[];
-  condImmunityIds: number[];
-  resistanceIds: number[];
-  environmentIds: number[];
-
   abilities: Partial<Ability>[];
   actions: Partial<Action>[];
   source?: Source | null;
