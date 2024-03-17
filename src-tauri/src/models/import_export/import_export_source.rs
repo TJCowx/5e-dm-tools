@@ -3,7 +3,7 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct ImportExportSource {
-    abbreviation: String,
-    name: String,
-    creature: Vec<ImportExportCreature>,
+    pub abbreviation: String,
+    pub name: String,
+    pub creature: Vec<ImportExportCreature>,
 }

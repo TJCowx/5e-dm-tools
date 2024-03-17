@@ -6,7 +6,10 @@ use crate::dto::creature::{
     creature_resistance_dto::CreatureResistanceDto, creature_weakness_dto::CreatureWeaknessDto,
 };
 
-use super::{creature_ability::BaseCreatureAbility, creature_action::CreatureAction};
+use super::{
+    creature_ability::{CreatureAbility, CreatureAbilityWithId},
+    creature_action::CreatureAction,
+};
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -53,7 +56,7 @@ pub struct EditableCreature {
     pub languages: Vec<i32>,
     pub environments: Vec<i32>,
 
-    pub abilities: Vec<BaseCreatureAbility>,
+    pub abilities: Vec<CreatureAbility>,
     pub actions: Vec<CreatureAction>,
 }
 
@@ -104,7 +107,7 @@ impl From<CreatureDto> for EditableCreature {
             environments: CreatureEnvironmentDto::get_env_ids_by_creature_ids(&creature.id),
             abilities: CreatureAbilityDto::get_abilities_by_creature_id(&creature.id)
                 .into_iter()
-                .map(|a| BaseCreatureAbility::from(a))
+                .map(|a| CreatureAbilityWithId::from(a))
                 .collect(),
             actions: CreatureActionDto::get_actions_by_creature_id(&creature.id).unwrap(),
         }

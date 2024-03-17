@@ -1,7 +1,7 @@
 use diesel::prelude::*;
 use serde::{Deserialize, Serialize};
 
-use crate::models::creature::creature_ability::BaseCreatureAbility;
+use crate::models::creature::creature_ability::{BaseCreatureAbility, CreatureAbility};
 
 #[derive(Queryable, Debug, Serialize, Deserialize)]
 #[diesel(table_name = crate::schema::creature_abilities)]
@@ -45,7 +45,7 @@ impl CreatureAbilityDto {
 
     pub fn update_abilities(
         conn: &mut SqliteConnection,
-        abilities: &Vec<BaseCreatureAbility>,
+        abilities: &Vec<CreatureAbility>,
         parent_id: &i32,
     ) -> QueryResult<()> {
         use crate::schema::creature_abilities::dsl::*;
@@ -53,32 +53,44 @@ impl CreatureAbilityDto {
         // Get the Ids of the abilities that are not null
         let ids: Vec<i32> = abilities
             .iter()
-            .filter(|ability| ability.id.is_some())
-            .map(|ability| ability.id.unwrap())
+            .filter_map(|a| match a {
+                CreatureAbility::Id(ca) => Some(ca.id),
+                _ => None,
+            })
             .collect();
 
         // Delete the abilities that are not in the list of ids
         diesel::delete(creature_abilities.filter(creature_id.eq(parent_id).and(id.ne_all(ids))))
             .execute(conn)?;
 
-        // Update the abilities that have the id set
-        for ability in abilities.iter().filter(|ability| ability.id.is_some()) {
-            diesel::update(
-                creature_abilities
-                    .filter(creature_id.eq(parent_id).and(id.eq(ability.id.unwrap()))),
-            )
-            .set((name.eq(&ability.name), description.eq(&ability.description)))
-            .execute(conn)?;
+        // Update all existing Ids
+        let update_operations = abilities
+            .iter()
+            .filter_map(|ability| match ability {
+                CreatureAbility::Id(a) => Some(a),
+                _ => None,
+            })
+            .map(|a| {
+                diesel::update(
+                    creature_abilities.filter(creature_id.eq(parent_id).and(id.eq(a.id))),
+                )
+                .set((name.eq(&a.name), description.eq(&a.description)))
+            });
+
+        // Execute all update operations
+        for operation in update_operations {
+            operation.execute(conn)?;
         }
 
         // Get the abilities that do not have the id set
         let new_abilities: Vec<BaseCreatureAbility> = abilities
             .iter()
-            .filter(|ability| ability.id.is_none())
-            .map(|ability| BaseCreatureAbility {
-                id: None,
-                name: ability.name.clone(),
-                description: ability.description.clone(),
+            .filter_map(|ability| match ability {
+                CreatureAbility::Base(a) => Some(BaseCreatureAbility {
+                    name: a.name.clone(),
+                    description: a.description.clone(),
+                }),
+                _ => None,
             })
             .collect();
 

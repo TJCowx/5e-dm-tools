@@ -85,17 +85,3 @@ pub fn remove_source(abbr: String) -> Result<(), String> {
         }
     }
 }
-
-#[tauri::command]
-pub fn export_source(abbr: String) -> Result<(), String> {
-    println!("[server] Exporting source {}", abbr);
-
-    Ok(())
-}
-
-#[tauri::command]
-pub fn import_source(source: ImportExportSource) -> Result<(), String> {
-    println!("[server] Importing source {:?}", source);
-
-    Ok(())
-}
