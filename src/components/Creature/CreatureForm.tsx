@@ -204,6 +204,16 @@ function CreatureForm({ control, onSubmit, onValueChange, watch }: Props) {
             min={0}
             isRequired
           />
+          <RHFLazyMultiselect
+            control={control}
+            fieldName="environments"
+            label="Environments"
+            queryArgs={{
+              queryName: 'get_all_environments',
+              valueKey: 'id',
+              textKey: 'name',
+            }}
+          />
           <RHFLazySelect
             control={control}
             fieldName="sourceAbbr"

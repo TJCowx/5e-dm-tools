@@ -4,11 +4,13 @@ use crate::dto::{
     creature::{
         creature_ability_dto::CreatureAbilityDto, creature_action_dto::CreatureActionDto,
         creature_cond_immunity_dto::CreatureCondImmunityDto, creature_dto::CreatureDto,
+        creature_environment_dto::CreatureEnvironmentDto,
         creature_immunity_dto::CreatureImmunityDto, creature_language_dto::CreatureLanguageDto,
         creature_prof_dto::CreatureProfDto, creature_resistance_dto::CreatureResistanceDto,
         creature_type_dto::CreatureTypeDto, creature_weakness_dto::CreatureWeaknessDto,
     },
     damage_type_dto::DamageTypeDto,
+    environment_dto::EnvironmentDto,
     language_dto::LanguageDto,
     proficiency_dto::ProficiencyDto,
     size_dto::SizeDto,
@@ -65,6 +67,7 @@ pub struct Creature {
     pub resistances: Option<Vec<DamageTypeDto>>,
     pub weaknesses: Option<Vec<DamageTypeDto>>,
     pub languages: Option<Vec<LanguageDto>>,
+    pub environments: Option<Vec<EnvironmentDto>>,
     pub abilities: Option<Vec<CreatureAbilityDto>>,
     pub actions: Option<Vec<CreatureAction>>,
 }
@@ -130,6 +133,9 @@ impl From<CreatureDto> for Creature {
                 &creature.id,
             )),
             languages: Some(CreatureLanguageDto::get_languages_by_creature_id(
+                &creature.id,
+            )),
+            environments: Some(CreatureEnvironmentDto::get_envs_by_creature_ids(
                 &creature.id,
             )),
             abilities: Some(CreatureAbilityDto::get_abilities_by_creature_id(

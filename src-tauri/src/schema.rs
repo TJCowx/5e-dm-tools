@@ -71,6 +71,13 @@ diesel::table! {
 }
 
 diesel::table! {
+    creature_environment (creature_id, environment_id) {
+        creature_id -> Integer,
+        environment_id -> Integer,
+    }
+}
+
+diesel::table! {
     creature_types (id) {
         id -> Integer,
         name -> Text,
@@ -169,6 +176,13 @@ diesel::table! {
 }
 
 diesel::table! {
+    environments (id) {
+        id -> Integer,
+        name -> Text,
+    }
+}
+
+diesel::table! {
     languages (id) {
         id -> Integer,
         name -> Text,
@@ -201,6 +215,8 @@ diesel::joinable!(creature_action_damages -> damage_types (type_id));
 diesel::joinable!(creature_actions -> action_types (action_type_id));
 diesel::joinable!(creature_actions -> attack_deliveries (attack_delivery_id));
 diesel::joinable!(creature_actions -> attack_types (attack_type_id));
+diesel::joinable!(creature_environment -> creatures (creature_id));
+diesel::joinable!(creature_environment -> environments (environment_id));
 diesel::joinable!(creatures -> alignments (alignment_id));
 diesel::joinable!(creatures -> creature_types (creature_type_id));
 diesel::joinable!(creatures -> sources (source_abbr));
@@ -220,6 +236,7 @@ diesel::allow_tables_to_appear_in_same_query!(
     creature_abilities,
     creature_action_damages,
     creature_actions,
+    creature_environment,
     creature_types,
     creatures,
     creatures_condition_immunities,
@@ -229,6 +246,7 @@ diesel::allow_tables_to_appear_in_same_query!(
     creatures_resistances,
     creatures_weaknesses,
     damage_types,
+    environments,
     languages,
     proficiencies,
     sizes,

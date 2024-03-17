@@ -1,9 +1,9 @@
 use crate::dto::creature::{
     creature_ability_dto::CreatureAbilityDto, creature_action_dto::CreatureActionDto,
     creature_cond_immunity_dto::CreatureCondImmunityDto, creature_dto::CreatureDto,
-    creature_immunity_dto::CreatureImmunityDto, creature_language_dto::CreatureLanguageDto,
-    creature_prof_dto::CreatureProfDto, creature_resistance_dto::CreatureResistanceDto,
-    creature_weakness_dto::CreatureWeaknessDto,
+    creature_environment_dto::CreatureEnvironmentDto, creature_immunity_dto::CreatureImmunityDto,
+    creature_language_dto::CreatureLanguageDto, creature_prof_dto::CreatureProfDto,
+    creature_resistance_dto::CreatureResistanceDto, creature_weakness_dto::CreatureWeaknessDto,
 };
 
 use super::{creature_ability::BaseCreatureAbility, creature_action::CreatureAction};
@@ -51,6 +51,7 @@ pub struct EditableCreature {
     pub resistances: Vec<i32>,
     pub weaknesses: Vec<i32>,
     pub languages: Vec<i32>,
+    pub environments: Vec<i32>,
 
     pub abilities: Vec<BaseCreatureAbility>,
     pub actions: Vec<CreatureAction>,
@@ -100,6 +101,7 @@ impl From<CreatureDto> for EditableCreature {
             resistances: CreatureResistanceDto::get_resistance_ids_by_creature_id(&creature.id),
             weaknesses: CreatureWeaknessDto::get_weakness_ids_by_creature_id(&creature.id),
             languages: CreatureLanguageDto::get_language_ids_by_creature_id(&creature.id),
+            environments: CreatureEnvironmentDto::get_env_ids_by_creature_ids(&creature.id),
             abilities: CreatureAbilityDto::get_abilities_by_creature_id(&creature.id)
                 .into_iter()
                 .map(|a| BaseCreatureAbility::from(a))

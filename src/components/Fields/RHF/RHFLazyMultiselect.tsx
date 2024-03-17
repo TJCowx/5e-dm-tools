@@ -8,7 +8,7 @@ import RHFMultiselectField from './RHFMultiselectField';
 import { SelectOptions } from './RHFSelectField';
 
 type Props<T extends FieldValues> = {
-  id: string;
+  id?: string;
   className?: string;
   control: Control<T>;
   label: string;

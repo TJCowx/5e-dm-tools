@@ -42,6 +42,7 @@ pub struct ImportExportCreature {
     pub resistances: Option<Vec<i32>>,
     pub weaknesses: Option<Vec<i32>>,
     pub languages: Option<Vec<i32>>,
+    pub environments: Option<Vec<i32>>,
 
     pub abilities: Option<Vec<BaseCreatureAbility>>,
     pub actions: Option<Vec<BaseCreatureAction>>,

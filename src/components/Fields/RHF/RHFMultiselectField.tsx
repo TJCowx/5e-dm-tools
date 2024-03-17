@@ -10,6 +10,7 @@ import {
 import clsx from 'clsx';
 import { useCallback, useMemo } from 'react';
 import { Control, Controller, FieldPath, FieldValues } from 'react-hook-form';
+import { v4 } from 'uuid';
 
 import ListItemText from '@components/List/ListItemText';
 import { RequireMessage } from '@constants/validationMessages';
@@ -17,7 +18,7 @@ import { RequireMessage } from '@constants/validationMessages';
 import { SelectOptions } from './RHFSelectField';
 
 type Props<T extends FieldValues> = {
-  id: string;
+  id?: string;
   className?: string;
   control: Control<T>;
   fieldName: FieldPath<T>;
@@ -29,7 +30,7 @@ type Props<T extends FieldValues> = {
 };
 
 function RHFMultiselectField<T extends FieldValues>({
-  id,
+  id: idProp,
   className,
   control,
   fieldName,
@@ -39,6 +40,7 @@ function RHFMultiselectField<T extends FieldValues>({
   isLoading = false,
   error,
 }: Props<T>) {
+  const id = useMemo(() => idProp ?? v4(), [idProp]);
   const rules = useMemo(
     () =>
       isRequired

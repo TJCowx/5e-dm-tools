@@ -1,3 +1,4 @@
+import Environment from '@models/Environment';
 import Source from '@models/source/Source';
 
 import Ability from './Ability';
@@ -53,6 +54,7 @@ type BaseCreature = {
   immunityIds: number[];
   condImmunityIds: number[];
   resistanceIds: number[];
+  environmentIds: number[];
 
   abilities: Partial<Ability>[];
   actions: Partial<Action>[];
@@ -73,6 +75,7 @@ type Creature = BaseCreature & {
   resistances?: DamageType[];
   weaknesses?: DamageType[];
   languages?: Language[];
+  environments?: Environment[];
 
   abilities?: Ability[];
   actions?: Action[];

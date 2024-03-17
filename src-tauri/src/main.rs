@@ -39,6 +39,7 @@ fn main() {
             queries::damage_type::get_all_damage_types,
             queries::damage_type::get_damage_type_by_id,
             queries::damage_type::get_damage_types_by_ids,
+            queries::environment::get_all_environments,
             queries::language::get_all_languages,
             queries::proficiency::get_all_proficiencies,
             queries::size::get_all_sizes,

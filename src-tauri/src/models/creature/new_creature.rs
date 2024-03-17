@@ -43,6 +43,7 @@ pub struct NewCreature {
     pub resistances: Vec<i32>,
     pub weaknesses: Vec<i32>,
     pub languages: Vec<i32>,
+    pub environments: Vec<i32>,
     pub abilities: Vec<BaseCreatureAbility>,
     pub actions: Vec<CreatureAction>,
 }

@@ -1,6 +1,8 @@
 use crate::{
     db::connect_db,
-    dto::creature::new_creature_dto::NewCreatureDto,
+    dto::creature::{
+        creature_environment_dto::CreatureEnvironmentDto, new_creature_dto::NewCreatureDto,
+    },
     models::creature::{
         creature::Creature, editable_creature::EditableCreature, new_creature::NewCreature,
     },
@@ -215,6 +217,13 @@ impl CreatureDto {
             )?;
             println!("[server] [CREATURE] languages inserted successfully!");
 
+            CreatureEnvironmentDto::save_creature_environment(
+                connection,
+                creature.environments,
+                &inserted_creature.id,
+            )?;
+            println!("[server] [CREATURE] Environments inserted successfully");
+
             CreatureAbilityDto::save_abilities(
                 connection,
                 creature.abilities,
@@ -233,7 +242,7 @@ impl CreatureDto {
         let conn = &mut connect_db();
 
         conn.transaction(|trans| {
-            diesel::update(all_creatures.find(creature.id))
+            diesel::update(creatures::table.find(creature.id))
                 .set(Self::from(creature))
                 .execute(trans)?;
 
@@ -263,6 +272,13 @@ impl CreatureDto {
                 &creature.languages,
                 &creature.id,
             )?;
+            println!("[server] UPDATING ENVIRONMENT");
+            CreatureEnvironmentDto::update_creature_environment(
+                trans,
+                &creature.environments,
+                &creature.id,
+            )?;
+            println!("[server] Environment updated");
             CreatureAbilityDto::update_abilities(trans, &creature.abilities, &creature.id)?;
             CreatureActionDto::update_actions(trans, &creature.actions, &creature.id)?;
 
@@ -280,6 +296,7 @@ impl CreatureDto {
             CreatureResistanceDto::delete_creature_resistances(connection, &id)?;
             CreatureWeaknessDto::delete_creature_weaknesses(connection, &id)?;
             CreatureLanguageDto::delete_creature_languages(connection, &id)?;
+            CreatureEnvironmentDto::delete_creature_environments(connection, &id)?;
             CreatureAbilityDto::delete_abilities(connection, &id)?;
             CreatureActionDto::delete_actions_by_creature_id(connection, &id)?;
 

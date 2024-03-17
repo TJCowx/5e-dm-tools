@@ -3,6 +3,7 @@ pub mod creature_action_damage_dto;
 pub mod creature_action_dto;
 pub mod creature_cond_immunity_dto;
 pub mod creature_dto;
+pub mod creature_environment_dto;
 pub mod creature_immunity_dto;
 pub mod creature_language_dto;
 pub mod creature_prof_dto;
