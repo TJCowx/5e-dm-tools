@@ -3,8 +3,11 @@ use crate::{
     dto::creature::{
         creature_environment_dto::CreatureEnvironmentDto, new_creature_dto::NewCreatureDto,
     },
-    models::creature::{
-        creature::Creature, editable_creature::EditableCreature, new_creature::NewCreature,
+    models::{
+        creature::{
+            creature::Creature, editable_creature::EditableCreature, new_creature::NewCreature,
+        },
+        import_export::import_export_creature::ImportExportCreature,
     },
     schema::creatures::{self, dsl::creatures as all_creatures, source_abbr},
 };
@@ -160,6 +163,21 @@ impl CreatureDto {
         match all_creatures.find(creature_id).first::<CreatureDto>(conn) {
             Ok(found) => Ok(EditableCreature::from(found)),
             Err(e) => Err(format!("Error getting creature: {}", e)),
+        }
+    }
+
+    pub fn get_export_by_id(creature_id: i32) -> Result<ImportExportCreature, String> {
+        let conn = &mut connect_db();
+
+        match all_creatures.find(creature_id).first::<CreatureDto>(conn) {
+            Ok(found) => Ok(ImportExportCreature::from(found)),
+            Err(e) => {
+                eprintln!(
+                    "[server][creature_dto] Error exporting creature {}",
+                    creature_id
+                );
+                Err(format!("Error exporting creature: {}", e))
+            }
         }
     }
 

@@ -46,3 +46,8 @@ export async function deleteCreature(creatureId: string) {
   const { invoke } = await import('@tauri-apps/api/tauri');
   return invoke('delete_creature', { id: creatureId });
 }
+
+export async function exportCreature(creatureId: string) {
+  const { invoke } = await import('@tauri-apps/api/tauri');
+  return invoke<Creature>('export_creature', { id: creatureId });
+}

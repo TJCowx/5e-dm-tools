@@ -16,8 +16,17 @@ pub struct CreatureActionDamage {
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct BaseCreatureActionDamage {
-    pub id: Option<i32>,
     pub default_damage: i32,
     pub dice: String,
     pub type_id: i32,
+}
+
+impl From<CreatureActionDamage> for BaseCreatureActionDamage {
+    fn from(d: CreatureActionDamage) -> Self {
+        Self {
+            default_damage: d.default_damage,
+            dice: d.dice,
+            type_id: d.type_id,
+        }
+    }
 }

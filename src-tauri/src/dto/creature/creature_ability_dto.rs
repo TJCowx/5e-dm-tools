@@ -3,7 +3,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::models::creature::creature_ability::{BaseCreatureAbility, CreatureAbility};
 
-#[derive(Queryable, Debug, Serialize, Deserialize)]
+#[derive(Queryable, Debug, Serialize, Deserialize, Clone)]
 #[diesel(table_name = crate::schema::creature_abilities)]
 #[diesel(belongs_to(Creature))]
 pub struct CreatureAbilityDto {
@@ -54,7 +54,7 @@ impl CreatureAbilityDto {
         let ids: Vec<i32> = abilities
             .iter()
             .filter_map(|a| match a {
-                CreatureAbility::Id(ca) => Some(ca.id),
+                CreatureAbility::Full(ca) => Some(ca.id),
                 _ => None,
             })
             .collect();
@@ -67,7 +67,7 @@ impl CreatureAbilityDto {
         let update_operations = abilities
             .iter()
             .filter_map(|ability| match ability {
-                CreatureAbility::Id(a) => Some(a),
+                CreatureAbility::Full(a) => Some(a),
                 _ => None,
             })
             .map(|a| {

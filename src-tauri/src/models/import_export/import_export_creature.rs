@@ -1,7 +1,7 @@
 use crate::{
     dto::creature::{
-        creature_ability_dto::CreatureAbilityDto, creature_dto::CreatureDto,
-        creature_environment_dto::CreatureEnvironmentDto,
+        creature_ability_dto::CreatureAbilityDto, creature_action_dto::CreatureActionDto,
+        creature_dto::CreatureDto, creature_environment_dto::CreatureEnvironmentDto,
         creature_immunity_dto::CreatureImmunityDto, creature_language_dto::CreatureLanguageDto,
         creature_prof_dto::CreatureProfDto, creature_resistance_dto::CreatureResistanceDto,
         creature_weakness_dto::CreatureWeaknessDto,
@@ -104,9 +104,13 @@ impl From<CreatureDto> for ImportExportCreature {
             environments: CreatureEnvironmentDto::get_env_ids_by_creature_ids(&dto.id),
             abilities: CreatureAbilityDto::get_abilities_by_creature_id(&dto.id)
                 .iter()
-                .map(|a| BaseCreatureAbility::from(*a))
+                .map(|a| BaseCreatureAbility::from(a.clone()))
                 .collect::<Vec<BaseCreatureAbility>>(),
-            // actions: todo!(), // Option<Vec<BaseCreatureAction>>,
+            actions: CreatureActionDto::get_actions_by_creature_id(&dto.id)
+                .unwrap()
+                .iter()
+                .map(|a| BaseCreatureAction::from(a.clone()))
+                .collect::<Vec<BaseCreatureAction>>(),
         }
     }
 }

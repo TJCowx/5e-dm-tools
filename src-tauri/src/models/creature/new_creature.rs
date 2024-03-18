@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-use super::{creature_ability::BaseCreatureAbility, creature_action::CreatureAction};
+use super::{creature_ability::BaseCreatureAbility, creature_action::CreatureActionFull};
 
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
@@ -45,5 +45,5 @@ pub struct NewCreature {
     pub languages: Vec<i32>,
     pub environments: Vec<i32>,
     pub abilities: Vec<BaseCreatureAbility>,
-    pub actions: Vec<CreatureAction>,
+    pub actions: Vec<CreatureActionFull>,
 }

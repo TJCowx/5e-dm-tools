@@ -4,7 +4,7 @@ use crate::{
         attack_type_dto::AttackTypeDto,
         creature::creature_action_damage_dto::CreatureActionDamageDto,
     },
-    models::creature::creature_action::CreatureAction,
+    models::creature::creature_action::CreatureActionFull,
 };
 use diesel::prelude::*;
 use serde::{Deserialize, Serialize};
@@ -47,7 +47,7 @@ pub struct NewCreatureActionDto {
 }
 
 impl CreatureActionDto {
-    pub fn map_creature_action(action: Self) -> CreatureAction {
+    pub fn map_creature_action(action: Self) -> CreatureActionFull {
         let damages = CreatureActionDamageDto::get_damages_by_action_id(action.id);
         let delivery = if let Some(delivery_id) = action.attack_delivery_id {
             Some(AttackDeliveryDto::get_by_id(delivery_id))
@@ -60,7 +60,7 @@ impl CreatureActionDto {
             None
         };
 
-        CreatureAction {
+        CreatureActionFull {
             id: Some(action.id),
             name: action.name,
             description: action.description,
@@ -81,7 +81,7 @@ impl CreatureActionDto {
 
     pub fn save_actions(
         conn: &mut SqliteConnection,
-        actions: Vec<CreatureAction>,
+        actions: Vec<CreatureActionFull>,
         parent_id: &i32,
     ) -> QueryResult<()> {
         use crate::schema::creature_actions::dsl::*;
@@ -118,7 +118,7 @@ impl CreatureActionDto {
 
     fn update_action(
         conn: &mut SqliteConnection,
-        action: CreatureAction,
+        action: CreatureActionFull,
         parent_id: &i32,
     ) -> QueryResult<()> {
         use crate::schema::creature_actions::dsl::*;
@@ -174,13 +174,13 @@ impl CreatureActionDto {
 
     pub fn update_actions(
         conn: &mut SqliteConnection,
-        actions: &Vec<CreatureAction>,
+        actions: &Vec<CreatureActionFull>,
         parent_id: &i32,
     ) -> QueryResult<()> {
         use crate::schema::creature_actions::dsl::*;
 
-        let mut updating_actions: Vec<CreatureAction> = vec![];
-        let mut new_actions: Vec<CreatureAction> = vec![];
+        let mut updating_actions: Vec<CreatureActionFull> = vec![];
+        let mut new_actions: Vec<CreatureActionFull> = vec![];
 
         for action in actions {
             if action.id.is_some() {
@@ -219,7 +219,7 @@ impl CreatureActionDto {
         Ok(())
     }
 
-    pub fn get_actions_by_creature_id(parent_id: &i32) -> QueryResult<Vec<CreatureAction>> {
+    pub fn get_actions_by_creature_id(parent_id: &i32) -> QueryResult<Vec<CreatureActionFull>> {
         use crate::schema::creature_actions::dsl::*;
 
         let conn = &mut crate::db::connect_db();

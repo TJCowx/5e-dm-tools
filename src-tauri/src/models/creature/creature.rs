@@ -19,7 +19,7 @@ use crate::dto::{
 
 use serde::{Deserialize, Serialize};
 
-use super::creature_action::CreatureAction;
+use super::creature_action::CreatureActionFull;
 
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
@@ -69,7 +69,7 @@ pub struct Creature {
     pub languages: Option<Vec<LanguageDto>>,
     pub environments: Option<Vec<EnvironmentDto>>,
     pub abilities: Option<Vec<CreatureAbilityDto>>,
-    pub actions: Option<Vec<CreatureAction>>,
+    pub actions: Option<Vec<CreatureActionFull>>,
 }
 
 impl From<CreatureDto> for Creature {

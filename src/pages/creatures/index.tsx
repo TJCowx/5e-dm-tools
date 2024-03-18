@@ -1,5 +1,6 @@
 import {
   faBook,
+  faFileDownload,
   faPen,
   faPlus,
   faTrash,
@@ -26,12 +27,17 @@ import {
 import { Fragment, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import { deleteCreature, getAllCreatures } from '@api/creatures';
+import {
+  deleteCreature,
+  exportCreature,
+  getAllCreatures,
+} from '@api/creatures';
 import DebouncedInput from '@components/DebouncedInput';
 import { ListItemTwoSecondaryActions } from '@components/List';
 import useSetPagePadding from '@hooks/useSetPagePadding';
 import Creature from '@models/creature/Creature';
 import { getCRFormatted } from '@utils/creatureUtils';
+import { downloadToJson } from '@utils/exportUtils';
 import { logMessage } from '@utils/loggingUtils';
 
 const ActionContainer = styled('div')(() => ({
@@ -94,6 +100,16 @@ function Creatures() {
       });
   };
 
+  const handleCreatureExport = (id: string) => {
+    exportCreature(id)
+      .then((res) => {
+        downloadToJson(res, res.name);
+      })
+      .catch((e) => {
+        logMessage('error', e);
+      });
+  };
+
   useEffect(() => {
     loadCreatures();
   }, []);
@@ -139,7 +155,8 @@ function Creatures() {
           className="new-creature-btn"
           aria-label="Create new creature"
           component={Link}
-          to="create">
+          to="create"
+        >
           <FontAwesomeIcon icon={faPlus} />{' '}
         </IconButton>
       </ActionContainer>
@@ -164,6 +181,14 @@ function Creatures() {
                 <ListItemTwoSecondaryActions
                   secondaryAction={
                     <>
+                      <Tooltip title={`Export ${name}`}>
+                        <IconButton
+                          aria-label={`Export ${name}`}
+                          onClick={() => handleCreatureExport(id)}
+                        >
+                          <FontAwesomeIcon icon={faFileDownload} />
+                        </IconButton>
+                      </Tooltip>
                       <Link to={`edit/${id}`}>
                         <IconButton aria-label={`Edit ${name}`}>
                           <FontAwesomeIcon size="xs" icon={faPen} />
@@ -173,11 +198,13 @@ function Creatures() {
                         edge="end"
                         aria-label={`Delete ${name}`}
                         color="warning"
-                        onClick={() => openDialog(id)}>
+                        onClick={() => openDialog(id)}
+                      >
                         <FontAwesomeIcon size="xs" icon={faTrash} />
                       </IconButton>
                     </>
-                  }>
+                  }
+                >
                   <ListItemText
                     primary={name}
                     secondary={
@@ -213,7 +240,8 @@ function Creatures() {
               variant="contained"
               color="warning"
               disableElevation
-              onClick={() => handleDelete(deleteCreatureActionId)}>
+              onClick={() => handleDelete(deleteCreatureActionId)}
+            >
               Delete
             </Button>
           </DialogActions>

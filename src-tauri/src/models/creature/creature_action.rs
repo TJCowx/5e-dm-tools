@@ -9,7 +9,7 @@ use super::creature_action_damage::{BaseCreatureActionDamage, CreatureActionDama
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
 #[serde(rename_all = "camelCase")]
-pub struct CreatureAction {
+pub struct CreatureActionFull {
     pub id: Option<i32>,
     pub name: String,
     pub description: Option<String>,
@@ -31,7 +31,6 @@ pub struct CreatureAction {
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct BaseCreatureAction {
-    pub id: Option<i32>,
     pub name: String,
     pub description: Option<String>,
     pub is_attack: bool,
@@ -41,10 +40,34 @@ pub struct BaseCreatureAction {
     pub combatants_hit: Option<i32>,
     pub attack_delivery_id: Option<i32>,
     pub attack_type_id: Option<i32>,
-    pub creature_id: Option<i32>,
 
     pub damages: Option<Vec<BaseCreatureActionDamage>>,
-    pub action_type: Option<ActionTypeDto>,
-    pub attack_delivery: Option<AttackDeliveryDto>,
-    pub attack_type: Option<AttackTypeDto>,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub enum CreatureAction {
+    Base(BaseCreatureAction),
+    Id(CreatureActionFull),
+}
+
+impl From<CreatureActionFull> for BaseCreatureAction {
+    fn from(ca: CreatureActionFull) -> Self {
+        Self {
+            name: ca.name,
+            description: ca.description,
+            is_attack: ca.is_attack,
+            action_type_id: ca.action_type_id,
+            to_hit: ca.to_hit,
+            reach: ca.reach,
+            combatants_hit: ca.combatants_hit,
+            attack_delivery_id: ca.attack_delivery_id,
+            attack_type_id: ca.attack_type_id,
+            damages: Some(
+                ca.damages
+                    .iter()
+                    .map(|d| BaseCreatureActionDamage::from(d.clone()))
+                    .collect(),
+            ),
+        }
+    }
 }

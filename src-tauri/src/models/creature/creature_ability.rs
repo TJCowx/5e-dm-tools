@@ -4,7 +4,7 @@ use crate::dto::creature::creature_ability_dto::CreatureAbilityDto;
 
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
-pub struct CreatureAbilityWithId {
+pub struct CreatureAbilityFull {
     pub id: i32,
     pub name: String,
     pub description: String,
@@ -20,7 +20,7 @@ pub struct BaseCreatureAbility {
 #[derive(Debug, Serialize, Deserialize)]
 pub enum CreatureAbility {
     Base(BaseCreatureAbility),
-    Id(CreatureAbilityWithId),
+    Full(CreatureAbilityFull),
 }
 
 impl From<CreatureAbilityDto> for BaseCreatureAbility {
@@ -32,9 +32,9 @@ impl From<CreatureAbilityDto> for BaseCreatureAbility {
     }
 }
 
-impl From<CreatureAbilityDto> for CreatureAbilityWithId {
+impl From<CreatureAbilityDto> for CreatureAbilityFull {
     fn from(a: CreatureAbilityDto) -> Self {
-        CreatureAbilityWithId {
+        CreatureAbilityFull {
             id: a.id,
             name: a.name,
             description: a.description,

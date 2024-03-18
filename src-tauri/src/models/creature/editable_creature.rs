@@ -7,8 +7,8 @@ use crate::dto::creature::{
 };
 
 use super::{
-    creature_ability::{CreatureAbility, CreatureAbilityWithId},
-    creature_action::CreatureAction,
+    creature_ability::{CreatureAbility, CreatureAbilityFull},
+    creature_action::CreatureActionFull,
 };
 use serde::{Deserialize, Serialize};
 
@@ -57,7 +57,7 @@ pub struct EditableCreature {
     pub environments: Vec<i32>,
 
     pub abilities: Vec<CreatureAbility>,
-    pub actions: Vec<CreatureAction>,
+    pub actions: Vec<CreatureActionFull>,
 }
 
 impl From<CreatureDto> for EditableCreature {
@@ -107,7 +107,7 @@ impl From<CreatureDto> for EditableCreature {
             environments: CreatureEnvironmentDto::get_env_ids_by_creature_ids(&creature.id),
             abilities: CreatureAbilityDto::get_abilities_by_creature_id(&creature.id)
                 .into_iter()
-                .map(|a| CreatureAbilityWithId::from(a))
+                .map(|a| CreatureAbility::Full(CreatureAbilityFull::from(a)))
                 .collect(),
             actions: CreatureActionDto::get_actions_by_creature_id(&creature.id).unwrap(),
         }
