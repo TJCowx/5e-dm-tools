@@ -35,7 +35,8 @@ class SourceParser:
         for key in speeds.keys():
             if key not in ["walk", "fly", "burrow", "climb"]:
                 print(f"[ERROR] {key} has not been defined!")
-                exit(-1)
+                # TODO: Add Swim speed
+                # exit(-1)
             if not isinstance(speeds[key], Number):
                 print(f"[ERROR] {key} isn't a number! {speeds[key]}") 
 
@@ -45,7 +46,12 @@ class SourceParser:
         out_m["climbSpeed"] = speeds.get("climb", None)
 
     def _map_senses(self, in_m, out_m):
-        senses = in_m["senses"]
+        try:
+            senses = in_m["senses"]
+        except KeyError:
+            print(f"{in_m['name']} has no senses")
+            return
+
         for unparsed in senses:
             sense, distance, *rest = unparsed.lower().split(' ')
             match sense:
@@ -353,13 +359,53 @@ class SourceParser:
     def _map_weaknesses(self, in_m, out_m):
         out_m["weaknesses"] = [transform_damage(v) for v in in_m.get("vulnerable", [])]
 
-    # TODO: This
-    def _map_languages(self, in_m, out_m):
-        # TODO: Need more languages
-        print("TODO: Map Languages")
+    def _map_languages(self, in_langs):
+        lang_map = {
+            "dwarvish": 1,
+            "common": 2,
+            "elvish": 3,
+            "giant": 4,
+            "gnomish": 5,
+            "goblin": 6,
+            "halfling": 7,
+            "orc": 8,
+            "abyssal": 9,
+            "celestial": 10,
+            "draconic": 11,
+            "deep speech": 12,
+            "infernal": 13,
+            "primordial": 14,
+            "sylvan": 15,
+            "undercommon": 16,
+            "auran":17,
+            "aarakocra":18,
+            "telepathy": 19,
+            "yeti": 20,
+            "any_one": 21
+        }
+        langs = []
+        for l in in_langs:
+            l = l.lower()
+            try:
+                if "telepathy" in l:
+                    langs.append(lang_map["telepathy"])
+                elif "any one language" in l:
+                    langs.append(lang_map["any_one"])
+                else:
+                    langs.append(lang_map[l])
+            except KeyError:
+                print(f"[ERROR] {l} is not a defined language!")
+                exit(-1) 
+
+        return langs
 
     def _map_abilities(self, in_m, out_m):
-        abilities = in_m['trait']
+        try:
+            abilities = in_m['trait']
+        except KeyError:
+            print(f"{in_m['name']} has no traits/abilities!")
+            return
+
         out_m['abilities'] = []
         for a in abilities:
             ability = {}
@@ -374,6 +420,7 @@ class SourceParser:
 
     def _remap_monsters(self):
         for m in self._in_monsters:
+            print(f"Remapping {m.get('name')}")
             out_m = {}
             out_m["name"] = m.get("name")
             self._map_ac(m, out_m)
@@ -398,12 +445,14 @@ class SourceParser:
             self._map_immunities(m, out_m)
             self._map_resistances(m, out_m)
             self._map_weaknesses(m, out_m)
-            self._map_languages(m, out_m)
+            out_m["languages"] = self._map_languages(m["languages"])
             self._map_abilities(m, out_m)
             self._map_actions(m, out_m)
             out_m["sourceAbbr"] = m.get("source")
 
             self._output['creatures'].append(out_m)
+            print(f"Mapping {m.get('name')} completed")
+            print("_________________________________________________________")
 
     def parse(self):
         # Get the JSON file

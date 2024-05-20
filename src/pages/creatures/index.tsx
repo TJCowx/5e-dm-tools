@@ -100,6 +100,7 @@ function Creatures() {
       });
   };
 
+  // TODO: Needs actual user feedback!
   const handleCreatureExport = (id: string) => {
     exportCreature(id)
       .then((res) => {
