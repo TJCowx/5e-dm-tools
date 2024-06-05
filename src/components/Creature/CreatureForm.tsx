@@ -266,6 +266,13 @@ function CreatureForm({ control, onSubmit, onValueChange, watch }: Props) {
             step={5}
             min={0}
           />
+          <RHFIntegerField
+            control={control}
+            label="Swim Speed"
+            fieldName="swimSpeed"
+            step={5}
+            min={0}
+          />
         </div>
       </section>
       <section>

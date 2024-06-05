@@ -25,6 +25,7 @@ export const convertCreatureFormToDB = (
     burrowSpeed,
     climbSpeed,
     hoverSpeed,
+    swimSpeed,
     blindsight,
     darkvision,
     tremorsense,
@@ -50,6 +51,7 @@ export const convertCreatureFormToDB = (
     burrowSpeed: burrowSpeed != null ? +(burrowSpeed ?? 0) : null,
     climbSpeed: climbSpeed != null ? +(climbSpeed ?? 0) : null,
     hoverSpeed: hoverSpeed != null ? +(hoverSpeed ?? 0) : null,
+    swimSpeed: swimSpeed != null ? +(swimSpeed ?? 0) : null,
     blindsight: blindsight != null ? +(blindsight ?? 0) : null,
     darkvision: darkvision != null ? +(darkvision ?? 0) : null,
     tremorsense: tremorsense != null ? +(tremorsense ?? 0) : null,
@@ -84,7 +86,14 @@ export const getCombatantName = (name: string, numPrevType: number) => {
  * @returns the string that lists the speeds
  */
 export const getSpeedString = (creature: Creature) => {
-  const { landSpeed, flySpeed, burrowSpeed, climbSpeed, hoverSpeed } = creature;
+  const {
+    landSpeed,
+    flySpeed,
+    burrowSpeed,
+    climbSpeed,
+    hoverSpeed,
+    swimSpeed,
+  } = creature;
 
   const speedItems: string[] = [];
 
@@ -93,6 +102,7 @@ export const getSpeedString = (creature: Creature) => {
   if (burrowSpeed) speedItems.push(`burrow ${burrowSpeed}ft`);
   if (climbSpeed) speedItems.push(`climb ${climbSpeed}ft`);
   if (hoverSpeed) speedItems.push(`hover ${hoverSpeed}ft`);
+  if (swimSpeed) speedItems.push(`swim ${swimSpeed}`);
 
   return speedItems.join(' | ');
 };

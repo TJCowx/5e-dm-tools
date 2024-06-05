@@ -24,6 +24,7 @@ type BaseCreature = {
   burrowSpeed?: number;
   climbSpeed?: number;
   hoverSpeed?: number;
+  swimSpeed?: number;
 
   blindsight?: number;
   darkvision?: number;
