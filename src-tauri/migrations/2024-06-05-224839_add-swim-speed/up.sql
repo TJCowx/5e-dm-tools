@@ -1,14 +1,12 @@
 PRAGMA foreign_keys = OFF;
 
--- Create the new source table!
-CREATE TABLE sources (
-    abbreviation TEXT NOT NULL PRIMARY KEY,
-    name TEXT NOT NULL
-);
+-- Fix a broken migration from add-sources
+DROP TABLE IF EXISTS creature_abilities_old;
 
+-- Continue
 ALTER TABLE creatures RENAME TO creatures_old;
 
--- Add the optional relation to the creatures table
+-- Add the swimming speed to the creatures table
 CREATE TABLE creatures (
     id INTEGER NOT NULL PRIMARY KEY,
     name TEXT NOT NULL,
@@ -22,6 +20,7 @@ CREATE TABLE creatures (
     burrow_speed INTEGER NULL,
     climb_speed INTEGER NULL,
     hover_speed INTEGER NULL,
+    swim_speed INTEGER NULL,
     blindsight INTEGER NULL,
     darkvision INTEGER NULL,
     tremorsense INTEGER NULL,
@@ -80,7 +79,8 @@ INSERT INTO
         has_lair,
         alignment_id,
         creature_type_id,
-        size_id
+        size_id,
+        source_abbr
     )
 SELECT
     id,
@@ -112,7 +112,8 @@ SELECT
     has_lair,
     alignment_id,
     creature_type_id,
-    size_id
+    size_id,
+    source_abbr
 FROM
     creatures_old;
 
@@ -126,6 +127,7 @@ ALTER TABLE creatures_languages RENAME TO creatures_languages_old;
 ALTER TABLE creature_abilities RENAME TO creature_abilities_old;
 ALTER TABLE creature_actions RENAME TO creature_actions_old;
 ALTER TABLE creature_action_damages RENAME TO creature_action_damages_old; 
+ALTER TABLE creature_environment RENAME TO creature_environment_old;
 
 -- Re-add into new tables
 CREATE TABLE creatures_proficiencies (
@@ -212,6 +214,13 @@ CREATE TABLE creature_action_damages (
     FOREIGN KEY (action_id) REFERENCES creature_actions ON DELETE CASCADE
 );
 
+CREATE TABLE creature_environment (
+    creature_id INTEGER NOT NULL,
+    environment_id INTEGER NOT NULL,
+    FOREIGN KEY (creature_id) REFERENCES creatures(id) ON DELETE CASCADE,
+    FOREIGN KEY (environment_id) REFERENCES environments(id) ON DELETE CASCADE,
+    PRIMARY KEY (creature_id, environment_id)
+);
 -- Copy data from old into new
 INSERT INTO creatures_proficiencies SELECT * FROM creatures_proficiencies_old;
 INSERT INTO creatures_immunities SELECT * FROM creatures_immunities_old;
@@ -222,6 +231,7 @@ INSERT INTO creatures_languages SELECT * FROM creatures_languages_old;
 INSERT INTO creature_abilities SELECT * FROM creature_abilities_old;
 INSERT INTO creature_actions SELECT * FROM creature_actions_old;
 INSERT INTO creature_action_damages SELECT * FROM creature_action_damages_old;
+INSERT INTO creature_environment SELECT * FROM creature_environment_old;
 
 -- Drop tables after imported
 DROP TABLE creatures_proficiencies_old;
@@ -230,9 +240,10 @@ DROP TABLE creatures_condition_immunities_old;
 DROP TABLE creatures_resistances_old;
 DROP TABLE creatures_weaknesses_old;
 DROP TABLE creatures_languages_old;
-DROP TABLE creatures_abilities_old;
+DROP TABLE creature_abilities_old;
 DROP TABLE creature_actions_old;
 DROP TABLE creature_action_damages_old;
+DROP TABLE creature_environment_old;
 DROP TABLE creatures_old;
 
 PRAGMA foreign_keys = ON;

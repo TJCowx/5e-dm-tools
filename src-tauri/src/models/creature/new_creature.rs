@@ -16,6 +16,7 @@ pub struct NewCreature {
     pub burrow_speed: Option<i32>,
     pub climb_speed: Option<i32>,
     pub hover_speed: Option<i32>,
+    pub swim_speed: Option<i32>,
     pub blindsight: Option<i32>,
     pub darkvision: Option<i32>,
     pub tremorsense: Option<i32>,

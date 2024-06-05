@@ -98,6 +98,7 @@ diesel::table! {
         burrow_speed -> Nullable<Integer>,
         climb_speed -> Nullable<Integer>,
         hover_speed -> Nullable<Integer>,
+        swim_speed -> Nullable<Integer>,
         blindsight -> Nullable<Integer>,
         darkvision -> Nullable<Integer>,
         tremorsense -> Nullable<Integer>,
@@ -210,21 +211,29 @@ diesel::table! {
     }
 }
 
+diesel::joinable!(creature_abilities -> creatures (creature_id));
 diesel::joinable!(creature_action_damages -> creature_actions (action_id));
 diesel::joinable!(creature_action_damages -> damage_types (type_id));
 diesel::joinable!(creature_actions -> action_types (action_type_id));
 diesel::joinable!(creature_actions -> attack_deliveries (attack_delivery_id));
 diesel::joinable!(creature_actions -> attack_types (attack_type_id));
+diesel::joinable!(creature_actions -> creatures (creature_id));
 diesel::joinable!(creature_environment -> creatures (creature_id));
 diesel::joinable!(creature_environment -> environments (environment_id));
 diesel::joinable!(creatures -> alignments (alignment_id));
 diesel::joinable!(creatures -> creature_types (creature_type_id));
 diesel::joinable!(creatures -> sources (source_abbr));
 diesel::joinable!(creatures_condition_immunities -> condition_types (condition_type_id));
+diesel::joinable!(creatures_condition_immunities -> creatures (creature_id));
+diesel::joinable!(creatures_immunities -> creatures (creature_id));
 diesel::joinable!(creatures_immunities -> damage_types (damage_type_id));
+diesel::joinable!(creatures_languages -> creatures (creature_id));
 diesel::joinable!(creatures_languages -> languages (language_id));
+diesel::joinable!(creatures_proficiencies -> creatures (creature_id));
 diesel::joinable!(creatures_proficiencies -> proficiencies (proficiency_id));
+diesel::joinable!(creatures_resistances -> creatures (creature_id));
 diesel::joinable!(creatures_resistances -> damage_types (damage_type_id));
+diesel::joinable!(creatures_weaknesses -> creatures (creature_id));
 diesel::joinable!(creatures_weaknesses -> damage_types (damage_type_id));
 
 diesel::allow_tables_to_appear_in_same_query!(
