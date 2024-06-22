@@ -60,6 +60,7 @@ function AbilityModal({
       .validate(ability, { abortEarly: false })
       .then(() => {
         onSave(ability);
+        setAbility(initialAbility);
         onClose();
       })
       .catch((e: ValidationError) => {

@@ -110,6 +110,9 @@ function CreatureForm({ control, onSubmit, onValueChange, watch }: Props) {
     }
   }, [cr]);
 
+  console.log(abilities);
+  console.log(actions);
+
   return (
     <StyledForm className="pb-40" onSubmit={onSubmit}>
       <section>

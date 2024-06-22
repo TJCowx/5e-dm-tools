@@ -122,11 +122,13 @@ function CreatureCombatantItem({ combatant, isExpanded, onChange }: Props) {
       elevation={0}
       square
       expanded={isExpanded}
-      onChange={onChange}>
+      onChange={onChange}
+    >
       <StyledAccordionSummary
         id={panelHeaderId}
         aria-controls={panelContentId}
-        expandIcon={<FontAwesomeIcon icon={faChevronDown} />}>
+        expandIcon={<FontAwesomeIcon icon={faChevronDown} />}
+      >
         <SummaryContent>
           <span className="name-container">
             {combatant.isDead && <DeadIcon />}

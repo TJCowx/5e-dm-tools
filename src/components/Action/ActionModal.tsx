@@ -109,6 +109,7 @@ function ActionModal({
     SCHEMA.validate(action, { abortEarly: false })
       .then(() => {
         onSave(action);
+        setAction(initialAction);
         onClose();
       })
       .catch((e: ValidationError) => {

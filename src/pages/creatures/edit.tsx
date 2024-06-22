@@ -32,6 +32,7 @@ function EditCreature() {
 
   useEffect(() => {
     if (data) {
+      console.log(data);
       reset(data);
     }
   }, [data]);
