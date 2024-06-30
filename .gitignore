@@ -43,3 +43,7 @@ next-env.d.ts
 # Script outputs
 scripts/source_parsing/out/
 scripts/source_parsing/source
+
+# Vite
+vite.config.js.timestamp-*
+vite.config.ts.timestamp-*
