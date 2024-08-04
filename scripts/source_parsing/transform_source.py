@@ -1,7 +1,7 @@
 import json
 import sys
+from source_parsing.utils import get_path_from_abbr, dump_file, transform_attribute, transform_damage
 from numbers import Number
-from os import listdir, path
 
 IN_DIR = "./source/individual"
 OUT_DIR = './source/individual/parsed'
@@ -342,16 +342,16 @@ class SourceParser:
                 print(f"{in_m['size']} is not a defined size")
 
     def _map_immunities(self, in_m, out_m):
-        out_m['immunities'] = [transform_damage(i) for i in in_m.get("immune", [])] 
+        out_m['immunities'] = [transform_damage(i, True) for i in in_m.get("immune", [])] 
 
     def _map_cond_immunities(self, in_m, out_m):
-        out_m["condImmunities"] = [transform_damage(c) for c in in_m.get("conditionImmune", [])]
+        out_m["condImmunities"] = [transform_damage(c, True) for c in in_m.get("conditionImmune", [])]
 
     def _map_resistances(self, in_m, out_m):
-        out_m["resistances"] = [transform_damage(r) for r in in_m.get("resist", [])]
+        out_m["resistances"] = [transform_damage(r, True) for r in in_m.get("resist", [])]
 
     def _map_weaknesses(self, in_m, out_m):
-        out_m["weaknesses"] = [transform_damage(v) for v in in_m.get("vulnerable", [])]
+        out_m["weaknesses"] = [transform_damage(v, True) for v in in_m.get("vulnerable", [])]
 
     # TODO: This
     def _map_languages(self, in_m, out_m):
@@ -417,90 +417,22 @@ class SourceParser:
         self._remap_monsters()
 
     def output(self):
-        with open(self._out_file, "w", encoding="utf-8") as out:
-            json.dump(self._output, out, ensure_ascii=False, indent=2)
+        dump_file(self._output, self._out_file)
 
-def transform_attribute(att): 
-    if att == "str":
-        return "Strength" 
-    if att == "dex":
-        return "Dexterity"
-    if att == "con":
-        return "Constitution"
-    if att == "int":
-        return "Intelligence"
-    if att == "wis":
-        return "Wisdom"
-    if att == "cha":
-        return "Charisma"
-    
-    print(f"[ERROR] {att} IS NOT AN ATTRIBUTE")
-    exit(-1)
-
-def transform_damage(d):
-    if d == "acid":
-        return 1
-    if d == "cold":
-        return 2
-    if d == "fire":
-        return 3
-    if d == "force":
-        return 4
-    if d == "lightning":
-        return 5
-    if d == "necrotic":
-        return 6
-    if d == "poison":
-        return 7
-    if d == "psychic":
-        return 8
-    if d == "radiant":
-        return 9
-    if d == "thunder":
-        return 10
-    if d == "bludgeoning":
-        return 11
-    if d == 'slashing':
-        return 12
-    if d == 'piercing':
-        return 13
-
-    print(f"[ERROR] {d} HAS NOT BEEN DEFINED AS DAMAGE");
-    exit(-1)
-
-def find_file(abbr):
-    # Check if there is a file in ./source/individual that starts with an abbr-
-    for filename in listdir(IN_DIR):
-        if filename.lower().startswith(abbr.lower() + "-") and filename.endswith(".json"):
-            file_path = path.join(IN_DIR, filename)
-            if path.exists(file_path):
-                return file_path
-    return None
 
 def main(abbr):
-    # Validate that the source is there
-    try:
-        file = find_file(abbr)
-    except:
-        print("Error trying to find file file")
-        exit(-1)
-
-    if file is None:
-        print(f"No source found with the abbr \"{abbr}\"")
-        exit(-1)
+    print("Reading source file")
+    file = get_path_from_abbr(abbr)
+    print("Source file read successfully... now parsing")
 
     parser = SourceParser(file)
     parser.parse()
     print("Parsed... Now outputting")
+
     parser.output()
     print("source has been output successfully")
     
 
 if __name__ == "__main__":
-    try:
-        source = sys.argv[1]
-    except:
-        print("You must have a source abbr arguement")
-        exit(-1)
+    main(sys.argv[1])
 
-    main(source)
