@@ -29,14 +29,16 @@ You can report issues via the [issues tracker](https://github.com/TJCowx/5e-dm-t
 
 You may contribute by adding features, bugfixes, or documentation. Contributing guide will be eventually made
 
+#### Prerequisites
+
+- Install tauricli and rust [documentation](https://tauri.app/v1/guides/getting-started/prerequisites/#installing)
+- For migrations install [diesel](https://diesel.rs/guides/getting-started)
+
 **To run your development server**
 
 ```bash
 # Install Dependencies
 npm install
-
-# Build NextJS // This only needs to be ran once
-npm run next:build
 
 # Run development server
 npm run dev
