@@ -1,0 +1,11 @@
+DROP TABLE IF EXISTS magic_schools_spells;
+DROP TABLE IF EXISTS spell_damages;
+DROP TABLE IF EXISTS classes_spells;
+DROP TABLE IF EXISTS spells;
+DROP TABLE IF EXISTS aoe_types;
+DROP TABLE IF EXISTS time_scales;
+DROP TABLE IF EXISTS duration_types;
+DROP TABLE IF EXISTS range_types;
+DROP TABLE IF EXISTS cast_types;
+DROP TABLE IF EXISTS classes;
+DROP TABLE IF EXISTS magic_schools;

@@ -15,6 +15,13 @@ diesel::table! {
 }
 
 diesel::table! {
+    aoe_types (id) {
+        id -> Integer,
+        name -> Binary,
+    }
+}
+
+diesel::table! {
     attack_deliveries (id) {
         id -> Integer,
         name -> Text,
@@ -25,6 +32,27 @@ diesel::table! {
     attack_types (id) {
         id -> Integer,
         name -> Text,
+    }
+}
+
+diesel::table! {
+    cast_types (id) {
+        id -> Integer,
+        name -> Text,
+    }
+}
+
+diesel::table! {
+    classes (id) {
+        id -> Integer,
+        name -> Text,
+    }
+}
+
+diesel::table! {
+    classes_spells (class_id, spell_id) {
+        class_id -> Integer,
+        spell_id -> Integer,
     }
 }
 
@@ -177,6 +205,14 @@ diesel::table! {
 }
 
 diesel::table! {
+    duration_types (id) {
+        id -> Integer,
+        name -> Text,
+        has_time_scale -> Bool,
+    }
+}
+
+diesel::table! {
     environments (id) {
         id -> Integer,
         name -> Text,
@@ -191,9 +227,31 @@ diesel::table! {
 }
 
 diesel::table! {
+    magic_schools (id) {
+        id -> Integer,
+        name -> Text,
+    }
+}
+
+diesel::table! {
+    magic_schools_spells (magic_school_id, spell_id) {
+        magic_school_id -> Integer,
+        spell_id -> Integer,
+    }
+}
+
+diesel::table! {
     proficiencies (id) {
         id -> Integer,
         name -> Text,
+    }
+}
+
+diesel::table! {
+    range_types (id) {
+        id -> Integer,
+        name -> Text,
+        has_defined_range -> Bool,
     }
 }
 
@@ -211,6 +269,51 @@ diesel::table! {
     }
 }
 
+diesel::table! {
+    spell_damages (id) {
+        id -> Integer,
+        default_damage -> Integer,
+        dice -> Text,
+        type_id -> Integer,
+        spell_id -> Integer,
+    }
+}
+
+diesel::table! {
+    spells (id) {
+        id -> Integer,
+        name -> Text,
+        description -> Text,
+        higher_levels -> Nullable<Text>,
+        spell_slot -> Integer,
+        requires_verbal -> Bool,
+        requires_somatic -> Bool,
+        requires_material -> Bool,
+        level -> Integer,
+        casting_time -> Text,
+        can_ritual_cast -> Bool,
+        range_type_id -> Integer,
+        range -> Nullable<Text>,
+        cast_type_id -> Integer,
+        cast_time -> Integer,
+        aoe_type_id -> Nullable<Integer>,
+        aoe_size -> Nullable<Integer>,
+        duration_type_id -> Integer,
+        time_scale_id -> Nullable<Integer>,
+        duration -> Nullable<Integer>,
+        hit_count -> Integer,
+    }
+}
+
+diesel::table! {
+    time_scales (id) {
+        id -> Integer,
+        name -> Binary,
+    }
+}
+
+diesel::joinable!(classes_spells -> classes (class_id));
+diesel::joinable!(classes_spells -> spells (spell_id));
 diesel::joinable!(creature_abilities -> creatures (creature_id));
 diesel::joinable!(creature_action_damages -> creature_actions (action_id));
 diesel::joinable!(creature_action_damages -> damage_types (type_id));
@@ -235,12 +338,25 @@ diesel::joinable!(creatures_resistances -> creatures (creature_id));
 diesel::joinable!(creatures_resistances -> damage_types (damage_type_id));
 diesel::joinable!(creatures_weaknesses -> creatures (creature_id));
 diesel::joinable!(creatures_weaknesses -> damage_types (damage_type_id));
+diesel::joinable!(magic_schools_spells -> magic_schools (magic_school_id));
+diesel::joinable!(magic_schools_spells -> spells (spell_id));
+diesel::joinable!(spell_damages -> damage_types (type_id));
+diesel::joinable!(spell_damages -> spells (spell_id));
+diesel::joinable!(spells -> aoe_types (aoe_type_id));
+diesel::joinable!(spells -> cast_types (cast_type_id));
+diesel::joinable!(spells -> duration_types (duration_type_id));
+diesel::joinable!(spells -> range_types (range_type_id));
+diesel::joinable!(spells -> time_scales (time_scale_id));
 
 diesel::allow_tables_to_appear_in_same_query!(
     action_types,
     alignments,
+    aoe_types,
     attack_deliveries,
     attack_types,
+    cast_types,
+    classes,
+    classes_spells,
     condition_types,
     creature_abilities,
     creature_action_damages,
@@ -255,9 +371,16 @@ diesel::allow_tables_to_appear_in_same_query!(
     creatures_resistances,
     creatures_weaknesses,
     damage_types,
+    duration_types,
     environments,
     languages,
+    magic_schools,
+    magic_schools_spells,
     proficiencies,
+    range_types,
     sizes,
     sources,
+    spell_damages,
+    spells,
+    time_scales,
 );

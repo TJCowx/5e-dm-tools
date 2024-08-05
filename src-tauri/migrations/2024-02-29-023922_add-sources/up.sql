@@ -230,7 +230,7 @@ DROP TABLE creatures_condition_immunities_old;
 DROP TABLE creatures_resistances_old;
 DROP TABLE creatures_weaknesses_old;
 DROP TABLE creatures_languages_old;
-DROP TABLE creatures_abilities_old;
+DROP TABLE creature_abilities_old;
 DROP TABLE creature_actions_old;
 DROP TABLE creature_action_damages_old;
 DROP TABLE creatures_old;

@@ -34,7 +34,7 @@ dist-ssr
 npm-debug.log*
 
 .env
-dev.db
+*.db
 
 # typescript
 *.tsbuildinfo
