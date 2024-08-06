@@ -2,6 +2,7 @@ import {
   faDragon,
   faHouse,
   faListAlt,
+  faWandMagic,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -10,6 +11,7 @@ import {
   ListItem,
   ListItemButton,
   ListItemIcon,
+  Tooltip,
   styled,
 } from '@mui/material';
 import clsx from 'clsx';
@@ -42,6 +44,11 @@ const NavItems: NavItem[] = [
     icon: <FontAwesomeIcon icon={faDragon} />,
     href: '/creatures',
   },
+  {
+    text: 'Spells',
+    icon: <FontAwesomeIcon icon={faWandMagic} />,
+    href: '/spells',
+  }
 ];
 
 const StyledDrawer = styled(Drawer)(({ theme }) => ({
@@ -67,17 +74,19 @@ function NavDrawer() {
       <List>
         {NavItems.map(({ text, icon, href, activeMustMatch }) => (
           <ListItem key={text}>
-            <ListItemButton aria-label={text} component={Link} to={href}>
-              <ListItemIcon
-                className={clsx({
-                  'rail-icon': true,
-                  'is-active': activeMustMatch
-                    ? pathname === href
-                    : pathname.startsWith(href),
-                })}>
-                {icon}
-              </ListItemIcon>
-            </ListItemButton>
+            <Tooltip title={text} placement='right'>
+              <ListItemButton aria-label={text} component={Link} to={href}>
+                <ListItemIcon
+                  className={clsx({
+                    'rail-icon': true,
+                    'is-active': activeMustMatch
+                      ? pathname === href
+                      : pathname.startsWith(href),
+                  })}>
+                  {icon}
+                </ListItemIcon>
+              </ListItemButton>
+            </Tooltip>
           </ListItem>
         ))}
         <SettingsNavItem />
