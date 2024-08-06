@@ -28,12 +28,12 @@ CREATE TABLE duration_types (
 
 CREATE TABLE time_scales (
     id INTEGER NOT NULL PRIMARY KEY,
-    name NOT NULL
+    name TEXT NOT NULL
 );
 
 CREATE TABLE aoe_types (
     id INTEGER NOT NULL PRIMARY KEY,
-    name NOT NULL
+    name TEXT NOT NULL
 );
 
 CREATE TABLE spells (

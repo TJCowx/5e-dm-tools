@@ -28,6 +28,7 @@ fn main() {
             queries::attack_delivery::get_attack_delivery_by_id,
             queries::attack_type::get_all_attack_types,
             queries::attack_type::get_attack_type_by_id,
+            queries::class::get_all_classes,
             queries::condition_type::get_all_condition_types,
             queries::creature::get_all_creatures,
             queries::creature::get_creature_by_id,

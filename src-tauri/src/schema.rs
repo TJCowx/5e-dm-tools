@@ -17,7 +17,7 @@ diesel::table! {
 diesel::table! {
     aoe_types (id) {
         id -> Integer,
-        name -> Binary,
+        name -> Text,
     }
 }
 
@@ -102,6 +102,13 @@ diesel::table! {
     creature_environment (creature_id, environment_id) {
         creature_id -> Integer,
         environment_id -> Integer,
+    }
+}
+
+diesel::table! {
+    creature_spells (spell_id, creature_id) {
+        spell_id -> Integer,
+        creature_id -> Integer,
     }
 }
 
@@ -308,7 +315,7 @@ diesel::table! {
 diesel::table! {
     time_scales (id) {
         id -> Integer,
-        name -> Binary,
+        name -> Text,
     }
 }
 
@@ -323,6 +330,8 @@ diesel::joinable!(creature_actions -> attack_types (attack_type_id));
 diesel::joinable!(creature_actions -> creatures (creature_id));
 diesel::joinable!(creature_environment -> creatures (creature_id));
 diesel::joinable!(creature_environment -> environments (environment_id));
+diesel::joinable!(creature_spells -> creatures (creature_id));
+diesel::joinable!(creature_spells -> spells (spell_id));
 diesel::joinable!(creatures -> alignments (alignment_id));
 diesel::joinable!(creatures -> creature_types (creature_type_id));
 diesel::joinable!(creatures -> sources (source_abbr));
@@ -362,6 +371,7 @@ diesel::allow_tables_to_appear_in_same_query!(
     creature_action_damages,
     creature_actions,
     creature_environment,
+    creature_spells,
     creature_types,
     creatures,
     creatures_condition_immunities,

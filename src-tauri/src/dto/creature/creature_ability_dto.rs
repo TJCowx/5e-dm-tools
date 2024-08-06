@@ -116,8 +116,6 @@ impl CreatureAbilityDto {
             .load::<CreatureAbilityDto>(conn)
             .expect("Error loading abilities");
 
-        println!(abilities);
-
         creature_abilities
             .filter(creature_id.eq(parent_id))
             .load::<CreatureAbilityDto>(conn)
