@@ -1,7 +1,7 @@
 use diesel::prelude::*;
 use serde::{Deserialize, Serialize};
 
-use crate::db::connect_db;
+use crate::{db::connect_db, models::spell::spell::Spell};
 
 #[derive(Debug, Serialize, Deserialize, Queryable, Identifiable, AsChangeset)]
 #[diesel(table_name = crate::schema::spells)]
@@ -31,28 +31,41 @@ pub struct SpellDto {
 }
 
 impl SpellDto {
-    pub fn get_all() -> Result<Vec<SpellDto>, String> {
+    pub fn get_all() -> Result<Vec<Spell>, String> {
         use crate::schema::spells::dsl::*;
 
         let conn = &mut connect_db();
 
         println!("[server] Loading all spells");
-        match spells.load::<SpellDto>(conn) {
-            Ok(all_spells) => {
-                // TODO: Convert spells into non-dto version
-                let spell_iter = all_spells.into_iter().map(|s| s).collect();
-
-                Ok(spell_iter)
-            }
+        let found_spells = match spells.load::<SpellDto>(conn) {
+            Ok(all_spells) => all_spells,
             Err(e) => {
                 println!("[server] There was an error reading spells");
                 println!("{}", e);
-                Err(e.to_string())
+                return Err(e.to_string());
             }
-        }
+        };
+
+        println!(
+            "[server][SpellDto] Retreived {} spells, building full spell..",
+            found_spells.len()
+        );
+        let mapped = found_spells
+            .into_iter()
+            .try_fold(Vec::new(), |mut acc, s| match Spell::build_full(s) {
+                Ok(spell) => {
+                    acc.push(spell);
+                    Ok(acc)
+                }
+                Err(e) => Err(e),
+            })?;
+
+        println!("[server][SpellDto] All spells mapped successfully");
+
+        Ok(mapped)
     }
 
-    pub fn get_by_id(spell_id: &i32) -> Result<SpellDto, String> {
+    pub fn get_by_id(spell_id: &i32) -> Result<Spell, String> {
         use crate::schema::spells::dsl::*;
 
         let conn = &mut connect_db();
@@ -62,11 +75,14 @@ impl SpellDto {
             Ok(found_spell) => {
                 println!("[server] Found spell {}", spell_id);
 
-                // TODO: Convert the spell into a non-dto version
-                Ok(found_spell)
+                let spell = Spell::build_full(found_spell)?;
+                Ok(spell)
             }
             Err(e) => {
-                println!("[server] Error reading spell {}, Error: {}", spell_id, e);
+                println!(
+                    "[server][SpellDto] Error reading spell {}, Error: {}",
+                    spell_id, e
+                );
                 Err(format!("Error getting spell (id: {}): {}", spell_id, e))
             }
         }

@@ -44,7 +44,7 @@ pub struct Spell {
 }
 
 impl Spell {
-    fn build_full(spell: SpellDto) -> Result<Spell, String> {
+    pub fn build_full(spell: SpellDto) -> Result<Spell, String> {
         let range_type = match RangeTypeDto::get_by_id(&spell.range_type_id) {
             Ok(found) => found,
             Err(e) => return Err(e),
