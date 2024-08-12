@@ -4,7 +4,7 @@
 )]
 
 use log::LevelFilter;
-use tauri_plugin_log::LogTarget;
+use tauri_plugin_log::{fern::colors::ColoredLevelConfig, LogTarget};
 
 mod db;
 pub mod dto;
@@ -17,7 +17,8 @@ fn main() {
         .plugin(
             tauri_plugin_log::Builder::default()
                 .targets([LogTarget::LogDir, LogTarget::Stdout])
-                .level(LevelFilter::Error)
+                .level(LevelFilter::Info)
+                .with_colors(ColoredLevelConfig::default())
                 .build(),
         )
         .invoke_handler(tauri::generate_handler![

@@ -1,4 +1,5 @@
 use diesel::prelude::*;
+use log::{error, info};
 use serde::{Deserialize, Serialize};
 
 use crate::{db::connect_db, models::spell::spell::Spell};
@@ -36,18 +37,18 @@ impl SpellDto {
 
         let conn = &mut connect_db();
 
-        println!("[server] Loading all spells");
+        info!("Loading all spells");
         let found_spells = match spells.load::<SpellDto>(conn) {
             Ok(all_spells) => all_spells,
             Err(e) => {
-                println!("[server] There was an error reading spells");
-                println!("{}", e);
+                error!("There was an error reading spells");
+                error!("{}", e);
                 return Err(e.to_string());
             }
         };
 
-        println!(
-            "[server][SpellDto] Retreived {} spells, building full spell..",
+        info!(
+            "Retreived {} spells, building full spell..",
             found_spells.len()
         );
         let mapped = found_spells
@@ -60,7 +61,7 @@ impl SpellDto {
                 Err(e) => Err(e),
             })?;
 
-        println!("[server][SpellDto] All spells mapped successfully");
+        info!("All spells mapped successfully");
 
         Ok(mapped)
     }
@@ -69,20 +70,17 @@ impl SpellDto {
         use crate::schema::spells::dsl::*;
 
         let conn = &mut connect_db();
-        println!("[server] Loading spell with id {}", spell_id);
+        info!("Loading spell with id {}", spell_id);
 
         match spells.find(spell_id).first::<SpellDto>(conn) {
             Ok(found_spell) => {
-                println!("[server] Found spell {}", spell_id);
+                info!("Found spell {}", spell_id);
 
                 let spell = Spell::build_full(found_spell)?;
                 Ok(spell)
             }
             Err(e) => {
-                println!(
-                    "[server][SpellDto] Error reading spell {}, Error: {}",
-                    spell_id, e
-                );
+                error!("Error reading spell {}, Error: {}", spell_id, e);
                 Err(format!("Error getting spell (id: {}): {}", spell_id, e))
             }
         }

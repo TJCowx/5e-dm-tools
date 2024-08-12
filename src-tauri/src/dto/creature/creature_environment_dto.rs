@@ -1,4 +1,5 @@
 use diesel::prelude::*;
+use log::info;
 use serde::{Deserialize, Serialize};
 
 use crate::dto::environment_dto::EnvironmentDto;
@@ -81,7 +82,7 @@ impl CreatureEnvironmentDto {
             }
         }
 
-        println!("[server] DELETING CREATURE ENVIRONMENTS");
+        info!("DELETING CREATURE ENVIRONMENTS");
 
         diesel::delete(
             creature_environment.filter(
