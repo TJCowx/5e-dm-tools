@@ -39,6 +39,7 @@ import Creature from '@models/creature/Creature';
 import { getCRFormatted } from '@utils/creatureUtils';
 import { downloadToJson } from '@utils/exportUtils';
 import { logMessage } from '@utils/loggingUtils';
+import PageListHeader from '@components/Layout/PageListHeader';
 
 const ActionContainer = styled('div')(() => ({
   display: 'flex',
@@ -138,28 +139,13 @@ function Creatures() {
           </MuiLink>
         </StyledAlert>
       )}
-      <ActionContainer>
-        <DebouncedInput
-          value={filterText}
-          label="Search"
-          onChange={(val) => setFilterText(val)}
-        />
-        <Tooltip title="Sources">
-          <Link to="/sources">
-            <IconButton aria-label="Sources" color="primary">
-              <FontAwesomeIcon icon={faBook} />
-            </IconButton>
-          </Link>
-        </Tooltip>
-        <IconButton
-          className="new-creature-btn"
-          aria-label="Create new creature"
-          component={Link}
-          to="create"
-        >
-          <FontAwesomeIcon icon={faPlus} />{' '}
-        </IconButton>
-      </ActionContainer>
+      <PageListHeader
+        showSourcesButton
+        newButtonTo="create"
+        newButtonLabel="Create new creature"
+        // FIXME: Refactor the filter text
+        onSearch={(val) => setFilterText(val)}
+      />
       <Divider className="mt-16" />
       {isLoading ? (
         <List dense>
