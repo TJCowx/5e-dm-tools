@@ -31,7 +31,7 @@ pub fn export_creatures(ids: Vec<i32>) -> Result<(), String> {
 #[tauri::command]
 pub fn export_source(abbr: String) -> Result<(), String> {
     info!("Exporting source {}", abbr);
-    warn("This feature is not implemented");
+    warn!("This feature is not implemented");
 
     Ok(())
 }

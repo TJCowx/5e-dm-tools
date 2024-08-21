@@ -102,11 +102,4 @@ function RHFIntegerField<T extends FieldValues>({
   );
 }
 
-RHFIntegerField.defaultProps = {
-  min: null,
-  max: null,
-  isRequired: false,
-  className: undefined,
-};
-
 export default RHFIntegerField;

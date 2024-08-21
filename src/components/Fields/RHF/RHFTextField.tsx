@@ -12,6 +12,7 @@ type Props<T extends FieldValues> = {
   label: string;
   isRequired?: boolean;
   isMultiline?: boolean;
+  disabled?: boolean;
 };
 
 function RHFTextField<T extends FieldValues>({
@@ -20,8 +21,9 @@ function RHFTextField<T extends FieldValues>({
   className,
   fieldName,
   label,
-  isRequired,
-  isMultiline,
+  isRequired = false,
+  isMultiline = false,
+  disabled = false,
 }: Props<T>) {
   const rules = isRequired
     ? {
@@ -41,6 +43,7 @@ function RHFTextField<T extends FieldValues>({
           id={id}
           className={clsx({ [`${className}`]: className })}
           label={label}
+          disabled={disabled}
           error={fieldState.error != null}
           helperText={fieldState.error?.message}
           size="small"
@@ -52,12 +55,5 @@ function RHFTextField<T extends FieldValues>({
     />
   );
 }
-
-RHFTextField.defaultProps = {
-  id: undefined,
-  isRequired: false,
-  isMultiline: false,
-  className: undefined,
-};
 
 export default RHFTextField;

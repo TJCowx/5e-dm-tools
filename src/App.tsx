@@ -14,6 +14,7 @@ import { Layout, LayoutProvider } from '@components/Layout';
 import { LoadingSpinner } from '@components/LoadingSpinner';
 import { SuspenseElement } from '@components/Routing';
 import useTheme from '@hooks/useTheme';
+import CreateSpell from '@pages/spells/create';
 
 const Creatures = lazy(() => import('@pages/creatures/index'));
 const CreateCreature = lazy(() => import('@pages/creatures/create'));
@@ -66,10 +67,16 @@ function App() {
                 path="/sources"
                 element={<SuspenseElement element={<SourcesPage />} />}
               />
-              <Route
-                path="/spells"
-                element={<SuspenseElement element={<SpellsPage />} />}
-              />
+              <Route path="/spells">
+                <Route
+                  index
+                  element={<SuspenseElement element={<SpellsPage />} />}
+                />
+                <Route
+                  path="create"
+                  element={<SuspenseElement element={<CreateSpell />} />}
+                />
+              </Route>
               <Route
                 path="/loading"
                 element={

@@ -29,8 +29,4 @@ function RHFAttributeField<T extends FieldValues>({
   );
 }
 
-RHFAttributeField.defaultProps = {
-  className: undefined,
-};
-
 export default RHFAttributeField;

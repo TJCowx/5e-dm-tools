@@ -296,6 +296,7 @@ diesel::table! {
         requires_verbal -> Bool,
         requires_somatic -> Bool,
         requires_material -> Bool,
+        material_components -> Nullable<Text>,
         level -> Integer,
         casting_time -> Text,
         can_ritual_cast -> Bool,

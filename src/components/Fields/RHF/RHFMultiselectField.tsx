@@ -115,8 +115,4 @@ function RHFMultiselectField<T extends FieldValues>({
   );
 }
 
-RHFMultiselectField.defaultProps = {
-  className: undefined,
-};
-
 export default RHFMultiselectField;

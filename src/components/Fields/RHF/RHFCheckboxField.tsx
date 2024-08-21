@@ -36,8 +36,4 @@ function RHFCheckboxField<T extends FieldValues>({
   );
 }
 
-RHFCheckboxField.defaultProps = {
-  className: undefined,
-};
-
 export default RHFCheckboxField;

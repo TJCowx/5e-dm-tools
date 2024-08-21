@@ -36,8 +36,4 @@ function RHFSwitchField<T extends FieldValues>({
   );
 }
 
-RHFSwitchField.defaultProps = {
-  className: undefined,
-};
-
 export default RHFSwitchField;

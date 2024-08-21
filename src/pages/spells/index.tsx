@@ -1,7 +1,8 @@
-import { Alert, Link as MuiLink, styled } from '@mui/material';
+import { Alert, Divider, Link as MuiLink, styled } from '@mui/material';
 import { useState } from 'react';
 
 import useSetPagePadding from '@hooks/useSetPagePadding';
+import PageListHeader from '@components/Layout/PageListHeader';
 
 const StyledAlert = styled(Alert)(() => ({
   marginBottom: '16px',
@@ -13,9 +14,14 @@ function SpellsPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [hasError, setHasError] = useState(false);
   const [spells, setSpells] = useState([]);
+  const [filteredSpells, setFilteredSpells] = useState([]);
 
   const loadSpells = () => {
     console.log('TODO: Actually query spells');
+  };
+
+  const filterSpells = (filterText: string) => {
+    console.log('Filtered');
   };
 
   return (
@@ -28,7 +34,13 @@ function SpellsPage() {
           </MuiLink>
         </StyledAlert>
       )}
-      <div>Test</div>
+      <PageListHeader
+        showSourcesButton
+        newButtonTo="create"
+        newButtonLabel="Create new spell"
+        onSearch={filterSpells}
+      />
+      <Divider className="mt-16" />
     </>
   );
 }

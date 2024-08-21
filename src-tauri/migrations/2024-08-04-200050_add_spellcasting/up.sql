@@ -45,6 +45,7 @@ CREATE TABLE spells (
     requires_verbal BOOLEAN NOT NULL,
     requires_somatic BOOLEAN NOT NULL,
     requires_material BOOLEAN NOT NULL,
+    material_components TEXT NULL,
     level INTEGER NOT NULL,
     casting_time TEXT NOT NULL,
     can_ritual_cast BOOLEAN NOT NULL,
@@ -152,7 +153,6 @@ INSERT INTO time_scales (name) VALUES
     ('Day');
 
 INSERT INTO aoe_types (name) VALUES
-    ('None'),
     ('Cone'),
     ('Cube'),
     ('Cylinder'),

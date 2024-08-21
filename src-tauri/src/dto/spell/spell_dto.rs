@@ -16,6 +16,7 @@ pub struct SpellDto {
     pub requires_verbal: bool,
     pub requires_somatic: bool,
     pub requires_material: bool,
+    pub material_components: Option<String>,
     pub level: i32,
     pub casting_time: String,
     pub can_ritual_cast: bool,
