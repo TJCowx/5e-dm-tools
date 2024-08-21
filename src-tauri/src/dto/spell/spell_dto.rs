@@ -21,7 +21,7 @@ pub struct SpellDto {
     pub casting_time: String,
     pub can_ritual_cast: bool,
     pub range_type_id: i32,
-    pub range: Option<String>,
+    pub range: Option<i32>,
     pub cast_type_id: i32,
     pub cast_time: i32,
     pub aoe_type_id: Option<i32>,

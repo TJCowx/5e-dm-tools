@@ -19,6 +19,7 @@ type Props<T extends FieldValues> = {
   min?: number | null;
   max?: number | null;
   isRequired?: boolean;
+  disabled?: boolean;
   step?: number;
 };
 
@@ -61,6 +62,7 @@ function RHFIntegerField<T extends FieldValues>({
   min = null,
   max = null,
   isRequired = false,
+  disabled = false,
   step = 1,
 }: Props<T>) {
   const rules = useMemo(
@@ -92,6 +94,7 @@ function RHFIntegerField<T extends FieldValues>({
           })}
           label={label}
           InputProps={inputProps}
+          disabled={disabled}
           error={fieldState.error != null}
           helperText={fieldState.error?.message}
           InputLabelProps={{ shrink: true }}

@@ -50,7 +50,7 @@ CREATE TABLE spells (
     casting_time TEXT NOT NULL,
     can_ritual_cast BOOLEAN NOT NULL,
     range_type_id INTEGER NOT NULL,
-    range TEXT NULL,
+    range INTEGER NULL,
     cast_type_id INTEGER NOT NULL,
     cast_time INTEGER NOT NULL,
     aoe_type_id INTEGER NULL,
@@ -161,9 +161,4 @@ INSERT INTO aoe_types (name) VALUES
     ('Sphere'),
     ('Square'),
     ('Square Feet');
-
-
-
-
-
 

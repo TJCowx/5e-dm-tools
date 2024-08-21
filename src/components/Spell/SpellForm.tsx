@@ -1,6 +1,5 @@
 import {
   RHFLazyMultiselect,
-  RHFLazySelect,
   RHFSelectField,
   RHFTextField,
 } from '@components/Fields/RHF';
@@ -12,6 +11,9 @@ import { FormEventHandler } from 'react';
 import { Control, UseFormSetValue, UseFormWatch } from 'react-hook-form';
 import CastFields from './Sections/CastFields';
 import SpellComponentFields from './Sections/SpellComponentFields';
+import AoeFields from './Sections/AoeFields';
+import RangeFields from './Sections/RangeFields';
+import DurationFields from './Sections/DurationFields';
 
 export type FormTypeSupport = NewSpell | Spell;
 
@@ -71,29 +73,21 @@ function SpellForm({ control, onSubmit, onValueChange, watch }: Props) {
         onValueChange={onValueChange}
         watch={watch}
       />
-      <section>
-        {/* Range */}
-        <RHFLazySelect
-          control={control}
-          label="Range Type"
-          fieldName="rangeTypeId"
-          isRequired
-          queryArgs={{
-            queryName: 'get_all_cast_types',
-            valueKey: 'id',
-            textKey: 'name',
-          }}
-        />
-      </section>
-      <section>
-        {/* Duration */}
-        {/* Duration Type */}
-        {/* Time Scale */}
-      </section>
-      <section>
-        {/* Aoe Type */}
-        {/* Aoe Size */}
-      </section>
+      <RangeFields
+        control={control}
+        onValueChange={onValueChange}
+        watch={watch}
+      />
+      <DurationFields
+        control={control}
+        onValueChange={onValueChange}
+        watch={watch}
+      />
+      <AoeFields
+        control={control}
+        onValueChange={onValueChange}
+        watch={watch}
+      />
       <section>
         {/* Description */}
         {/* Higher levels description */}

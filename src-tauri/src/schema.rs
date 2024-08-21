@@ -301,7 +301,7 @@ diesel::table! {
         casting_time -> Text,
         can_ritual_cast -> Bool,
         range_type_id -> Integer,
-        range -> Nullable<Text>,
+        range -> Nullable<Integer>,
         cast_type_id -> Integer,
         cast_time -> Integer,
         aoe_type_id -> Nullable<Integer>,

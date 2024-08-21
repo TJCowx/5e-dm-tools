@@ -42,6 +42,7 @@ fn main() {
             queries::damage_type::get_all_damage_types,
             queries::damage_type::get_damage_type_by_id,
             queries::damage_type::get_damage_types_by_ids,
+            queries::duration_type::get_all_duration_types,
             queries::environment::get_all_environments,
             queries::export::export_creature,
             queries::export::export_creatures,
@@ -57,7 +58,8 @@ fn main() {
             queries::source::get_all_sources,
             queries::source::get_sources_list,
             queries::source::edit_source,
-            queries::source::remove_source
+            queries::source::remove_source,
+            queries::time_scale::get_all_time_scales
         ])
         .setup(|_app| {
             db::init();
