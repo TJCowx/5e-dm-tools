@@ -3,43 +3,39 @@ import { Link } from 'react-router-dom';
 
 import useSetPagePadding from '@hooks/useSetPagePadding';
 
+const Links = [
+  {
+    to: '/initiative',
+    primaryText: 'Initiative Tracker',
+    secondaryText: 'Start tracking initiative for an encounter.',
+  },
+  {
+    to: '/creatures',
+    primaryText: 'Creatures',
+    secondaryText: 'View, create, and edit creatures.',
+  },
+  {
+    to: '/spells',
+    primaryText: 'Spells',
+    secondaryText: 'View, create, and edit spells.',
+  },
+  {
+    to: '/sources',
+    primaryText: 'Sources',
+    secondaryText: 'View, create, and edit sources.',
+  },
+];
+
 function Home() {
   useSetPagePadding(false);
 
   return (
     <List>
-      <Link className="reset" to="/initiative">
-        <ListItemButton>
-          <ListItemText
-            primary="Initiative Tracker"
-            secondary="Start tracking initiative for an encounter."
-          />
+      {Links.map(({ to, primaryText, secondaryText }) => (
+        <ListItemButton key={to} to={to} component={Link}>
+          <ListItemText primary={primaryText} secondary={secondaryText} />
         </ListItemButton>
-      </Link>
-      <Link className="reset" to="/creatures">
-        <ListItemButton>
-          <ListItemText
-            primary="Creatures"
-            secondary="View, create, and edit creatures."
-          />
-        </ListItemButton>
-      </Link>
-      <Link className="reset" to="/spells">
-        <ListItemButton>
-          <ListItemText
-            primary="Spells"
-            secondary="View, create, and edit spells."
-          />
-        </ListItemButton>
-      </Link>
-      <Link className="reset" to="/sources">
-        <ListItemButton>
-          <ListItemText
-            primary="Sources"
-            secondary="View, create, and edit sources."
-          />
-        </ListItemButton>
-      </Link>
+      ))}
     </List>
   );
 }
