@@ -1,5 +1,5 @@
 import { NavBack } from '@components/Links';
-import SpellForm from '@components/Spell/SpellForm';
+import SpellForm, { FormTypeSupport } from '@components/Spell/SpellForm';
 import useSetPagePadding from '@hooks/useSetPagePadding';
 import NewSpell from '@models/spell/NewSpell';
 import Spell from '@models/spell/Spell';
@@ -35,7 +35,7 @@ function CreateSpell() {
   useSetPagePadding(true);
   const navigate = useNavigate();
 
-  const { handleSubmit, control, watch, setValue } = useForm<NewSpell>({
+  const { handleSubmit, control, watch, setValue } = useForm<FormTypeSupport>({
     defaultValues: DefaultValue,
   });
   const [hasError, setHasError] = useState(false);

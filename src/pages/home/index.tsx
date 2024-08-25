@@ -19,8 +19,24 @@ function Home() {
       <Link className="reset" to="/creatures">
         <ListItemButton>
           <ListItemText
-            primary="Creatures List"
+            primary="Creatures"
             secondary="View, create, and edit creatures."
+          />
+        </ListItemButton>
+      </Link>
+      <Link className="reset" to="/spells">
+        <ListItemButton>
+          <ListItemText
+            primary="Spells"
+            secondary="View, create, and edit spells."
+          />
+        </ListItemButton>
+      </Link>
+      <Link className="reset" to="/sources">
+        <ListItemButton>
+          <ListItemText
+            primary="Sources"
+            secondary="View, create, and edit sources."
           />
         </ListItemButton>
       </Link>
