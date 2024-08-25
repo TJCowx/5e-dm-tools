@@ -14,7 +14,6 @@ import SpellComponentFields from './Sections/SpellComponentFields';
 import AoeFields from './Sections/AoeFields';
 import RangeFields from './Sections/RangeFields';
 import DurationFields from './Sections/DurationFields';
-import SpellDamagesFields from './Sections/SpellDamagesFields';
 
 export type FormTypeSupport = NewSpell | Spell;
 
@@ -134,7 +133,6 @@ function SpellForm({ control, onSubmit, onValueChange, watch }: Props) {
           />
         </div>
       </section>
-      <SpellDamagesFields control={control} />
       <div className="action-container">
         <Button
           variant="contained"

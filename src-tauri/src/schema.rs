@@ -277,16 +277,6 @@ diesel::table! {
 }
 
 diesel::table! {
-    spell_damages (id) {
-        id -> Integer,
-        default_damage -> Integer,
-        dice -> Text,
-        type_id -> Integer,
-        spell_id -> Integer,
-    }
-}
-
-diesel::table! {
     spells (id) {
         id -> Integer,
         name -> Text,
@@ -350,8 +340,6 @@ diesel::joinable!(creatures_weaknesses -> creatures (creature_id));
 diesel::joinable!(creatures_weaknesses -> damage_types (damage_type_id));
 diesel::joinable!(magic_schools_spells -> magic_schools (magic_school_id));
 diesel::joinable!(magic_schools_spells -> spells (spell_id));
-diesel::joinable!(spell_damages -> damage_types (type_id));
-diesel::joinable!(spell_damages -> spells (spell_id));
 diesel::joinable!(spells -> aoe_types (aoe_type_id));
 diesel::joinable!(spells -> cast_types (cast_type_id));
 diesel::joinable!(spells -> duration_types (duration_type_id));
@@ -391,7 +379,6 @@ diesel::allow_tables_to_appear_in_same_query!(
     range_types,
     sizes,
     sources,
-    spell_damages,
     spells,
     time_scales,
 );

@@ -59,6 +59,7 @@ CREATE TABLE spells (
     time_scale_id INTEGER NULL,
     duration INTEGER NULL,
     hit_count INTEGER NOT NULL,
+
     FOREIGN KEY (range_type_id) REFERENCES range_types(id) ON DELETE RESTRICT,
     FOREIGN KEY (cast_type_id) REFERENCES cast_types(id) ON DELETE RESTRICT,
     FOREIGN KEY (aoe_type_id) REFERENCES aoe_types(id) ON DELETE RESTRICT,
@@ -72,17 +73,6 @@ CREATE TABLE classes_spells (
 
     PRIMARY KEY (spell_id, class_id),
     FOREIGN KEY (class_id) REFERENCES classes(id) ON DELETE RESTRICT,
-    FOREIGN KEY (spell_id) REFERENCES spells(id) ON DELETE CASCADE
-);
-
-CREATE TABLE spell_damages (
-    id INTEGER NOT NULL PRIMARY KEY,
-    default_damage INTEGER NOT NULL,
-    dice TEXT NOT NULL,
-    type_id INTEGER NOT NULL,
-    spell_id INTEGER NOT NULL,
-
-    FOREIGN KEY (type_id) REFERENCES damage_types(id) ON DELETE RESTRICT,
     FOREIGN KEY (spell_id) REFERENCES spells(id) ON DELETE CASCADE
 );
 

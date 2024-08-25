@@ -6,6 +6,5 @@ pub mod magic_school_spells_dto;
 pub mod new_spell_dto;
 pub mod range_type_dto;
 pub mod spell_class;
-pub mod spell_damage_dto;
 pub mod spell_dto;
 pub mod time_scale_dto;

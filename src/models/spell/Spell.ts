@@ -4,7 +4,6 @@ import CastType from './CastType';
 import DurationType from './DurationType';
 import MagicSchool from './MagicSchool';
 import RangeType from './RangeType';
-import SpellDamage from './SpellDamage';
 import TimeScale from './TimeScale';
 
 type Spell = {
@@ -36,7 +35,6 @@ type Spell = {
   aoeType?: AoeType;
   durationType?: DurationType;
   timeScale?: TimeScale;
-  damages?: SpellDamage[];
   magicSchools?: MagicSchool[];
   classes?: Class[];
 };

@@ -5,8 +5,8 @@ use crate::dto::{
     spell::{
         aoe_type_dto::AoeTypeDto, cast_type_dto::CastTypeDto, duration_type_dto::DurationTypeDto,
         magic_school_dto::MagicSchoolDto, magic_school_spells_dto::MagicSchoolSpellDto,
-        range_type_dto::RangeTypeDto, spell_class::SpellClassDto, spell_damage_dto::SpellDamageDto,
-        spell_dto::SpellDto, time_scale_dto::TimeScaleDto,
+        range_type_dto::RangeTypeDto, spell_class::SpellClassDto, spell_dto::SpellDto,
+        time_scale_dto::TimeScaleDto,
     },
 };
 
@@ -43,7 +43,6 @@ pub struct Spell {
     pub aoe_type: Option<AoeTypeDto>,
     pub duration_type: DurationTypeDto,
     pub time_scale: Option<TimeScaleDto>,
-    pub damages: Vec<SpellDamage>,
     pub magic_schools: Vec<MagicSchoolDto>,
     pub classes: Vec<ClassDto>,
 }
@@ -83,13 +82,13 @@ impl Spell {
             time_scale_id: spell.time_scale_id,
             duration: spell.duration,
             hit_count: spell.hit_count,
+
             aoe_type,
             time_scale,
             range_type: RangeTypeDto::get_by_id(&spell.range_type_id)?,
             cast_type: CastTypeDto::get_by_id(&spell.cast_type_id)?,
             duration_type: DurationTypeDto::get_by_id(&spell.duration_type_id)?,
             magic_schools: MagicSchoolSpellDto::get_schools_by_spell_id(&spell.id)?,
-            damages: SpellDamageDto::get_damages_by_spell_id(&spell.id)?,
             classes: SpellClassDto::get_classes_by_spell_id(&spell.id)?,
         })
     }
