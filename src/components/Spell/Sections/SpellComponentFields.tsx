@@ -1,7 +1,7 @@
 import { Control, UseFormSetValue, UseFormWatch } from 'react-hook-form';
 import { FormTypeSupport } from '../SpellForm';
 import { RHFCheckboxField, RHFTextField } from '@components/Fields/RHF';
-import { Typography } from '@mui/material';
+import { Divider, Typography, styled } from '@mui/material';
 import { useEffect } from 'react';
 
 type Props = {
@@ -9,6 +9,8 @@ type Props = {
   onValueChange: UseFormSetValue<FormTypeSupport>;
   watch: UseFormWatch<FormTypeSupport>;
 };
+
+const Section = styled('section')(() => ({}));
 
 export default function SpellComponentFields({
   control,
@@ -24,29 +26,32 @@ export default function SpellComponentFields({
   }, [reqMatWatch]);
 
   return (
-    <section>
+    <Section>
       <Typography variant="h6">Components</Typography>
-      <RHFCheckboxField
-        control={control}
-        label="Verbal"
-        fieldName="requiresVerbal"
-      />
-      <RHFCheckboxField
-        control={control}
-        label="Somatic"
-        fieldName="requiresSomatic"
-      />
-      <RHFCheckboxField
-        control={control}
-        label="Material"
-        fieldName="requiresMaterial"
-      />
-      <RHFTextField
-        control={control}
-        label="Material Components"
-        fieldName="materialComponents"
-        disabled={!reqMatWatch}
-      />
-    </section>
+      <Divider />
+      <div>
+        <RHFCheckboxField
+          control={control}
+          label="Verbal"
+          fieldName="requiresVerbal"
+        />
+        <RHFCheckboxField
+          control={control}
+          label="Somatic"
+          fieldName="requiresSomatic"
+        />
+        <RHFCheckboxField
+          control={control}
+          label="Material"
+          fieldName="requiresMaterial"
+        />
+        <RHFTextField
+          control={control}
+          label="Material Components"
+          fieldName="materialComponents"
+          disabled={!reqMatWatch}
+        />
+      </div>
+    </Section>
   );
 }

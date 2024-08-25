@@ -9,12 +9,20 @@ import {
 } from '@components/Fields/RHF';
 import { useEffect, useState } from 'react';
 import DurationType from '@models/spell/DurationType';
+import { Divider, Typography, styled } from '@mui/material';
 
 type Props = {
   control: Control<FormTypeSupport>;
   onValueChange: UseFormSetValue<FormTypeSupport>;
   watch: UseFormWatch<FormTypeSupport>;
 };
+
+const FieldsContainer = styled('div')(({}) => ({
+  display: 'grid',
+  columnGap: '12px',
+  gridTemplateColumns: '2fr 1fr 2fr',
+  maxWidth: '750px',
+}));
 
 export default function DurationFields({
   control,
@@ -55,33 +63,37 @@ export default function DurationFields({
 
   return (
     <section>
-      <RHFSelectField
-        control={control}
-        fieldName="durationTypeId"
-        label="Duration Type"
-        options={typeOpts}
-        isRequired
-        isLoading={isLoading}
-        error={error?.message}
-      />
-      <RHFIntegerField
-        control={control}
-        fieldName="duration"
-        label="Duration"
-        min={0}
-        isRequired={needsTimeScale}
-      />
-      <RHFLazySelect
-        control={control}
-        fieldName="timeScaleId"
-        label="Time Scale"
-        isRequired={needsTimeScale}
-        queryArgs={{
-          queryName: 'get_all_time_scales',
-          valueKey: 'id',
-          textKey: 'name',
-        }}
-      />
+      <Typography variant="h6">Duration</Typography>
+      <Divider />
+      <FieldsContainer>
+        <RHFSelectField
+          control={control}
+          fieldName="durationTypeId"
+          label="Duration Type"
+          options={typeOpts}
+          isRequired
+          isLoading={isLoading}
+          error={error?.message}
+        />
+        <RHFIntegerField
+          control={control}
+          fieldName="duration"
+          label="Duration"
+          min={0}
+          isRequired={needsTimeScale}
+        />
+        <RHFLazySelect
+          control={control}
+          fieldName="timeScaleId"
+          label="Time Scale"
+          isRequired={needsTimeScale}
+          queryArgs={{
+            queryName: 'get_all_time_scales',
+            valueKey: 'id',
+            textKey: 'name',
+          }}
+        />
+      </FieldsContainer>
     </section>
   );
 }

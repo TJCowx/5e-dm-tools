@@ -290,7 +290,7 @@ diesel::table! {
     spells (id) {
         id -> Integer,
         name -> Text,
-        description -> Text,
+        description -> Nullable<Text>,
         higher_levels -> Nullable<Text>,
         spell_slot -> Integer,
         requires_verbal -> Bool,

@@ -5,6 +5,9 @@ type SpellDamage = {
   default_damage: number;
   dice: string;
   type_id: number;
+  attackType?: string;
+  saveAbility?: string;
+  onSuccessSave?: string;
 
   damageType?: DamageType;
 };

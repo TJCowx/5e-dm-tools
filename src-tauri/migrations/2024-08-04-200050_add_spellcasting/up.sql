@@ -39,7 +39,7 @@ CREATE TABLE aoe_types (
 CREATE TABLE spells (
     id INTEGER NOT NULL PRIMARY KEY,
     name TEXT NOT NULL,
-    description TEXT NOT NULL,
+    description TEXT NULL,
     higher_levels TEXT NULL,
     spell_slot INTEGER NOT NULL,
     requires_verbal BOOLEAN NOT NULL,

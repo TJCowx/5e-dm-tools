@@ -6,7 +6,7 @@ import {
 import { SPELL_LEVELS } from '@constants/spell';
 import NewSpell from '@models/spell/NewSpell';
 import Spell from '@models/spell/Spell';
-import { Button, styled } from '@mui/material';
+import { Button, Divider, Typography, styled } from '@mui/material';
 import { FormEventHandler } from 'react';
 import { Control, UseFormSetValue, UseFormWatch } from 'react-hook-form';
 import CastFields from './Sections/CastFields';
@@ -14,6 +14,7 @@ import SpellComponentFields from './Sections/SpellComponentFields';
 import AoeFields from './Sections/AoeFields';
 import RangeFields from './Sections/RangeFields';
 import DurationFields from './Sections/DurationFields';
+import SpellDamagesFields from './Sections/SpellDamagesFields';
 
 export type FormTypeSupport = NewSpell | Spell;
 
@@ -25,47 +26,74 @@ type Props = {
 };
 
 const StyledForm = styled('form')(() => ({
+  display: 'flex',
+  flexDirection: 'column',
+  rowGap: '20px',
   paddingBottom: '40px',
+  '& hr': { margin: '8px 0 16px' },
+  '& .metadata-row': {
+    display: 'flex',
+    flexDirection: 'column',
+    rowGap: '16px',
+    '& .metadata-assignments': {
+      display: 'grid',
+      columnGap: '12px',
+      gridTemplateColumns: '1fr 3fr 3fr',
+      maxWidth: '850px',
+    },
+  },
+  '& .description-container': {
+    display: 'flex',
+    flexDirection: 'column',
+    rowGap: '16px',
+    maxWidth: '650px',
+  },
 }));
 
 function SpellForm({ control, onSubmit, onValueChange, watch }: Props) {
   return (
     <StyledForm onSubmit={onSubmit}>
       <section>
-        <RHFTextField
-          control={control}
-          fieldName="name"
-          label="Name"
-          isRequired
-        />
-        <RHFSelectField
-          control={control}
-          fieldName="level"
-          label="Level"
-          options={SPELL_LEVELS}
-        />
-        <RHFLazyMultiselect
-          control={control}
-          fieldName="magicSchools"
-          label="Magic Schools"
-          isRequired
-          queryArgs={{
-            queryName: 'get_all_magic_schools',
-            valueKey: 'id',
-            textKey: 'name',
-          }}
-        />
-        <RHFLazyMultiselect
-          control={control}
-          fieldName="classes"
-          label="Classes"
-          isRequired
-          queryArgs={{
-            queryName: 'get_all_classes',
-            valueKey: 'id',
-            textKey: 'name',
-          }}
-        />
+        <Typography variant="h6">Metadata</Typography>
+        <Divider />
+        <div className="metadata-row">
+          <RHFTextField
+            control={control}
+            fieldName="name"
+            label="Name"
+            isRequired
+          />
+          <div className="metadata-assignments">
+            <RHFSelectField
+              control={control}
+              fieldName="level"
+              label="Level"
+              options={SPELL_LEVELS}
+            />
+            <RHFLazyMultiselect
+              control={control}
+              fieldName="magicSchools"
+              label="Magic Schools"
+              isRequired
+              queryArgs={{
+                queryName: 'get_all_magic_schools',
+                valueKey: 'id',
+                textKey: 'name',
+              }}
+            />
+            <RHFLazyMultiselect
+              control={control}
+              fieldName="classes"
+              label="Classes"
+              isRequired
+              queryArgs={{
+                queryName: 'get_all_classes',
+                valueKey: 'id',
+                textKey: 'name',
+              }}
+            />
+          </div>
+        </div>
       </section>
       <CastFields control={control} />
       <SpellComponentFields
@@ -89,11 +117,24 @@ function SpellForm({ control, onSubmit, onValueChange, watch }: Props) {
         watch={watch}
       />
       <section>
-        {/* Description */}
-        {/* Higher levels description */}
+        <Typography variant="h6">Metadata</Typography>
+        <Divider />
+        <div className="description-container">
+          <RHFTextField
+            control={control}
+            fieldName="description"
+            label="Description"
+            isMultiline
+            rows={2}
+          />
+          <RHFTextField
+            control={control}
+            fieldName="higherLevels"
+            label="At higher levels"
+          />
+        </div>
       </section>
-      <section>{/* Damages */}</section>
-
+      <SpellDamagesFields control={control} />
       <div className="action-container">
         <Button
           variant="contained"

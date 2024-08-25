@@ -10,7 +10,7 @@ import TimeScale from './TimeScale';
 type Spell = {
   id: number;
   name: string;
-  description: string;
+  description?: string;
   higherLevels?: string;
   spellSlot: number;
   requiresVerbal: boolean;
@@ -21,7 +21,7 @@ type Spell = {
   castingTime: string;
   canRitualCast: boolean;
   rangeTypeId: number;
-  range?: string;
+  range?: number;
   castTypeId: number;
   castTime: number;
   aoeTypeId?: number;

@@ -10,7 +10,7 @@ use crate::{db::connect_db, models::spell::spell::Spell};
 pub struct SpellDto {
     pub id: i32,
     pub name: String,
-    pub description: String,
+    pub description: Option<String>,
     pub higher_levels: Option<String>,
     pub spell_slot: i32,
     pub requires_verbal: bool,

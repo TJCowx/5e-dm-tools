@@ -53,6 +53,7 @@ fn main() {
             queries::language::get_all_languages,
             queries::magic_school::get_all_magic_schools,
             queries::proficiency::get_all_proficiencies,
+            queries::range_type::get_all_range_types,
             queries::size::get_all_sizes,
             queries::source::add_source,
             queries::source::get_all_sources,

@@ -11,6 +11,7 @@ type Props<T extends FieldValues> = {
   fieldName: FieldPath<T>;
   label: string;
   isRequired?: boolean;
+  rows?: number;
   isMultiline?: boolean;
   disabled?: boolean;
 };
@@ -22,6 +23,7 @@ function RHFTextField<T extends FieldValues>({
   fieldName,
   label,
   isRequired = false,
+  rows = 2,
   isMultiline = false,
   disabled = false,
 }: Props<T>) {
@@ -48,6 +50,7 @@ function RHFTextField<T extends FieldValues>({
           helperText={fieldState.error?.message}
           size="small"
           multiline={isMultiline}
+          rows={isMultiline ? rows : undefined}
           autoComplete="one-time-code" // disable autofill this way because chrome ignores autocomplete="off"
           InputLabelProps={{ shrink: true }}
         />

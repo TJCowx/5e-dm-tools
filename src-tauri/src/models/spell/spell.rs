@@ -17,7 +17,7 @@ use super::spell_damage::SpellDamage;
 pub struct Spell {
     pub id: i32,
     pub name: String,
-    pub description: String,
+    pub description: Option<String>,
     pub higher_levels: Option<String>,
     pub spell_slot: i32,
     pub requires_verbal: bool,

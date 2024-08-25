@@ -9,6 +9,7 @@ import useInvoke from '@hooks/useInvoke';
 import { useEffect, useState } from 'react';
 import { logMessage } from '@utils/loggingUtils';
 import RangeType from '@models/spell/RangeType';
+import { Divider, Typography, styled } from '@mui/material';
 
 type Props = {
   control: Control<FormTypeSupport>;
@@ -16,9 +17,15 @@ type Props = {
   watch: UseFormWatch<FormTypeSupport>;
 };
 
+const FieldsContainer = styled('div')(() => ({
+  display: 'grid',
+  gridTemplateColumns: '1fr 2fr 5fr',
+  columnGap: '12px',
+}));
+
 export default function RangeFields({ control, onValueChange, watch }: Props) {
   const {
-    data: castTypeRes,
+    data: rangeTypeRes,
     isLoading,
     error,
   } = useInvoke<RangeType[]>('get_all_range_types');
@@ -26,12 +33,11 @@ export default function RangeFields({ control, onValueChange, watch }: Props) {
   const [requiresRange, setRequiresRange] = useState(false);
 
   const typeIdWatch = watch('rangeTypeId');
-  const rangeWatch = watch('range');
 
   useEffect(() => {
-    if (castTypeRes && !isLoading && !error) {
+    if (rangeTypeRes && !isLoading && !error) {
       setTypeOpts(
-        castTypeRes.map((d) => ({
+        rangeTypeRes.map((d) => ({
           value: d.id,
           text: d.name,
         })),
@@ -41,41 +47,47 @@ export default function RangeFields({ control, onValueChange, watch }: Props) {
 
   useEffect(() => {
     if (typeIdWatch) {
-      const mappedType = castTypeRes.find((t) => t.id === typeIdWatch);
+      console.log(typeIdWatch);
+      const mappedType = rangeTypeRes.find((t) => t.id === typeIdWatch);
 
       if (mappedType) {
         setRequiresRange(mappedType.hasDefinedRange);
-        if (!mappedType.hasDefinedRange && rangeWatch != null) {
-          onValueChange('range', null);
+        if (!mappedType.hasDefinedRange) {
+          onValueChange('range', '');
         }
       } else {
         logMessage('warn', `No matching range type found: ${typeIdWatch}`);
       }
     } else {
-      onValueChange('range', null);
+      onValueChange('range', '');
       setRequiresRange(false);
     }
   }, [typeIdWatch]);
 
   return (
     <section>
-      <RHFSelectField
-        control={control}
-        isLoading={isLoading}
-        error={error?.message}
-        label="Range Type"
-        fieldName="rangeTypeId"
-        isRequired
-        options={typeOpts}
-      />
-      <RHFIntegerField
-        control={control}
-        label="Range"
-        fieldName="range"
-        min={0}
-        step={5}
-        isRequired={requiresRange}
-      />
+      <Typography variant="h6">Range</Typography>
+      <Divider />
+      <FieldsContainer>
+        <RHFIntegerField
+          control={control}
+          label="Range"
+          fieldName="range"
+          min={0}
+          step={5}
+          isRequired={requiresRange}
+          disabled={!requiresRange}
+        />
+        <RHFSelectField
+          control={control}
+          isLoading={isLoading}
+          error={error?.message}
+          label="Range Type"
+          fieldName="rangeTypeId"
+          isRequired
+          options={typeOpts}
+        />
+      </FieldsContainer>
     </section>
   );
 }

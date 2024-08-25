@@ -7,7 +7,7 @@ use serde::{Deserialize, Serialize};
 pub struct NewSpellDto {
     pub id: i32,
     pub name: String,
-    pub description: String,
+    pub description: Option<String>,
     pub higher_levels: Option<String>,
     pub spell_slot: i32,
     pub requires_verbal: bool,
@@ -17,7 +17,7 @@ pub struct NewSpellDto {
     pub casting_time: String,
     pub can_ritual_cast: bool,
     pub range_type_id: i32,
-    pub range: Option<String>,
+    pub range: Option<i32>,
     pub cast_type_id: i32,
     pub cast_time: i32,
     pub aoe_type_id: Option<i32>,

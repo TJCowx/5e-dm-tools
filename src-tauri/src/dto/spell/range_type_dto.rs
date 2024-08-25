@@ -4,6 +4,7 @@ use serde::{Deserialize, Serialize};
 #[derive(Debug, Deserialize, Serialize, Queryable)]
 #[diesel(table_name = crate::schema::range_types)]
 #[diesel(check_for_backend(diesel::sqlite::Sqlite))]
+#[serde(rename_all = "camelCase")]
 pub struct RangeTypeDto {
     pub id: i32,
     pub name: String,
