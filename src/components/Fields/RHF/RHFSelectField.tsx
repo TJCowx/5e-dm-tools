@@ -26,6 +26,7 @@ type Props<T extends FieldValues> = {
   label: string;
   options: SelectOptions[];
   isRequired?: boolean;
+  disabled?: boolean;
   isLoading?: boolean;
   error?: string;
 };
@@ -38,6 +39,7 @@ function RHFSelectField<T extends FieldValues>({
   label,
   options,
   isRequired = false,
+  disabled = false,
   isLoading = false,
   error,
 }: Props<T>) {
@@ -62,7 +64,8 @@ function RHFSelectField<T extends FieldValues>({
       render={({ field, fieldState }) => (
         <FormControl
           className={clsx({ 'form-select': true, [`${className}`]: className })}
-          size="small">
+          size="small"
+        >
           <InputLabel id={id} shrink error={fieldState.error != null}>
             {label}
           </InputLabel>
@@ -70,11 +73,13 @@ function RHFSelectField<T extends FieldValues>({
             {...field}
             labelId={id}
             label={label}
-            value={field.value || ''}
+            value={field.value ?? ''}
             error={fieldState.error != null}
             autoWidth={false}
             notched
-            MenuProps={{ PaperProps: { style: { maxHeight: '250px' } } }}>
+            disabled={disabled}
+            MenuProps={{ PaperProps: { style: { maxHeight: '250px' } } }}
+          >
             {options.map(({ value, text }) => (
               <MenuItem key={value} value={value}>
                 {text}

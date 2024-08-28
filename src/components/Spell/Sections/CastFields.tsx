@@ -1,6 +1,10 @@
 import { Control } from 'react-hook-form';
 import { FormTypeSupport } from '../SpellForm';
-import { RHFIntegerField, RHFLazySelect } from '@components/Fields/RHF';
+import {
+  RHFCheckboxField,
+  RHFIntegerField,
+  RHFLazySelect,
+} from '@components/Fields/RHF';
 import { Divider, Typography, styled } from '@mui/material';
 
 type Props = {
@@ -10,9 +14,9 @@ type Props = {
 const Section = styled('section')(() => ({
   '& .fields': {
     display: 'grid',
-    gridTemplateColumns: '1fr 3fr',
+    gridTemplateColumns: '1fr 3fr 1fr',
     columnGap: '12px',
-    maxWidth: '500px',
+    maxWidth: '660px',
   },
 }));
 
@@ -40,6 +44,11 @@ export default function CastFields({ control }: Props) {
             textKey: 'name',
           }}
           isRequired
+        />
+        <RHFCheckboxField
+          control={control}
+          fieldName="canRitualCast"
+          label="Ritual Cast"
         />
       </div>
     </Section>

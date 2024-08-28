@@ -1,6 +1,3 @@
-import Class from '@models/Class';
-import MagicSchool from './MagicSchool';
-
 type NewSpell = {
   name: string;
   description: string;
@@ -23,8 +20,8 @@ type NewSpell = {
   timeScaleId?: number;
   duration?: number;
   sourceAbbr?: string;
+  magicSchoolId: number;
 
-  magicSchools?: number[];
   classes?: number[];
 };
 

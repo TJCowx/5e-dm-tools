@@ -89,10 +89,10 @@ function SpellForm({ control, onSubmit, onValueChange, watch }: Props) {
               label="Level"
               options={SPELL_LEVELS}
             />
-            <RHFLazyMultiselect
+            <RHFLazySelect
               control={control}
-              fieldName="magicSchools"
-              label="Magic Schools"
+              fieldName="magicSchoolId"
+              label="Magic School"
               isRequired
               queryArgs={{
                 queryName: 'get_all_magic_schools',

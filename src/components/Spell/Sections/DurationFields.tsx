@@ -47,9 +47,14 @@ export default function DurationFields({
 
   useEffect(() => {
     if (durationTypeWatch != null) {
-      const needsScale = durationTypes.find((t) => t.id === durationTypeWatch);
+      const durationType = durationTypes.find(
+        (t) => t.id === durationTypeWatch,
+      );
 
-      setNeedsTimeScale(!!needsScale);
+      console.log(durationTypes);
+      const needsScale = durationType.hasTimeScale;
+
+      setNeedsTimeScale(needsScale);
       if (!needsScale) {
         onValueChange('duration', null);
         onValueChange('timeScaleId', null);
@@ -80,12 +85,14 @@ export default function DurationFields({
           fieldName="duration"
           label="Duration"
           min={0}
+          disabled={!needsTimeScale}
           isRequired={needsTimeScale}
         />
         <RHFLazySelect
           control={control}
           fieldName="timeScaleId"
           label="Time Scale"
+          disabled={!needsTimeScale}
           isRequired={needsTimeScale}
           queryArgs={{
             queryName: 'get_all_time_scales',

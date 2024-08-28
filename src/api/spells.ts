@@ -1,5 +1,6 @@
 import MagicSchool from '@models/spell/MagicSchool';
 import NewSpell from '@models/spell/NewSpell';
+import Spell from '@models/spell/Spell';
 import { formatNullableNumStr } from '@utils/formattingUtils';
 
 /**
@@ -11,6 +12,9 @@ export async function getAllMagicSchools() {
   return invoke<MagicSchool[]>('get_all_creatures');
 }
 
+/**
+ * Format all the spells and save it
+ */
 export async function addNewSpell(spell: NewSpell) {
   const { invoke } = await import('@tauri-apps/api/tauri');
   return invoke('add_spell', {
@@ -27,8 +31,17 @@ export async function addNewSpell(spell: NewSpell) {
       durationTypeId: formatNullableNumStr(spell.durationTypeId),
       duration: formatNullableNumStr(spell.duration),
       timeScaleId: formatNullableNumStr(spell.timeScaleId),
-      magicSchoolIds: spell.magicSchools,
+      magicSchoolId: formatNullableNumStr(spell.magicSchoolId),
       classIds: spell.classes,
     },
   });
+}
+
+/**
+ * Loads all the spells
+ * @returns A promise that returns all spells
+ */
+export async function getAllSpells(): Promise<Spell[]> {
+  const { invoke } = await import('@tauri-apps/api/tauri');
+  return invoke<Spell[]>('get_all_spells');
 }

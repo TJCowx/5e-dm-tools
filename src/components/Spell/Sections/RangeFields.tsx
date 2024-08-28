@@ -53,13 +53,13 @@ export default function RangeFields({ control, onValueChange, watch }: Props) {
       if (mappedType) {
         setRequiresRange(mappedType.hasDefinedRange);
         if (!mappedType.hasDefinedRange) {
-          onValueChange('range', '');
+          onValueChange('range', null);
         }
       } else {
         logMessage('warn', `No matching range type found: ${typeIdWatch}`);
       }
     } else {
-      onValueChange('range', '');
+      onValueChange('range', null);
       setRequiresRange(false);
     }
   }, [typeIdWatch]);

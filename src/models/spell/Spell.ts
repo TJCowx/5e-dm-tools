@@ -30,13 +30,14 @@ type Spell = {
   timeScaleId?: number;
   duration?: number;
   sourceAbbr?: string;
+  magicSchoolId?: number;
 
   rangeType?: RangeType;
   castType?: CastType;
   aoeType?: AoeType;
   durationType?: DurationType;
   timeScale?: TimeScale;
-  magicSchools?: MagicSchool[];
+  magicSchool?: MagicSchool;
   classes?: Class[];
   source?: Source;
 };

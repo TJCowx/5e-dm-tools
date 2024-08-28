@@ -32,7 +32,6 @@ import {
   exportCreature,
   getAllCreatures,
 } from '@api/creatures';
-import DebouncedInput from '@components/DebouncedInput';
 import { ListItemTwoSecondaryActions } from '@components/List';
 import useSetPagePadding from '@hooks/useSetPagePadding';
 import Creature from '@models/creature/Creature';
@@ -40,17 +39,6 @@ import { getCRFormatted } from '@utils/creatureUtils';
 import { downloadToJson } from '@utils/exportUtils';
 import { logMessage } from '@utils/loggingUtils';
 import PageListHeader from '@components/Layout/PageListHeader';
-
-const ActionContainer = styled('div')(() => ({
-  display: 'flex',
-  columnGap: '16px',
-  '& .new-creature-btn': {
-    marginLeft: 'auto',
-  },
-  '& .MuiButtonBase-root': {
-    alignSelf: 'center',
-  },
-}));
 
 const StyledAlert = styled(Alert)(() => ({
   marginBottom: '16px',

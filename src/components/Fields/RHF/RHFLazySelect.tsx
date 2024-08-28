@@ -14,6 +14,7 @@ type Props<T extends FieldValues> = {
   label: string;
   fieldName: FieldPath<T>;
   isRequired?: boolean;
+  disabled?: boolean;
   queryArgs: SelectQueryArgs;
   allowNone?: boolean;
 };
@@ -24,7 +25,8 @@ function RHFLazySelect<T extends FieldValues>({
   className,
   fieldName,
   label,
-  isRequired,
+  isRequired = false,
+  disabled = false,
   queryArgs,
   allowNone: nullable = false,
   ...other
@@ -54,6 +56,7 @@ function RHFLazySelect<T extends FieldValues>({
       control={control}
       fieldName={fieldName}
       label={label}
+      disabled={disabled}
       options={options}
       isLoading={isLoading}
       isRequired={isRequired}
