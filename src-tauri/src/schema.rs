@@ -300,6 +300,7 @@ diesel::table! {
         time_scale_id -> Nullable<Integer>,
         duration -> Nullable<Integer>,
         source_abbr -> Nullable<Text>,
+        magic_school_id -> Integer,
     }
 }
 
@@ -343,6 +344,7 @@ diesel::joinable!(magic_schools_spells -> spells (spell_id));
 diesel::joinable!(spells -> aoe_types (aoe_type_id));
 diesel::joinable!(spells -> cast_types (cast_type_id));
 diesel::joinable!(spells -> duration_types (duration_type_id));
+diesel::joinable!(spells -> magic_schools (magic_school_id));
 diesel::joinable!(spells -> range_types (range_type_id));
 diesel::joinable!(spells -> sources (source_abbr));
 diesel::joinable!(spells -> time_scales (time_scale_id));

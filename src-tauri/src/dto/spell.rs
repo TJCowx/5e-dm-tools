@@ -2,7 +2,6 @@ pub mod aoe_type_dto;
 pub mod cast_type_dto;
 pub mod duration_type_dto;
 pub mod magic_school_dto;
-pub mod magic_school_spells_dto;
 pub mod new_spell_dto;
 pub mod range_type_dto;
 pub mod spell_class;

@@ -4,10 +4,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::{
     db::connect_db,
-    dto::spell::{
-        magic_school_spells_dto::MagicSchoolSpellDto, new_spell_dto::NewSpellDto,
-        spell_class::SpellClassDto,
-    },
+    dto::spell::{new_spell_dto::NewSpellDto, spell_class::SpellClassDto},
     models::spell::{new_spell::NewSpell, spell::Spell},
 };
 
@@ -37,6 +34,7 @@ pub struct SpellDto {
     pub time_scale_id: Option<i32>,
     pub duration: Option<i32>,
     pub source_abbr: Option<String>,
+    pub magic_school_id: i32,
 }
 
 impl SpellDto {
@@ -104,14 +102,6 @@ impl SpellDto {
                 .get_result(connection)?;
 
             info!("Spell inserted succesfully!");
-
-            MagicSchoolSpellDto::save_spell_schools(
-                connection,
-                new_spell.magic_school_ids,
-                &inserted_spell.id,
-            )?;
-
-            info!("Spells' magic schools inserted succesfully");
 
             SpellClassDto::save_spell_classes(connection, new_spell.class_ids, &inserted_spell.id)?;
 

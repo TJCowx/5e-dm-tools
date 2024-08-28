@@ -1,4 +1,3 @@
-DROP TABLE IF EXISTS magic_schools_spells;
 DROP TABLE IF EXISTS spell_damages;
 DROP TABLE IF EXISTS classes_spells;
 DROP TABLE IF EXISTS spells;

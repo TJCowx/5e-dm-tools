@@ -28,6 +28,7 @@ pub struct NewSpellDto {
     pub time_scale_id: Option<i32>,
     pub duration: Option<i32>,
     pub source_abbr: Option<String>,
+    pub magic_school_id: i32,
 }
 
 impl From<&NewSpell> for NewSpellDto {
@@ -54,6 +55,7 @@ impl From<&NewSpell> for NewSpellDto {
             time_scale_id: new_spell.time_scale_id,
             duration: new_spell.duration,
             source_abbr: new_spell.source_abbr.clone(),
+            magic_school_id: new_spell.magic_school_id,
         }
     }
 }

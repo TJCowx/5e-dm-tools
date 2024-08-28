@@ -24,7 +24,7 @@ pub struct NewSpell {
     pub time_scale_id: Option<i32>,
     pub duration: Option<i32>,
     pub source_abbr: Option<String>,
+    pub magic_school_id: i32,
 
-    pub magic_school_ids: Vec<i32>,
     pub class_ids: Vec<i32>,
 }

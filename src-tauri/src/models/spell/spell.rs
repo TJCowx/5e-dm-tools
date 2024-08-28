@@ -5,9 +5,8 @@ use crate::dto::{
     source::source_dto::SourceDto,
     spell::{
         aoe_type_dto::AoeTypeDto, cast_type_dto::CastTypeDto, duration_type_dto::DurationTypeDto,
-        magic_school_dto::MagicSchoolDto, magic_school_spells_dto::MagicSchoolSpellDto,
-        range_type_dto::RangeTypeDto, spell_class::SpellClassDto, spell_dto::SpellDto,
-        time_scale_dto::TimeScaleDto,
+        magic_school_dto::MagicSchoolDto, range_type_dto::RangeTypeDto, spell_class::SpellClassDto,
+        spell_dto::SpellDto, time_scale_dto::TimeScaleDto,
     },
 };
 
@@ -36,13 +35,14 @@ pub struct Spell {
     pub time_scale_id: Option<i32>,
     pub duration: Option<i32>,
     pub source_abbr: Option<String>,
+    pub magic_school_id: i32,
 
     pub range_type: RangeTypeDto,
     pub cast_type: CastTypeDto,
     pub aoe_type: Option<AoeTypeDto>,
     pub duration_type: DurationTypeDto,
     pub time_scale: Option<TimeScaleDto>,
-    pub magic_schools: Vec<MagicSchoolDto>,
+    pub magic_school: MagicSchoolDto,
     pub classes: Vec<ClassDto>,
     pub source: Option<SourceDto>,
 }
@@ -87,13 +87,14 @@ impl Spell {
             time_scale_id: spell.time_scale_id,
             duration: spell.duration,
             source_abbr: spell.source_abbr,
+            magic_school_id: spell.magic_school_id,
 
             aoe_type,
             time_scale,
             range_type: RangeTypeDto::get_by_id(&spell.range_type_id)?,
             cast_type: CastTypeDto::get_by_id(&spell.cast_type_id)?,
             duration_type: DurationTypeDto::get_by_id(&spell.duration_type_id)?,
-            magic_schools: MagicSchoolSpellDto::get_schools_by_spell_id(&spell.id)?,
+            magic_school: MagicSchoolDto::get_by_id(&spell.magic_school_id)?,
             classes: SpellClassDto::get_classes_by_spell_id(&spell.id)?,
             source,
         })

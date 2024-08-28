@@ -59,12 +59,14 @@ CREATE TABLE spells (
     time_scale_id INTEGER NULL,
     duration INTEGER NULL,
     source_abbr TEXT NULL,
+    magic_school_id INTEGER NOT NULL,
 
     FOREIGN KEY (range_type_id) REFERENCES range_types(id) ON DELETE RESTRICT,
     FOREIGN KEY (cast_type_id) REFERENCES cast_types(id) ON DELETE RESTRICT,
     FOREIGN KEY (aoe_type_id) REFERENCES aoe_types(id) ON DELETE RESTRICT,
     FOREIGN KEY (time_scale_id) REFERENCES time_scales(id) ON DELETE RESTRICT,
     FOREIGN KEY (duration_type_id) REFERENCES duration_types(id) ON DELETE RESTRICT,
+    FOREIGN KEY (magic_school_id) REFERENCES magic_schools(id) ON DELETE RESTRICT,
     FOREIGN KEY (source_abbr) REFERENCES sources(abbreviation) ON DELETE SET NULL
 );
 
@@ -76,16 +78,6 @@ CREATE TABLE classes_spells (
     FOREIGN KEY (class_id) REFERENCES classes(id) ON DELETE RESTRICT,
     FOREIGN KEY (spell_id) REFERENCES spells(id) ON DELETE CASCADE
 );
-
-CREATE TABLE magic_schools_spells(
-    magic_school_id INTEGER NOT NULL,
-    spell_id INTEGER NOT NULL,
-
-    PRIMARY KEY (magic_school_id, spell_id),
-    FOREIGN KEY (magic_school_id) REFERENCES magic_schools(id) ON DELETE RESTRICT,
-    FOREIGN KEY (spell_id) REFERENCES spells(id) ON DELETE CASCADE
-);
-
 
 -- POPULATE THE TABLES
 INSERT INTO magic_schools (name) VALUES
