@@ -1,5 +1,6 @@
 import {
   RHFLazyMultiselect,
+  RHFLazySelect,
   RHFSelectField,
   RHFTextField,
 } from '@components/Fields/RHF';
@@ -34,6 +35,12 @@ const StyledForm = styled('form')(() => ({
     display: 'flex',
     flexDirection: 'column',
     rowGap: '16px',
+    '& .metadata-name': {
+      display: 'grid',
+      columnGap: '12px',
+      gridTemplateColumns: '2fr 1fr',
+      maxWidth: '850px',
+    },
     '& .metadata-assignments': {
       display: 'grid',
       columnGap: '12px',
@@ -56,12 +63,25 @@ function SpellForm({ control, onSubmit, onValueChange, watch }: Props) {
         <Typography variant="h6">Metadata</Typography>
         <Divider />
         <div className="metadata-row">
-          <RHFTextField
-            control={control}
-            fieldName="name"
-            label="Name"
-            isRequired
-          />
+          <div className="metadata-name">
+            <RHFTextField
+              control={control}
+              fieldName="name"
+              label="Name"
+              isRequired
+            />
+            <RHFLazySelect
+              control={control}
+              fieldName="sourceAbbr"
+              allowNone
+              label="Source"
+              queryArgs={{
+                queryName: 'get_all_sources',
+                valueKey: 'abbreviation',
+                textKey: 'name',
+              }}
+            />
+          </div>
           <div className="metadata-assignments">
             <RHFSelectField
               control={control}

@@ -2,7 +2,7 @@ use diesel::prelude::*;
 use log::error;
 use serde::{Deserialize, Serialize};
 
-use crate::dto::class::class_dto::ClassDto;
+use crate::{dto::class::class_dto::ClassDto, schema::classes_spells};
 
 #[derive(Queryable, Insertable, Debug, Serialize, Deserialize)]
 #[diesel(table_name = crate::schema::classes_spells)]
@@ -36,5 +36,25 @@ impl SpellClassDto {
                 Err(e.to_string())
             }
         }
+    }
+
+    pub fn save_spell_classes(
+        conn: &mut SqliteConnection,
+        classes: Vec<i32>,
+        parent_id: &i32,
+    ) -> QueryResult<usize> {
+        use crate::schema::classes_spells::dsl::*;
+
+        let mapped_class_spells: Vec<SpellClassDto> = classes
+            .iter()
+            .map(|item_id| SpellClassDto {
+                spell_id: *parent_id,
+                class_id: *item_id,
+            })
+            .collect();
+
+        diesel::insert_into(classes_spells)
+            .values(&mapped_class_spells)
+            .execute(conn)
     }
 }

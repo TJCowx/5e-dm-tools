@@ -299,7 +299,7 @@ diesel::table! {
         duration_type_id -> Integer,
         time_scale_id -> Nullable<Integer>,
         duration -> Nullable<Integer>,
-        hit_count -> Integer,
+        source_abbr -> Nullable<Text>,
     }
 }
 
@@ -344,6 +344,7 @@ diesel::joinable!(spells -> aoe_types (aoe_type_id));
 diesel::joinable!(spells -> cast_types (cast_type_id));
 diesel::joinable!(spells -> duration_types (duration_type_id));
 diesel::joinable!(spells -> range_types (range_type_id));
+diesel::joinable!(spells -> sources (source_abbr));
 diesel::joinable!(spells -> time_scales (time_scale_id));
 
 diesel::allow_tables_to_appear_in_same_query!(

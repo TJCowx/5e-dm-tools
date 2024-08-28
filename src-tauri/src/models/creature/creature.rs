@@ -75,10 +75,9 @@ pub struct Creature {
 
 impl From<CreatureDto> for Creature {
     fn from(creature: CreatureDto) -> Self {
-        let source = if let Some(ref abbr) = creature.source_abbr {
-            Some(SourceDto::get_by_id(&abbr))
-        } else {
-            None
+        let source = match &creature.source_abbr {
+            Some(abbr) => Some(SourceDto::get_by_id(&abbr)),
+            _ => None,
         };
 
         Self {

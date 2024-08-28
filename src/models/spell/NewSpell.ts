@@ -1,5 +1,5 @@
 import Class from '@models/Class';
-import SpellDamage from './SpellDamage';
+import MagicSchool from './MagicSchool';
 
 type NewSpell = {
   name: string;
@@ -14,7 +14,7 @@ type NewSpell = {
   castingTime: string;
   canRitualCast: boolean;
   rangeTypeId?: number;
-  range?: string;
+  range?: number;
   castTypeId?: number;
   castTime: number;
   aoeTypeId?: number;
@@ -22,10 +22,10 @@ type NewSpell = {
   durationTypeId?: number;
   timeScaleId?: number;
   duration?: number;
-  hitCount: number;
+  sourceAbbr?: string;
 
-  damages?: SpellDamage[];
-  classes?: Class[];
+  magicSchools?: number[];
+  classes?: number[];
 };
 
 export default NewSpell;

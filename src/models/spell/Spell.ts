@@ -5,6 +5,7 @@ import DurationType from './DurationType';
 import MagicSchool from './MagicSchool';
 import RangeType from './RangeType';
 import TimeScale from './TimeScale';
+import Source from '@models/source/Source';
 
 type Spell = {
   id: number;
@@ -28,7 +29,7 @@ type Spell = {
   durationTypeId: number;
   timeScaleId?: number;
   duration?: number;
-  hitCount: number;
+  sourceAbbr?: string;
 
   rangeType?: RangeType;
   castType?: CastType;
@@ -37,6 +38,7 @@ type Spell = {
   timeScale?: TimeScale;
   magicSchools?: MagicSchool[];
   classes?: Class[];
+  source?: Source;
 };
 
 export default Spell;

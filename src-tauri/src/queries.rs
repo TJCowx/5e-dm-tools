@@ -18,4 +18,5 @@ pub mod proficiency;
 pub mod range_type;
 pub mod size;
 pub mod source;
+pub mod spell;
 pub mod time_scale;

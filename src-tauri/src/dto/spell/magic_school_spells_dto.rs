@@ -1,6 +1,8 @@
 use diesel::prelude::*;
 use serde::{Deserialize, Serialize};
 
+use crate::schema::magic_schools_spells;
+
 use super::magic_school_dto::MagicSchoolDto;
 
 #[derive(Queryable, Insertable, Debug, Serialize, Deserialize)]
@@ -32,5 +34,25 @@ impl MagicSchoolSpellDto {
                 Err(e.to_string())
             }
         }
+    }
+
+    pub fn save_spell_schools(
+        conn: &mut SqliteConnection,
+        schools: Vec<i32>,
+        parent_id: &i32,
+    ) -> QueryResult<usize> {
+        use crate::schema::magic_schools_spells::dsl::*;
+
+        let mapped_spell_schools: Vec<MagicSchoolSpellDto> = schools
+            .iter()
+            .map(|item_id| MagicSchoolSpellDto {
+                spell_id: *parent_id,
+                magic_school_id: *item_id,
+            })
+            .collect();
+
+        diesel::insert_into(magic_schools_spells)
+            .values(&mapped_spell_schools)
+            .execute(conn)
     }
 }

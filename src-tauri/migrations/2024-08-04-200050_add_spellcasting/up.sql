@@ -58,13 +58,14 @@ CREATE TABLE spells (
     duration_type_id INTEGER NOT NULL,
     time_scale_id INTEGER NULL,
     duration INTEGER NULL,
-    hit_count INTEGER NOT NULL,
+    source_abbr TEXT NULL,
 
     FOREIGN KEY (range_type_id) REFERENCES range_types(id) ON DELETE RESTRICT,
     FOREIGN KEY (cast_type_id) REFERENCES cast_types(id) ON DELETE RESTRICT,
     FOREIGN KEY (aoe_type_id) REFERENCES aoe_types(id) ON DELETE RESTRICT,
     FOREIGN KEY (time_scale_id) REFERENCES time_scales(id) ON DELETE RESTRICT,
-    FOREIGN KEY (duration_type_id) REFERENCES duration_types(id) ON DELETE RESTRICT
+    FOREIGN KEY (duration_type_id) REFERENCES duration_types(id) ON DELETE RESTRICT,
+    FOREIGN KEY (source_abbr) REFERENCES sources(abbreviation) ON DELETE SET NULL
 );
 
 CREATE TABLE classes_spells (

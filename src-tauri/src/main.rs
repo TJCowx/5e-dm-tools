@@ -55,6 +55,8 @@ fn main() {
             queries::proficiency::get_all_proficiencies,
             queries::range_type::get_all_range_types,
             queries::size::get_all_sizes,
+            queries::spell::get_all_spells,
+            queries::spell::add_spell,
             queries::source::add_source,
             queries::source::get_all_sources,
             queries::source::get_sources_list,

@@ -2,7 +2,14 @@ use diesel::prelude::*;
 use log::{error, info};
 use serde::{Deserialize, Serialize};
 
-use crate::{db::connect_db, models::spell::spell::Spell};
+use crate::{
+    db::connect_db,
+    dto::spell::{
+        magic_school_spells_dto::MagicSchoolSpellDto, new_spell_dto::NewSpellDto,
+        spell_class::SpellClassDto,
+    },
+    models::spell::{new_spell::NewSpell, spell::Spell},
+};
 
 #[derive(Debug, Serialize, Deserialize, Queryable, Identifiable, AsChangeset)]
 #[diesel(table_name = crate::schema::spells)]
@@ -29,7 +36,7 @@ pub struct SpellDto {
     pub duration_type_id: i32,
     pub time_scale_id: Option<i32>,
     pub duration: Option<i32>,
-    pub hit_count: i32,
+    pub source_abbr: Option<String>,
 }
 
 impl SpellDto {
@@ -87,8 +94,34 @@ impl SpellDto {
         }
     }
 
+    pub fn insert_full_spell(new_spell: NewSpell) -> QueryResult<()> {
+        let conn = &mut connect_db();
+
+        conn.transaction(|connection| {
+            info!("Inserting new spell...");
+            let inserted_spell: SpellDto = diesel::insert_into(crate::schema::spells::table)
+                .values(NewSpellDto::from(&new_spell))
+                .get_result(connection)?;
+
+            info!("Spell inserted succesfully!");
+
+            MagicSchoolSpellDto::save_spell_schools(
+                connection,
+                new_spell.magic_school_ids,
+                &inserted_spell.id,
+            )?;
+
+            info!("Spells' magic schools inserted succesfully");
+
+            SpellClassDto::save_spell_classes(connection, new_spell.class_ids, &inserted_spell.id)?;
+
+            info!("Spells' classes inserted succesfully");
+
+            Ok(())
+        })
+    }
+
     // TODO: pub fn get_editable_by_id(spell_id: &i32) -> Result<, String> {}
-    // TODO: pub fn insert_full_spell(spell) -> QueryResult<()> {}
     // TODO: pub fn update(spell) -> QueryResult<()> {}
     // TODO: pub fn delete(spell_id: &i32) -> Result<(), String> {}
 }

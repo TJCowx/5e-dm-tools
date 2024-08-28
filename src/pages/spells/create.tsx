@@ -1,9 +1,11 @@
+import { addNewSpell } from '@api/spells';
 import { NavBack } from '@components/Links';
 import SpellForm, { FormTypeSupport } from '@components/Spell/SpellForm';
 import useSetPagePadding from '@hooks/useSetPagePadding';
 import NewSpell from '@models/spell/NewSpell';
 import Spell from '@models/spell/Spell';
 import { Alert } from '@mui/material';
+import { logMessage } from '@utils/loggingUtils';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
@@ -28,7 +30,6 @@ const DefaultValue: NewSpell = {
   durationTypeId: null,
   timeScaleId: null,
   duration: null,
-  hitCount: null,
 };
 
 function CreateSpell() {
@@ -42,6 +43,14 @@ function CreateSpell() {
 
   const onSubmit = (data: NewSpell) => {
     setHasError(false);
+    addNewSpell(data)
+      .then(() => {
+        navigate('/spells');
+      })
+      .catch((e) => {
+        logMessage('error', e);
+        setHasError(true);
+      });
   };
 
   return (

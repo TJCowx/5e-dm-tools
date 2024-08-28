@@ -2,6 +2,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::dto::{
     class::class_dto::ClassDto,
+    source::source_dto::SourceDto,
     spell::{
         aoe_type_dto::AoeTypeDto, cast_type_dto::CastTypeDto, duration_type_dto::DurationTypeDto,
         magic_school_dto::MagicSchoolDto, magic_school_spells_dto::MagicSchoolSpellDto,
@@ -9,8 +10,6 @@ use crate::dto::{
         time_scale_dto::TimeScaleDto,
     },
 };
-
-use super::spell_damage::SpellDamage;
 
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
@@ -36,7 +35,7 @@ pub struct Spell {
     pub duration_type_id: i32,
     pub time_scale_id: Option<i32>,
     pub duration: Option<i32>,
-    pub hit_count: i32,
+    pub source_abbr: Option<String>,
 
     pub range_type: RangeTypeDto,
     pub cast_type: CastTypeDto,
@@ -45,6 +44,7 @@ pub struct Spell {
     pub time_scale: Option<TimeScaleDto>,
     pub magic_schools: Vec<MagicSchoolDto>,
     pub classes: Vec<ClassDto>,
+    pub source: Option<SourceDto>,
 }
 
 impl Spell {
@@ -56,6 +56,11 @@ impl Spell {
 
         let time_scale = match &spell.time_scale_id {
             Some(time_scale_id) => Some(TimeScaleDto::get_by_id(&time_scale_id)?),
+            _ => None,
+        };
+
+        let source = match &spell.source_abbr {
+            Some(abbr) => Some(SourceDto::get_by_id(&abbr)),
             _ => None,
         };
 
@@ -81,7 +86,7 @@ impl Spell {
             duration_type_id: spell.duration_type_id,
             time_scale_id: spell.time_scale_id,
             duration: spell.duration,
-            hit_count: spell.hit_count,
+            source_abbr: spell.source_abbr,
 
             aoe_type,
             time_scale,
@@ -90,6 +95,7 @@ impl Spell {
             duration_type: DurationTypeDto::get_by_id(&spell.duration_type_id)?,
             magic_schools: MagicSchoolSpellDto::get_schools_by_spell_id(&spell.id)?,
             classes: SpellClassDto::get_classes_by_spell_id(&spell.id)?,
+            source,
         })
     }
 }
