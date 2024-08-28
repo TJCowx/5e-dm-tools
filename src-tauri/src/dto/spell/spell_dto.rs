@@ -113,5 +113,17 @@ impl SpellDto {
 
     // TODO: pub fn get_editable_by_id(spell_id: &i32) -> Result<, String> {}
     // TODO: pub fn update(spell) -> QueryResult<()> {}
-    // TODO: pub fn delete(spell_id: &i32) -> Result<(), String> {}
+
+    pub fn delete(spell_id: &i32) -> QueryResult<()> {
+        use crate::schema::spells::dsl::*;
+
+        let conn = &mut connect_db();
+        conn.transaction(|connection| {
+            SpellClassDto::delete_spell_classes(connection, &spell_id)?;
+
+            diesel::delete(spells.find(spell_id)).execute(connection)?;
+
+            Ok(())
+        })
+    }
 }

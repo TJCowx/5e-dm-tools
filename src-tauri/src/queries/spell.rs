@@ -32,3 +32,15 @@ pub fn add_spell(new_spell: NewSpell) -> Result<(), String> {
         }
     }
 }
+
+#[tauri::command]
+pub fn delete_spell(id: i32) -> Result<(), String> {
+    info!("Deleting spell {}", id);
+    match SpellDto::delete(&id) {
+        Ok(_) => Ok(()),
+        Err(e) => {
+            error!("Error deleting spell {}: {}", id, e);
+            Err("There was an error deleting the spell".to_string())
+        }
+    }
+}

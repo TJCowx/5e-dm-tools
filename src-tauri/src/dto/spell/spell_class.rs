@@ -2,7 +2,10 @@ use diesel::prelude::*;
 use log::error;
 use serde::{Deserialize, Serialize};
 
-use crate::{dto::class::class_dto::ClassDto, schema::classes_spells};
+use crate::{
+    dto::class::class_dto::ClassDto,
+    schema::{classes_spells, creature_spells::spell_id},
+};
 
 #[derive(Queryable, Insertable, Debug, Serialize, Deserialize)]
 #[diesel(table_name = crate::schema::classes_spells)]
@@ -56,5 +59,14 @@ impl SpellClassDto {
         diesel::insert_into(classes_spells)
             .values(&mapped_class_spells)
             .execute(conn)
+    }
+
+    pub fn delete_spell_classes(
+        conn: &mut SqliteConnection,
+        parent_id: &i32,
+    ) -> QueryResult<usize> {
+        use crate::schema::classes_spells::dsl::*;
+
+        diesel::delete(classes_spells.filter(spell_id.eq(parent_id))).execute(conn)
     }
 }

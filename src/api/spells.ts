@@ -7,7 +7,7 @@ import { formatNullableNumStr } from '@utils/formattingUtils';
  * Gets all magic schools
  * @returns A promise that returns all creatures
  */
-export async function getAllMagicSchools() {
+export async function getAllMagicSchools(): Promise<MagicSchool[]> {
   const { invoke } = await import('@tauri-apps/api/tauri');
   return invoke<MagicSchool[]>('get_all_creatures');
 }
@@ -15,7 +15,7 @@ export async function getAllMagicSchools() {
 /**
  * Format all the spells and save it
  */
-export async function addNewSpell(spell: NewSpell) {
+export async function addNewSpell(spell: NewSpell): Promise<void> {
   const { invoke } = await import('@tauri-apps/api/tauri');
   return invoke('add_spell', {
     newSpell: {
@@ -44,4 +44,12 @@ export async function addNewSpell(spell: NewSpell) {
 export async function getAllSpells(): Promise<Spell[]> {
   const { invoke } = await import('@tauri-apps/api/tauri');
   return invoke<Spell[]>('get_all_spells');
+}
+
+/**
+ * Delete the spell by it's id
+ */
+export async function deleteSpell(id: number): Promise<void> {
+  const { invoke } = await import('@tauri-apps/api/tauri');
+  return invoke('delete_spell', { id });
 }

@@ -1,11 +1,16 @@
 import {
   Alert,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
   Divider,
   IconButton,
   List,
   ListItemText,
   Link as MuiLink,
-  Tooltip,
   styled,
 } from '@mui/material';
 import { Fragment, useEffect, useState } from 'react';
@@ -13,13 +18,13 @@ import { Fragment, useEffect, useState } from 'react';
 import useSetPagePadding from '@hooks/useSetPagePadding';
 import PageListHeader from '@components/Layout/PageListHeader';
 import { logMessage } from '@utils/loggingUtils';
-import { getAllSpells } from '@api/spells';
+import { deleteSpell, getAllSpells } from '@api/spells';
 import { ListItemTwoSecondaryActions, SkeletonList } from '@components/List';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPen, faTrash } from '@fortawesome/free-solid-svg-icons';
 import Spell from '@models/spell/Spell';
-import { formatLevelText, isConcentration } from '@utils/spellUtils';
+import { formatLevelText } from '@utils/spellUtils';
 
 const StyledAlert = styled(Alert)(() => ({
   marginBottom: '16px',
@@ -28,6 +33,7 @@ const StyledAlert = styled(Alert)(() => ({
 function SpellsPage() {
   useSetPagePadding(true);
 
+  const [pendingDeleteId, setPendingDeleteId] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [hasError, setHasError] = useState(false);
   const [spells, setSpells] = useState<Spell[]>([]);
@@ -47,6 +53,22 @@ function SpellsPage() {
         logMessage('error', e);
         setHasError(true);
         setIsLoading(false);
+      });
+  };
+
+  const openDialog = (id: number) => {
+    setPendingDeleteId(id);
+  };
+
+  const handleDelete = (id: number) => {
+    deleteSpell(id)
+      .then(() => {
+        setPendingDeleteId(null);
+        loadSpells();
+      })
+      .catch((e) => {
+        logMessage('error', e);
+        setHasError(true);
       });
   };
 
@@ -101,7 +123,7 @@ function SpellsPage() {
                       edge="end"
                       aria-label={`Delete ${name}`}
                       color="warning"
-                      //onClick={() => openDialog(id)}
+                      onClick={() => openDialog(id)}
                     >
                       <FontAwesomeIcon size="xs" icon={faTrash} />
                     </IconButton>
@@ -138,6 +160,29 @@ function SpellsPage() {
           ),
         )}
       </List>
+      {pendingDeleteId != null && (
+        <Dialog open onClose={() => setPendingDeleteId(null)}>
+          <DialogTitle>Confirm Delete Spell</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              This will <strong>permanently</strong> delete the spell and will
+              be <strong>removed</strong> from any associated creatures. Do you
+              want to continue?
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => setPendingDeleteId(null)}>Cancel</Button>
+            <Button
+              variant="contained"
+              color="warning"
+              disableElevation
+              onClick={() => handleDelete(pendingDeleteId)}
+            >
+              Delete
+            </Button>
+          </DialogActions>
+        </Dialog>
+      )}
     </>
   );
 }
