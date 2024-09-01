@@ -25,6 +25,7 @@ fn main() {
             queries::action_type::get_all_action_types,
             queries::action_type::get_action_type_by_id,
             queries::alignment::get_all_alignments,
+            queries::aoe_type::get_all_aoe_types,
             queries::attack_delivery::get_all_attack_deliveries,
             queries::attack_delivery::get_attack_delivery_by_id,
             queries::attack_type::get_all_attack_types,

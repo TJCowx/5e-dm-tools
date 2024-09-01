@@ -43,11 +43,10 @@ export default function RangeFields({ control, onValueChange, watch }: Props) {
         })),
       );
     }
-  }, [typeOpts]);
+  }, [rangeTypeRes]);
 
   useEffect(() => {
-    if (typeIdWatch) {
-      console.log(typeIdWatch);
+    if (typeIdWatch && rangeTypeRes) {
       const mappedType = rangeTypeRes.find((t) => t.id === typeIdWatch);
 
       if (mappedType) {
@@ -62,7 +61,7 @@ export default function RangeFields({ control, onValueChange, watch }: Props) {
       onValueChange('range', null);
       setRequiresRange(false);
     }
-  }, [typeIdWatch]);
+  }, [typeIdWatch, rangeTypeRes]);
 
   return (
     <section>

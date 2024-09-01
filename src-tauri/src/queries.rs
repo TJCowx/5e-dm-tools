@@ -1,5 +1,6 @@
 pub mod action_type;
 pub mod alignment;
+pub mod aoe_type;
 pub mod attack_delivery;
 pub mod attack_type;
 pub mod cast_type;

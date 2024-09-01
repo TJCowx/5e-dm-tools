@@ -46,12 +46,11 @@ export default function DurationFields({
   }, [durationTypes, isLoading, error]);
 
   useEffect(() => {
-    if (durationTypeWatch != null) {
+    if (durationTypeWatch != null && durationTypes) {
       const durationType = durationTypes.find(
         (t) => t.id === durationTypeWatch,
       );
 
-      console.log(durationTypes);
       const needsScale = durationType.hasTimeScale;
 
       setNeedsTimeScale(needsScale);
@@ -64,7 +63,7 @@ export default function DurationFields({
       onValueChange('duration', null);
       onValueChange('timeScaleId', null);
     }
-  }, [durationTypeWatch]);
+  }, [durationTypeWatch, durationTypes]);
 
   return (
     <section>
