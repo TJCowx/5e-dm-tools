@@ -55,13 +55,14 @@ fn main() {
             queries::proficiency::get_all_proficiencies,
             queries::range_type::get_all_range_types,
             queries::size::get_all_sizes,
-            queries::spell::get_all_spells,
             queries::spell::add_spell,
             queries::spell::delete_spell,
+            queries::spell::get_all_spells,
+            queries::spell::get_editable_spell_by_id,
             queries::source::add_source,
+            queries::source::edit_source,
             queries::source::get_all_sources,
             queries::source::get_sources_list,
-            queries::source::edit_source,
             queries::source::remove_source,
             queries::time_scale::get_all_time_scales
         ])

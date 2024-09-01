@@ -73,7 +73,16 @@ function SpellsPage() {
   };
 
   const filterSpells = (filterText: string) => {
-    console.log('Filtered');
+    if (!filterText?.length) {
+      setFilteredSpells(spells);
+    } else {
+      const normalizedFilterText = filterText.toLowerCase();
+      setFilteredSpells(
+        spells.filter((s) =>
+          s.name.toLowerCase().includes(normalizedFilterText),
+        ),
+      );
+    }
   };
 
   useEffect(() => {

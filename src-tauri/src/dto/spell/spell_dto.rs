@@ -5,7 +5,8 @@ use serde::{Deserialize, Serialize};
 use crate::{
     db::connect_db,
     dto::spell::{new_spell_dto::NewSpellDto, spell_class::SpellClassDto},
-    models::spell::{new_spell::NewSpell, spell::Spell},
+    models::spell::{editable_spell::EditableSpell, new_spell::NewSpell, spell::Spell},
+    schema::spells,
 };
 
 #[derive(Debug, Serialize, Deserialize, Queryable, Identifiable, AsChangeset)]
@@ -111,7 +112,17 @@ impl SpellDto {
         })
     }
 
-    // TODO: pub fn get_editable_by_id(spell_id: &i32) -> Result<, String> {}
+    pub fn get_editable_by_id(spell_id: i32) -> Result<EditableSpell, String> {
+        use crate::schema::spells::dsl::*;
+
+        let conn = &mut connect_db();
+
+        match spells.find(spell_id).first::<SpellDto>(conn) {
+            Ok(found) => Ok(EditableSpell::build(found)?),
+            Err(e) => Err(format!("Error getting creature: {}", e)),
+        }
+    }
+
     // TODO: pub fn update(spell) -> QueryResult<()> {}
 
     pub fn delete(spell_id: &i32) -> QueryResult<()> {

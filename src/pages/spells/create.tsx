@@ -3,7 +3,6 @@ import { NavBack } from '@components/Links';
 import SpellForm, { FormTypeSupport } from '@components/Spell/SpellForm';
 import useSetPagePadding from '@hooks/useSetPagePadding';
 import NewSpell from '@models/spell/NewSpell';
-import Spell from '@models/spell/Spell';
 import { Alert } from '@mui/material';
 import { logMessage } from '@utils/loggingUtils';
 import { useState } from 'react';
@@ -22,7 +21,7 @@ const DefaultValue: NewSpell = {
   castingTime: '',
   canRitualCast: false,
   rangeTypeId: null,
-  range: '',
+  range: null,
   castTypeId: null,
   castTime: 1,
   aoeTypeId: null,
@@ -30,6 +29,7 @@ const DefaultValue: NewSpell = {
   durationTypeId: null,
   timeScaleId: null,
   duration: null,
+  magicSchoolId: null,
 };
 
 function CreateSpell() {

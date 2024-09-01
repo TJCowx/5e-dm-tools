@@ -24,6 +24,7 @@ const InitiativePage = lazy(() => import('@pages/initiative/index'));
 const SettingsPage = lazy(() => import('@pages/settings/index'));
 const SourcesPage = lazy(() => import('@pages/sources/index'));
 const SpellsPage = lazy(() => import('@pages/spells/index'));
+const EditSpellPage = lazy(() => import('@pages/spells/edit'));
 
 const muiCache = createCache({
   key: 'mui',
@@ -75,6 +76,10 @@ function App() {
                 <Route
                   path="create"
                   element={<SuspenseElement element={<CreateSpell />} />}
+                />
+                <Route
+                  path="edit/:spellId"
+                  element={<SuspenseElement element={<EditSpellPage />} />}
                 />
               </Route>
               <Route

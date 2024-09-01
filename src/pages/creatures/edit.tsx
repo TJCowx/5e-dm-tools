@@ -32,7 +32,6 @@ function EditCreature() {
 
   useEffect(() => {
     if (data) {
-      console.log(data);
       reset(data);
     }
   }, [data]);
@@ -44,7 +43,6 @@ function EditCreature() {
       })
       .catch((err) => {
         logMessage('error', err);
-        console.error(err);
       });
   };
 

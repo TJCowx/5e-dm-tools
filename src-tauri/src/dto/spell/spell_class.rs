@@ -30,10 +30,33 @@ impl SpellClassDto {
             .select(classes::all_columns())
             .load::<ClassDto>(conn)
         {
-            Ok(schools) => Ok(schools),
+            Ok(res) => Ok(res),
             Err(e) => {
                 error!(
                     "There was an error loading classes on spell {}, Error: {}",
+                    in_spell_id, e
+                );
+                Err(e.to_string())
+            }
+        }
+    }
+
+    pub fn get_class_ids_by_spell_id(in_spell_id: &i32) -> Result<Vec<i32>, String> {
+        use crate::schema::classes::dsl::*;
+        use crate::schema::classes_spells::dsl::{classes_spells, spell_id};
+
+        let conn = &mut crate::db::connect_db();
+
+        match classes
+            .inner_join(classes_spells)
+            .filter(spell_id.eq(in_spell_id))
+            .select(id)
+            .load::<i32>(conn)
+        {
+            Ok(class_ids) => Ok(class_ids),
+            Err(e) => {
+                error!(
+                    "There was an error loading class ids on spell {}, Error: {}",
                     in_spell_id, e
                 );
                 Err(e.to_string())
