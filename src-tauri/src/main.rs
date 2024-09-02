@@ -60,6 +60,7 @@ fn main() {
             queries::spell::delete_spell,
             queries::spell::get_all_spells,
             queries::spell::get_editable_spell_by_id,
+            queries::spell::update_spell,
             queries::source::add_source,
             queries::source::edit_source,
             queries::source::get_all_sources,

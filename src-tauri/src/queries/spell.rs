@@ -50,6 +50,21 @@ pub fn get_editable_spell_by_id(id: i32) -> Result<EditableSpell, String> {
 }
 
 #[tauri::command]
+pub fn update_spell(spell: EditableSpell) -> Result<(), String> {
+    info!("Updating spell {}", spell.id);
+    match SpellDto::update(&spell) {
+        Ok(_) => {
+            info!("Updated spell {}", &spell.id);
+            Ok(())
+        }
+        Err(e) => {
+            error!("Error updating spell: {}", e);
+            Err("Error updating spell".to_string())
+        }
+    }
+}
+
+#[tauri::command]
 pub fn delete_spell(id: i32) -> Result<(), String> {
     info!("Deleting spell {}", id);
     match SpellDto::delete(&id) {

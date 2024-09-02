@@ -6,7 +6,6 @@ use crate::{
     db::connect_db,
     dto::spell::{new_spell_dto::NewSpellDto, spell_class::SpellClassDto},
     models::spell::{editable_spell::EditableSpell, new_spell::NewSpell, spell::Spell},
-    schema::spells,
 };
 
 #[derive(Debug, Serialize, Deserialize, Queryable, Identifiable, AsChangeset)]
@@ -36,6 +35,36 @@ pub struct SpellDto {
     pub duration: Option<i32>,
     pub source_abbr: Option<String>,
     pub magic_school_id: i32,
+}
+
+impl From<&EditableSpell> for SpellDto {
+    fn from(spell: &EditableSpell) -> Self {
+        Self {
+            id: spell.id,
+            name: spell.name.clone(),
+            description: spell.description.clone(),
+            higher_levels: spell.higher_levels.clone(),
+            spell_slot: spell.spell_slot,
+            requires_verbal: spell.requires_verbal,
+            requires_somatic: spell.requires_somatic,
+            requires_material: spell.requires_material,
+            material_components: spell.material_components.clone(),
+            level: spell.level,
+            casting_time: spell.casting_time.clone(),
+            can_ritual_cast: spell.can_ritual_cast,
+            range_type_id: spell.range_type_id,
+            range: spell.range,
+            cast_type_id: spell.cast_type_id,
+            cast_time: spell.cast_time,
+            aoe_type_id: spell.aoe_type_id,
+            aoe_size: spell.aoe_size,
+            duration_type_id: spell.duration_type_id,
+            time_scale_id: spell.time_scale_id,
+            duration: spell.duration,
+            source_abbr: spell.source_abbr.clone(),
+            magic_school_id: spell.magic_school_id,
+        }
+    }
 }
 
 impl SpellDto {
@@ -123,7 +152,22 @@ impl SpellDto {
         }
     }
 
-    // TODO: pub fn update(spell) -> QueryResult<()> {}
+    pub fn update(spell: &EditableSpell) -> QueryResult<()> {
+        use crate::schema::spells::dsl::*;
+
+        let conn = &mut connect_db();
+
+        conn.transaction(|trans| {
+            diesel::update(spells.find(spell.id))
+                .set(Self::from(spell))
+                .execute(trans)?;
+
+            // TODO: Update classes
+            SpellClassDto::update_spell_classes(trans, &spell.classes, &spell.id)?;
+
+            Ok(())
+        })
+    }
 
     pub fn delete(spell_id: &i32) -> QueryResult<()> {
         use crate::schema::spells::dsl::*;

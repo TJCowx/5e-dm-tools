@@ -1,3 +1,5 @@
+use std::collections::HashSet;
+
 use diesel::prelude::*;
 use log::error;
 use serde::{Deserialize, Serialize};
@@ -82,6 +84,40 @@ impl SpellClassDto {
         diesel::insert_into(classes_spells)
             .values(&mapped_class_spells)
             .execute(conn)
+    }
+
+    pub fn update_spell_classes(
+        conn: &mut SqliteConnection,
+        new_classes: &Vec<i32>,
+        parent_id: &i32,
+    ) -> QueryResult<()> {
+        use crate::schema::classes_spells::dsl::*;
+
+        let prev: HashSet<i32> = Self::get_class_ids_by_spell_id(parent_id)
+            .map_err(|e| diesel::result::Error::QueryBuilderError(e.into()))?
+            .into_iter()
+            .collect();
+        let new: HashSet<i32> = new_classes.iter().cloned().collect();
+
+        let mut to_delete: Vec<i32> = Vec::new();
+        let mut to_add: Vec<i32> = Vec::new();
+
+        for id in prev.union(&new) {
+            if prev.contains(id) && !new.contains(id) {
+                to_delete.push(*id);
+            } else if new.contains(id) && !prev.contains(id) {
+                to_add.push(*id)
+            }
+        }
+
+        diesel::delete(
+            classes_spells.filter(spell_id.eq(parent_id).and(class_id.eq_any(to_delete))),
+        )
+        .execute(conn)?;
+
+        Self::save_spell_classes(conn, to_add, parent_id)?;
+
+        Ok(())
     }
 
     pub fn delete_spell_classes(
