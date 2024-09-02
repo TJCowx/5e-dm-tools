@@ -38,6 +38,7 @@ import { getProfBonusByCR } from '@utils/creatureUtils';
 import { ActionListItem, NewActionListItem } from '../Action';
 
 import { CR_OPTS, XP_BY_CR } from './constants';
+import SpellcastingFields from './Sections/SpellcastingFields';
 
 type Props = {
   control: Control<Partial<Creature>>;
@@ -506,6 +507,11 @@ function CreatureForm({ control, onSubmit, onValueChange, watch }: Props) {
           />
         </List>
       </section>
+      <SpellcastingFields
+        control={control}
+        watch={watch}
+        onValueChange={onValueChange}
+      />
       <div className="action-container">
         <Button
           variant="contained"

@@ -153,6 +153,21 @@ diesel::table! {
         creature_type_id -> Integer,
         size_id -> Integer,
         source_abbr -> Nullable<Text>,
+        spellcasting_ability -> Nullable<Text>,
+        spellcasting_save_dc -> Nullable<Integer>,
+        spellcasting_attack -> Nullable<Integer>,
+        level_one_slots -> Nullable<Integer>,
+        level_two_slots -> Nullable<Integer>,
+        level_three_slots -> Nullable<Integer>,
+        level_four_slots -> Nullable<Integer>,
+        level_five_slots -> Nullable<Integer>,
+        level_six_slots -> Nullable<Integer>,
+        level_seven_slots -> Nullable<Integer>,
+        level_eight_slots -> Nullable<Integer>,
+        level_nine_slots -> Nullable<Integer>,
+        innate_casting_ability -> Nullable<Text>,
+        innate_casting_save_dc -> Nullable<Integer>,
+        innate_casting_attack -> Nullable<Integer>,
     }
 }
 
@@ -223,6 +238,13 @@ diesel::table! {
     environments (id) {
         id -> Integer,
         name -> Text,
+    }
+}
+
+diesel::table! {
+    innate_creature_spells (spell_id, creature_id) {
+        spell_id -> Integer,
+        creature_id -> Integer,
     }
 }
 
@@ -313,14 +335,11 @@ diesel::table! {
 
 diesel::joinable!(classes_spells -> classes (class_id));
 diesel::joinable!(classes_spells -> spells (spell_id));
-diesel::joinable!(creature_abilities -> creatures (creature_id));
 diesel::joinable!(creature_action_damages -> creature_actions (action_id));
 diesel::joinable!(creature_action_damages -> damage_types (type_id));
 diesel::joinable!(creature_actions -> action_types (action_type_id));
 diesel::joinable!(creature_actions -> attack_deliveries (attack_delivery_id));
 diesel::joinable!(creature_actions -> attack_types (attack_type_id));
-diesel::joinable!(creature_actions -> creatures (creature_id));
-diesel::joinable!(creature_environment -> creatures (creature_id));
 diesel::joinable!(creature_environment -> environments (environment_id));
 diesel::joinable!(creature_spells -> creatures (creature_id));
 diesel::joinable!(creature_spells -> spells (spell_id));
@@ -328,17 +347,13 @@ diesel::joinable!(creatures -> alignments (alignment_id));
 diesel::joinable!(creatures -> creature_types (creature_type_id));
 diesel::joinable!(creatures -> sources (source_abbr));
 diesel::joinable!(creatures_condition_immunities -> condition_types (condition_type_id));
-diesel::joinable!(creatures_condition_immunities -> creatures (creature_id));
-diesel::joinable!(creatures_immunities -> creatures (creature_id));
 diesel::joinable!(creatures_immunities -> damage_types (damage_type_id));
-diesel::joinable!(creatures_languages -> creatures (creature_id));
 diesel::joinable!(creatures_languages -> languages (language_id));
-diesel::joinable!(creatures_proficiencies -> creatures (creature_id));
 diesel::joinable!(creatures_proficiencies -> proficiencies (proficiency_id));
-diesel::joinable!(creatures_resistances -> creatures (creature_id));
 diesel::joinable!(creatures_resistances -> damage_types (damage_type_id));
-diesel::joinable!(creatures_weaknesses -> creatures (creature_id));
 diesel::joinable!(creatures_weaknesses -> damage_types (damage_type_id));
+diesel::joinable!(innate_creature_spells -> creatures (creature_id));
+diesel::joinable!(innate_creature_spells -> spells (spell_id));
 diesel::joinable!(magic_schools_spells -> magic_schools (magic_school_id));
 diesel::joinable!(magic_schools_spells -> spells (spell_id));
 diesel::joinable!(spells -> aoe_types (aoe_type_id));
@@ -375,6 +390,7 @@ diesel::allow_tables_to_appear_in_same_query!(
     damage_types,
     duration_types,
     environments,
+    innate_creature_spells,
     languages,
     magic_schools,
     magic_schools_spells,
