@@ -5,7 +5,7 @@ export default function useInvoke<T>(
   queryArgs?: Record<string, unknown>,
   invokeOnMount = true,
 ) {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(invokeOnMount);
   const [data, setData] = useState<T | null>(null);
   const [error, setError] = useState<Error | null>(null);
 

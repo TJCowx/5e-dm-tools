@@ -26,7 +26,7 @@ function RHFCheckboxField<T extends FieldValues>({
           control={
             <Checkbox
               {...field}
-              checked={field.value}
+              checked={!!field.value}
               onChange={(e) => field.onChange(e.target.checked)}
             />
           }

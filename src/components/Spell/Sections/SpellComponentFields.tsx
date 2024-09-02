@@ -20,6 +20,7 @@ export default function SpellComponentFields({
   const reqMatWatch = watch('requiresMaterial');
 
   useEffect(() => {
+    console.log(reqMatWatch);
     if (!reqMatWatch) {
       onValueChange('materialComponents', '');
     }
